@@ -1,306 +1,386 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Settings - Alamin Shop Admin</title>
-
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings - ShopNext Admin</title>
 
   <style>
-    /* ================================
-       ADMIN SETTINGS
-    ================================= */
+    :root {
+      --bg: #0b0d10;
+      --sidebar: #101318;
+      --card: #11151b;
+      --card2: #151a20;
+      --border: #252b34;
+      --muted: #858c98;
+      --text: #f5f7fa;
+      --primary: #7c5cff;
+      --primaryHover: #6d4ff0;
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
 
-    body {
+    * {
       margin: 0;
-      background: #08090b;
-      color: #f8fafc;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    .admin-layout {
-      min-height: 100vh;
-      display: flex;
-    }
-
-    /* Sidebar */
-    .admin-sidebar {
-      width: 250px;
-      background: #101216;
-      border-right: 1px solid #272b33;
-      position: fixed;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      overflow-y: auto;
-      z-index: 1000;
-    }
-
-    .admin-brand {
-      padding: 24px 20px;
-      border-bottom: 1px solid #272b33;
-    }
-
-    .admin-brand h2 {
-      margin: 0;
-      font-size: 22px;
-    }
-
-    .admin-brand span {
-      color: #8b5cf6;
-    }
-
-    .admin-brand small {
-      display: block;
-      margin-top: 5px;
-      color: #8b929d;
-      font-size: 12px;
-    }
-
-    .admin-nav {
-      padding: 18px 12px;
-    }
-
-    .admin-nav-title {
-      color: #666d78;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      padding: 10px 12px;
-      margin-top: 8px;
-    }
-
-    .admin-nav a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px;
-      margin-bottom: 4px;
-      color: #aeb4be;
-      text-decoration: none;
-      border-radius: 9px;
-      font-size: 14px;
-      transition: .2s;
-    }
-
-    .admin-nav a:hover,
-    .admin-nav a.active {
-      background: #191c23;
-      color: #fff;
-    }
-
-    .admin-nav a.active {
-      border-left: 3px solid #8b5cf6;
-    }
-
-    .nav-icon {
-      width: 22px;
-      text-align: center;
-    }
-
-    /* Main */
-    .admin-main {
-      width: calc(100% - 250px);
-      margin-left: 250px;
-      min-height: 100vh;
-    }
-
-    .admin-topbar {
-      height: 70px;
-      background: #101216;
-      border-bottom: 1px solid #272b33;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 30px;
+      padding: 0;
       box-sizing: border-box;
     }
 
-    .admin-topbar h1 {
-      margin: 0;
-      font-size: 21px;
+    html {
+      scroll-behavior: smooth;
     }
 
-    .admin-topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 15px;
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      min-height: 100vh;
     }
 
-    .store-link {
-      color: #aeb4be;
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
       text-decoration: none;
-      font-size: 13px;
+      color: inherit;
     }
 
-    .admin-avatar {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: #8b5cf6;
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100vh;
+      background: var(--sidebar);
+      border-right: 1px solid var(--border);
+      padding: 22px 14px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 1000;
+      transition: transform 0.25s ease;
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: #2b3038;
+      border-radius: 10px;
+    }
+
+    .logo {
+      padding: 0 10px;
+      margin-bottom: 28px;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: var(--primary);
+    }
+
+    .nav-section {
+      margin-bottom: 24px;
+    }
+
+    .nav-section-title {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 0 14px;
+      margin-bottom: 8px;
+    }
+
+    .nav-link {
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-weight: bold;
-    }
-
-    /* Content */
-    .admin-content {
-      padding: 30px;
-    }
-
-    .page-heading {
-      margin-bottom: 25px;
-    }
-
-    .page-heading h2 {
-      margin: 0 0 7px;
-      font-size: 28px;
-    }
-
-    .page-heading p {
-      margin: 0;
-      color: #858c97;
+      gap: 11px;
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 9px;
+      color: #b9bec7;
       font-size: 14px;
+      font-weight: 500;
+      transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
     }
 
-    /* Settings Layout */
+    .nav-link:hover {
+      background: #191d24;
+      color: #fff;
+    }
+
+    .nav-link.active {
+      background: #211b3b;
+      color: var(--primary);
+    }
+
+    .nav-icon {
+      width: 20px;
+      min-width: 20px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+    }
+
+    .sidebar-bottom {
+      margin-top: 10px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .main {
+      margin-left: 250px;
+      min-height: 100vh;
+      width: calc(100% - 250px);
+    }
+
+    /* =========================
+       TOPBAR
+    ========================= */
+
+    .topbar {
+      min-height: 86px;
+      padding: 22px 30px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(11, 13, 16, 0.92);
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 750;
+      letter-spacing: -0.5px;
+    }
+
+    .page-subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .mobile-menu {
+      display: none;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 9px;
+    }
+
+    .mobile-menu:hover {
+      background: #191d24;
+    }
+
+    /* =========================
+       CONTENT
+    ========================= */
+
+    .content {
+      padding: 30px;
+      max-width: 1500px;
+      margin: auto;
+    }
+
+    /* =========================
+       SETTINGS LAYOUT
+    ========================= */
+
     .settings-layout {
       display: grid;
-      grid-template-columns: 230px 1fr;
+      grid-template-columns: 220px minmax(0, 1fr);
       gap: 22px;
       align-items: start;
     }
 
     .settings-menu {
-      background: #101216;
-      border: 1px solid #272b33;
+      background: var(--card);
+      border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 10px;
+      padding: 8px;
+      position: sticky;
+      top: 108px;
     }
 
-    .settings-menu button {
+    .settings-tab {
       width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 12px;
       border: 0;
-      background: transparent;
-      color: #aeb4be;
-      text-align: left;
-      padding: 12px;
       border-radius: 9px;
-      cursor: pointer;
-      font-size: 14px;
-      margin-bottom: 3px;
-    }
-
-    .settings-menu button:hover,
-    .settings-menu button.active {
-      background: #1b1e26;
-      color: #fff;
-    }
-
-    .settings-menu button.active {
-      color: #a78bfa;
-    }
-
-    .settings-section {
-      display: none;
-    }
-
-    .settings-section.active {
-      display: block;
-    }
-
-    .settings-card {
-      background: #101216;
-      border: 1px solid #272b33;
-      border-radius: 14px;
-      margin-bottom: 20px;
-      overflow: hidden;
-    }
-
-    .settings-card-header {
-      padding: 20px;
-      border-bottom: 1px solid #272b33;
-    }
-
-    .settings-card-header h3 {
-      margin: 0 0 5px;
-      font-size: 17px;
-    }
-
-    .settings-card-header p {
-      margin: 0;
-      color: #7e8692;
+      background: transparent;
+      color: #b9bec7;
+      text-align: left;
       font-size: 13px;
+      font-weight: 500;
+      transition: 0.2s ease;
     }
 
-    .settings-card-body {
-      padding: 20px;
+    .settings-tab:hover {
+      background: #191d24;
+      color: white;
     }
 
-    /* Forms */
+    .settings-tab.active {
+      background: #211b3b;
+      color: var(--primary);
+    }
+
+    .settings-tab-icon {
+      width: 20px;
+      text-align: center;
+    }
+
+    .settings-content {
+      min-width: 0;
+    }
+
+    /* =========================
+       CARD
+    ========================= */
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .card:last-child {
+      margin-bottom: 0;
+    }
+
+    .card-header {
+      margin-bottom: 22px;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .card-description {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 5px;
+      line-height: 1.5;
+    }
+
+    /* =========================
+       FORM
+    ========================= */
+
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px;
     }
 
     .form-group {
-      margin-bottom: 2px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
     }
 
     .form-group.full {
       grid-column: 1 / -1;
     }
 
-    .form-group label {
-      display: block;
-      margin-bottom: 7px;
-      font-size: 13px;
-      color: #c7ccd4;
+    .form-label {
+      color: #dfe3e9;
+      font-size: 12px;
+      font-weight: 600;
     }
 
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
+    .form-control {
       width: 100%;
-      box-sizing: border-box;
-      background: #08090b;
-      color: #fff;
-      border: 1px solid #30343d;
+      background: #0d1014;
+      border: 1px solid var(--border);
       border-radius: 9px;
+      color: var(--text);
       padding: 11px 12px;
       outline: none;
-      font-size: 14px;
+      transition: 0.2s ease;
     }
 
-    .form-group textarea {
+    .form-control::placeholder {
+      color: #666d78;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.12);
+    }
+
+    textarea.form-control {
       min-height: 100px;
       resize: vertical;
     }
 
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: #8b5cf6;
+    select.form-control {
+      appearance: none;
     }
 
-    .form-help {
-      color: #6f7681;
-      font-size: 11px;
-      margin-top: 5px;
-    }
+    /* =========================
+       TOGGLE
+    ========================= */
 
-    /* Toggle */
     .setting-row {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       gap: 20px;
-      padding: 16px 0;
-      border-bottom: 1px solid #22252c;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--border);
     }
 
     .setting-row:first-child {
@@ -312,24 +392,27 @@
       padding-bottom: 0;
     }
 
-    .setting-info strong {
-      display: block;
-      font-size: 14px;
-      margin-bottom: 5px;
+    .setting-info {
+      min-width: 0;
     }
 
-    .setting-info span {
-      display: block;
-      color: #777f8a;
+    .setting-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .setting-description {
+      color: var(--muted);
       font-size: 12px;
-      line-height: 1.5;
+      margin-top: 4px;
+      line-height: 1.45;
     }
 
     .switch {
       position: relative;
-      width: 46px;
-      height: 25px;
-      flex-shrink: 0;
+      width: 44px;
+      min-width: 44px;
+      height: 24px;
     }
 
     .switch input {
@@ -340,180 +423,228 @@
 
     .slider {
       position: absolute;
-      cursor: pointer;
       inset: 0;
-      background: #30343d;
+      background: #2a3038;
       border-radius: 30px;
-      transition: .2s;
+      transition: 0.2s ease;
     }
 
-    .slider:before {
+    .slider::before {
       content: "";
       position: absolute;
-      width: 19px;
-      height: 19px;
+      width: 18px;
+      height: 18px;
       left: 3px;
       top: 3px;
       background: #fff;
       border-radius: 50%;
-      transition: .2s;
+      transition: 0.2s ease;
     }
 
     .switch input:checked + .slider {
-      background: #8b5cf6;
+      background: var(--primary);
     }
 
-    .switch input:checked + .slider:before {
-      transform: translateX(21px);
+    .switch input:checked + .slider::before {
+      transform: translateX(20px);
     }
 
-    /* Save */
-    .save-area {
+    /* =========================
+       BUTTONS
+    ========================= */
+
+    .actions {
       display: flex;
       justify-content: flex-end;
+      align-items: center;
       gap: 10px;
-      padding-top: 5px;
+      margin-top: 20px;
     }
 
     .btn {
       border: 0;
       border-radius: 9px;
-      padding: 11px 18px;
-      cursor: pointer;
-      font-weight: 600;
+      padding: 10px 16px;
       font-size: 13px;
+      font-weight: 650;
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        opacity 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
     }
 
     .btn-primary {
-      background: #8b5cf6;
-      color: #fff;
+      background: var(--primary);
+      color: white;
     }
 
     .btn-primary:hover {
-      background: #7c3aed;
+      background: var(--primaryHover);
     }
 
     .btn-secondary {
-      background: #1b1e24;
-      color: #c7ccd4;
-      border: 1px solid #30343d;
+      background: #191d24;
+      color: #dce1e8;
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #20252d;
     }
 
     .btn-danger {
-      background: #2b1518;
-      color: #ff858f;
-      border: 1px solid #572126;
+      background: rgba(239, 68, 68, 0.1);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.2);
     }
 
-    /* Danger */
-    .danger-box {
-      border: 1px solid #572126;
-      background: #1c1012;
-      padding: 16px;
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.16);
+    }
+
+    /* =========================
+       NOTICE
+    ========================= */
+
+    .notice {
+      padding: 13px 14px;
+      background: rgba(124, 92, 255, 0.08);
+      border: 1px solid rgba(124, 92, 255, 0.18);
       border-radius: 10px;
-      margin-top: 18px;
-    }
-
-    .danger-box strong {
-      color: #ff858f;
-      display: block;
-      margin-bottom: 6px;
-    }
-
-    .danger-box p {
-      margin: 0;
-      color: #b77d82;
+      color: #bcb0ff;
       font-size: 12px;
       line-height: 1.5;
+      margin-bottom: 18px;
     }
 
-    /* Notification */
-    .settings-notification {
+    .notice.warning {
+      background: rgba(245, 158, 11, 0.08);
+      border-color: rgba(245, 158, 11, 0.18);
+      color: #fbbf24;
+    }
+
+    .danger-zone {
+      border-color: rgba(239, 68, 68, 0.25);
+    }
+
+    /* =========================
+       TAB CONTENT
+    ========================= */
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast {
       position: fixed;
-      right: 25px;
-      bottom: 25px;
-      background: #171a20;
-      border: 1px solid #343943;
-      color: #fff;
-      padding: 13px 17px;
+      right: 24px;
+      bottom: 24px;
+      background: #171b21;
+      border: 1px solid var(--border);
       border-radius: 10px;
-      box-shadow: 0 15px 40px rgba(0,0,0,.4);
-      transform: translateY(20px);
-      opacity: 0;
-      pointer-events: none;
-      transition: .25s;
-      z-index: 5000;
+      padding: 13px 16px;
+      color: white;
       font-size: 13px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(15px);
+      transition: 0.25s ease;
+      z-index: 2000;
     }
 
-    .settings-notification.show {
-      transform: translateY(0);
+    .toast.show {
       opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
     }
 
-    /* Responsive */
-    @media (max-width: 950px) {
+    /* =========================
+       MOBILE OVERLAY
+    ========================= */
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 999;
+    }
+
+    .sidebar-overlay.show {
+      display: block;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 1000px) {
+      .settings-layout {
+        grid-template-columns: 190px minmax(0, 1fr);
+      }
+
+      .content {
+        padding: 24px;
+      }
+
+      .topbar {
+        padding: 20px 24px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        width: 220px;
+      }
+
+      .main {
+        margin-left: 220px;
+        width: calc(100% - 220px);
+      }
+    }
+
+    @media (max-width: 760px) {
+      .sidebar {
+        width: 250px;
+        transform: translateX(-100%);
+        box-shadow: 20px 0 50px rgba(0, 0, 0, 0.35);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .mobile-menu {
+        display: block;
+      }
+
       .settings-layout {
         grid-template-columns: 1fr;
       }
 
       .settings-menu {
-        display: flex;
-        overflow-x: auto;
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         gap: 5px;
-      }
-
-      .settings-menu button {
-        width: auto;
-        white-space: nowrap;
-        margin: 0;
-      }
-    }
-
-    @media (max-width: 800px) {
-      .admin-sidebar {
-        width: 70px;
-      }
-
-      .admin-brand {
-        padding: 20px 10px;
-        text-align: center;
-      }
-
-      .admin-brand h2 {
-        font-size: 0;
-      }
-
-      .admin-brand h2::after {
-        content: "AS";
-        font-size: 18px;
-      }
-
-      .admin-brand small,
-      .admin-nav-title {
-        display: none;
-      }
-
-      .admin-nav {
-        padding: 12px 8px;
-      }
-
-      .admin-nav a {
-        justify-content: center;
-        padding: 12px 5px;
-      }
-
-      .admin-nav a span:not(.nav-icon) {
-        display: none;
-      }
-
-      .admin-main {
-        width: calc(100% - 70px);
-        margin-left: 70px;
-      }
-
-      .admin-content {
-        padding: 20px;
       }
 
       .form-grid {
@@ -525,30 +656,48 @@
       }
     }
 
-    @media (max-width: 600px) {
-      .admin-topbar {
-        padding: 0 15px;
+    @media (max-width: 520px) {
+      .content {
+        padding: 18px;
       }
 
-      .admin-topbar h1 {
-        font-size: 17px;
+      .topbar {
+        padding: 17px 18px;
       }
 
-      .store-link {
+      .page-title {
+        font-size: 20px;
+      }
+
+      .page-subtitle {
         display: none;
       }
 
-      .admin-content {
-        padding: 15px;
+      .card {
+        padding: 17px;
       }
 
-      .settings-card-body,
-      .settings-card-header {
-        padding: 16px;
+      .settings-menu {
+        grid-template-columns: 1fr;
       }
 
       .setting-row {
         align-items: flex-start;
+      }
+
+      .actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .toast {
+        left: 18px;
+        right: 18px;
+        bottom: 18px;
       }
     }
   </style>
@@ -556,800 +705,986 @@
 
 <body>
 
-  <div class="admin-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
 
-    <!-- ================= SIDEBAR ================= -->
-    <aside class="admin-sidebar">
+    <div class="logo">
+      Shop<span>Next</span>
+    </div>
 
-      <div class="admin-brand">
-        <h2>Alamin <span>Shop</span></h2>
-        <small>Admin Dashboard</small>
+    <div class="nav-section">
+      <div class="nav-section-title">MAIN</div>
+
+      <a href="index.html" class="nav-link">
+        <span class="nav-icon">▦</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="orders.html" class="nav-link">
+        <span class="nav-icon">🧾</span>
+        <span>Orders</span>
+      </a>
+
+      <a href="products.html" class="nav-link">
+        <span class="nav-icon">📦</span>
+        <span>Products</span>
+      </a>
+
+      <a href="inventory.html" class="nav-link">
+        <span class="nav-icon">▤</span>
+        <span>Inventory</span>
+      </a>
+
+      <a href="categories.html" class="nav-link">
+        <span class="nav-icon">▣</span>
+        <span>Categories</span>
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-title">MANAGEMENT</div>
+
+      <a href="customers.html" class="nav-link">
+        <span class="nav-icon">👥</span>
+        <span>Customers</span>
+      </a>
+
+      <a href="coupons.html" class="nav-link">
+        <span class="nav-icon">🏷️</span>
+        <span>Coupons</span>
+      </a>
+
+      <a href="reports.html" class="nav-link">
+        <span class="nav-icon">📊</span>
+        <span>Reports</span>
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-title">COMMUNICATION</div>
+
+      <a href="notifications.html" class="nav-link">
+        <span class="nav-icon">🔔</span>
+        <span>Notifications</span>
+      </a>
+
+      <a href="email-templates.html" class="nav-link">
+        <span class="nav-icon">✉️</span>
+        <span>Email Templates</span>
+      </a>
+
+      <a href="sms-templates.html" class="nav-link">
+        <span class="nav-icon">💬</span>
+        <span>SMS Templates</span>
+      </a>
+    </div>
+
+    <div class="sidebar-bottom">
+
+      <a href="settings.html" class="nav-link active">
+        <span class="nav-icon">⚙️</span>
+        <span>Settings</span>
+      </a>
+
+      <a href="../index.html" class="nav-link">
+        <span class="nav-icon">↗</span>
+        <span>View Store</span>
+      </a>
+
+      <a href="account.html" class="nav-link">
+        <span class="nav-icon">👤</span>
+        <span>My Account</span>
+      </a>
+
+      <a href="#" class="nav-link" id="logoutBtn">
+        <span class="nav-icon">⇥</span>
+        <span>Logout</span>
+      </a>
+
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <header class="topbar">
+
+      <div class="topbar-left">
+
+        <button
+          class="mobile-menu"
+          id="mobileMenu"
+          type="button"
+          aria-label="Open menu"
+        >
+          ☰
+        </button>
+
+        <div>
+          <div class="page-title">
+            Settings
+          </div>
+
+          <div class="page-subtitle">
+            Manage your store configuration
+          </div>
+        </div>
+
       </div>
 
-      <nav class="admin-nav">
+    </header>
 
-        <div class="admin-nav-title">Main</div>
+    <section class="content">
 
-        <a href="index.html">
-          <span class="nav-icon">📊</span>
-          <span>Dashboard</span>
-        </a>
+      <div class="settings-layout">
 
-        <a href="orders.html">
-          <span class="nav-icon">🛒</span>
-          <span>Orders</span>
-        </a>
+        <!-- SETTINGS MENU -->
+        <div class="settings-menu">
 
-        <a href="products.html">
-          <span class="nav-icon">📦</span>
-          <span>Products</span>
-        </a>
+          <button
+            type="button"
+            class="settings-tab active"
+            data-tab="store"
+          >
+            <span class="settings-tab-icon">🏪</span>
+            Store
+          </button>
 
-        <a href="inventory.html">
-          <span class="nav-icon">🏷️</span>
-          <span>Inventory</span>
-        </a>
+          <button
+            type="button"
+            class="settings-tab"
+            data-tab="checkout"
+          >
+            <span class="settings-tab-icon">🛒</span>
+            Checkout
+          </button>
 
-        <a href="categories.html">
-          <span class="nav-icon">🗂️</span>
-          <span>Categories</span>
-        </a>
+          <button
+            type="button"
+            class="settings-tab"
+            data-tab="delivery"
+          >
+            <span class="settings-tab-icon">🚚</span>
+            Delivery
+          </button>
 
-        <div class="admin-nav-title">Management</div>
+          <button
+            type="button"
+            class="settings-tab"
+            data-tab="notifications"
+          >
+            <span class="settings-tab-icon">🔔</span>
+            Notifications
+          </button>
 
-        <a href="customers.html">
-          <span class="nav-icon">👥</span>
-          <span>Customers</span>
-        </a>
+          <button
+            type="button"
+            class="settings-tab"
+            data-tab="system"
+          >
+            <span class="settings-tab-icon">⚙️</span>
+            System
+          </button>
 
-        <a href="coupons.html">
-          <span class="nav-icon">🎟️</span>
-          <span>Coupons</span>
-        </a>
+          <button
+            type="button"
+            class="settings-tab"
+            data-tab="advanced"
+          >
+            <span class="settings-tab-icon">🛠️</span>
+            Advanced
+          </button>
 
-        <a href="reports.html">
-          <span class="nav-icon">📈</span>
-          <span>Reports</span>
-        </a>
-
-        <a href="notifications.html">
-          <span class="nav-icon">🔔</span>
-          <span>Notifications</span>
-        </a>
-
-        <div class="admin-nav-title">System</div>
-
-        <a href="settings.html" class="active">
-          <span class="nav-icon">⚙️</span>
-          <span>Settings</span>
-        </a>
-
-        <a href="../index.html">
-          <span class="nav-icon">🌐</span>
-          <span>View Store</span>
-        </a>
-
-        <a href="../account.html">
-          <span class="nav-icon">👤</span>
-          <span>My Account</span>
-        </a>
-
-        <a href="../login.html">
-          <span class="nav-icon">🚪</span>
-          <span>Logout</span>
-        </a>
-
-      </nav>
-
-    </aside>
-
-
-    <!-- ================= MAIN ================= -->
-    <main class="admin-main">
-
-      <header class="admin-topbar">
-
-        <h1>Settings</h1>
-
-        <div class="admin-topbar-right">
-          <a href="../index.html" class="store-link">
-            View Store →
-          </a>
-
-          <div class="admin-avatar">
-            A
-          </div>
         </div>
 
-      </header>
+        <!-- SETTINGS CONTENT -->
+        <div class="settings-content">
 
+          <!-- STORE -->
+          <div class="tab-content active" id="store">
 
-      <section class="admin-content">
+            <div class="card">
 
-        <div class="page-heading">
-          <h2>Store Settings</h2>
-          <p>Manage your store information, checkout, delivery and system preferences.</p>
-        </div>
+              <div class="card-header">
+                <div class="card-title">
+                  Store Information
+                </div>
 
+                <div class="card-description">
+                  Basic information about your online store.
+                </div>
+              </div>
 
-        <div class="settings-layout">
+              <div class="form-grid">
 
-          <!-- ================= SETTINGS MENU ================= -->
+                <div class="form-group">
+                  <label class="form-label" for="storeName">
+                    Store Name
+                  </label>
 
-          <div class="settings-menu">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="storeName"
+                    placeholder="ShopNext"
+                  />
+                </div>
 
-            <button class="settings-tab active" data-target="store">
-              🏪 Store
-            </button>
+                <div class="form-group">
+                  <label class="form-label" for="storeEmail">
+                    Store Email
+                  </label>
 
-            <button class="settings-tab" data-target="checkout">
-              🛒 Checkout
-            </button>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="storeEmail"
+                    placeholder="admin@example.com"
+                  />
+                </div>
 
-            <button class="settings-tab" data-target="delivery">
-              🚚 Delivery
-            </button>
+                <div class="form-group">
+                  <label class="form-label" for="storePhone">
+                    Store Phone
+                  </label>
 
-            <button class="settings-tab" data-target="notifications">
-              🔔 Notifications
-            </button>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="storePhone"
+                    placeholder="+880 1XXXXXXXXX"
+                  />
+                </div>
 
-            <button class="settings-tab" data-target="system">
-              ⚙️ System
-            </button>
+                <div class="form-group">
+                  <label class="form-label" for="currency">
+                    Currency
+                  </label>
 
-            <button class="settings-tab" data-target="danger">
-              ⚠️ Advanced
-            </button>
+                  <select class="form-control" id="currency">
+                    <option value="BDT">
+                      BDT - Bangladeshi Taka
+                    </option>
+
+                    <option value="USD">
+                      USD - US Dollar
+                    </option>
+
+                    <option value="EUR">
+                      EUR - Euro
+                    </option>
+
+                    <option value="GBP">
+                      GBP - British Pound
+                    </option>
+                  </select>
+                </div>
+
+                <div class="form-group full">
+                  <label class="form-label" for="storeAddress">
+                    Store Address
+                  </label>
+
+                  <textarea
+                    class="form-control"
+                    id="storeAddress"
+                    placeholder="Enter store address"
+                  ></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="timezone">
+                    Timezone
+                  </label>
+
+                  <select class="form-control" id="timezone">
+                    <option value="Asia/Dhaka">
+                      Asia/Dhaka
+                    </option>
+
+                    <option value="UTC">
+                      UTC
+                    </option>
+
+                    <option value="Asia/Kolkata">
+                      Asia/Kolkata
+                    </option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="language">
+                    Language
+                  </label>
+
+                  <select class="form-control" id="language">
+                    <option value="en">
+                      English
+                    </option>
+
+                    <option value="bn">
+                      বাংলা
+                    </option>
+                  </select>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="card">
+
+              <div class="card-header">
+                <div class="card-title">
+                  Store Availability
+                </div>
+
+                <div class="card-description">
+                  Control whether customers can access your store.
+                </div>
+              </div>
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <div class="setting-title">
+                    Store Active
+                  </div>
+
+                  <div class="setting-description">
+                    Allow customers to browse and place orders.
+                  </div>
+                </div>
+
+                <label class="switch">
+                  <input type="checkbox" id="storeActive" />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <div class="setting-title">
+                    Customer Registration
+                  </div>
+
+                  <div class="setting-description">
+                    Allow new customers to create accounts.
+                  </div>
+                </div>
+
+                <label class="switch">
+                  <input type="checkbox" id="allowRegistration" />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+            </div>
 
           </div>
 
+          <!-- CHECKOUT -->
+          <div class="tab-content" id="checkout">
 
-          <!-- ================= SETTINGS CONTENT ================= -->
+            <div class="card">
 
-          <div>
-
-
-            <!-- STORE SETTINGS -->
-            <section class="settings-section active" id="store">
-
-              <div class="settings-card">
-
-                <div class="settings-card-header">
-                  <h3>Store Information</h3>
-                  <p>Basic information about your online store.</p>
+              <div class="card-header">
+                <div class="card-title">
+                  Checkout Settings
                 </div>
 
-                <div class="settings-card-body">
+                <div class="card-description">
+                  Configure how customers complete their orders.
+                </div>
+              </div>
 
-                  <div class="form-grid">
+              <div class="setting-row">
 
-                    <div class="form-group">
-                      <label>Store Name</label>
-                      <input
-                        type="text"
-                        id="storeName"
-                        placeholder="Alamin Shop"
-                      >
-                    </div>
-
-                    <div class="form-group">
-                      <label>Store Email</label>
-                      <input
-                        type="email"
-                        id="storeEmail"
-                        placeholder="support@alaminshop.com"
-                      >
-                    </div>
-
-                    <div class="form-group">
-                      <label>Phone Number</label>
-                      <input
-                        type="text"
-                        id="storePhone"
-                        placeholder="01700000000"
-                      >
-                    </div>
-
-                    <div class="form-group">
-                      <label>Currency</label>
-                      <select id="currency">
-                        <option value="BDT">BDT - Bangladeshi Taka</option>
-                        <option value="USD">USD - US Dollar</option>
-                        <option value="EUR">EUR - Euro</option>
-                      </select>
-                    </div>
-
-                    <div class="form-group full">
-                      <label>Store Address</label>
-                      <textarea
-                        id="storeAddress"
-                        placeholder="Enter store address"
-                      ></textarea>
-                    </div>
-
-                    <div class="form-group">
-                      <label>Timezone</label>
-                      <select id="timezone">
-                        <option value="Asia/Dhaka">Asia/Dhaka</option>
-                        <option value="Asia/Kolkata">Asia/Kolkata</option>
-                        <option value="UTC">UTC</option>
-                      </select>
-                    </div>
-
-                    <div class="form-group">
-                      <label>Language</label>
-                      <select id="language">
-                        <option value="en">English</option>
-                        <option value="bn">বাংলা</option>
-                      </select>
-                    </div>
-
+                <div class="setting-info">
+                  <div class="setting-title">
+                    Guest Checkout
                   </div>
+
+                  <div class="setting-description">
+                    Allow customers to place orders without creating an account.
+                  </div>
+                </div>
+
+                <label class="switch">
+                  <input type="checkbox" id="guestCheckout" />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <div class="setting-title">
+                    Require Phone Number
+                  </div>
+
+                  <div class="setting-description">
+                    Require customers to provide a phone number.
+                  </div>
+                </div>
+
+                <label class="switch">
+                  <input type="checkbox" id="requirePhone" />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <div class="setting-title">
+                    Require Email
+                  </div>
+
+                  <div class="setting-description">
+                    Require customers to provide an email address.
+                  </div>
+                </div>
+
+                <label class="switch">
+                  <input type="checkbox" id="requireEmail" />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <div class="setting-title">
+                    Order Notes
+                  </div>
+
+                  <div class="setting-description">
+                    Allow customers to add notes during checkout.
+                  </div>
+                </div>
+
+                <label class="switch">
+                  <input type="checkbox" id="allowOrderNotes" />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+              <div
+                class="form-grid"
+                style="margin-top: 22px;"
+              >
+
+                <div class="form-group">
+
+                  <label
+                    class="form-label"
+                    for="defaultOrderStatus"
+                  >
+                    Default Order Status
+                  </label>
+
+                  <select
+                    class="form-control"
+                    id="defaultOrderStatus"
+                  >
+                    <option value="New">New</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Processing">Processing</option>
+                  </select>
+
+                </div>
+
+                <div class="form-group">
+
+                  <label
+                    class="form-label"
+                    for="minimumOrder"
+                  >
+                    Minimum Order Amount
+                  </label>
+
+                  <input
+                    type="number"
+                    min="0"
+                    class="form-control"
+                    id="minimumOrder"
+                    placeholder="0"
+                  />
 
                 </div>
 
               </div>
 
+            </div>
 
-              <div class="settings-card">
+          </div>
 
-                <div class="settings-card-header">
-                  <h3>Store Status</h3>
-                  <p>Control whether customers can access your store.</p>
+          <!-- DELIVERY -->
+          <div class="tab-content" id="delivery">
+
+            <div class="card">
+
+              <div class="card-header">
+                <div class="card-title">
+                  Delivery Settings
                 </div>
 
-                <div class="settings-card-body">
+                <div class="card-description">
+                  Configure delivery availability and free shipping rules.
+                </div>
+              </div>
 
-                  <div class="setting-row">
+              <div class="setting-row">
 
-                    <div class="setting-info">
-                      <strong>Store is active</strong>
-                      <span>
-                        Customers can browse products and place orders.
-                      </span>
-                    </div>
-
-                    <label class="switch">
-                      <input type="checkbox" id="storeActive" checked>
-                      <span class="slider"></span>
-                    </label>
-
+                <div class="setting-info">
+                  <div class="setting-title">
+                    Inside Dhaka
                   </div>
 
-                  <div class="setting-row">
-
-                    <div class="setting-info">
-                      <strong>Allow customer registration</strong>
-                      <span>
-                        Allow new customers to create accounts.
-                      </span>
-                    </div>
-
-                    <label class="switch">
-                      <input type="checkbox" id="allowRegistration" checked>
-                      <span class="slider"></span>
-                    </label>
-
+                  <div class="setting-description">
+                    Enable delivery inside Dhaka.
                   </div>
+                </div>
+
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="enableInsideDhaka"
+                  />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <div class="setting-title">
+                    Outside Dhaka
+                  </div>
+
+                  <div class="setting-description">
+                    Enable delivery outside Dhaka.
+                  </div>
+                </div>
+
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="enableOutsideDhaka"
+                  />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+              <div
+                class="form-grid"
+                style="margin-top: 22px;"
+              >
+
+                <div class="form-group">
+
+                  <label
+                    class="form-label"
+                    for="insideDhaka"
+                  >
+                    Inside Dhaka Delivery Charge
+                  </label>
+
+                  <input
+                    type="number"
+                    min="0"
+                    class="form-control"
+                    id="insideDhaka"
+                    placeholder="60"
+                  />
+
+                </div>
+
+                <div class="form-group">
+
+                  <label
+                    class="form-label"
+                    for="outsideDhaka"
+                  >
+                    Outside Dhaka Delivery Charge
+                  </label>
+
+                  <input
+                    type="number"
+                    min="0"
+                    class="form-control"
+                    id="outsideDhaka"
+                    placeholder="120"
+                  />
+
+                </div>
+
+                <div class="form-group">
+
+                  <label
+                    class="form-label"
+                    for="freeDeliveryMinimum"
+                  >
+                    Free Delivery Minimum
+                  </label>
+
+                  <input
+                    type="number"
+                    min="0"
+                    class="form-control"
+                    id="freeDeliveryMinimum"
+                    placeholder="2000"
+                  />
 
                 </div>
 
               </div>
 
-            </section>
+              <div style="margin-top: 22px;">
 
+                <div class="setting-row">
 
-            <!-- CHECKOUT SETTINGS -->
-            <section class="settings-section" id="checkout">
+                  <div class="setting-info">
 
-              <div class="settings-card">
-
-                <div class="settings-card-header">
-                  <h3>Checkout Settings</h3>
-                  <p>Configure customer checkout behavior.</p>
-                </div>
-
-                <div class="settings-card-body">
-
-                  <div class="setting-row">
-
-                    <div class="setting-info">
-                      <strong>Guest Checkout</strong>
-                      <span>
-                        Customers can place orders without creating an account.
-                      </span>
+                    <div class="setting-title">
+                      Enable Free Delivery
                     </div>
 
-                    <label class="switch">
-                      <input type="checkbox" id="guestCheckout" checked>
-                      <span class="slider"></span>
-                    </label>
+                    <div class="setting-description">
+                      Give free delivery when the order reaches the minimum amount.
+                    </div>
 
                   </div>
 
-                  <div class="setting-row">
+                  <label class="switch">
 
-                    <div class="setting-info">
-                      <strong>Require phone number</strong>
-                      <span>
-                        Customer phone number will be required during checkout.
-                      </span>
-                    </div>
+                    <input
+                      type="checkbox"
+                      id="enableFreeDelivery"
+                    />
 
-                    <label class="switch">
-                      <input type="checkbox" id="requirePhone" checked>
-                      <span class="slider"></span>
-                    </label>
+                    <span class="slider"></span>
 
-                  </div>
-
-                  <div class="setting-row">
-
-                    <div class="setting-info">
-                      <strong>Require email</strong>
-                      <span>
-                        Customer email will be required during checkout.
-                      </span>
-                    </div>
-
-                    <label class="switch">
-                      <input type="checkbox" id="requireEmail">
-                      <span class="slider"></span>
-                    </label>
-
-                  </div>
-
-                  <div class="setting-row">
-
-                    <div class="setting-info">
-                      <strong>Allow order notes</strong>
-                      <span>
-                        Customers can add a note to their order.
-                      </span>
-                    </div>
-
-                    <label class="switch">
-                      <input type="checkbox" id="allowOrderNotes" checked>
-                      <span class="slider"></span>
-                    </label>
-
-                  </div>
+                  </label>
 
                 </div>
 
               </div>
 
+            </div>
 
-              <div class="settings-card">
+          </div>
 
-                <div class="settings-card-header">
-                  <h3>Order Settings</h3>
-                  <p>Default behavior for new orders.</p>
+          <!-- NOTIFICATIONS -->
+          <div class="tab-content" id="notifications">
+
+            <div class="card">
+
+              <div class="card-header">
+                <div class="card-title">
+                  Notification Settings
                 </div>
 
-                <div class="settings-card-body">
+                <div class="card-description">
+                  Choose which events should create admin notifications.
+                </div>
+              </div>
 
-                  <div class="form-grid">
+              <div class="setting-row">
 
-                    <div class="form-group">
-                      <label>Default Order Status</label>
-
-                      <select id="defaultOrderStatus">
-                        <option value="New">New</option>
-                        <option value="Confirmed">Confirmed</option>
-                        <option value="Processing">Processing</option>
-                      </select>
-                    </div>
-
-                    <div class="form-group">
-                      <label>Minimum Order Amount</label>
-
-                      <input
-                        type="number"
-                        id="minimumOrder"
-                        min="0"
-                        value="0"
-                      >
-                    </div>
-
+                <div class="setting-info">
+                  <div class="setting-title">
+                    New Order Notification
                   </div>
 
+                  <div class="setting-description">
+                    Notify admins whenever a new order is placed.
+                  </div>
+                </div>
+
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="newOrderNotification"
+                  />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <div class="setting-title">
+                    Low Stock Notification
+                  </div>
+
+                  <div class="setting-description">
+                    Notify admins when a product reaches low stock.
+                  </div>
+                </div>
+
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="lowStockNotification"
+                  />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <div class="setting-title">
+                    New Message Notification
+                  </div>
+
+                  <div class="setting-description">
+                    Notify admins when a customer sends a message.
+                  </div>
+                </div>
+
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="messageNotification"
+                  />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <div class="setting-title">
+                    Order Status Notification
+                  </div>
+
+                  <div class="setting-description">
+                    Notify customers when their order status changes.
+                  </div>
+                </div>
+
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="orderStatusNotification"
+                  />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- SYSTEM -->
+          <div class="tab-content" id="system">
+
+            <div class="card">
+
+              <div class="card-header">
+
+                <div class="card-title">
+                  System Settings
+                </div>
+
+                <div class="card-description">
+                  General system behavior and maintenance options.
                 </div>
 
               </div>
 
-            </section>
+              <div class="setting-row">
 
-
-            <!-- DELIVERY SETTINGS -->
-            <section class="settings-section" id="delivery">
-
-              <div class="settings-card">
-
-                <div class="settings-card-header">
-                  <h3>Delivery Charges</h3>
-                  <p>Configure default Bangladesh delivery charges.</p>
-                </div>
-
-                <div class="settings-card-body">
-
-                  <div class="form-grid">
-
-                    <div class="form-group">
-                      <label>Inside Dhaka</label>
-
-                      <input
-                        type="number"
-                        id="insideDhaka"
-                        min="0"
-                        value="80"
-                      >
-
-                      <div class="form-help">
-                        Current demo value: ৳80
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label>Outside Dhaka</label>
-
-                      <input
-                        type="number"
-                        id="outsideDhaka"
-                        min="0"
-                        value="130"
-                      >
-
-                      <div class="form-help">
-                        Current demo value: ৳130
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label>Free Delivery Minimum</label>
-
-                      <input
-                        type="number"
-                        id="freeDeliveryMinimum"
-                        min="0"
-                        value="5000"
-                      >
-
-                      <div class="form-help">
-                        Orders equal to or above this amount get free delivery.
-                      </div>
-                    </div>
-
+                <div class="setting-info">
+                  <div class="setting-title">
+                    Maintenance Mode
                   </div>
 
+                  <div class="setting-description">
+                    Temporarily disable customer access to the store.
+                  </div>
+                </div>
+
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="maintenanceMode"
+                  />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <div class="setting-title">
+                    Analytics
+                  </div>
+
+                  <div class="setting-description">
+                    Enable store analytics and tracking.
+                  </div>
+                </div>
+
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="analyticsEnabled"
+                  />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <div class="setting-title">
+                    Inventory Tracking
+                  </div>
+
+                  <div class="setting-description">
+                    Automatically track product stock.
+                  </div>
+                </div>
+
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="inventoryTracking"
+                  />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- ADVANCED -->
+          <div class="tab-content" id="advanced">
+
+            <div class="card">
+
+              <div class="card-header">
+
+                <div class="card-title">
+                  Advanced Settings
+                </div>
+
+                <div class="card-description">
+                  Advanced options for development and testing.
                 </div>
 
               </div>
 
+              <div class="notice warning">
+                Be careful when changing advanced settings. Some options can affect the entire store.
+              </div>
 
-              <div class="settings-card">
+              <div class="setting-row">
 
-                <div class="settings-card-header">
-                  <h3>Delivery Options</h3>
-                  <p>Control available delivery behavior.</p>
+                <div class="setting-info">
+                  <div class="setting-title">
+                    Demo Mode
+                  </div>
+
+                  <div class="setting-description">
+                    Enable demo behavior for testing purposes.
+                  </div>
                 </div>
 
-                <div class="settings-card-body">
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="demoMode"
+                  />
+                  <span class="slider"></span>
+                </label>
 
-                  <div class="setting-row">
+              </div>
 
-                    <div class="setting-info">
-                      <strong>Enable Inside Dhaka Delivery</strong>
-                      <span>
-                        Customers can choose Inside Dhaka delivery.
-                      </span>
-                    </div>
+            </div>
 
-                    <label class="switch">
-                      <input type="checkbox" id="enableInsideDhaka" checked>
-                      <span class="slider"></span>
-                    </label>
+            <div class="card danger-zone">
 
-                  </div>
+              <div class="card-header">
 
-                  <div class="setting-row">
+                <div class="card-title">
+                  Danger Zone
+                </div>
 
-                    <div class="setting-info">
-                      <strong>Enable Outside Dhaka Delivery</strong>
-                      <span>
-                        Customers can choose Outside Dhaka delivery.
-                      </span>
-                    </div>
-
-                    <label class="switch">
-                      <input type="checkbox" id="enableOutsideDhaka" checked>
-                      <span class="slider"></span>
-                    </label>
-
-                  </div>
-
-                  <div class="setting-row">
-
-                    <div class="setting-info">
-                      <strong>Free Delivery</strong>
-                      <span>
-                        Enable free delivery when minimum order amount is reached.
-                      </span>
-                    </div>
-
-                    <label class="switch">
-                      <input type="checkbox" id="enableFreeDelivery" checked>
-                      <span class="slider"></span>
-                    </label>
-
-                  </div>
-
+                <div class="card-description">
+                  These actions can remove locally stored demo data.
                 </div>
 
               </div>
 
-            </section>
+              <div
+                class="actions"
+                style="justify-content: flex-start;"
+              >
 
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  id="resetSettings"
+                >
+                  Reset Settings
+                </button>
 
-            <!-- NOTIFICATION SETTINGS -->
-            <section class="settings-section" id="notifications">
-
-              <div class="settings-card">
-
-                <div class="settings-card-header">
-                  <h3>Notification Settings</h3>
-                  <p>Choose which events should create notifications.</p>
-                </div>
-
-                <div class="settings-card-body">
-
-                  <div class="setting-row">
-
-                    <div class="setting-info">
-                      <strong>New Order Notifications</strong>
-                      <span>
-                        Notify admin when a new order is placed.
-                      </span>
-                    </div>
-
-                    <label class="switch">
-                      <input type="checkbox" id="newOrderNotification" checked>
-                      <span class="slider"></span>
-                    </label>
-
-                  </div>
-
-                  <div class="setting-row">
-
-                    <div class="setting-info">
-                      <strong>Low Stock Notifications</strong>
-                      <span>
-                        Notify admin when product stock becomes low.
-                      </span>
-                    </div>
-
-                    <label class="switch">
-                      <input type="checkbox" id="lowStockNotification" checked>
-                      <span class="slider"></span>
-                    </label>
-
-                  </div>
-
-                  <div class="setting-row">
-
-                    <div class="setting-info">
-                      <strong>Customer Message Notifications</strong>
-                      <span>
-                        Notify admin when a customer sends a contact message.
-                      </span>
-                    </div>
-
-                    <label class="switch">
-                      <input type="checkbox" id="messageNotification" checked>
-                      <span class="slider"></span>
-                    </label>
-
-                  </div>
-
-                  <div class="setting-row">
-
-                    <div class="setting-info">
-                      <strong>Order Status Updates</strong>
-                      <span>
-                        Enable notifications when an order status changes.
-                      </span>
-                    </div>
-
-                    <label class="switch">
-                      <input type="checkbox" id="orderStatusNotification" checked>
-                      <span class="slider"></span>
-                    </label>
-
-                  </div>
-
-                </div>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  id="clearDemoData"
+                >
+                  Clear Demo Data
+                </button>
 
               </div>
 
-            </section>
+            </div>
 
+          </div>
 
-            <!-- SYSTEM SETTINGS -->
-            <section class="settings-section" id="system">
+          <!-- SAVE -->
+          <div class="card">
 
-              <div class="settings-card">
-
-                <div class="settings-card-header">
-                  <h3>System Settings</h3>
-                  <p>General system behavior.</p>
-                </div>
-
-                <div class="settings-card-body">
-
-                  <div class="setting-row">
-
-                    <div class="setting-info">
-                      <strong>Maintenance Mode</strong>
-                      <span>
-                        Temporarily disable customer access while working on the store.
-                      </span>
-                    </div>
-
-                    <label class="switch">
-                      <input type="checkbox" id="maintenanceMode">
-                      <span class="slider"></span>
-                    </label>
-
-                  </div>
-
-                  <div class="setting-row">
-
-                    <div class="setting-info">
-                      <strong>Enable Store Analytics</strong>
-                      <span>
-                        Allow sales and order analytics to be calculated.
-                      </span>
-                    </div>
-
-                    <label class="switch">
-                      <input type="checkbox" id="analyticsEnabled" checked>
-                      <span class="slider"></span>
-                    </label>
-
-                  </div>
-
-                  <div class="setting-row">
-
-                    <div class="setting-info">
-                      <strong>Automatic Inventory Tracking</strong>
-                      <span>
-                        Reduce product stock when an order is placed.
-                      </span>
-                    </div>
-
-                    <label class="switch">
-                      <input type="checkbox" id="inventoryTracking" checked>
-                      <span class="slider"></span>
-                    </label>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-
-              <div class="settings-card">
-
-                <div class="settings-card-header">
-                  <h3>System Information</h3>
-                  <p>Current frontend demo environment information.</p>
-                </div>
-
-                <div class="settings-card-body">
-
-                  <div class="form-grid">
-
-                    <div class="form-group">
-                      <label>Platform</label>
-                      <input type="text" value="Alamin Shop" readonly>
-                    </div>
-
-                    <div class="form-group">
-                      <label>Environment</label>
-                      <input type="text" value="Frontend Demo" readonly>
-                    </div>
-
-                    <div class="form-group">
-                      <label>Storage</label>
-                      <input type="text" value="Browser LocalStorage" readonly>
-                    </div>
-
-                    <div class="form-group">
-                      <label>Version</label>
-                      <input type="text" value="1.0.0" readonly>
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </section>
-
-
-            <!-- ADVANCED -->
-            <section class="settings-section" id="danger">
-
-              <div class="settings-card">
-
-                <div class="settings-card-header">
-                  <h3>Advanced Settings</h3>
-                  <p>Use these options carefully.</p>
-                </div>
-
-                <div class="settings-card-body">
-
-                  <div class="setting-row">
-
-                    <div class="setting-info">
-                      <strong>Enable Demo Mode</strong>
-                      <span>
-                        Keep sample data available for testing.
-                      </span>
-                    </div>
-
-                    <label class="switch">
-                      <input type="checkbox" id="demoMode" checked>
-                      <span class="slider"></span>
-                    </label>
-
-                  </div>
-
-                  <div class="danger-box">
-
-                    <strong>⚠️ Clear Store Demo Data</strong>
-
-                    <p>
-                      This will remove demo orders, customers, coupons,
-                      inventory overrides, notifications and contact messages
-                      stored in this browser.
-                    </p>
-
-                    <button
-                      class="btn btn-danger"
-                      id="clearDemoData"
-                      style="margin-top:12px;"
-                    >
-                      Clear Demo Data
-                    </button>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </section>
-
-
-            <!-- SAVE BUTTON -->
-            <div class="save-area">
+            <div class="actions">
 
               <button
+                type="button"
                 class="btn btn-secondary"
-                id="resetSettings"
+                id="resetAll"
               >
                 Reset
               </button>
 
               <button
+                type="button"
                 class="btn btn-primary"
                 id="saveSettings"
               >
-                Save Settings
+                Save Changes
               </button>
 
             </div>
@@ -1358,336 +1693,543 @@
 
         </div>
 
-      </section>
+      </div>
 
-    </main>
+    </section>
 
-  </div>
-
+  </main>
 
   <div
-    class="settings-notification"
-    id="settingsNotification"
-  ></div>
-
-
-  <script src="../script.js"></script>
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+  >
+    Settings saved successfully.
+  </div>
 
   <script>
-    /* =====================================
-       ALAMIN SHOP SETTINGS
-    ====================================== */
+    (() => {
+      "use strict";
 
-    const SETTINGS_KEY = "shopnest_settings";
+      const STORAGE_KEY = "shopnest_settings";
 
-    const defaultSettings = {
+      const defaultSettings = {
+        storeName: "ShopNext",
+        storeEmail: "",
+        storePhone: "",
+        currency: "BDT",
+        storeAddress: "",
+        timezone: "Asia/Dhaka",
+        language: "en",
 
-      storeName: "Alamin Shop",
-      storeEmail: "support@alaminshop.com",
-      storePhone: "01700000000",
-      currency: "BDT",
-      storeAddress: "",
-      timezone: "Asia/Dhaka",
-      language: "en",
+        storeActive: true,
+        allowRegistration: true,
 
-      storeActive: true,
-      allowRegistration: true,
+        guestCheckout: true,
+        requirePhone: true,
+        requireEmail: false,
+        allowOrderNotes: true,
+        defaultOrderStatus: "New",
+        minimumOrder: 0,
 
-      guestCheckout: true,
-      requirePhone: true,
-      requireEmail: false,
-      allowOrderNotes: true,
+        insideDhaka: 60,
+        outsideDhaka: 120,
+        freeDeliveryMinimum: 2000,
+        enableInsideDhaka: true,
+        enableOutsideDhaka: true,
+        enableFreeDelivery: false,
 
-      defaultOrderStatus: "New",
-      minimumOrder: 0,
+        newOrderNotification: true,
+        lowStockNotification: true,
+        messageNotification: true,
+        orderStatusNotification: true,
 
-      insideDhaka: 80,
-      outsideDhaka: 130,
-      freeDeliveryMinimum: 5000,
+        maintenanceMode: false,
+        analyticsEnabled: true,
+        inventoryTracking: true,
 
-      enableInsideDhaka: true,
-      enableOutsideDhaka: true,
-      enableFreeDelivery: true,
+        demoMode: false
+      };
 
-      newOrderNotification: true,
-      lowStockNotification: true,
-      messageNotification: true,
-      orderStatusNotification: true,
+      const demoDataKeys = [
+        "orders",
+        "users",
+        "customers",
+        "coupons",
+        "inventory",
+        "products",
+        "categories",
+        "admin_notifications",
+        "contact_messages",
+        "cart",
+        "wishlist",
+        "pendingVerificationEmail",
+        "verifiedEmail",
+        "passwordReset",
+        "resetIdentifier"
+      ];
 
-      maintenanceMode: false,
-      analyticsEnabled: true,
-      inventoryTracking: true,
+      let settings = loadSettings();
+      let toastTimer = null;
 
-      demoMode: true
-    };
+      /* =========================
+         HELPERS
+      ========================= */
 
-
-    let settings = loadSettings();
-
-
-    function loadSettings() {
-
-      try {
-
-        const saved = JSON.parse(
-          localStorage.getItem(SETTINGS_KEY)
-        );
-
-        return {
-          ...defaultSettings,
-          ...(saved || {})
-        };
-
-      } catch (error) {
-
-        return {
-          ...defaultSettings
-        };
-
+      function getElement(id) {
+        return document.getElementById(id);
       }
 
-    }
-
-
-    function saveSettingsToStorage() {
-
-      localStorage.setItem(
-        SETTINGS_KEY,
-        JSON.stringify(settings)
-      );
-
-    }
-
-
-    function setValue(id, value) {
-
-      const element = document.getElementById(id);
-
-      if (!element) return;
-
-      if (element.type === "checkbox") {
-
-        element.checked = Boolean(value);
-
-      } else {
-
-        element.value = value ?? "";
-
+      function safeStorageGet(key) {
+        try {
+          return localStorage.getItem(key);
+        } catch (error) {
+          console.error("LocalStorage read error:", error);
+          return null;
+        }
       }
 
-    }
-
-
-    function getValue(id) {
-
-      const element = document.getElementById(id);
-
-      if (!element) return "";
-
-      if (element.type === "checkbox") {
-
-        return element.checked;
-
+      function safeStorageSet(key, value) {
+        try {
+          localStorage.setItem(key, value);
+          return true;
+        } catch (error) {
+          console.error("LocalStorage write error:", error);
+          showToast("Could not save settings.");
+          return false;
+        }
       }
 
-      return element.value;
+      function safeStorageRemove(key) {
+        try {
+          localStorage.removeItem(key);
+        } catch (error) {
+          console.error("LocalStorage remove error:", error);
+        }
+      }
 
-    }
+      /* =========================
+         LOAD SETTINGS
+      ========================= */
 
+      function loadSettings() {
+        const raw = safeStorageGet(STORAGE_KEY);
 
-    function loadForm() {
-
-      Object.keys(defaultSettings).forEach(key => {
-
-        setValue(key, settings[key]);
-
-      });
-
-    }
-
-
-    function collectForm() {
-
-      Object.keys(defaultSettings).forEach(key => {
-
-        settings[key] = getValue(key);
-
-      });
-
-      settings.minimumOrder =
-        Number(settings.minimumOrder) || 0;
-
-      settings.insideDhaka =
-        Number(settings.insideDhaka) || 0;
-
-      settings.outsideDhaka =
-        Number(settings.outsideDhaka) || 0;
-
-      settings.freeDeliveryMinimum =
-        Number(settings.freeDeliveryMinimum) || 0;
-
-    }
-
-
-    function showSettingsNotification(message) {
-
-      const box = document.getElementById(
-        "settingsNotification"
-      );
-
-      box.textContent = message;
-
-      box.classList.add("show");
-
-      setTimeout(() => {
-
-        box.classList.remove("show");
-
-      }, 2500);
-
-    }
-
-
-    /* ================================
-       TABS
-    ================================= */
-
-    const tabs =
-      document.querySelectorAll(".settings-tab");
-
-    const sections =
-      document.querySelectorAll(".settings-section");
-
-
-    tabs.forEach(tab => {
-
-      tab.addEventListener("click", () => {
-
-        const target = tab.dataset.target;
-
-        tabs.forEach(item => {
-          item.classList.remove("active");
-        });
-
-        sections.forEach(section => {
-          section.classList.remove("active");
-        });
-
-        tab.classList.add("active");
-
-        const targetSection =
-          document.getElementById(target);
-
-        if (targetSection) {
-          targetSection.classList.add("active");
+        if (!raw) {
+          return {
+            ...defaultSettings
+          };
         }
 
-      });
+        try {
+          const saved = JSON.parse(raw);
 
-    });
+          if (
+            !saved ||
+            typeof saved !== "object" ||
+            Array.isArray(saved)
+          ) {
+            return {
+              ...defaultSettings
+            };
+          }
 
+          return {
+            ...defaultSettings,
+            ...saved
+          };
+        } catch (error) {
+          console.error("Settings JSON error:", error);
 
-    /* ================================
-       SAVE
-    ================================= */
+          return {
+            ...defaultSettings
+          };
+        }
+      }
 
-    document
-      .getElementById("saveSettings")
-      .addEventListener("click", () => {
+      /* =========================
+         SET FORM VALUE
+      ========================= */
 
-        collectForm();
+      function setValue(id, value) {
+        const element = getElement(id);
 
-        saveSettingsToStorage();
+        if (!element) {
+          return;
+        }
 
-        showSettingsNotification(
-          "Settings saved successfully."
+        if (element.type === "checkbox") {
+          element.checked = Boolean(value);
+          return;
+        }
+
+        if (
+          value === null ||
+          value === undefined
+        ) {
+          element.value = "";
+          return;
+        }
+
+        element.value = value;
+      }
+
+      /* =========================
+         GET FORM VALUE
+      ========================= */
+
+      function getValue(id) {
+        const element = getElement(id);
+
+        if (!element) {
+          return null;
+        }
+
+        if (element.type === "checkbox") {
+          return element.checked;
+        }
+
+        if (element.type === "number") {
+          const numberValue = Number(element.value);
+
+          return Number.isFinite(numberValue)
+            ? numberValue
+            : 0;
+        }
+
+        return element.value;
+      }
+
+      /* =========================
+         LOAD FORM
+      ========================= */
+
+      function loadForm() {
+        Object.keys(defaultSettings).forEach(key => {
+          setValue(key, settings[key]);
+        });
+      }
+
+      /* =========================
+         COLLECT FORM
+      ========================= */
+
+      function collectForm() {
+        const updated = {};
+
+        Object.keys(defaultSettings).forEach(key => {
+          updated[key] = getValue(key);
+        });
+
+        return updated;
+      }
+
+      /* =========================
+         SAVE SETTINGS
+      ========================= */
+
+      function saveSettings() {
+        const updatedSettings = collectForm();
+
+        if (
+          !updatedSettings.storeName ||
+          !String(updatedSettings.storeName).trim()
+        ) {
+          showToast("Store name is required.");
+          return;
+        }
+
+        settings = {
+          ...defaultSettings,
+          ...updatedSettings
+        };
+
+        const saved = safeStorageSet(
+          STORAGE_KEY,
+          JSON.stringify(settings)
         );
 
-      });
+        if (saved) {
+          showToast("Settings saved successfully.");
+        }
+      }
 
+      /* =========================
+         RESET SETTINGS
+      ========================= */
 
-    /* ================================
-       RESET FORM
-    ================================= */
-
-    document
-      .getElementById("resetSettings")
-      .addEventListener("click", () => {
-
-        const confirmReset = confirm(
-          "Reset all settings to default values?"
+      function resetSettings() {
+        const confirmed = confirm(
+          "Reset all settings to default?"
         );
 
-        if (!confirmReset) return;
+        if (!confirmed) {
+          return;
+        }
 
         settings = {
           ...defaultSettings
         };
 
-        saveSettingsToStorage();
-
-        loadForm();
-
-        showSettingsNotification(
-          "Settings reset successfully."
+        const saved = safeStorageSet(
+          STORAGE_KEY,
+          JSON.stringify(settings)
         );
 
-      });
+        if (saved) {
+          loadForm();
+          showToast("Settings reset successfully.");
+        }
+      }
 
+      /* =========================
+         CLEAR DEMO DATA
+      ========================= */
 
-    /* ================================
-       CLEAR DEMO DATA
-    ================================= */
-
-    document
-      .getElementById("clearDemoData")
-      .addEventListener("click", () => {
-
+      function clearDemoData() {
         const confirmed = confirm(
-          "Are you sure you want to clear demo data? This cannot be undone."
+          "Are you sure you want to clear demo data?"
         );
 
-        if (!confirmed) return;
+        if (!confirmed) {
+          return;
+        }
 
-        const keysToRemove = [
-
-          "shopnest_orders",
-          "shopnest_users",
-          "shopnest_coupons",
-          "shopnest_inventory",
-          "shopnest_admin_notifications",
-          "shopnest_contact_messages",
-
-          "shopnest_cart",
-          "shopnest_wishlist",
-
-          "shopnest_pending_verification_email",
-          "shopnest_verified_email",
-
-          "shopnest_password_reset",
-          "shopnest_reset_identifier"
-
-        ];
-
-        keysToRemove.forEach(key => {
-
-          localStorage.removeItem(key);
-
+        demoDataKeys.forEach(key => {
+          safeStorageRemove(key);
         });
 
-        showSettingsNotification(
-          "Demo data cleared."
+        showToast("Demo data cleared.");
+      }
+
+      /* =========================
+         TOAST
+      ========================= */
+
+      function showToast(message) {
+        const toast = getElement("toast");
+
+        if (!toast) {
+          return;
+        }
+
+        toast.textContent = message;
+        toast.classList.add("show");
+
+        if (toastTimer) {
+          clearTimeout(toastTimer);
+        }
+
+        toastTimer = setTimeout(() => {
+          toast.classList.remove("show");
+        }, 2500);
+      }
+
+      /* =========================
+         SETTINGS TABS
+      ========================= */
+
+      function setupTabs() {
+        const tabs =
+          document.querySelectorAll(".settings-tab");
+
+        const contents =
+          document.querySelectorAll(".tab-content");
+
+        tabs.forEach(tab => {
+          tab.addEventListener("click", () => {
+            const target = tab.dataset.tab;
+
+            if (!target) {
+              return;
+            }
+
+            tabs.forEach(item => {
+              item.classList.remove("active");
+            });
+
+            contents.forEach(content => {
+              content.classList.remove("active");
+            });
+
+            tab.classList.add("active");
+
+            const targetContent =
+              getElement(target);
+
+            if (targetContent) {
+              targetContent.classList.add("active");
+            }
+          });
+        });
+      }
+
+      /* =========================
+         MOBILE SIDEBAR
+      ========================= */
+
+      function setupMobileMenu() {
+        const mobileMenu =
+          getElement("mobileMenu");
+
+        const sidebar =
+          getElement("sidebar");
+
+        const overlay =
+          getElement("sidebarOverlay");
+
+        if (!mobileMenu || !sidebar) {
+          return;
+        }
+
+        function closeSidebar() {
+          sidebar.classList.remove("open");
+
+          if (overlay) {
+            overlay.classList.remove("show");
+          }
+        }
+
+        mobileMenu.addEventListener("click", () => {
+          sidebar.classList.toggle("open");
+
+          if (overlay) {
+            overlay.classList.toggle(
+              "show",
+              sidebar.classList.contains("open")
+            );
+          }
+        });
+
+        if (overlay) {
+          overlay.addEventListener(
+            "click",
+            closeSidebar
+          );
+        }
+
+        document
+          .querySelectorAll(".nav-link")
+          .forEach(link => {
+            link.addEventListener(
+              "click",
+              closeSidebar
+            );
+          });
+
+        window.addEventListener("resize", () => {
+          if (window.innerWidth > 760) {
+            closeSidebar();
+          }
+        });
+      }
+
+      /* =========================
+         BUTTON EVENTS
+      ========================= */
+
+      function setupButtons() {
+        const saveButton =
+          getElement("saveSettings");
+
+        const resetButton =
+          getElement("resetAll");
+
+        const dangerResetButton =
+          getElement("resetSettings");
+
+        const clearButton =
+          getElement("clearDemoData");
+
+        if (saveButton) {
+          saveButton.addEventListener(
+            "click",
+            saveSettings
+          );
+        }
+
+        if (resetButton) {
+          resetButton.addEventListener(
+            "click",
+            resetSettings
+          );
+        }
+
+        if (dangerResetButton) {
+          dangerResetButton.addEventListener(
+            "click",
+            resetSettings
+          );
+        }
+
+        if (clearButton) {
+          clearButton.addEventListener(
+            "click",
+            clearDemoData
+          );
+        }
+      }
+
+      /* =========================
+         LOGOUT
+      ========================= */
+
+      function setupLogout() {
+        const logoutButton =
+          getElement("logoutBtn");
+
+        if (!logoutButton) {
+          return;
+        }
+
+        logoutButton.addEventListener(
+          "click",
+          event => {
+            event.preventDefault();
+
+            const confirmed = confirm(
+              "Are you sure you want to logout?"
+            );
+
+            if (!confirmed) {
+              return;
+            }
+
+            safeStorageRemove(
+              "adminLoggedIn"
+            );
+
+            window.location.href =
+              "login.html";
+          }
         );
+      }
 
-      });
+      /* =========================
+         INITIALIZE
+      ========================= */
 
+      function init() {
+        loadForm();
+        setupTabs();
+        setupMobileMenu();
+        setupButtons();
+        setupLogout();
+      }
 
-    /* ================================
-       INITIAL LOAD
-    ================================= */
+      if (
+        document.readyState === "loading"
+      ) {
+        document.addEventListener(
+          "DOMContentLoaded",
+          init
+        );
+      } else {
+        init();
+      }
 
-    loadForm();
-
+    })();
   </script>
 
 </body>

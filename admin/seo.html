@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>SEO Settings - Alamin Shop Admin</title>
+  <title>SEO Settings - ShopNext Admin</title>
 
   <link rel="stylesheet" href="../style.css" />
 
@@ -771,7 +771,7 @@
   <aside class="admin-sidebar">
 
     <div class="admin-brand">
-      <h2>Alamin Shop</h2>
+      <h2>ShopNext</h2>
       <span>Admin Dashboard</span>
     </div>
 
@@ -981,7 +981,7 @@
             <div class="card-header">
               <h2>General SEO</h2>
               <p>
-                These settings control how Alamin Shop appears in search engines.
+                These settings control how ShopNext appears in search engines.
               </p>
             </div>
 
@@ -1005,7 +1005,7 @@
                   id="siteTitle"
                   class="form-control"
                   maxlength="70"
-                  placeholder="Alamin Shop - Quality Products at Best Prices"
+                  placeholder="ShopNext - Quality Products at Best Prices"
                 />
 
                 <div class="counter" id="titleCounter">
@@ -1025,7 +1025,7 @@
                   id="siteDescription"
                   class="form-control"
                   maxlength="180"
-                  placeholder="Shop quality products at Alamin Shop. Discover electronics, fashion, home essentials and more."
+                  placeholder="Shop quality products at ShopNext. Discover electronics, fashion, home essentials and more."
                 ></textarea>
 
                 <div class="counter" id="descriptionCounter">
@@ -1122,7 +1122,7 @@
                   id="ogTitle"
                   class="form-control"
                   maxlength="100"
-                  placeholder="Alamin Shop - Online Shopping"
+                  placeholder="ShopNext - Online Shopping"
                 />
 
               </div>
@@ -1138,7 +1138,7 @@
                   id="ogDescription"
                   class="form-control"
                   maxlength="200"
-                  placeholder="Discover quality products and great deals at Alamin Shop."
+                  placeholder="Discover quality products and great deals at ShopNext."
                 ></textarea>
 
               </div>
@@ -1362,11 +1362,11 @@
                   type="text"
                   id="productTitleTemplate"
                   class="form-control"
-                  placeholder="%product% | Alamin Shop"
+                  placeholder="%product% | ShopNext"
                 />
 
                 <div class="form-help">
-                  Example: %product% | Alamin Shop
+                  Example: %product% | ShopNext
                 </div>
 
               </div>
@@ -1382,7 +1382,7 @@
                   type="text"
                   id="categoryTitleTemplate"
                   class="form-control"
-                  placeholder="%category% Products | Alamin Shop"
+                  placeholder="%category% Products | ShopNext"
                 />
 
               </div>
@@ -1397,7 +1397,7 @@
                 <textarea
                   id="productDescriptionTemplate"
                   class="form-control"
-                  placeholder="Buy %product% from Alamin Shop. Check price, availability and details."
+                  placeholder="Buy %product% from ShopNext. Check price, availability and details."
                 ></textarea>
 
               </div>
@@ -1512,14 +1512,14 @@
                   class="google-title"
                   id="previewTitle"
                 >
-                  Alamin Shop - Quality Products at Best Prices
+                  ShopNext - Quality Products at Best Prices
                 </div>
 
                 <div
                   class="google-description"
                   id="previewDescription"
                 >
-                  Shop quality products at Alamin Shop. Discover electronics,
+                  Shop quality products at ShopNext. Discover electronics,
                   fashion, home essentials and more.
                 </div>
 
@@ -1562,14 +1562,14 @@
                     class="social-title"
                     id="socialTitle"
                   >
-                    Alamin Shop - Online Shopping
+                    ShopNext - Online Shopping
                   </div>
 
                   <div
                     class="social-description"
                     id="socialDescription"
                   >
-                    Discover quality products and great deals at Alamin Shop.
+                    Discover quality products and great deals at ShopNext.
                   </div>
 
                 </div>
@@ -1683,7 +1683,7 @@
 <script>
 
   /* =========================================================
-     ALAMIN SHOP - SEO SETTINGS
+     ShopNext - SEO SETTINGS
      LocalStorage Key:
      shopnest_seo_settings
   ========================================================= */
@@ -1694,13 +1694,13 @@
   const defaultSeoSettings = {
 
     siteTitle:
-      "Alamin Shop - Quality Products at Best Prices",
+      "ShopNext - Quality Products at Best Prices",
 
     siteDescription:
-      "Shop quality products at Alamin Shop. Discover electronics, fashion, home essentials and more.",
+      "Shop quality products at ShopNext. Discover electronics, fashion, home essentials and more.",
 
     keywords: [
-      "Alamin Shop",
+      "ShopNext",
       "online shopping",
       "Bangladesh",
       "electronics",
@@ -1715,10 +1715,10 @@
       "https://example.com",
 
     ogTitle:
-      "Alamin Shop - Online Shopping",
+      "ShopNext - Online Shopping",
 
     ogDescription:
-      "Discover quality products and great deals at Alamin Shop.",
+      "Discover quality products and great deals at ShopNext.",
 
     ogImage:
       "",
@@ -1748,13 +1748,13 @@
       "",
 
     productTitleTemplate:
-      "%product% | Alamin Shop",
+      "%product% | ShopNext",
 
     categoryTitleTemplate:
-      "%category% Products | Alamin Shop",
+      "%category% Products | ShopNext",
 
     productDescriptionTemplate:
-      "Buy %product% from Alamin Shop. Check price, availability and details."
+      "Buy %product% from ShopNext. Check price, availability and details."
 
   };
 
@@ -2247,14 +2247,14 @@
       "previewTitle"
     ).textContent =
       seoSettings.siteTitle ||
-      "Alamin Shop";
+      "ShopNext";
 
 
     document.getElementById(
       "previewDescription"
     ).textContent =
       seoSettings.siteDescription ||
-      "Alamin Shop online store.";
+      "ShopNext online store.";
 
 
     document.getElementById(
@@ -2270,7 +2270,7 @@
     ).textContent =
       seoSettings.ogTitle ||
       seoSettings.siteTitle ||
-      "Alamin Shop";
+      "ShopNext";
 
 
     document.getElementById(

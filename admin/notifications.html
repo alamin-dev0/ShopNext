@@ -4,27 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Notifications - Alamin Shop Admin</title>
+    <title>Notifications - ShopNext Admin</title>
 
     <link rel="stylesheet" href="../style.css">
 
     <style>
         :root {
-            --bg: #080a0d;
-            --card: #111419;
-            --card2: #15191f;
-            --border: #252a32;
+            --bg: #0b0d10;
+            --sidebar: #101318;
+            --card: #11151b;
+            --card2: #151a20;
+            --border: #252b34;
+            --muted: #858c98;
             --text: #f5f7fa;
-            --muted: #8f98a7;
-            --blue: #3b82f6;
-            --green: #22c55e;
-            --yellow: #f59e0b;
-            --red: #ef4444;
-            --purple: #8b5cf6;
+            --primary: #7c5cff;
+            --primaryHover: #6d4ff0;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --info: #3b82f6;
         }
 
         * {
             box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -32,6 +38,10 @@
             background: var(--bg);
             color: var(--text);
             font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body.sidebar-open {
+            overflow: hidden;
         }
 
         a {
@@ -42,27 +52,37 @@
         button,
         input,
         select {
-            font-family: inherit;
+            font: inherit;
         }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================== */
 
         .admin-layout {
             min-height: 100vh;
-            display: flex;
         }
 
-        /* SIDEBAR */
+        /* =========================
+           SIDEBAR
+        ========================== */
 
         .admin-sidebar {
             width: 250px;
             min-height: 100vh;
-            background: #0d1014;
+            background: var(--sidebar);
             border-right: 1px solid var(--border);
             position: fixed;
             left: 0;
             top: 0;
             bottom: 0;
             overflow-y: auto;
-            z-index: 100;
+            z-index: 1000;
+            transition: transform .25s ease;
         }
 
         .admin-logo {
@@ -73,17 +93,18 @@
         .admin-logo h2 {
             margin: 0;
             font-size: 21px;
+            font-weight: 700;
         }
 
         .admin-logo span {
             display: block;
-            color: #8d96a5;
+            color: var(--muted);
             font-size: 12px;
             margin-top: 5px;
         }
 
         .admin-nav {
-            padding: 18px 12px;
+            padding: 18px 12px 30px;
         }
 
         .nav-title {
@@ -92,6 +113,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             padding: 10px 12px;
+            margin-top: 4px;
         }
 
         .admin-nav a {
@@ -104,6 +126,7 @@
             font-size: 14px;
             margin-bottom: 4px;
             transition: .2s;
+            border: 1px solid transparent;
         }
 
         .admin-nav a:hover {
@@ -114,15 +137,35 @@
         .admin-nav a.active {
             background: #1b2028;
             color: #fff;
-            border: 1px solid #2c333d;
+            border-color: #2c333d;
         }
 
         .nav-icon {
             width: 22px;
+            min-width: 22px;
             text-align: center;
+            font-size: 15px;
         }
 
-        /* MAIN */
+        /* =========================
+           MOBILE OVERLAY
+        ========================== */
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .55);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        /* =========================
+           MAIN
+        ========================== */
 
         .admin-main {
             width: calc(100% - 250px);
@@ -130,17 +173,30 @@
             min-height: 100vh;
         }
 
+        /* =========================
+           TOPBAR
+        ========================== */
+
         .admin-topbar {
-            height: 72px;
+            min-height: 72px;
             border-bottom: 1px solid var(--border);
-            background: rgba(8, 10, 13, .96);
+            background: rgba(11, 13, 16, .96);
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 20px;
             padding: 0 28px;
             position: sticky;
             top: 0;
-            z-index: 50;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
         }
 
         .topbar-title h1 {
@@ -154,10 +210,26 @@
             font-size: 12px;
         }
 
+        .mobile-menu-btn {
+            display: none;
+            width: 38px;
+            height: 38px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: #fff;
+            border-radius: 8px;
+            font-size: 19px;
+        }
+
         .admin-user {
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .admin-user strong {
+            font-size: 14px;
         }
 
         .admin-avatar {
@@ -172,11 +244,17 @@
             font-weight: bold;
         }
 
+        /* =========================
+           CONTENT
+        ========================== */
+
         .admin-content {
             padding: 28px;
         }
 
-        /* TOP ACTIONS */
+        /* =========================
+           TOOLBAR
+        ========================== */
 
         .notification-toolbar {
             display: flex;
@@ -200,7 +278,6 @@
             border: 1px solid var(--border);
             background: #171b21;
             color: #fff;
-            cursor: pointer;
             transition: .2s;
         }
 
@@ -209,20 +286,29 @@
         }
 
         .admin-btn.primary {
-            background: #fff;
-            color: #000;
-            border-color: #fff;
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        .admin-btn.primary:hover {
+            background: var(--primaryHover);
+            border-color: var(--primaryHover);
         }
 
         .admin-btn.danger {
-            border-color: #4a2225;
+            border-color: rgba(239, 68, 68, .35);
             color: #fca5a5;
+        }
+
+        .admin-btn.danger:hover {
+            background: rgba(239, 68, 68, .10);
         }
 
         .notification-search {
             height: 40px;
-            width: 260px;
-            background: #111419;
+            width: 280px;
+            background: var(--card);
             border: 1px solid var(--border);
             color: #fff;
             border-radius: 8px;
@@ -230,15 +316,21 @@
             outline: none;
         }
 
-        .notification-search:focus {
-            border-color: #4b5563;
+        .notification-search::placeholder {
+            color: #687281;
         }
 
-        /* STATS */
+        .notification-search:focus {
+            border-color: var(--primary);
+        }
+
+        /* =========================
+           STATS
+        ========================== */
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 16px;
             margin-bottom: 22px;
         }
@@ -267,7 +359,9 @@
             font-size: 11px;
         }
 
-        /* FILTER */
+        /* =========================
+           FILTER
+        ========================== */
 
         .filter-card {
             background: var(--card);
@@ -291,15 +385,23 @@
             padding: 9px 14px;
             cursor: pointer;
             font-size: 13px;
+            transition: .2s;
+        }
+
+        .filter-btn:hover {
+            color: #fff;
+            background: #171b21;
         }
 
         .filter-btn.active {
-            background: #fff;
-            color: #000;
-            border-color: #fff;
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
         }
 
-        /* NOTIFICATION LIST */
+        /* =========================
+           NOTIFICATION CARD
+        ========================== */
 
         .notifications-card {
             background: var(--card);
@@ -309,11 +411,13 @@
         }
 
         .notifications-header {
+            min-height: 62px;
             padding: 18px 20px;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
         }
 
         .notifications-header h3 {
@@ -360,7 +464,7 @@
             position: absolute;
             left: 0;
             top: 0;
-            background: var(--blue);
+            background: var(--primary);
         }
 
         .notification-icon {
@@ -400,12 +504,14 @@
             font-size: 14px;
             font-weight: 600;
             margin-bottom: 5px;
+            word-break: break-word;
         }
 
         .notification-text {
             color: #9099a7;
             font-size: 13px;
             line-height: 1.6;
+            word-break: break-word;
         }
 
         .notification-time {
@@ -418,6 +524,7 @@
             display: flex;
             align-items: center;
             gap: 7px;
+            flex-shrink: 0;
         }
 
         .icon-btn {
@@ -428,6 +535,7 @@
             color: #aeb6c3;
             border-radius: 7px;
             cursor: pointer;
+            transition: .2s;
         }
 
         .icon-btn:hover {
@@ -435,15 +543,24 @@
             background: #20252c;
         }
 
+        .icon-btn.delete:hover {
+            color: #fca5a5;
+            border-color: rgba(239, 68, 68, .35);
+            background: rgba(239, 68, 68, .08);
+        }
+
         .unread-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: var(--blue);
+            background: var(--primary);
             margin-top: 7px;
+            flex-shrink: 0;
         }
 
-        /* EMPTY */
+        /* =========================
+           EMPTY
+        ========================== */
 
         .empty-state {
             text-align: center;
@@ -467,50 +584,47 @@
             font-size: 13px;
         }
 
-        /* RESPONSIVE */
+        /* =========================
+           RESPONSIVE
+        ========================== */
 
         @media (max-width: 1100px) {
             .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
 
-        @media (max-width: 800px) {
+        @media (max-width: 900px) {
             .admin-sidebar {
-                width: 210px;
+                width: 220px;
             }
 
             .admin-main {
-                width: calc(100% - 210px);
-                margin-left: 210px;
+                width: calc(100% - 220px);
+                margin-left: 220px;
             }
 
             .admin-content {
-                padding: 18px;
+                padding: 22px;
             }
 
             .admin-topbar {
-                padding: 0 18px;
+                padding: 0 22px;
             }
 
             .notification-search {
-                width: 100%;
+                width: 240px;
             }
         }
 
-        @media (max-width: 650px) {
-            .admin-layout {
-                display: block;
-            }
-
+        @media (max-width: 760px) {
             .admin-sidebar {
-                position: static;
-                width: 100%;
-                min-height: auto;
+                transform: translateX(-100%);
+                width: 250px;
             }
 
-            .admin-sidebar .admin-nav {
-                display: none;
+            .admin-sidebar.open {
+                transform: translateX(0);
             }
 
             .admin-main {
@@ -518,10 +632,24 @@
                 margin-left: 0;
             }
 
-            .admin-topbar {
-                position: static;
+            .mobile-menu-btn {
+                display: block;
             }
 
+            .admin-topbar {
+                padding: 0 18px;
+            }
+
+            .admin-content {
+                padding: 18px;
+            }
+
+            .notification-search {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 600px) {
             .stats-grid {
                 grid-template-columns: 1fr;
             }
@@ -540,10 +668,73 @@
 
             .notification-item {
                 padding: 15px;
+                gap: 10px;
             }
 
             .notification-actions {
                 flex-direction: column;
+            }
+
+            .unread-dot {
+                display: none;
+            }
+
+            .notifications-header {
+                padding: 15px;
+            }
+
+            .admin-user strong {
+                display: none;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .admin-topbar {
+                min-height: 64px;
+            }
+
+            .topbar-title h1 {
+                font-size: 18px;
+            }
+
+            .topbar-title p {
+                display: none;
+            }
+
+            .admin-content {
+                padding: 14px;
+            }
+
+            .toolbar-left {
+                flex-direction: column;
+            }
+
+            .toolbar-left .admin-btn {
+                width: 100%;
+            }
+
+            .filter-row {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .filter-btn {
+                width: 100%;
+            }
+
+            .notification-item {
+                flex-wrap: wrap;
+            }
+
+            .notification-content {
+                width: calc(100% - 52px);
+            }
+
+            .notification-actions {
+                width: 100%;
+                flex-direction: row;
+                justify-content: flex-end;
+                padding-top: 5px;
             }
         }
     </style>
@@ -553,12 +744,14 @@
 
 <div class="admin-layout">
 
-    <!-- SIDEBAR -->
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
 
-    <aside class="admin-sidebar">
+    <aside class="admin-sidebar" id="adminSidebar">
 
         <div class="admin-logo">
-            <h2>Alamin Shop</h2>
+            <h2>ShopNext</h2>
             <span>Admin Dashboard</span>
         </div>
 
@@ -596,6 +789,7 @@
                 Customers
             </a>
 
+
             <div class="nav-title">Marketing</div>
 
             <a href="coupons.html">
@@ -608,10 +802,24 @@
                 Reports
             </a>
 
+
+            <div class="nav-title">Communication</div>
+
             <a href="notifications.html" class="active">
                 <span class="nav-icon">🔔</span>
                 Notifications
             </a>
+
+            <a href="email-templates.html">
+                <span class="nav-icon">✉</span>
+                Email Templates
+            </a>
+
+            <a href="sms-templates.html">
+                <span class="nav-icon">💬</span>
+                SMS Templates
+            </a>
+
 
             <div class="nav-title">Store</div>
 
@@ -635,16 +843,43 @@
     </aside>
 
 
-    <!-- MAIN -->
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
 
     <main class="admin-main">
 
         <header class="admin-topbar">
 
-            <div class="topbar-title">
-                <h1>Notifications</h1>
-                <p>Stay updated with your store activity</p>
+            <div class="topbar-left">
+
+                <button
+                    class="mobile-menu-btn"
+                    id="mobileMenuBtn"
+                    type="button"
+                    aria-label="Open menu"
+                >
+                    ☰
+                </button>
+
+                <div class="topbar-title">
+
+                    <h1>Notifications</h1>
+
+                    <p>
+                        Stay updated with your store activity
+                    </p>
+
+                </div>
+
             </div>
+
 
             <div class="admin-user">
 
@@ -661,7 +896,9 @@
 
         <section class="admin-content">
 
-            <!-- ACTIONS -->
+            <!-- =========================
+                 ACTIONS
+            ========================== -->
 
             <div class="notification-toolbar">
 
@@ -670,6 +907,7 @@
                     <button
                         class="admin-btn primary"
                         id="markAllRead"
+                        type="button"
                     >
                         Mark All Read
                     </button>
@@ -677,23 +915,28 @@
                     <button
                         class="admin-btn danger"
                         id="clearAll"
+                        type="button"
                     >
                         Clear All
                     </button>
 
                 </div>
 
+
                 <input
                     type="search"
                     id="notificationSearch"
                     class="notification-search"
                     placeholder="Search notifications..."
+                    autocomplete="off"
                 >
 
             </div>
 
 
-            <!-- STATS -->
+            <!-- =========================
+                 STATS
+            ========================== -->
 
             <div class="stats-grid">
 
@@ -779,7 +1022,9 @@
             </div>
 
 
-            <!-- FILTER -->
+            <!-- =========================
+                 FILTER
+            ========================== -->
 
             <div class="filter-card">
 
@@ -788,6 +1033,7 @@
                     <button
                         class="filter-btn active"
                         data-filter="all"
+                        type="button"
                     >
                         All
                     </button>
@@ -795,6 +1041,7 @@
                     <button
                         class="filter-btn"
                         data-filter="unread"
+                        type="button"
                     >
                         Unread
                     </button>
@@ -802,6 +1049,7 @@
                     <button
                         class="filter-btn"
                         data-filter="order"
+                        type="button"
                     >
                         Orders
                     </button>
@@ -809,6 +1057,7 @@
                     <button
                         class="filter-btn"
                         data-filter="stock"
+                        type="button"
                     >
                         Stock
                     </button>
@@ -816,6 +1065,7 @@
                     <button
                         class="filter-btn"
                         data-filter="message"
+                        type="button"
                     >
                         Messages
                     </button>
@@ -823,6 +1073,7 @@
                     <button
                         class="filter-btn"
                         data-filter="system"
+                        type="button"
                     >
                         System
                     </button>
@@ -832,7 +1083,9 @@
             </div>
 
 
-            <!-- LIST -->
+            <!-- =========================
+                 NOTIFICATIONS
+            ========================== -->
 
             <div class="notifications-card">
 
@@ -847,6 +1100,7 @@
                     </span>
 
                 </div>
+
 
                 <div
                     class="notification-list"
@@ -867,8 +1121,24 @@
 <script>
 
     /* =========================================
-       ALAMIN SHOP NOTIFICATIONS
+       SHOPNEXT NOTIFICATIONS
     ========================================== */
+
+    const STORAGE_KEY =
+        "shopnest_admin_notifications";
+
+    const ORDERS_KEY =
+        "shopnest_orders";
+
+    const PRODUCTS_KEY =
+        "shopnest_products";
+
+    const INVENTORY_KEY =
+        "shopnest_inventory";
+
+    const MESSAGES_KEY =
+        "shopnest_contact_messages";
+
 
     let notifications = [];
 
@@ -895,11 +1165,24 @@
 
         try {
 
-            return JSON.parse(
-                localStorage.getItem(key) || JSON.stringify(fallback)
-            );
+            const raw =
+                localStorage.getItem(key);
+
+            if (!raw) {
+                return fallback;
+            }
+
+            const parsed =
+                JSON.parse(raw);
+
+            return parsed ?? fallback;
 
         } catch (error) {
+
+            console.warn(
+                `Unable to read localStorage key: ${key}`,
+                error
+            );
 
             return fallback;
 
@@ -911,26 +1194,81 @@
     function saveNotifications() {
 
         localStorage.setItem(
-            "shopnest_admin_notifications",
+            STORAGE_KEY,
             JSON.stringify(notifications)
         );
 
     }
 
 
+    function normalizeNotification(notification) {
+
+        return {
+
+            id:
+                String(
+                    notification?.id ||
+                    `notification-${Date.now()}-${Math.random()
+                        .toString(36)
+                        .slice(2, 8)}`
+                ),
+
+            type:
+                ["order", "stock", "message", "system"]
+                    .includes(notification?.type)
+                    ? notification.type
+                    : "system",
+
+            title:
+                String(
+                    notification?.title ||
+                    "Notification"
+                ),
+
+            text:
+                String(
+                    notification?.text ||
+                    ""
+                ),
+
+            createdAt:
+                notification?.createdAt ||
+                new Date().toISOString(),
+
+            read:
+                Boolean(notification?.read),
+
+            link:
+                notification?.link
+                    ? String(notification.link)
+                    : ""
+
+        };
+
+    }
+
+
     function formatTime(dateValue) {
 
-        const date = new Date(dateValue);
+        const date =
+            new Date(dateValue);
 
         if (Number.isNaN(date.getTime())) {
             return "Unknown time";
         }
 
 
-        const now = new Date();
+        const now =
+            new Date();
 
         const difference =
-            now.getTime() - date.getTime();
+            now.getTime() -
+            date.getTime();
+
+
+        if (difference < 0) {
+            return "Just now";
+        }
 
 
         const minutes =
@@ -945,7 +1283,11 @@
 
 
         if (minutes < 60) {
-            return `${minutes} minute(s) ago`;
+
+            return `${minutes} minute${
+                minutes === 1 ? "" : "s"
+            } ago`;
+
         }
 
 
@@ -954,7 +1296,11 @@
 
 
         if (hours < 24) {
-            return `${hours} hour(s) ago`;
+
+            return `${hours} hour${
+                hours === 1 ? "" : "s"
+            } ago`;
+
         }
 
 
@@ -963,7 +1309,11 @@
 
 
         if (days < 7) {
-            return `${days} day(s) ago`;
+
+            return `${days} day${
+                days === 1 ? "" : "s"
+            } ago`;
+
         }
 
 
@@ -980,6 +1330,24 @@
 
 
     /* =========================================
+       CREATE ID
+    ========================================== */
+
+    function createId(prefix, value) {
+
+        const safeValue =
+            String(value || "")
+                .replace(
+                    /[^a-zA-Z0-9_-]/g,
+                    "-"
+                );
+
+        return `${prefix}-${safeValue}`;
+
+    }
+
+
+    /* =========================================
        GENERATE NOTIFICATIONS
     ========================================== */
 
@@ -987,19 +1355,22 @@
 
         const stored =
             readJSON(
-                "shopnest_admin_notifications",
+                STORAGE_KEY,
                 null
             );
 
 
         /*
-         * If notifications already exist,
-         * use them.
+         * Existing notification storage is respected.
+         * This means Clear All stays cleared after reload.
          */
 
         if (Array.isArray(stored)) {
 
-            notifications = stored;
+            notifications =
+                stored.map(
+                    normalizeNotification
+                );
 
             return;
 
@@ -1009,131 +1380,219 @@
         const generated = [];
 
 
-        /* ORDERS */
+        /* =====================================
+           ORDERS
+        ====================================== */
 
         const orders =
             readJSON(
-                "shopnest_orders",
+                ORDERS_KEY,
                 []
             );
 
 
-        orders.forEach(order => {
+        if (Array.isArray(orders)) {
 
-            const customer =
-                order.customer?.name ||
-                order.customerName ||
-                order.name ||
-                "Customer";
+            orders.forEach(
+                (order, index) => {
 
-
-            const status =
-                order.status ||
-                "New";
+                    if (!order) {
+                        return;
+                    }
 
 
-            generated.push({
-
-                id:
-                    "order-" +
-                    (order.id || Date.now()),
-
-                type: "order",
-
-                title:
-                    `Order ${order.id || ""} ${status}`,
-
-                text:
-                    `${customer} placed an order. Order status is ${status}.`,
-
-                createdAt:
-                    order.createdAt ||
-                    new Date().toISOString(),
-
-                read:
-                    false,
-
-                link:
-                    `../order-details.html?id=${encodeURIComponent(
-                        order.id || ""
-                    )}`
-
-            });
-
-        });
+                    const orderId =
+                        order.id ||
+                        order.orderId ||
+                        `ORDER-${index + 1}`;
 
 
-        /* CONTACT MESSAGES */
-
-        const messages =
-            readJSON(
-                "shopnest_contact_messages",
-                []
-            );
+                    const customer =
+                        order.customer?.name ||
+                        order.customerName ||
+                        order.name ||
+                        "Customer";
 
 
-        messages.forEach(message => {
+                    const status =
+                        order.status ||
+                        "New";
 
-            generated.push({
-
-                id:
-                    "message-" +
-                    (message.id || Date.now()),
-
-                type: "message",
-
-                title:
-                    "New customer message",
-
-                text:
-                    `${message.name || "Customer"} sent a message: ${
-                        message.subject || "General enquiry"
-                    }`,
-
-                createdAt:
-                    message.createdAt ||
-                    new Date().toISOString(),
-
-                read:
-                    message.status === "Read",
-
-                link:
-                    "../contact.html"
-
-            });
-
-        });
-
-
-        /* INVENTORY */
-
-        const inventory =
-            readJSON(
-                "shopnest_inventory",
-                {}
-            );
-
-
-        if (
-            typeof products !== "undefined" &&
-            Array.isArray(products)
-        ) {
-
-            products.forEach(product => {
-
-                const stock =
-                    inventory[product.id] !== undefined
-                        ? Number(inventory[product.id])
-                        : Number(product.stock || 0);
-
-
-                if (stock === 0) {
 
                     generated.push({
 
                         id:
-                            "out-stock-" +
-                            product.id,
+                            createId(
+                                "order",
+                                orderId
+                            ),
+
+                        type: "order",
+
+                        title:
+                            `Order ${orderId} ${status}`,
+
+                        text:
+                            `${customer} placed an order. Order status is ${status}.`,
+
+                        createdAt:
+                            order.createdAt ||
+                            order.date ||
+                            new Date().toISOString(),
+
+                        read: false,
+
+                        link:
+                            `order-details.html?id=${encodeURIComponent(
+                                orderId
+                            )}`
+
+                    });
+
+                }
+            );
+
+        }
+
+
+        /* =====================================
+           CONTACT MESSAGES
+        ====================================== */
+
+        const messages =
+            readJSON(
+                MESSAGES_KEY,
+                []
+            );
+
+
+        if (Array.isArray(messages)) {
+
+            messages.forEach(
+                (message, index) => {
+
+                    if (!message) {
+                        return;
+                    }
+
+
+                    const messageId =
+                        message.id ||
+                        `message-${index + 1}`;
+
+
+                    generated.push({
+
+                        id:
+                            createId(
+                                "message",
+                                messageId
+                            ),
+
+                        type: "message",
+
+                        title:
+                            "New customer message",
+
+                        text:
+                            `${message.name || "Customer"} sent a message: ${
+                                message.subject ||
+                                "General enquiry"
+                            }`,
+
+                        createdAt:
+                            message.createdAt ||
+                            message.date ||
+                            new Date().toISOString(),
+
+                        read:
+                            String(
+                                message.status || ""
+                            ).toLowerCase() === "read",
+
+                        link:
+                            "../contact.html"
+
+                    });
+
+                }
+            );
+
+        }
+
+
+        /* =====================================
+           PRODUCTS + INVENTORY
+        ====================================== */
+
+        const products =
+            readJSON(
+                PRODUCTS_KEY,
+                []
+            );
+
+
+        const inventory =
+            readJSON(
+                INVENTORY_KEY,
+                {}
+            );
+
+
+        if (Array.isArray(products)) {
+
+            products.forEach(product => {
+
+                if (!product) {
+                    return;
+                }
+
+
+                const productId =
+                    product.id ||
+                    product.productId ||
+                    product.sku ||
+                    product.name;
+
+
+                let stock;
+
+
+                if (
+                    inventory &&
+                    typeof inventory === "object" &&
+                    inventory[productId] !== undefined
+                ) {
+
+                    stock =
+                        Number(
+                            inventory[productId]
+                        );
+
+                } else {
+
+                    stock =
+                        Number(
+                            product.stock ?? 0
+                        );
+
+                }
+
+
+                if (!Number.isFinite(stock)) {
+                    stock = 0;
+                }
+
+
+                if (stock <= 0) {
+
+                    generated.push({
+
+                        id:
+                            createId(
+                                "out-stock",
+                                productId
+                            ),
 
                         type: "stock",
 
@@ -1141,9 +1600,10 @@
                             "Product is out of stock",
 
                         text:
-                            `${product.name} currently has 0 items in stock.`,
+                            `${product.name || "Product"} currently has 0 items in stock.`,
 
                         createdAt:
+                            product.updatedAt ||
                             new Date().toISOString(),
 
                         read: false,
@@ -1158,8 +1618,10 @@
                     generated.push({
 
                         id:
-                            "low-stock-" +
-                            product.id,
+                            createId(
+                                "low-stock",
+                                productId
+                            ),
 
                         type: "stock",
 
@@ -1167,9 +1629,12 @@
                             "Low stock alert",
 
                         text:
-                            `${product.name} has only ${stock} item(s) left.`,
+                            `${product.name || "Product"} has only ${stock} item${
+                                stock === 1 ? "" : "s"
+                            } left.`,
 
                         createdAt:
+                            product.updatedAt ||
                             new Date().toISOString(),
 
                         read: false,
@@ -1186,15 +1651,20 @@
         }
 
 
-        /* SYSTEM */
+        /* =====================================
+           SYSTEM
+        ====================================== */
 
         generated.push({
 
-            id: "system-welcome",
+            id:
+                "system-notification-center",
 
-            type: "system",
+            type:
+                "system",
 
-            title: "Admin notification center is ready",
+            title:
+                "Admin notification center is ready",
 
             text:
                 "Your store notifications will appear here automatically.",
@@ -1202,7 +1672,8 @@
             createdAt:
                 new Date().toISOString(),
 
-            read: true,
+            read:
+                true,
 
             link:
                 "index.html"
@@ -1211,11 +1682,13 @@
 
 
         notifications =
-            generated.sort(
-                (a, b) =>
-                    new Date(b.createdAt) -
-                    new Date(a.createdAt)
-            );
+            generated
+                .map(normalizeNotification)
+                .sort(
+                    (a, b) =>
+                        new Date(b.createdAt) -
+                        new Date(a.createdAt)
+                );
 
 
         saveNotifications();
@@ -1229,55 +1702,63 @@
 
     function getVisibleNotifications() {
 
-        const search =
+        const searchInput =
             document.getElementById(
                 "notificationSearch"
-            ).value
-                .trim()
-                .toLowerCase();
+            );
 
 
-        return notifications.filter(notification => {
-
-            if (
-                activeFilter === "unread" &&
-                notification.read
-            ) {
-                return false;
-            }
+        const search =
+            searchInput
+                ? searchInput.value
+                    .trim()
+                    .toLowerCase()
+                : "";
 
 
-            if (
-                activeFilter !== "all" &&
-                activeFilter !== "unread" &&
-                notification.type !== activeFilter
-            ) {
-                return false;
-            }
-
-
-            if (search) {
-
-                const searchable =
-                    (
-                        notification.title +
-                        " " +
-                        notification.text
-                    ).toLowerCase();
-
+        return notifications.filter(
+            notification => {
 
                 if (
-                    !searchable.includes(search)
+                    activeFilter === "unread" &&
+                    notification.read
                 ) {
                     return false;
                 }
 
+
+                if (
+                    activeFilter !== "all" &&
+                    activeFilter !== "unread" &&
+                    notification.type !== activeFilter
+                ) {
+                    return false;
+                }
+
+
+                if (search) {
+
+                    const searchable =
+                        (
+                            notification.title +
+                            " " +
+                            notification.text
+                        ).toLowerCase();
+
+
+                    if (
+                        !searchable.includes(search)
+                    ) {
+                        return false;
+                    }
+
+                }
+
+
+                return true;
+
             }
-
-
-            return true;
-
-        });
+        );
 
     }
 
@@ -1288,19 +1769,20 @@
 
     function getIcon(type) {
 
-        if (type === "order") {
-            return "🛒";
-        }
+        const icons = {
 
-        if (type === "stock") {
-            return "📦";
-        }
+            order: "🛒",
 
-        if (type === "message") {
-            return "💬";
-        }
+            stock: "📦",
 
-        return "⚙";
+            message: "💬",
+
+            system: "⚙"
+
+        };
+
+
+        return icons[type] || "🔔";
 
     }
 
@@ -1317,14 +1799,29 @@
             );
 
 
+        if (!list) {
+            return;
+        }
+
+
         const visible =
             getVisibleNotifications();
 
 
-        document.getElementById(
-            "notificationCount"
-        ).textContent =
-            `${visible.length} notification(s)`;
+        const countElement =
+            document.getElementById(
+                "notificationCount"
+            );
+
+
+        if (countElement) {
+
+            countElement.textContent =
+                `${visible.length} notification${
+                    visible.length === 1 ? "" : "s"
+                }`;
+
+        }
 
 
         if (!visible.length) {
@@ -1355,116 +1852,134 @@
 
 
         list.innerHTML =
-            visible.map(notification => {
+            visible.map(
+                notification => {
 
-                return `
+                    const readClass =
+                        notification.read
+                            ? ""
+                            : "unread";
 
-                    <div
-                        class="notification-item ${
-                            notification.read
-                                ? ""
-                                : "unread"
-                        }"
-                    >
+
+                    const openButton =
+                        notification.link
+                            ? `
+                                <button
+                                    class="icon-btn"
+                                    type="button"
+                                    title="Open"
+                                    data-action="open"
+                                    data-id="${escapeHtml(
+                                        notification.id
+                                    )}"
+                                >
+                                    ↗
+                                </button>
+                            `
+                            : "";
+
+
+                    const readButton =
+                        notification.read
+                            ? "○"
+                            : "✓";
+
+
+                    const readTitle =
+                        notification.read
+                            ? "Mark unread"
+                            : "Mark read";
+
+
+                    const unreadDot =
+                        notification.read
+                            ? ""
+                            : `<div class="unread-dot"></div>`;
+
+
+                    return `
 
                         <div
-                            class="notification-icon ${
-                                escapeHtml(
-                                    notification.type
-                                )
-                            }"
+                            class="notification-item ${readClass}"
                         >
-                            ${getIcon(
-                                notification.type
-                            )}
-                        </div>
 
-
-                        <div class="notification-content">
-
-                            <div class="notification-title">
-                                ${escapeHtml(
-                                    notification.title
-                                )}
-                            </div>
-
-                            <div class="notification-text">
-                                ${escapeHtml(
-                                    notification.text
-                                )}
-                            </div>
-
-                            <div class="notification-time">
-                                ${formatTime(
-                                    notification.createdAt
-                                )}
-                            </div>
-
-                        </div>
-
-
-                        ${
-                            notification.read
-                                ? ""
-                                : `<div class="unread-dot"></div>`
-                        }
-
-
-                        <div class="notification-actions">
-
-                            ${
-                                notification.link
-                                    ? `
-                                        <button
-                                            class="icon-btn"
-                                            title="Open"
-                                            onclick="openNotification('${escapeHtml(
-                                                notification.id
-                                            )}')"
-                                        >
-                                            ↗
-                                        </button>
-                                    `
-                                    : ""
-                            }
-
-
-                            <button
-                                class="icon-btn"
-                                title="${
-                                    notification.read
-                                        ? "Mark unread"
-                                        : "Mark read"
-                                }"
-                                onclick="toggleRead('${escapeHtml(
-                                    notification.id
-                                )}')"
+                            <div
+                                class="notification-icon ${escapeHtml(
+                                    notification.type
+                                )}"
                             >
-                                ${
-                                    notification.read
-                                        ? "○"
-                                        : "✓"
-                                }
-                            </button>
+                                ${getIcon(
+                                    notification.type
+                                )}
+                            </div>
 
 
-                            <button
-                                class="icon-btn"
-                                title="Delete"
-                                onclick="deleteNotification('${escapeHtml(
-                                    notification.id
-                                )}')"
-                            >
-                                ×
-                            </button>
+                            <div class="notification-content">
+
+                                <div class="notification-title">
+                                    ${escapeHtml(
+                                        notification.title
+                                    )}
+                                </div>
+
+                                <div class="notification-text">
+                                    ${escapeHtml(
+                                        notification.text
+                                    )}
+                                </div>
+
+                                <div class="notification-time">
+                                    ${escapeHtml(
+                                        formatTime(
+                                            notification.createdAt
+                                        )
+                                    )}
+                                </div>
+
+                            </div>
+
+
+                            ${unreadDot}
+
+
+                            <div class="notification-actions">
+
+                                ${openButton}
+
+
+                                <button
+                                    class="icon-btn"
+                                    type="button"
+                                    title="${readTitle}"
+                                    data-action="toggle"
+                                    data-id="${escapeHtml(
+                                        notification.id
+                                    )}"
+                                >
+                                    ${readButton}
+                                </button>
+
+
+                                <button
+                                    class="icon-btn delete"
+                                    type="button"
+                                    title="Delete"
+                                    data-action="delete"
+                                    data-id="${escapeHtml(
+                                        notification.id
+                                    )}"
+                                >
+                                    ×
+                                </button>
+
+                            </div>
 
                         </div>
 
-                    </div>
+                    `;
 
-                `;
-
-            }).join("");
+                }
+            ).join("");
 
     }
 
@@ -1501,30 +2016,54 @@
             ).length;
 
 
-        document.getElementById(
-            "totalNotifications"
-        ).textContent = total;
+        const totalElement =
+            document.getElementById(
+                "totalNotifications"
+            );
 
 
-        document.getElementById(
-            "unreadNotifications"
-        ).textContent = unread;
+        const unreadElement =
+            document.getElementById(
+                "unreadNotifications"
+            );
 
 
-        document.getElementById(
-            "orderNotifications"
-        ).textContent = orders;
+        const ordersElement =
+            document.getElementById(
+                "orderNotifications"
+            );
 
 
-        document.getElementById(
-            "alertNotifications"
-        ).textContent = alerts;
+        const alertsElement =
+            document.getElementById(
+                "alertNotifications"
+            );
+
+
+        if (totalElement) {
+            totalElement.textContent = total;
+        }
+
+
+        if (unreadElement) {
+            unreadElement.textContent = unread;
+        }
+
+
+        if (ordersElement) {
+            ordersElement.textContent = orders;
+        }
+
+
+        if (alertsElement) {
+            alertsElement.textContent = alerts;
+        }
 
     }
 
 
     /* =========================================
-       MARK READ
+       TOGGLE READ
     ========================================== */
 
     function toggleRead(id) {
@@ -1532,7 +2071,7 @@
         const notification =
             notifications.find(
                 item =>
-                    item.id === id
+                    String(item.id) === String(id)
             );
 
 
@@ -1554,11 +2093,17 @@
     }
 
 
+    /* =========================================
+       MARK ALL READ
+    ========================================== */
+
     function markAllRead() {
 
         notifications.forEach(
             notification => {
+
                 notification.read = true;
+
             }
         );
 
@@ -1578,10 +2123,24 @@
 
     function deleteNotification(id) {
 
+        const exists =
+            notifications.some(
+                notification =>
+                    String(notification.id) ===
+                    String(id)
+            );
+
+
+        if (!exists) {
+            return;
+        }
+
+
         notifications =
             notifications.filter(
                 notification =>
-                    notification.id !== id
+                    String(notification.id) !==
+                    String(id)
             );
 
 
@@ -1595,7 +2154,7 @@
 
 
     /* =========================================
-       CLEAR
+       CLEAR ALL
     ========================================== */
 
     function clearAll() {
@@ -1606,7 +2165,7 @@
 
 
         const confirmed =
-            confirm(
+            window.confirm(
                 "Are you sure you want to clear all notifications?"
             );
 
@@ -1618,6 +2177,7 @@
 
         notifications = [];
 
+
         saveNotifications();
 
         renderStats();
@@ -1628,7 +2188,7 @@
 
 
     /* =========================================
-       OPEN
+       OPEN NOTIFICATION
     ========================================== */
 
     function openNotification(id) {
@@ -1636,7 +2196,8 @@
         const notification =
             notifications.find(
                 item =>
-                    item.id === id
+                    String(item.id) ===
+                    String(id)
             );
 
 
@@ -1668,6 +2229,67 @@
 
 
     /* =========================================
+       EVENT DELEGATION
+    ========================================== */
+
+    const notificationList =
+        document.getElementById(
+            "notificationList"
+        );
+
+
+    if (notificationList) {
+
+        notificationList.addEventListener(
+            "click",
+            function (event) {
+
+                const button =
+                    event.target.closest(
+                        "[data-action]"
+                    );
+
+
+                if (!button) {
+                    return;
+                }
+
+
+                const action =
+                    button.dataset.action;
+
+
+                const id =
+                    button.dataset.id;
+
+
+                if (action === "open") {
+
+                    openNotification(id);
+
+                }
+
+
+                if (action === "toggle") {
+
+                    toggleRead(id);
+
+                }
+
+
+                if (action === "delete") {
+
+                    deleteNotification(id);
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
        FILTER BUTTONS
     ========================================== */
 
@@ -1690,7 +2312,9 @@
                 });
 
 
-                this.classList.add("active");
+                this.classList.add(
+                    "active"
+                );
 
 
                 activeFilter =
@@ -1709,50 +2333,198 @@
        SEARCH
     ========================================== */
 
-    document.getElementById(
-        "notificationSearch"
-    ).addEventListener(
-        "input",
-        renderNotifications
-    );
+    const searchInput =
+        document.getElementById(
+            "notificationSearch"
+        );
+
+
+    if (searchInput) {
+
+        searchInput.addEventListener(
+            "input",
+            renderNotifications
+        );
+
+    }
 
 
     /* =========================================
        ACTION BUTTONS
     ========================================== */
 
-    document.getElementById(
-        "markAllRead"
-    ).addEventListener(
-        "click",
-        markAllRead
-    );
+    const markAllButton =
+        document.getElementById(
+            "markAllRead"
+        );
 
 
-    document.getElementById(
-        "clearAll"
-    ).addEventListener(
-        "click",
-        clearAll
-    );
+    if (markAllButton) {
+
+        markAllButton.addEventListener(
+            "click",
+            markAllRead
+        );
+
+    }
+
+
+    const clearAllButton =
+        document.getElementById(
+            "clearAll"
+        );
+
+
+    if (clearAllButton) {
+
+        clearAllButton.addEventListener(
+            "click",
+            clearAll
+        );
+
+    }
+
+
+    /* =========================================
+       MOBILE SIDEBAR
+    ========================================== */
+
+    const sidebar =
+        document.getElementById(
+            "adminSidebar"
+        );
+
+
+    const mobileMenuButton =
+        document.getElementById(
+            "mobileMenuBtn"
+        );
+
+
+    const sidebarOverlay =
+        document.getElementById(
+            "sidebarOverlay"
+        );
+
+
+    function openSidebar() {
+
+        if (!sidebar) {
+            return;
+        }
+
+
+        sidebar.classList.add(
+            "open"
+        );
+
+
+        if (sidebarOverlay) {
+
+            sidebarOverlay.classList.add(
+                "show"
+            );
+
+        }
+
+
+        document.body.classList.add(
+            "sidebar-open"
+        );
+
+    }
+
+
+    function closeSidebar() {
+
+        if (!sidebar) {
+            return;
+        }
+
+
+        sidebar.classList.remove(
+            "open"
+        );
+
+
+        if (sidebarOverlay) {
+
+            sidebarOverlay.classList.remove(
+                "show"
+            );
+
+        }
+
+
+        document.body.classList.remove(
+            "sidebar-open"
+        );
+
+    }
+
+
+    if (mobileMenuButton) {
+
+        mobileMenuButton.addEventListener(
+            "click",
+            openSidebar
+        );
+
+    }
+
+
+    if (sidebarOverlay) {
+
+        sidebarOverlay.addEventListener(
+            "click",
+            closeSidebar
+        );
+
+    }
+
+
+    document.querySelectorAll(
+        ".admin-sidebar a"
+    ).forEach(link => {
+
+        link.addEventListener(
+            "click",
+            closeSidebar
+        );
+
+    });
 
 
     /* =========================================
        INIT
     ========================================== */
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        function () {
+    function initNotifications() {
 
-            generateNotifications();
+        generateNotifications();
 
-            renderStats();
+        renderStats();
 
-            renderNotifications();
+        renderNotifications();
 
-        }
-    );
+    }
+
+
+    if (
+        document.readyState ===
+        "loading"
+    ) {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            initNotifications
+        );
+
+    } else {
+
+        initNotifications();
+
+    }
 
 </script>
 

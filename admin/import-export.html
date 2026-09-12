@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Import / Export - ShopNext Admin</title>
+
+  <style>
+    :root{
+      --bg:#0b0d10;
+      --sidebar:#101318;
+      --card:#11151b;
+      --card2:#151a20;
+      --border:#252b34;
+      --muted:#858c98;
+      --text:#f5f7fa;
+      --primary:#7c5cff;
+      --primaryHover:#6d4ff0;
+      --danger:#ef4444;
+      --success:#22c55e;
+      --warning:#f59e0b;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    button,
+    input,
+    select{
+      font:inherit;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    /* ================= SIDEBAR ================= */
+
+    .sidebar{
+      position:fixed;
+      top:0;
+      left:0;
+      width:250px;
+      height:100vh;
+      background:var(--sidebar);
+      border-right:1px solid var(--border);
+      padding:20px 14px;
+      overflow-y:auto;
+      z-index:1000;
+      transition:.25s ease;
+    }
+
+    .sidebar::-webkit-scrollbar{
+      width:5px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb{
+      background:#292e38;
+      border-radius:10px;
+    }
+
+    .logo{
+      padding:5px 12px 25px;
+      font-size:21px;
+      font-weight:800;
+      letter-spacing:-.5px;
+    }
+
+    .logo span{
+      color:var(--primary);
+    }
+
+    .menu-title{
+      color:#626a77;
+      font-size:11px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.8px;
+      padding:14px 12px 7px;
+    }
+
+    .nav-link{
+      display:flex;
+      align-items:center;
+      gap:11px;
+      min-height:42px;
+      padding:10px 12px;
+      margin:3px 0;
+      border-radius:9px;
+      color:#aeb5c0;
+      font-size:14px;
+      transition:.2s ease;
+    }
+
+    .nav-link:hover{
+      background:#171b22;
+      color:#fff;
+    }
+
+    .nav-link.active{
+      background:var(--primary);
+      color:#fff;
+    }
+
+    .nav-icon{
+      width:20px;
+      text-align:center;
+      font-size:15px;
+    }
+
+    /* ================= MAIN ================= */
+
+    .main{
+      margin-left:250px;
+      min-height:100vh;
+    }
+
+    .topbar{
+      height:70px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 30px;
+      border-bottom:1px solid var(--border);
+      background:rgba(11,13,16,.9);
+      position:sticky;
+      top:0;
+      z-index:500;
+      backdrop-filter:blur(12px);
+    }
+
+    .topbar-left{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .menu-btn{
+      display:none;
+      width:38px;
+      height:38px;
+      border:1px solid var(--border);
+      background:var(--card);
+      color:#fff;
+      border-radius:8px;
+      cursor:pointer;
+    }
+
+    .page-title{
+      font-size:20px;
+      font-weight:700;
+    }
+
+    .admin-user{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:#b8bec8;
+      font-size:14px;
+    }
+
+    .avatar{
+      width:35px;
+      height:35px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      background:var(--primary);
+      color:#fff;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .content{
+      padding:30px;
+      max-width:1500px;
+    }
+
+    .heading{
+      margin-bottom:25px;
+    }
+
+    .heading h1{
+      font-size:27px;
+      margin-bottom:7px;
+    }
+
+    .heading p{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* ================= CARDS ================= */
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:20px;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:22px;
+    }
+
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:15px;
+      margin-bottom:20px;
+    }
+
+    .card-title{
+      font-size:17px;
+      font-weight:700;
+      margin-bottom:5px;
+    }
+
+    .card-description{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .icon-box{
+      width:42px;
+      height:42px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:10px;
+      background:#19152b;
+      color:var(--primary);
+      font-size:18px;
+      flex-shrink:0;
+    }
+
+    /* ================= FORM ================= */
+
+    .form-group{
+      margin-bottom:18px;
+    }
+
+    label{
+      display:block;
+      font-size:13px;
+      font-weight:600;
+      margin-bottom:8px;
+      color:#d7dbe2;
+    }
+
+    select,
+    input[type="file"]{
+      width:100%;
+      background:var(--card2);
+      border:1px solid var(--border);
+      border-radius:9px;
+      padding:11px 12px;
+      color:var(--text);
+      outline:none;
+    }
+
+    select:focus,
+    input[type="file"]:focus{
+      border-color:var(--primary);
+    }
+
+    input[type="file"]{
+      cursor:pointer;
+    }
+
+    input[type="file"]::file-selector-button{
+      background:var(--primary);
+      border:0;
+      color:white;
+      padding:8px 12px;
+      border-radius:7px;
+      margin-right:10px;
+      cursor:pointer;
+    }
+
+    /* ================= BUTTON ================= */
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:0;
+      border-radius:8px;
+      padding:10px 16px;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+    }
+
+    .btn-primary:hover{
+      background:var(--primaryHover);
+    }
+
+    .btn-secondary{
+      background:#1b2027;
+      color:#dce1e8;
+      border:1px solid var(--border);
+    }
+
+    .btn-secondary:hover{
+      background:#222831;
+    }
+
+    /* ================= FORMAT INFO ================= */
+
+    .format-list{
+      display:grid;
+      gap:10px;
+    }
+
+    .format-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px 14px;
+      background:var(--card2);
+      border:1px solid var(--border);
+      border-radius:9px;
+    }
+
+    .format-name{
+      font-size:13px;
+      font-weight:600;
+    }
+
+    .format-info{
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    /* ================= STATUS ================= */
+
+    .status-box{
+      margin-top:20px;
+      padding:14px;
+      background:#12171d;
+      border:1px solid var(--border);
+      border-radius:9px;
+      display:none;
+    }
+
+    .status-box.show{
+      display:block;
+    }
+
+    .status-title{
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:5px;
+    }
+
+    .status-text{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    /* ================= FULL WIDTH ================= */
+
+    .full{
+      grid-column:1 / -1;
+    }
+
+    .warning{
+      padding:14px;
+      border:1px solid rgba(245,158,11,.25);
+      background:rgba(245,158,11,.07);
+      border-radius:9px;
+      color:#d7b46a;
+      font-size:13px;
+      line-height:1.6;
+    }
+
+    /* ================= OVERLAY ================= */
+
+    .overlay{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.6);
+      z-index:900;
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media(max-width:900px){
+      .sidebar{
+        width:220px;
+      }
+
+      .main{
+        margin-left:220px;
+      }
+
+      .grid{
+        grid-template-columns:1fr;
+      }
+
+      .full{
+        grid-column:auto;
+      }
+
+      .content{
+        padding:25px;
+      }
+    }
+
+    @media(max-width:760px){
+      .sidebar{
+        transform:translateX(-100%);
+        width:250px;
+      }
+
+      .sidebar.open{
+        transform:translateX(0);
+      }
+
+      .main{
+        margin-left:0;
+      }
+
+      .menu-btn{
+        display:block;
+      }
+
+      .overlay.show{
+        display:block;
+      }
+
+      .topbar{
+        padding:0 18px;
+      }
+
+      .content{
+        padding:20px 16px;
+      }
+
+      .admin-user span{
+        display:none;
+      }
+
+      .heading h1{
+        font-size:23px;
+      }
+    }
+
+    @media(max-width:480px){
+      .card{
+        padding:17px;
+      }
+
+      .card-header{
+        gap:10px;
+      }
+
+      .actions{
+        flex-direction:column;
+      }
+
+      .btn{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+      Shop<span>Next</span>
+    </div>
+
+    <div class="menu-title">Main</div>
+
+    <a href="index.html" class="nav-link">
+      <span class="nav-icon">⌂</span>
+      Dashboard
+    </a>
+
+    <a href="orders.html" class="nav-link">
+      <span class="nav-icon">▤</span>
+      Orders
+    </a>
+
+    <a href="products.html" class="nav-link">
+      <span class="nav-icon">□</span>
+      Products
+    </a>
+
+    <a href="customers.html" class="nav-link">
+      <span class="nav-icon">♙</span>
+      Customers
+    </a>
+
+    <div class="menu-title">Management</div>
+
+    <a href="categories.html" class="nav-link">
+      <span class="nav-icon">▦</span>
+      Categories
+    </a>
+
+    <a href="coupons.html" class="nav-link">
+      <span class="nav-icon">%</span>
+      Coupons
+    </a>
+
+    <a href="inventory.html" class="nav-link">
+      <span class="nav-icon">▥</span>
+      Inventory
+    </a>
+
+    <a href="reports.html" class="nav-link">
+      <span class="nav-icon">◒</span>
+      Reports
+    </a>
+
+    <div class="menu-title">Communication</div>
+
+    <a href="notifications.html" class="nav-link">
+      <span class="nav-icon">♢</span>
+      Notifications
+    </a>
+
+    <a href="email-templates.html" class="nav-link">
+      <span class="nav-icon">@</span>
+      Email Templates
+    </a>
+
+    <a href="sms-templates.html" class="nav-link">
+      <span class="nav-icon">▱</span>
+      SMS Templates
+    </a>
+
+    <div class="menu-title">System</div>
+
+    <a href="import-export.html" class="nav-link active">
+      <span class="nav-icon">⇄</span>
+      Import / Export
+    </a>
+
+    <a href="settings.html" class="nav-link">
+      <span class="nav-icon">⚙</span>
+      Settings
+    </a>
+
+    <a href="login.html" class="nav-link">
+      <span class="nav-icon">↪</span>
+      Logout
+    </a>
+
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <header class="topbar">
+
+      <div class="topbar-left">
+        <button class="menu-btn" id="menuBtn">☰</button>
+
+        <div class="page-title">
+          Import / Export
+        </div>
+      </div>
+
+      <div class="admin-user">
+        <div class="avatar">A</div>
+        <span>Admin</span>
+      </div>
+
+    </header>
+
+    <section class="content">
+
+      <div class="heading">
+        <h1>Import / Export</h1>
+        <p>Manage your store data with simple import and export tools.</p>
+      </div>
+
+      <div class="grid">
+
+        <!-- EXPORT -->
+        <div class="card">
+
+          <div class="card-header">
+            <div>
+              <div class="card-title">Export Data</div>
+              <div class="card-description">
+                Download your store data as a JSON file.
+              </div>
+            </div>
+
+            <div class="icon-box">⇩</div>
+          </div>
+
+          <div class="form-group">
+            <label for="exportType">Select data</label>
+
+            <select id="exportType">
+              <option value="all">All Store Data</option>
+              <option value="products">Products</option>
+              <option value="customers">Customers</option>
+              <option value="orders">Orders</option>
+              <option value="categories">Categories</option>
+              <option value="coupons">Coupons</option>
+              <option value="settings">Settings</option>
+            </select>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-primary" onclick="exportData()">
+              Export Data
+            </button>
+          </div>
+
+          <div class="status-box" id="exportStatus">
+            <div class="status-title">Export completed</div>
+            <div class="status-text">
+              Your data file has been generated successfully.
+            </div>
+          </div>
+
+        </div>
+
+        <!-- IMPORT -->
+        <div class="card">
+
+          <div class="card-header">
+            <div>
+              <div class="card-title">Import Data</div>
+              <div class="card-description">
+                Import previously exported JSON data.
+              </div>
+            </div>
+
+            <div class="icon-box">⇧</div>
+          </div>
+
+          <div class="form-group">
+            <label for="importFile">Select JSON file</label>
+
+            <input
+              type="file"
+              id="importFile"
+              accept=".json,application/json"
+            >
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-primary" onclick="importData()">
+              Import Data
+            </button>
+
+            <button class="btn btn-secondary" onclick="document.getElementById('importFile').value=''">
+              Clear
+            </button>
+          </div>
+
+          <div class="status-box" id="importStatus">
+            <div class="status-title">Import completed</div>
+            <div class="status-text">
+              Your selected data has been imported.
+            </div>
+          </div>
+
+        </div>
+
+        <!-- SUPPORTED DATA -->
+        <div class="card full">
+
+          <div class="card-header">
+            <div>
+              <div class="card-title">Supported Data</div>
+              <div class="card-description">
+                Data currently supported by the import and export system.
+              </div>
+            </div>
+
+            <div class="icon-box">▦</div>
+          </div>
+
+          <div class="format-list">
+
+            <div class="format-item">
+              <div class="format-name">Products</div>
+              <div class="format-info">Product information & stock</div>
+            </div>
+
+            <div class="format-item">
+              <div class="format-name">Customers</div>
+              <div class="format-info">Customer account information</div>
+            </div>
+
+            <div class="format-item">
+              <div class="format-name">Orders</div>
+              <div class="format-info">Order and transaction data</div>
+            </div>
+
+            <div class="format-item">
+              <div class="format-name">Categories</div>
+              <div class="format-info">Store categories</div>
+            </div>
+
+            <div class="format-item">
+              <div class="format-name">Coupons</div>
+              <div class="format-info">Discount and coupon data</div>
+            </div>
+
+            <div class="format-item">
+              <div class="format-name">Settings</div>
+              <div class="format-info">Store configuration</div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- WARNING -->
+        <div class="card full">
+
+          <div class="warning">
+            <strong>Important:</strong>
+            Always keep a backup of your data before importing a file.
+            Importing data can overwrite existing local demo data.
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+
+    /* ================= MOBILE SIDEBAR ================= */
+
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+    const menuBtn = document.getElementById("menuBtn");
+
+    menuBtn.addEventListener("click", () => {
+      sidebar.classList.add("open");
+      overlay.classList.add("show");
+    });
+
+    overlay.addEventListener("click", () => {
+      sidebar.classList.remove("open");
+      overlay.classList.remove("show");
+    });
+
+    /* ================= STORAGE MAP ================= */
+
+    const storageMap = {
+      products: "shopnest_products",
+      customers: "shopnest_customers",
+      orders: "shopnest_orders",
+      categories: "shopnest_categories",
+      coupons: "shopnest_coupons",
+      settings: "shopnest_settings"
+    };
+
+    /* ================= EXPORT ================= */
+
+    function getStorageData(key){
+      try{
+        const data = localStorage.getItem(key);
+
+        if(!data){
+          return [];
+        }
+
+        return JSON.parse(data);
+      }catch(error){
+        return [];
+      }
+    }
+
+    function downloadJSON(filename, data){
+
+      const blob = new Blob(
+        [JSON.stringify(data, null, 2)],
+        {type:"application/json"}
+      );
+
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = filename;
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      link.remove();
+
+      URL.revokeObjectURL(url);
+    }
+
+    function exportData(){
+
+      const type = document.getElementById("exportType").value;
+
+      let data = {};
+
+      if(type === "all"){
+
+        Object.keys(storageMap).forEach(key => {
+          data[key] = getStorageData(storageMap[key]);
+        });
+
+        data.exportedAt = new Date().toISOString();
+
+      }else{
+
+        data = {
+          [type]: getStorageData(storageMap[type]),
+          exportedAt: new Date().toISOString()
+        };
+
+      }
+
+      downloadJSON(
+        `shopnext-${type}-${Date.now()}.json`,
+        data
+      );
+
+      const status = document.getElementById("exportStatus");
+
+      status.classList.add("show");
+
+      setTimeout(() => {
+        status.classList.remove("show");
+      }, 4000);
+    }
+
+    /* ================= IMPORT ================= */
+
+    function importData(){
+
+      const fileInput = document.getElementById("importFile");
+      const file = fileInput.files[0];
+
+      if(!file){
+        alert("Please select a JSON file first.");
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = function(event){
+
+        try{
+
+          const data = JSON.parse(event.target.result);
+
+          let imported = false;
+
+          Object.keys(storageMap).forEach(type => {
+
+            if(
+              Object.prototype.hasOwnProperty.call(
+                data,
+                type
+              )
+            ){
+
+              localStorage.setItem(
+                storageMap[type],
+                JSON.stringify(data[type])
+              );
+
+              imported = true;
+            }
+
+          });
+
+          if(!imported){
+            throw new Error("No supported data found.");
+          }
+
+          const status = document.getElementById("importStatus");
+
+          status.classList.add("show");
+
+          setTimeout(() => {
+            status.classList.remove("show");
+          }, 4000);
+
+          fileInput.value = "";
+
+        }catch(error){
+
+          alert(
+            "Import failed. Please make sure the selected file is a valid ShopNext JSON export."
+          );
+
+        }
+
+      };
+
+      reader.readAsText(file);
+    }
+
+  </script>
+
+</body>
+</html>

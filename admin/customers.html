@@ -4,25 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Customers | Alamin Shop Admin</title>
+    <title>Customers | ShopNext Admin</title>
 
     <link rel="stylesheet" href="../style.css">
 
     <style>
+        :root {
+            --bg: #0b0d10;
+            --sidebar: #101318;
+            --card: #11151b;
+            --card2: #151a20;
+            --border: #252b34;
+            --border-light: #303640;
+            --muted: #858c98;
+            --muted2: #697280;
+            --text: #f5f7fa;
+            --primary: #7c5cff;
+            --primary-hover: #6d4ff0;
+            --danger: #ef4444;
+            --success: #22c55e;
+        }
+
         * {
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             margin: 0;
-            background: #08090b;
-            color: #f8fafc;
+            background: var(--bg);
+            color: var(--text);
             font-family: Arial, Helvetica, sans-serif;
         }
 
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
         .admin-layout {
             min-height: 100vh;
-            display: flex;
         }
 
         /* =========================
@@ -31,22 +64,20 @@
 
         .admin-sidebar {
             width: 250px;
-            background: #0f1115;
-            border-right: 1px solid #242832;
+            background: var(--sidebar);
+            border-right: 1px solid var(--border);
             padding: 22px 16px;
             position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
+            inset: 0 auto 0 0;
             overflow-y: auto;
-            z-index: 100;
+            z-index: 1000;
         }
 
         .admin-logo {
             display: flex;
             align-items: center;
             gap: 10px;
-            color: #ffffff;
+            color: #fff;
             text-decoration: none;
             font-size: 21px;
             font-weight: 800;
@@ -58,8 +89,8 @@
             width: 38px;
             height: 38px;
             border-radius: 10px;
-            background: #ffffff;
-            color: #08090b;
+            background: var(--primary);
+            color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -67,13 +98,13 @@
         }
 
         .menu-title {
-            color: #6f7785;
-            font-size: 11px;
+            color: var(--muted);
+            font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
             padding: 0 10px;
-            margin: 24px 0 9px;
+            margin: 25px 0 9px;
         }
 
         .admin-nav {
@@ -90,23 +121,24 @@
             display: flex;
             align-items: center;
             gap: 11px;
-            font-size: 14px;
-            transition: 0.2s ease;
+            font-size: 13px;
+            transition: .2s ease;
         }
 
         .admin-nav a:hover {
             background: #181b21;
-            color: #ffffff;
+            color: #fff;
         }
 
         .admin-nav a.active {
-            background: #ffffff;
-            color: #08090b;
-            font-weight: 700;
+            background: rgba(124, 92, 255, .14);
+            color: #a99aff;
+            border: 1px solid rgba(124, 92, 255, .18);
         }
 
         .nav-icon {
             width: 22px;
+            min-width: 22px;
             text-align: center;
             font-size: 15px;
         }
@@ -121,28 +153,50 @@
             min-height: 100vh;
         }
 
+        /* =========================
+           TOPBAR
+        ========================= */
+
         .admin-topbar {
             height: 72px;
-            border-bottom: 1px solid #242832;
-            background: rgba(8, 9, 11, 0.94);
+            border-bottom: 1px solid var(--border);
+            background: rgba(11, 13, 16, .94);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 28px;
             position: sticky;
             top: 0;
-            z-index: 50;
+            z-index: 100;
             backdrop-filter: blur(12px);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            width: 38px;
+            height: 38px;
+            border: 1px solid var(--border-light);
+            background: var(--card2);
+            color: #fff;
+            border-radius: 9px;
+            font-size: 18px;
         }
 
         .topbar-title h1 {
             margin: 0;
             font-size: 20px;
+            font-weight: 700;
         }
 
         .topbar-title p {
             margin: 5px 0 0;
-            color: #737b89;
+            color: var(--muted);
             font-size: 12px;
         }
 
@@ -156,8 +210,8 @@
             width: 38px;
             height: 38px;
             border-radius: 50%;
-            background: #1b1f27;
-            border: 1px solid #303640;
+            background: var(--card2);
+            border: 1px solid var(--border-light);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -170,9 +224,13 @@
         }
 
         .admin-user-info span {
-            color: #6f7785;
+            color: var(--muted);
             font-size: 11px;
         }
+
+        /* =========================
+           CONTENT
+        ========================= */
 
         .admin-content {
             padding: 28px;
@@ -190,128 +248,156 @@
         }
 
         .stat-card {
-            background: #101216;
-            border: 1px solid #252a32;
+            background: var(--card);
+            border: 1px solid var(--border);
             border-radius: 14px;
             padding: 19px;
+            transition: .2s ease;
+        }
+
+        .stat-card:hover {
+            border-color: #343b47;
+            transform: translateY(-1px);
         }
 
         .stat-card p {
             margin: 0 0 9px;
-            color: #7e8795;
+            color: var(--muted);
             font-size: 12px;
         }
 
         .stat-card h2 {
             margin: 0;
             font-size: 25px;
+            font-weight: 700;
         }
 
         .stat-card small {
             display: block;
             margin-top: 7px;
-            color: #606977;
+            color: var(--muted2);
             font-size: 11px;
         }
 
         /* =========================
-           TOOLBAR
+           PANEL
         ========================= */
 
         .customer-panel {
-            background: #101216;
-            border: 1px solid #252a32;
-            border-radius: 15px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
             overflow: hidden;
         }
 
         .panel-header {
             padding: 20px;
-            border-bottom: 1px solid #252a32;
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 15px;
+            gap: 18px;
             flex-wrap: wrap;
         }
 
-        .panel-header h2 {
+        .panel-title h2 {
             margin: 0;
             font-size: 17px;
         }
 
-        .panel-header p {
+        .panel-title p {
             margin: 5px 0 0;
-            color: #737b89;
+            color: var(--muted);
             font-size: 12px;
         }
 
         .toolbar {
             display: flex;
             align-items: center;
-            gap: 9px;
+            gap: 8px;
             flex-wrap: wrap;
         }
+
+        /* =========================
+           SEARCH
+        ========================= */
 
         .search-box {
             position: relative;
         }
 
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 11px;
+            color: var(--muted2);
+            font-size: 14px;
+        }
+
         .search-box input {
-            width: 270px;
+            width: 260px;
             height: 40px;
-            background: #090a0d;
-            border: 1px solid #2b3039;
+            background: #0b0d10;
+            border: 1px solid var(--border-light);
             border-radius: 9px;
-            color: #ffffff;
-            padding: 0 13px 0 38px;
+            color: #fff;
+            padding: 0 13px 0 36px;
             outline: none;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .search-box input:focus {
-            border-color: #555d6b;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 13px;
-            top: 11px;
-            color: #68717f;
-            font-size: 14px;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(124, 92, 255, .08);
         }
 
         .filter-select {
             height: 40px;
-            background: #090a0d;
-            border: 1px solid #2b3039;
+            background: #0b0d10;
+            border: 1px solid var(--border-light);
             border-radius: 9px;
-            color: #ffffff;
-            padding: 0 12px;
+            color: #fff;
+            padding: 0 11px;
             outline: none;
-            font-size: 13px;
+            font-size: 12px;
         }
+
+        .filter-select:focus {
+            border-color: var(--primary);
+        }
+
+        /* =========================
+           BUTTONS
+        ========================= */
 
         .reset-btn,
         .export-btn {
             height: 40px;
             border-radius: 9px;
             padding: 0 14px;
-            cursor: pointer;
             font-size: 12px;
             font-weight: 700;
+            transition: .2s ease;
         }
 
         .reset-btn {
-            background: #181b21;
-            border: 1px solid #303640;
-            color: #ffffff;
+            background: var(--card2);
+            border: 1px solid var(--border-light);
+            color: #fff;
+        }
+
+        .reset-btn:hover {
+            background: #1b2027;
         }
 
         .export-btn {
-            background: #ffffff;
-            border: 1px solid #ffffff;
-            color: #08090b;
+            background: var(--primary);
+            border: 1px solid var(--primary);
+            color: #fff;
+        }
+
+        .export-btn:hover {
+            background: var(--primary-hover);
         }
 
         /* =========================
@@ -331,25 +417,29 @@
 
         .customer-table th {
             text-align: left;
-            padding: 14px 18px;
-            background: #0c0e11;
-            color: #747d8b;
-            font-size: 11px;
+            padding: 13px 18px;
+            background: #0d1014;
+            color: var(--muted);
+            font-size: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: .6px;
             font-weight: 700;
-            border-bottom: 1px solid #252a32;
+            border-bottom: 1px solid var(--border);
         }
 
         .customer-table td {
-            padding: 15px 18px;
-            border-bottom: 1px solid #1e2229;
-            font-size: 13px;
+            padding: 14px 18px;
+            border-bottom: 1px solid #1d2229;
+            font-size: 12px;
             vertical-align: middle;
         }
 
+        .customer-table tbody tr {
+            transition: .15s ease;
+        }
+
         .customer-table tbody tr:hover {
-            background: #13161b;
+            background: #14181e;
         }
 
         .customer-info {
@@ -363,33 +453,35 @@
             height: 38px;
             min-width: 38px;
             border-radius: 50%;
-            background: #1c2027;
-            border: 1px solid #303640;
+            background: rgba(124, 92, 255, .13);
+            border: 1px solid rgba(124, 92, 255, .2);
+            color: #a99aff;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .customer-name {
+            color: var(--text);
             font-weight: 700;
-            color: #f8fafc;
             margin-bottom: 4px;
         }
 
         .customer-email {
-            color: #6e7785;
-            font-size: 11px;
+            color: var(--muted2);
+            font-size: 10px;
         }
 
         .customer-phone {
-            color: #aeb5c0;
-            font-size: 12px;
+            color: #b7bec8;
+            font-size: 11px;
         }
 
         .amount {
             font-weight: 700;
+            color: #fff;
         }
 
         .status {
@@ -397,17 +489,17 @@
             align-items: center;
             padding: 5px 9px;
             border-radius: 20px;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
         }
 
         .status.active {
-            background: rgba(34, 197, 94, 0.12);
+            background: rgba(34, 197, 94, .11);
             color: #4ade80;
         }
 
         .status.blocked {
-            background: rgba(239, 68, 68, 0.12);
+            background: rgba(239, 68, 68, .11);
             color: #f87171;
         }
 
@@ -417,18 +509,18 @@
         }
 
         .action-btn {
-            border: 1px solid #303640;
-            background: #181b21;
-            color: #ffffff;
+            height: 30px;
+            border: 1px solid var(--border-light);
+            background: var(--card2);
+            color: #fff;
             border-radius: 7px;
-            height: 31px;
             padding: 0 9px;
-            cursor: pointer;
-            font-size: 11px;
+            font-size: 10px;
+            transition: .2s ease;
         }
 
         .action-btn:hover {
-            background: #252a32;
+            background: #20252c;
         }
 
         .action-btn.danger:hover {
@@ -436,26 +528,38 @@
             color: #f87171;
         }
 
+        /* =========================
+           EMPTY
+        ========================= */
+
         .empty-state {
             text-align: center;
             padding: 55px 20px;
-            color: #697280;
+            color: var(--muted2);
         }
 
         .empty-icon {
-            font-size: 35px;
-            margin-bottom: 12px;
+            width: 54px;
+            height: 54px;
+            margin: 0 auto 13px;
+            border-radius: 14px;
+            background: var(--card2);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
         }
 
         .empty-state h3 {
             margin: 0 0 7px;
-            color: #ffffff;
+            color: #fff;
             font-size: 16px;
         }
 
         .empty-state p {
             margin: 0;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         /* =========================
@@ -466,15 +570,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 18px;
-            border-top: 1px solid #252a32;
+            padding: 15px 18px;
+            border-top: 1px solid var(--border);
             gap: 15px;
             flex-wrap: wrap;
         }
 
         .pagination-info {
-            color: #697280;
-            font-size: 11px;
+            color: var(--muted2);
+            font-size: 10px;
         }
 
         .pagination-buttons {
@@ -483,24 +587,28 @@
         }
 
         .page-btn {
-            width: 32px;
-            height: 32px;
+            min-width: 31px;
+            height: 31px;
             border-radius: 7px;
-            background: #181b21;
-            border: 1px solid #303640;
-            color: #ffffff;
+            background: var(--card2);
+            border: 1px solid var(--border-light);
+            color: #fff;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 10px;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            border-color: #4a5260;
         }
 
         .page-btn.active {
-            background: #ffffff;
-            color: #08090b;
-            border-color: #ffffff;
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
         }
 
         .page-btn:disabled {
-            opacity: 0.4;
+            opacity: .35;
             cursor: not-allowed;
         }
 
@@ -512,8 +620,8 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.72);
-            z-index: 999;
+            background: rgba(0, 0, 0, .76);
+            z-index: 2000;
             align-items: center;
             justify-content: center;
             padding: 20px;
@@ -527,10 +635,11 @@
             width: min(600px, 100%);
             max-height: 90vh;
             overflow-y: auto;
-            background: #111318;
-            border: 1px solid #303640;
-            border-radius: 16px;
+            background: #11151b;
+            border: 1px solid var(--border-light);
+            border-radius: 15px;
             padding: 22px;
+            box-shadow: 0 25px 80px rgba(0,0,0,.5);
         }
 
         .modal-header {
@@ -542,18 +651,22 @@
 
         .modal-header h2 {
             margin: 0;
-            font-size: 18px;
+            font-size: 17px;
         }
 
         .close-modal {
             width: 32px;
             height: 32px;
             border-radius: 8px;
-            background: #181b21;
-            border: 1px solid #303640;
-            color: #ffffff;
+            background: var(--card2);
+            border: 1px solid var(--border-light);
+            color: #fff;
             cursor: pointer;
             font-size: 16px;
+        }
+
+        .close-modal:hover {
+            background: #20252c;
         }
 
         .profile-box {
@@ -562,8 +675,8 @@
             gap: 14px;
             padding: 15px;
             background: #0b0d10;
-            border: 1px solid #252a32;
-            border-radius: 12px;
+            border: 1px solid var(--border);
+            border-radius: 11px;
             margin-bottom: 15px;
         }
 
@@ -571,11 +684,13 @@
             width: 55px;
             height: 55px;
             border-radius: 50%;
-            background: #20242c;
+            background: rgba(124,92,255,.13);
+            border: 1px solid rgba(124,92,255,.2);
+            color: #a99aff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 800;
         }
 
@@ -586,8 +701,8 @@
 
         .profile-box p {
             margin: 3px 0;
-            color: #78818f;
-            font-size: 12px;
+            color: var(--muted);
+            font-size: 11px;
         }
 
         .detail-grid {
@@ -598,25 +713,37 @@
 
         .detail-item {
             background: #0b0d10;
-            border: 1px solid #252a32;
+            border: 1px solid var(--border);
             border-radius: 10px;
             padding: 13px;
         }
 
         .detail-item span {
             display: block;
-            color: #697280;
-            font-size: 10px;
+            color: var(--muted2);
+            font-size: 9px;
             margin-bottom: 5px;
             text-transform: uppercase;
         }
 
         .detail-item strong {
-            font-size: 13px;
+            font-size: 12px;
         }
 
         /* =========================
-           MOBILE
+           SIDEBAR OVERLAY
+        ========================= */
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.6);
+            z-index: 900;
+        }
+
+        /* =========================
+           RESPONSIVE
         ========================= */
 
         @media (max-width: 1100px) {
@@ -625,45 +752,47 @@
             }
         }
 
-        @media (max-width: 800px) {
+        @media (max-width: 900px) {
             .admin-sidebar {
-                width: 70px;
-                padding: 18px 8px;
+                width: 220px;
+                transform: translateX(-100%);
+                transition: transform .25s ease;
             }
 
-            .admin-logo {
-                justify-content: center;
-                padding: 0;
+            .admin-sidebar.open {
+                transform: translateX(0);
             }
 
-            .admin-logo strong,
-            .menu-title,
-            .admin-nav a span:not(.nav-icon) {
-                display: none;
-            }
-
-            .admin-nav a {
-                justify-content: center;
-                padding: 12px 5px;
+            .sidebar-overlay.show {
+                display: block;
             }
 
             .admin-main {
-                margin-left: 70px;
-                width: calc(100% - 70px);
+                margin-left: 0;
+                width: 100%;
             }
 
-            .admin-content {
-                padding: 18px;
-            }
-
-            .search-box input {
-                width: 210px;
+            .mobile-menu-btn {
+                display: block;
             }
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 650px) {
             .admin-topbar {
+                height: 65px;
                 padding: 0 15px;
+            }
+
+            .admin-content {
+                padding: 16px;
+            }
+
+            .topbar-title h1 {
+                font-size: 18px;
+            }
+
+            .topbar-title p {
+                font-size: 10px;
             }
 
             .admin-user-info {
@@ -680,11 +809,15 @@
             }
 
             .stat-card h2 {
-                font-size: 20px;
+                font-size: 19px;
             }
 
             .panel-header {
                 align-items: stretch;
+            }
+
+            .panel-title {
+                width: 100%;
             }
 
             .toolbar {
@@ -700,8 +833,33 @@
                 flex: 1;
             }
 
+            .reset-btn,
+            .export-btn {
+                flex: 1;
+            }
+
             .detail-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .pagination {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .customer-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .toolbar {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .search-box {
+                grid-column: 1 / -1;
             }
         }
     </style>
@@ -711,15 +869,12 @@
 
 <div class="admin-layout">
 
-    <!-- =========================
-         SIDEBAR
-    ========================== -->
-
-    <aside class="admin-sidebar">
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar" id="adminSidebar">
 
         <a href="index.html" class="admin-logo">
             <span>A</span>
-            <strong>Alamin Shop</strong>
+            <strong>ShopNext</strong>
         </a>
 
         <div class="menu-title">Main</div>
@@ -741,6 +896,16 @@
                 <span>Products</span>
             </a>
 
+            <a href="inventory.html">
+                <span class="nav-icon">▤</span>
+                <span>Inventory</span>
+            </a>
+
+            <a href="categories.html">
+                <span class="nav-icon">◈</span>
+                <span>Categories</span>
+            </a>
+
             <a href="customers.html" class="active">
                 <span class="nav-icon">♙</span>
                 <span>Customers</span>
@@ -748,9 +913,51 @@
 
         </nav>
 
+        <div class="menu-title">Marketing</div>
+
+        <nav class="admin-nav">
+
+            <a href="coupons.html">
+                <span class="nav-icon">%</span>
+                <span>Coupons</span>
+            </a>
+
+            <a href="reports.html">
+                <span class="nav-icon">▥</span>
+                <span>Reports</span>
+            </a>
+
+        </nav>
+
+        <div class="menu-title">Communication</div>
+
+        <nav class="admin-nav">
+
+            <a href="notifications.html">
+                <span class="nav-icon">♢</span>
+                <span>Notifications</span>
+            </a>
+
+            <a href="email-templates.html">
+                <span class="nav-icon">✉</span>
+                <span>Email Templates</span>
+            </a>
+
+            <a href="sms-templates.html">
+                <span class="nav-icon">▱</span>
+                <span>SMS Templates</span>
+            </a>
+
+        </nav>
+
         <div class="menu-title">Store</div>
 
         <nav class="admin-nav">
+
+            <a href="settings.html">
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+            </a>
 
             <a href="../index.html">
                 <span class="nav-icon">↗</span>
@@ -771,18 +978,31 @@
 
     </aside>
 
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- =========================
-         MAIN
-    ========================== -->
 
+    <!-- MAIN -->
     <main class="admin-main">
 
+        <!-- TOPBAR -->
         <header class="admin-topbar">
 
-            <div class="topbar-title">
-                <h1>Customers</h1>
-                <p>Manage your store customers</p>
+            <div class="topbar-left">
+
+                <button
+                    type="button"
+                    class="mobile-menu-btn"
+                    id="mobileMenuBtn"
+                    aria-label="Open menu"
+                >
+                    ☰
+                </button>
+
+                <div class="topbar-title">
+                    <h1>Customers</h1>
+                    <p>Manage your store customers</p>
+                </div>
+
             </div>
 
             <div class="admin-user">
@@ -801,12 +1021,10 @@
         </header>
 
 
+        <!-- CONTENT -->
         <section class="admin-content">
 
-            <!-- =========================
-                 STATS
-            ========================== -->
-
+            <!-- STATS -->
             <div class="customer-stats">
 
                 <div class="stat-card">
@@ -836,15 +1054,12 @@
             </div>
 
 
-            <!-- =========================
-                 CUSTOMER PANEL
-            ========================== -->
-
+            <!-- CUSTOMER PANEL -->
             <div class="customer-panel">
 
                 <div class="panel-header">
 
-                    <div>
+                    <div class="panel-title">
                         <h2>All Customers</h2>
                         <p>Search and manage registered customers</p>
                     </div>
@@ -859,21 +1074,33 @@
                                 type="text"
                                 id="customerSearch"
                                 placeholder="Search name, email or phone..."
+                                autocomplete="off"
                             >
 
                         </div>
 
-                        <select id="customerStatusFilter" class="filter-select">
+                        <select
+                            id="customerStatusFilter"
+                            class="filter-select"
+                        >
                             <option value="all">All Status</option>
                             <option value="active">Active</option>
                             <option value="blocked">Blocked</option>
                         </select>
 
-                        <button class="reset-btn" id="resetBtn">
+                        <button
+                            type="button"
+                            class="reset-btn"
+                            id="resetBtn"
+                        >
                             Reset
                         </button>
 
-                        <button class="export-btn" id="exportBtn">
+                        <button
+                            type="button"
+                            class="export-btn"
+                            id="exportBtn"
+                        >
                             Export CSV
                         </button>
 
@@ -882,7 +1109,8 @@
                 </div>
 
 
-                <div class="table-wrap">
+                <!-- TABLE -->
+                <div class="table-wrap" id="tableWrap">
 
                     <table class="customer-table">
 
@@ -907,7 +1135,12 @@
                 </div>
 
 
-                <div id="emptyState" class="empty-state" style="display:none;">
+                <!-- EMPTY -->
+                <div
+                    id="emptyState"
+                    class="empty-state"
+                    style="display:none;"
+                >
 
                     <div class="empty-icon">♙</div>
 
@@ -920,13 +1153,20 @@
                 </div>
 
 
+                <!-- PAGINATION -->
                 <div class="pagination">
 
-                    <div class="pagination-info" id="paginationInfo">
+                    <div
+                        class="pagination-info"
+                        id="paginationInfo"
+                    >
                         Showing 0 customers
                     </div>
 
-                    <div class="pagination-buttons" id="paginationButtons"></div>
+                    <div
+                        class="pagination-buttons"
+                        id="paginationButtons"
+                    ></div>
 
                 </div>
 
@@ -939,11 +1179,12 @@
 </div>
 
 
-<!-- =========================
-     CUSTOMER MODAL
-========================== -->
-
-<div class="modal-overlay" id="customerModal">
+<!-- CUSTOMER MODAL -->
+<div
+    class="modal-overlay"
+    id="customerModal"
+    aria-hidden="true"
+>
 
     <div class="customer-modal">
 
@@ -951,7 +1192,12 @@
 
             <h2>Customer Details</h2>
 
-            <button class="close-modal" id="closeModal">
+            <button
+                type="button"
+                class="close-modal"
+                id="closeModal"
+                aria-label="Close"
+            >
                 ×
             </button>
 
@@ -967,33 +1213,33 @@
 <script src="../script.js"></script>
 
 <script>
+(function () {
 
-    /* =========================================
-       CUSTOMER MANAGEMENT
-    ========================================= */
+    "use strict";
 
     const USERS_KEY = "shopnest_users";
     const ORDERS_KEY = "shopnest_orders";
 
     let allCustomers = [];
     let filteredCustomers = [];
-
     let currentPage = 1;
 
     const customersPerPage = 10;
 
 
-    /* =========================================
+    /* =========================
        HELPERS
-    ========================================= */
+    ========================= */
 
     function getUsers() {
 
         try {
 
-            return JSON.parse(
+            const data = JSON.parse(
                 localStorage.getItem(USERS_KEY)
-            ) || [];
+            );
+
+            return Array.isArray(data) ? data : [];
 
         } catch (error) {
 
@@ -1008,9 +1254,11 @@
 
         try {
 
-            return JSON.parse(
+            const data = JSON.parse(
                 localStorage.getItem(ORDERS_KEY)
-            ) || [];
+            );
+
+            return Array.isArray(data) ? data : [];
 
         } catch (error) {
 
@@ -1021,16 +1269,39 @@
     }
 
 
+    function saveUsers(users) {
+
+        try {
+
+            localStorage.setItem(
+                USERS_KEY,
+                JSON.stringify(users)
+            );
+
+            return true;
+
+        } catch (error) {
+
+            console.error(error);
+
+            return false;
+
+        }
+
+    }
+
+
     function formatMoney(amount) {
 
-        return "৳" + Number(amount || 0).toLocaleString("en-BD");
+        return "৳" +
+            Number(amount || 0).toLocaleString("en-BD");
 
     }
 
 
     function escapeHtml(value) {
 
-        return String(value || "")
+        return String(value ?? "")
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
@@ -1042,16 +1313,22 @@
 
     function getInitials(name) {
 
-        const cleanName = String(name || "Customer").trim();
+        const cleanName =
+            String(name || "Customer").trim();
 
         if (!cleanName) {
             return "C";
         }
 
-        const parts = cleanName.split(/\s+/);
+        const parts =
+            cleanName.split(/\s+/);
 
         if (parts.length === 1) {
-            return parts[0].slice(0, 2).toUpperCase();
+
+            return parts[0]
+                .slice(0, 2)
+                .toUpperCase();
+
         }
 
         return (
@@ -1071,56 +1348,69 @@
     }
 
 
-    /* =========================================
-       BUILD CUSTOMER DATA
-    ========================================= */
+    /* =========================
+       BUILD CUSTOMERS
+    ========================= */
 
     function buildCustomers() {
 
         const users = getUsers();
-
         const orders = getOrders();
 
         return users.map((user, index) => {
 
-            const email = String(
-                user.email || ""
-            ).toLowerCase();
+            const email =
+                String(user.email || "")
+                    .trim()
+                    .toLowerCase();
 
-            const phone = String(
-                user.phone || ""
-            );
+            const phone =
+                String(user.phone || "")
+                    .trim();
 
-            const customerOrders = orders.filter(order => {
+            const customerOrders =
+                orders.filter(order => {
 
-                const orderEmail =
-                    String(
-                        order.customer?.email || ""
-                    ).toLowerCase();
+                    const orderEmail =
+                        String(
+                            order.customer?.email ||
+                            order.email ||
+                            ""
+                        )
+                        .trim()
+                        .toLowerCase();
 
-                const orderPhone =
-                    String(
-                        order.customer?.phone || ""
+                    const orderPhone =
+                        String(
+                            order.customer?.phone ||
+                            order.phone ||
+                            ""
+                        )
+                        .trim();
+
+                    return (
+                        (email && orderEmail === email) ||
+                        (phone && orderPhone === phone)
                     );
 
-                return (
-                    (email && orderEmail === email) ||
-                    (phone && orderPhone === phone)
+                });
+
+
+            const totalSpent =
+                customerOrders.reduce(
+                    (total, order) => {
+
+                        return total +
+                            Number(
+                                order.total ||
+                                order.grandTotal ||
+                                order.amount ||
+                                0
+                            );
+
+                    },
+                    0
                 );
-
-            });
-
-
-            const totalSpent = customerOrders.reduce(
-                (total, order) => {
-
-                    return total + Number(
-                        order.total || 0
-                    );
-
-                },
-                0
-            );
 
 
             return {
@@ -1131,14 +1421,17 @@
 
                 customerOrders,
 
-                orderCount: customerOrders.length,
+                orderCount:
+                    customerOrders.length,
 
                 totalSpent,
 
-                status: getCustomerStatus(user),
+                status:
+                    getCustomerStatus(user),
 
                 joinedAt:
                     user.created_at ||
+                    user.createdAt ||
                     user.registered_at ||
                     user.joined_at ||
                     null
@@ -1150,20 +1443,22 @@
     }
 
 
-    /* =========================================
+    /* =========================
        STATS
-    ========================================= */
+    ========================= */
 
     function renderStats() {
 
         const customers = allCustomers;
 
-        const total = customers.length;
+        const total =
+            customers.length;
 
-        const active = customers.filter(
-            customer =>
-                customer.status === "active"
-        ).length;
+        const active =
+            customers.filter(
+                customer =>
+                    customer.status === "active"
+            ).length;
 
 
         const thirtyDaysAgo =
@@ -1183,7 +1478,10 @@
                         customer.joinedAt
                     ).getTime();
 
-                return time >= thirtyDaysAgo;
+                return (
+                    !Number.isNaN(time) &&
+                    time >= thirtyDaysAgo
+                );
 
             }).length;
 
@@ -1200,16 +1498,13 @@
             "totalCustomers"
         ).textContent = total;
 
-
         document.getElementById(
             "activeCustomers"
         ).textContent = active;
 
-
         document.getElementById(
             "newCustomers"
         ).textContent = newCustomers;
-
 
         document.getElementById(
             "customerValue"
@@ -1219,9 +1514,9 @@
     }
 
 
-    /* =========================================
+    /* =========================
        FILTER
-    ========================================= */
+    ========================= */
 
     function applyFilters() {
 
@@ -1246,6 +1541,7 @@
                     String(
                         customer.name ||
                         customer.full_name ||
+                        customer.first_name ||
                         ""
                     ).toLowerCase();
 
@@ -1289,9 +1585,9 @@
     }
 
 
-    /* =========================================
-       RENDER TABLE
-    ========================================= */
+    /* =========================
+       RENDER CUSTOMERS
+    ========================= */
 
     function renderCustomers() {
 
@@ -1307,13 +1603,20 @@
             );
 
 
+        const tableWrap =
+            document.getElementById(
+                "tableWrap"
+            );
+
+
         const start =
             (currentPage - 1) *
             customersPerPage;
 
 
         const end =
-            start + customersPerPage;
+            start +
+            customersPerPage;
 
 
         const pageCustomers =
@@ -1331,171 +1634,188 @@
             emptyState.style.display =
                 "block";
 
-            document.querySelector(
-                ".table-wrap"
-            ).style.display = "none";
+            tableWrap.style.display =
+                "none";
 
         } else {
 
             emptyState.style.display =
                 "none";
 
-            document.querySelector(
-                ".table-wrap"
-            ).style.display = "block";
+            tableWrap.style.display =
+                "block";
 
 
-            pageCustomers.forEach(
-                customer => {
+            pageCustomers.forEach(customer => {
 
-                    const name =
-                        customer.name ||
-                        customer.full_name ||
-                        "Customer";
-
-
-                    const email =
-                        customer.email ||
-                        "No email";
-
-
-                    const phone =
-                        customer.phone ||
-                        "No phone";
+                const name =
+                    customer.name ||
+                    customer.full_name ||
+                    [
+                        customer.first_name,
+                        customer.last_name
+                    ]
+                    .filter(Boolean)
+                    .join(" ") ||
+                    "Customer";
 
 
-                    const joined =
-                        customer.joinedAt
-                            ? new Date(
-                                customer.joinedAt
-                              ).toLocaleDateString(
-                                "en-BD"
-                              )
-                            : "—";
+                const email =
+                    customer.email ||
+                    "No email";
 
 
-                    const statusClass =
-                        customer.status === "blocked"
-                            ? "blocked"
-                            : "active";
+                const phone =
+                    customer.phone ||
+                    "No phone";
 
 
-                    const statusText =
-                        customer.status === "blocked"
-                            ? "Blocked"
-                            : "Active";
+                let joined = "—";
 
+                if (customer.joinedAt) {
 
-                    const row =
-                        document.createElement(
-                            "tr"
+                    const date =
+                        new Date(
+                            customer.joinedAt
                         );
 
+                    if (!Number.isNaN(date.getTime())) {
 
-                    row.innerHTML = `
+                        joined =
+                            date.toLocaleDateString(
+                                "en-BD"
+                            );
 
-                        <td>
-
-                            <div class="customer-info">
-
-                                <div class="customer-avatar">
-                                    ${escapeHtml(
-                                        getInitials(name)
-                                    )}
-                                </div>
-
-                                <div>
-
-                                    <div class="customer-name">
-                                        ${escapeHtml(name)}
-                                    </div>
-
-                                    <div class="customer-email">
-                                        ${escapeHtml(email)}
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </td>
-
-
-                        <td>
-
-                            <div class="customer-phone">
-                                ${escapeHtml(phone)}
-                            </div>
-
-                        </td>
-
-
-                        <td>
-                            <strong>
-                                ${customer.orderCount}
-                            </strong>
-                        </td>
-
-
-                        <td>
-
-                            <span class="amount">
-                                ${formatMoney(
-                                    customer.totalSpent
-                                )}
-                            </span>
-
-                        </td>
-
-
-                        <td>
-
-                            <span class="status ${statusClass}">
-                                ${statusText}
-                            </span>
-
-                        </td>
-
-
-                        <td>
-                            ${joined}
-                        </td>
-
-
-                        <td>
-
-                            <div class="action-group">
-
-                                <button
-                                    class="action-btn"
-                                    onclick="viewCustomer(${customer.customerIndex})"
-                                >
-                                    View
-                                </button>
-
-
-                                <button
-                                    class="action-btn danger"
-                                    onclick="toggleCustomerStatus(${customer.customerIndex})"
-                                >
-                                    ${
-                                        customer.status === "blocked"
-                                            ? "Activate"
-                                            : "Block"
-                                    }
-                                </button>
-
-                            </div>
-
-                        </td>
-
-                    `;
-
-
-                    tbody.appendChild(row);
+                    }
 
                 }
-            );
+
+
+                const isBlocked =
+                    customer.status === "blocked";
+
+
+                const row =
+                    document.createElement("tr");
+
+
+                row.innerHTML = `
+
+                    <td>
+
+                        <div class="customer-info">
+
+                            <div class="customer-avatar">
+                                ${escapeHtml(
+                                    getInitials(name)
+                                )}
+                            </div>
+
+                            <div>
+
+                                <div class="customer-name">
+                                    ${escapeHtml(name)}
+                                </div>
+
+                                <div class="customer-email">
+                                    ${escapeHtml(email)}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="customer-phone">
+                            ${escapeHtml(phone)}
+                        </div>
+
+                    </td>
+
+
+                    <td>
+                        <strong>
+                            ${customer.orderCount}
+                        </strong>
+                    </td>
+
+
+                    <td>
+
+                        <span class="amount">
+                            ${formatMoney(
+                                customer.totalSpent
+                            )}
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="status ${
+                            isBlocked
+                                ? "blocked"
+                                : "active"
+                        }">
+
+                            ${
+                                isBlocked
+                                    ? "Blocked"
+                                    : "Active"
+                            }
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+                        ${escapeHtml(joined)}
+                    </td>
+
+
+                    <td>
+
+                        <div class="action-group">
+
+                            <button
+                                type="button"
+                                class="action-btn"
+                                data-action="view"
+                                data-index="${customer.customerIndex}"
+                            >
+                                View
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="action-btn danger"
+                                data-action="toggle"
+                                data-index="${customer.customerIndex}"
+                            >
+                                ${
+                                    isBlocked
+                                        ? "Activate"
+                                        : "Block"
+                                }
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                `;
+
+
+                tbody.appendChild(row);
+
+            });
 
         }
 
@@ -1505,9 +1825,9 @@
     }
 
 
-    /* =========================================
+    /* =========================
        PAGINATION
-    ========================================= */
+    ========================= */
 
     function renderPagination() {
 
@@ -1534,12 +1854,13 @@
             );
 
 
+        buttons.innerHTML = "";
+
+
         if (!total) {
 
             info.textContent =
                 "Showing 0 customers";
-
-            buttons.innerHTML = "";
 
             return;
 
@@ -1563,9 +1884,6 @@
             `Showing ${start}-${end} of ${total} customers`;
 
 
-        buttons.innerHTML = "";
-
-
         const previous =
             document.createElement("button");
 
@@ -1573,26 +1891,27 @@
         previous.className =
             "page-btn";
 
-
         previous.textContent =
             "‹";
-
 
         previous.disabled =
             currentPage === 1;
 
 
-        previous.onclick = () => {
+        previous.addEventListener(
+            "click",
+            () => {
 
-            if (currentPage > 1) {
+                if (currentPage > 1) {
 
-                currentPage--;
+                    currentPage--;
 
-                renderCustomers();
+                    renderCustomers();
+
+                }
 
             }
-
-        };
+        );
 
 
         buttons.appendChild(previous);
@@ -1604,40 +1923,6 @@
             page++
         ) {
 
-            if (
-                totalPages > 7 &&
-                page > 3 &&
-                page < totalPages - 2 &&
-                Math.abs(page - currentPage) > 1
-            ) {
-
-                if (
-                    page === 4 ||
-                    page === totalPages - 3
-                ) {
-
-                    const dots =
-                        document.createElement(
-                            "span"
-                        );
-
-                    dots.textContent = "...";
-
-                    dots.style.padding =
-                        "7px";
-
-                    dots.style.color =
-                        "#697280";
-
-                    buttons.appendChild(dots);
-
-                }
-
-                continue;
-
-            }
-
-
             const pageButton =
                 document.createElement(
                     "button"
@@ -1648,9 +1933,7 @@
                 "page-btn";
 
 
-            if (
-                page === currentPage
-            ) {
+            if (page === currentPage) {
 
                 pageButton.classList.add(
                     "active"
@@ -1663,13 +1946,16 @@
                 page;
 
 
-            pageButton.onclick = () => {
+            pageButton.addEventListener(
+                "click",
+                () => {
 
-                currentPage = page;
+                    currentPage = page;
 
-                renderCustomers();
+                    renderCustomers();
 
-            };
+                }
+            );
 
 
             buttons.appendChild(
@@ -1686,29 +1972,30 @@
         next.className =
             "page-btn";
 
-
         next.textContent =
             "›";
-
 
         next.disabled =
             currentPage === totalPages;
 
 
-        next.onclick = () => {
+        next.addEventListener(
+            "click",
+            () => {
 
-            if (
-                currentPage <
-                totalPages
-            ) {
+                if (
+                    currentPage <
+                    totalPages
+                ) {
 
-                currentPage++;
+                    currentPage++;
 
-                renderCustomers();
+                    renderCustomers();
+
+                }
 
             }
-
-        };
+        );
 
 
         buttons.appendChild(next);
@@ -1716,9 +2003,9 @@
     }
 
 
-    /* =========================================
+    /* =========================
        VIEW CUSTOMER
-    ========================================= */
+    ========================= */
 
     function viewCustomer(index) {
 
@@ -1737,6 +2024,12 @@
         const name =
             customer.name ||
             customer.full_name ||
+            [
+                customer.first_name,
+                customer.last_name
+            ]
+            .filter(Boolean)
+            .join(" ") ||
             "Customer";
 
 
@@ -1750,12 +2043,27 @@
             "No phone";
 
 
-        const joined =
-            customer.joinedAt
-                ? new Date(
+        let joined =
+            "Not available";
+
+
+        if (customer.joinedAt) {
+
+            const date =
+                new Date(
                     customer.joinedAt
-                  ).toLocaleString("en-BD")
-                : "Not available";
+                );
+
+            if (!Number.isNaN(date.getTime())) {
+
+                joined =
+                    date.toLocaleString(
+                        "en-BD"
+                    );
+
+            }
+
+        }
 
 
         const details =
@@ -1796,7 +2104,9 @@
             <div class="detail-grid">
 
                 <div class="detail-item">
+
                     <span>Status</span>
+
                     <strong>
                         ${
                             customer.status === "blocked"
@@ -1804,32 +2114,42 @@
                                 : "Active"
                         }
                     </strong>
+
                 </div>
 
 
                 <div class="detail-item">
+
                     <span>Total Orders</span>
+
                     <strong>
                         ${customer.orderCount}
                     </strong>
+
                 </div>
 
 
                 <div class="detail-item">
+
                     <span>Total Spent</span>
+
                     <strong>
                         ${formatMoney(
                             customer.totalSpent
                         )}
                     </strong>
+
                 </div>
 
 
                 <div class="detail-item">
+
                     <span>Joined</span>
+
                     <strong>
-                        ${joined}
+                        ${escapeHtml(joined)}
                     </strong>
+
                 </div>
 
             </div>
@@ -1837,18 +2157,25 @@
         `;
 
 
-        document
-            .getElementById(
+        const modal =
+            document.getElementById(
                 "customerModal"
-            )
-            .classList.add("show");
+            );
+
+
+        modal.classList.add("show");
+
+        modal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
 
     }
 
 
-    /* =========================================
-       BLOCK / ACTIVATE
-    ========================================= */
+    /* =========================
+       TOGGLE STATUS
+    ========================= */
 
     function toggleCustomerStatus(index) {
 
@@ -1898,10 +2225,15 @@
             next;
 
 
-        localStorage.setItem(
-            USERS_KEY,
-            JSON.stringify(users)
-        );
+        if (!saveUsers(users)) {
+
+            alert(
+                "Unable to save customer status."
+            );
+
+            return;
+
+        }
 
 
         loadCustomers();
@@ -1916,9 +2248,9 @@
     }
 
 
-    /* =========================================
+    /* =========================
        EXPORT CSV
-    ========================================= */
+    ========================= */
 
     function exportCSV() {
 
@@ -1951,6 +2283,12 @@
                     const name =
                         customer.name ||
                         customer.full_name ||
+                        [
+                            customer.first_name,
+                            customer.last_name
+                        ]
+                        .filter(Boolean)
+                        .join(" ") ||
                         "Customer";
 
 
@@ -1986,27 +2324,25 @@
             );
 
 
-        const csv = [
+        const csv =
+            [headers, ...rows]
+                .map(row =>
+                    row
+                        .map(value => {
 
-            headers,
+                            const text =
+                                String(value ?? "")
+                                    .replace(
+                                        /"/g,
+                                        '""'
+                                    );
 
-            ...rows
+                            return `"${text}"`;
 
-        ]
-
-        .map(row =>
-            row.map(value => {
-
-                const text =
-                    String(value)
-                    .replace(/"/g, '""');
-
-                return `"${text}"`;
-
-            }).join(",")
-        )
-
-        .join("\n");
+                        })
+                        .join(",")
+                )
+                .join("\n");
 
 
         const blob =
@@ -2030,7 +2366,7 @@
         link.href = url;
 
         link.download =
-            "alamin-shop-customers.csv";
+            "shopnext-customers.csv";
 
 
         document.body.appendChild(link);
@@ -2044,17 +2380,19 @@
     }
 
 
-    /* =========================================
+    /* =========================
        LOAD
-    ========================================= */
+    ========================= */
 
     function loadCustomers() {
 
         allCustomers =
             buildCustomers();
 
+
         filteredCustomers =
             [...allCustomers];
+
 
         renderStats();
 
@@ -2063,51 +2401,115 @@
     }
 
 
-    /* =========================================
-       EVENTS
-    ========================================= */
+    /* =========================
+       MOBILE SIDEBAR
+    ========================= */
 
-    document
-        .getElementById(
-            "customerSearch"
-        )
-        .addEventListener(
+    function openSidebar() {
+
+        document
+            .getElementById("adminSidebar")
+            .classList.add("open");
+
+        document
+            .getElementById("sidebarOverlay")
+            .classList.add("show");
+
+    }
+
+
+    function closeSidebar() {
+
+        document
+            .getElementById("adminSidebar")
+            .classList.remove("open");
+
+        document
+            .getElementById("sidebarOverlay")
+            .classList.remove("show");
+
+    }
+
+
+    /* =========================
+       INIT
+    ========================= */
+
+    function init() {
+
+        const search =
+            document.getElementById(
+                "customerSearch"
+            );
+
+
+        const statusFilter =
+            document.getElementById(
+                "customerStatusFilter"
+            );
+
+
+        const resetBtn =
+            document.getElementById(
+                "resetBtn"
+            );
+
+
+        const exportBtn =
+            document.getElementById(
+                "exportBtn"
+            );
+
+
+        const tbody =
+            document.getElementById(
+                "customerTableBody"
+            );
+
+
+        const closeModal =
+            document.getElementById(
+                "closeModal"
+            );
+
+
+        const customerModal =
+            document.getElementById(
+                "customerModal"
+            );
+
+
+        const mobileMenuBtn =
+            document.getElementById(
+                "mobileMenuBtn"
+            );
+
+
+        const sidebarOverlay =
+            document.getElementById(
+                "sidebarOverlay"
+            );
+
+
+        search.addEventListener(
             "input",
             applyFilters
         );
 
 
-    document
-        .getElementById(
-            "customerStatusFilter"
-        )
-        .addEventListener(
+        statusFilter.addEventListener(
             "change",
             applyFilters
         );
 
 
-    document
-        .getElementById(
-            "resetBtn"
-        )
-        .addEventListener(
+        resetBtn.addEventListener(
             "click",
             () => {
 
-                document
-                    .getElementById(
-                        "customerSearch"
-                    )
-                    .value = "";
+                search.value = "";
 
-
-                document
-                    .getElementById(
-                        "customerStatusFilter"
-                    )
-                    .value = "all";
-
+                statusFilter.value = "all";
 
                 applyFilters();
 
@@ -2115,52 +2517,49 @@
         );
 
 
-    document
-        .getElementById(
-            "exportBtn"
-        )
-        .addEventListener(
+        exportBtn.addEventListener(
             "click",
             exportCSV
         );
 
 
-    document
-        .getElementById(
-            "closeModal"
-        )
-        .addEventListener(
-            "click",
-            () => {
-
-                document
-                    .getElementById(
-                        "customerModal"
-                    )
-                    .classList.remove(
-                        "show"
-                    );
-
-            }
-        );
-
-
-    document
-        .getElementById(
-            "customerModal"
-        )
-        .addEventListener(
+        tbody.addEventListener(
             "click",
             event => {
 
+                const button =
+                    event.target.closest(
+                        "button[data-action]"
+                    );
+
+
+                if (!button) {
+                    return;
+                }
+
+
+                const index =
+                    Number(
+                        button.dataset.index
+                    );
+
+
                 if (
-                    event.target.id ===
-                    "customerModal"
+                    button.dataset.action ===
+                    "view"
                 ) {
 
-                    event.currentTarget
-                        .classList
-                        .remove("show");
+                    viewCustomer(index);
+
+                }
+
+
+                if (
+                    button.dataset.action ===
+                    "toggle"
+                ) {
+
+                    toggleCustomerStatus(index);
 
                 }
 
@@ -2168,15 +2567,118 @@
         );
 
 
-    /* =========================================
-       START
-    ========================================= */
+        closeModal.addEventListener(
+            "click",
+            () => {
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        loadCustomers
-    );
+                customerModal.classList.remove(
+                    "show"
+                );
 
+                customerModal.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+            }
+        );
+
+
+        customerModal.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target ===
+                    customerModal
+                ) {
+
+                    customerModal.classList.remove(
+                        "show"
+                    );
+
+                    customerModal.setAttribute(
+                        "aria-hidden",
+                        "true"
+                    );
+
+                }
+
+            }
+        );
+
+
+        mobileMenuBtn.addEventListener(
+            "click",
+            openSidebar
+        );
+
+
+        sidebarOverlay.addEventListener(
+            "click",
+            closeSidebar
+        );
+
+
+        document
+            .querySelectorAll(".admin-nav a")
+            .forEach(link => {
+
+                link.addEventListener(
+                    "click",
+                    closeSidebar
+                );
+
+            });
+
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    customerModal.classList.remove(
+                        "show"
+                    );
+
+                    customerModal.setAttribute(
+                        "aria-hidden",
+                        "true"
+                    );
+
+                    closeSidebar();
+
+                }
+
+            }
+        );
+
+
+        loadCustomers();
+
+    }
+
+
+    if (
+        document.readyState ===
+        "loading"
+    ) {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            init
+        );
+
+    } else {
+
+        init();
+
+    }
+
+})();
 </script>
 
 </body>
