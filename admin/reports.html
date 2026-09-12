@@ -1,0 +1,2066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports & Analytics - Alamin Shop Admin</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        :root {
+            --admin-bg: #080a0d;
+            --admin-card: #111419;
+            --admin-card-2: #15191f;
+            --admin-border: #252a32;
+            --admin-text: #f5f7fa;
+            --admin-muted: #8f98a7;
+            --admin-green: #22c55e;
+            --admin-red: #ef4444;
+            --admin-yellow: #f59e0b;
+            --admin-blue: #3b82f6;
+            --admin-purple: #8b5cf6;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--admin-bg);
+            color: var(--admin-text);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        .admin-layout {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .admin-sidebar {
+            width: 250px;
+            min-height: 100vh;
+            background: #0d1014;
+            border-right: 1px solid var(--admin-border);
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .admin-logo {
+            padding: 25px 20px;
+            border-bottom: 1px solid var(--admin-border);
+        }
+
+        .admin-logo h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .admin-logo span {
+            color: #9ca3af;
+            font-size: 12px;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .admin-nav {
+            padding: 18px 12px;
+        }
+
+        .nav-title {
+            color: #697384;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 10px 12px;
+        }
+
+        .admin-nav a {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 11px 13px;
+            border-radius: 9px;
+            color: #aeb6c3;
+            font-size: 14px;
+            margin-bottom: 4px;
+            transition: 0.2s;
+        }
+
+        .admin-nav a:hover {
+            background: #171b21;
+            color: #fff;
+        }
+
+        .admin-nav a.active {
+            background: #1b2028;
+            color: #fff;
+            border: 1px solid #2c333d;
+        }
+
+        .nav-icon {
+            width: 22px;
+            text-align: center;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .admin-main {
+            width: calc(100% - 250px);
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .admin-topbar {
+            height: 72px;
+            border-bottom: 1px solid var(--admin-border);
+            background: rgba(8, 10, 13, 0.96);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar-title h1 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .topbar-title p {
+            margin: 5px 0 0;
+            color: var(--admin-muted);
+            font-size: 12px;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #20252d;
+            border: 1px solid #303640;
+            font-weight: bold;
+        }
+
+        .admin-content {
+            padding: 28px;
+        }
+
+        /* =========================
+           FILTER
+        ========================= */
+
+        .report-toolbar {
+            background: var(--admin-card);
+            border: 1px solid var(--admin-border);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            align-items: end;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .filter-field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .filter-field label {
+            color: var(--admin-muted);
+            font-size: 12px;
+        }
+
+        .filter-field input,
+        .filter-field select {
+            height: 40px;
+            padding: 0 12px;
+            background: #0b0e12;
+            border: 1px solid var(--admin-border);
+            border-radius: 8px;
+            color: #fff;
+            outline: none;
+        }
+
+        .filter-field input:focus,
+        .filter-field select:focus {
+            border-color: #4b5563;
+        }
+
+        .admin-btn {
+            border: 1px solid var(--admin-border);
+            background: #171b21;
+            color: #fff;
+            height: 40px;
+            padding: 0 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .admin-btn:hover {
+            background: #222831;
+        }
+
+        .admin-btn.primary {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: var(--admin-card);
+            border: 1px solid var(--admin-border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .stat-label {
+            color: var(--admin-muted);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            font-size: 27px;
+            font-weight: 700;
+        }
+
+        .stat-small {
+            color: #6f7887;
+            font-size: 12px;
+            margin-top: 7px;
+        }
+
+        /* =========================
+           GRID
+        ========================= */
+
+        .report-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .report-card {
+            background: var(--admin-card);
+            border: 1px solid var(--admin-border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .report-card-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--admin-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .report-card-header h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .report-card-header span {
+            color: var(--admin-muted);
+            font-size: 12px;
+        }
+
+        .report-card-body {
+            padding: 20px;
+        }
+
+        /* =========================
+           SALES CHART
+        ========================= */
+
+        .chart-area {
+            height: 280px;
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            padding-top: 25px;
+            overflow-x: auto;
+        }
+
+        .chart-item {
+            min-width: 45px;
+            flex: 1;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            position: relative;
+        }
+
+        .chart-bar {
+            width: 70%;
+            min-height: 3px;
+            background: #3b82f6;
+            border-radius: 6px 6px 2px 2px;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+        }
+
+        .chart-value {
+            position: absolute;
+            top: -21px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: #aeb6c3;
+            white-space: nowrap;
+        }
+
+        .chart-label {
+            position: absolute;
+            bottom: -23px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: #707988;
+            white-space: nowrap;
+        }
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status-row {
+            margin-bottom: 17px;
+        }
+
+        .status-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 7px;
+            font-size: 13px;
+        }
+
+        .status-top span:last-child {
+            color: var(--admin-muted);
+        }
+
+        .progress {
+            height: 7px;
+            background: #20252c;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 20px;
+            background: #3b82f6;
+        }
+
+        .progress-fill.green {
+            background: #22c55e;
+        }
+
+        .progress-fill.yellow {
+            background: #f59e0b;
+        }
+
+        .progress-fill.red {
+            background: #ef4444;
+        }
+
+        .progress-fill.purple {
+            background: #8b5cf6;
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .report-table th {
+            text-align: left;
+            color: #707988;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--admin-border);
+            white-space: nowrap;
+        }
+
+        .report-table td {
+            padding: 14px 18px;
+            border-bottom: 1px solid #1c2026;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .report-table tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .product-name {
+            font-weight: 600;
+        }
+
+        .muted {
+            color: var(--admin-muted);
+        }
+
+        .rank {
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            background: #1b2027;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        /* =========================
+           PAYMENT
+        ========================= */
+
+        .payment-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 13px 0;
+            border-bottom: 1px solid #1c2026;
+        }
+
+        .payment-box:last-child {
+            border-bottom: 0;
+        }
+
+        .payment-name {
+            font-size: 13px;
+        }
+
+        .payment-count {
+            color: var(--admin-muted);
+            font-size: 11px;
+            margin-top: 3px;
+        }
+
+        .payment-total {
+            font-weight: 600;
+        }
+
+        /* =========================
+           EMPTY
+        ========================= */
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--admin-muted);
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .report-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 800px) {
+            .admin-sidebar {
+                width: 210px;
+            }
+
+            .admin-main {
+                width: calc(100% - 210px);
+                margin-left: 210px;
+            }
+
+            .admin-content {
+                padding: 18px;
+            }
+
+            .admin-topbar {
+                padding: 0 18px;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .admin-sidebar {
+                position: static;
+                width: 100%;
+                min-height: auto;
+            }
+
+            .admin-layout {
+                display: block;
+            }
+
+            .admin-main {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .admin-sidebar .admin-nav {
+                display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-topbar {
+                position: static;
+            }
+
+            .report-toolbar {
+                align-items: stretch;
+            }
+
+            .filter-field {
+                width: 100%;
+            }
+
+            .filter-field input,
+            .filter-field select,
+            .admin-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="admin-sidebar">
+
+        <div class="admin-logo">
+            <h2>Alamin Shop</h2>
+            <span>Admin Dashboard</span>
+        </div>
+
+        <nav class="admin-nav">
+
+            <div class="nav-title">Main</div>
+
+            <a href="index.html">
+                <span class="nav-icon">▣</span>
+                Dashboard
+            </a>
+
+            <a href="orders.html">
+                <span class="nav-icon">🛒</span>
+                Orders
+            </a>
+
+            <a href="products.html">
+                <span class="nav-icon">📦</span>
+                Products
+            </a>
+
+            <a href="inventory.html">
+                <span class="nav-icon">▤</span>
+                Inventory
+            </a>
+
+            <a href="categories.html">
+                <span class="nav-icon">▦</span>
+                Categories
+            </a>
+
+            <a href="customers.html">
+                <span class="nav-icon">👥</span>
+                Customers
+            </a>
+
+            <div class="nav-title">Marketing</div>
+
+            <a href="coupons.html">
+                <span class="nav-icon">🏷</span>
+                Coupons
+            </a>
+
+            <a href="reports.html" class="active">
+                <span class="nav-icon">📊</span>
+                Reports
+            </a>
+
+            <div class="nav-title">Store</div>
+
+            <a href="../index.html">
+                <span class="nav-icon">↗</span>
+                View Store
+            </a>
+
+            <a href="../account.html">
+                <span class="nav-icon">👤</span>
+                My Account
+            </a>
+
+            <a href="../login.html">
+                <span class="nav-icon">⇥</span>
+                Logout
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main class="admin-main">
+
+        <header class="admin-topbar">
+
+            <div class="topbar-title">
+                <h1>Reports & Analytics</h1>
+                <p>Monitor your store performance</p>
+            </div>
+
+            <div class="admin-user">
+                <div>
+                    <strong>Admin</strong>
+                </div>
+
+                <div class="admin-avatar">
+                    A
+                </div>
+            </div>
+
+        </header>
+
+
+        <section class="admin-content">
+
+            <!-- =========================
+                 FILTER
+            ========================== -->
+
+            <div class="report-toolbar">
+
+                <div class="filter-field">
+                    <label>From Date</label>
+                    <input type="date" id="fromDate">
+                </div>
+
+                <div class="filter-field">
+                    <label>To Date</label>
+                    <input type="date" id="toDate">
+                </div>
+
+                <div class="filter-field">
+                    <label>Order Status</label>
+
+                    <select id="statusFilter">
+
+                        <option value="all">All Status</option>
+                        <option value="New">New</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Processing">Processing</option>
+                        <option value="Packed">Packed</option>
+                        <option value="Shipped">Shipped</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Cancelled">Cancelled</option>
+                        <option value="Returned">Returned</option>
+                        <option value="Refunded">Refunded</option>
+
+                    </select>
+                </div>
+
+                <button class="admin-btn primary" id="applyFilter">
+                    Apply Filter
+                </button>
+
+                <button class="admin-btn" id="resetFilter">
+                    Reset
+                </button>
+
+                <button class="admin-btn" id="exportReport">
+                    Export CSV
+                </button>
+
+            </div>
+
+
+            <!-- =========================
+                 STATS
+            ========================== -->
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-label">
+                        Total Sales
+                    </div>
+
+                    <div class="stat-value" id="totalSales">
+                        ৳0
+                    </div>
+
+                    <div class="stat-small">
+                        From selected period
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-label">
+                        Total Orders
+                    </div>
+
+                    <div class="stat-value" id="totalOrders">
+                        0
+                    </div>
+
+                    <div class="stat-small">
+                        Orders in selected period
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-label">
+                        Average Order Value
+                    </div>
+
+                    <div class="stat-value" id="averageOrder">
+                        ৳0
+                    </div>
+
+                    <div class="stat-small">
+                        Average revenue per order
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-label">
+                        Customers
+                    </div>
+
+                    <div class="stat-value" id="totalCustomers">
+                        0
+                    </div>
+
+                    <div class="stat-small">
+                        Unique customers
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 SALES + STATUS
+            ========================== -->
+
+            <div class="report-grid">
+
+                <div class="report-card">
+
+                    <div class="report-card-header">
+                        <h3>Sales Overview</h3>
+                        <span>Daily sales</span>
+                    </div>
+
+                    <div class="report-card-body">
+
+                        <div class="chart-area" id="salesChart">
+                            <div class="empty-state">
+                                No sales data available
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="report-card">
+
+                    <div class="report-card-header">
+                        <h3>Order Status</h3>
+                        <span>Order distribution</span>
+                    </div>
+
+                    <div class="report-card-body" id="statusReport">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 TOP PRODUCTS + PAYMENT
+            ========================== -->
+
+            <div class="report-grid">
+
+                <div class="report-card">
+
+                    <div class="report-card-header">
+                        <h3>Top Selling Products</h3>
+                        <span>By quantity sold</span>
+                    </div>
+
+                    <div class="table-wrapper">
+
+                        <table class="report-table">
+
+                            <thead>
+
+                                <tr>
+                                    <th>#</th>
+                                    <th>Product</th>
+                                    <th>Qty Sold</th>
+                                    <th>Revenue</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="topProducts">
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+                <div class="report-card">
+
+                    <div class="report-card-header">
+                        <h3>Payment Methods</h3>
+                        <span>Payment breakdown</span>
+                    </div>
+
+                    <div class="report-card-body" id="paymentReport">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 DAILY SUMMARY
+            ========================== -->
+
+            <div class="report-card">
+
+                <div class="report-card-header">
+
+                    <h3>Daily Sales Report</h3>
+
+                    <span id="dailyReportCount">
+                        0 days
+                    </span>
+
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table class="report-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Date</th>
+                                <th>Orders</th>
+                                <th>Items Sold</th>
+                                <th>Sales</th>
+                                <th>Average Order</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="dailySalesTable">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="../script.js"></script>
+
+<script>
+
+    /* =========================================
+       ALAMIN SHOP REPORTS
+    ========================================== */
+
+    let allOrders = [];
+    let filteredOrders = [];
+
+
+    /* =========================================
+       HELPERS
+    ========================================== */
+
+    function getOrders() {
+
+        try {
+
+            return JSON.parse(
+                localStorage.getItem("shopnest_orders") || "[]"
+            );
+
+        } catch (error) {
+
+            return [];
+
+        }
+
+    }
+
+
+    function money(amount) {
+
+        return "৳" + Number(amount || 0).toLocaleString("en-BD");
+
+    }
+
+
+    function escapeHtml(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    function getOrderDate(order) {
+
+        if (!order.createdAt) {
+            return null;
+        }
+
+        const date = new Date(order.createdAt);
+
+        if (Number.isNaN(date.getTime())) {
+            return null;
+        }
+
+        return date;
+
+    }
+
+
+    function getOrderTotal(order) {
+
+        return Number(
+            order.total ||
+            order.grandTotal ||
+            0
+        );
+
+    }
+
+
+    function getItems(order) {
+
+        return Array.isArray(order.items)
+            ? order.items
+            : [];
+
+    }
+
+
+    /* =========================================
+       DEFAULT DATES
+    ========================================== */
+
+    function setDefaultDates() {
+
+        const today = new Date();
+
+        const previousDate = new Date();
+
+        previousDate.setDate(
+            today.getDate() - 29
+        );
+
+
+        document.getElementById("fromDate").value =
+            formatInputDate(previousDate);
+
+        document.getElementById("toDate").value =
+            formatInputDate(today);
+
+    }
+
+
+    function formatInputDate(date) {
+
+        const year = date.getFullYear();
+
+        const month = String(
+            date.getMonth() + 1
+        ).padStart(2, "0");
+
+        const day = String(
+            date.getDate()
+        ).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
+
+    }
+
+
+    /* =========================================
+       FILTER
+    ========================================== */
+
+    function applyFilters() {
+
+        const fromValue =
+            document.getElementById("fromDate").value;
+
+        const toValue =
+            document.getElementById("toDate").value;
+
+        const status =
+            document.getElementById("statusFilter").value;
+
+
+        let fromDate = null;
+        let toDate = null;
+
+
+        if (fromValue) {
+
+            fromDate = new Date(
+                fromValue + "T00:00:00"
+            );
+
+        }
+
+
+        if (toValue) {
+
+            toDate = new Date(
+                toValue + "T23:59:59"
+            );
+
+        }
+
+
+        filteredOrders = allOrders.filter(order => {
+
+            const orderDate = getOrderDate(order);
+
+            if (!orderDate) {
+                return false;
+            }
+
+
+            if (fromDate && orderDate < fromDate) {
+                return false;
+            }
+
+
+            if (toDate && orderDate > toDate) {
+                return false;
+            }
+
+
+            if (
+                status !== "all" &&
+                String(order.status || "New") !== status
+            ) {
+
+                return false;
+
+            }
+
+
+            return true;
+
+        });
+
+
+        renderReports();
+
+    }
+
+
+    /* =========================================
+       STATS
+    ========================================== */
+
+    function renderStats() {
+
+        const orders = filteredOrders;
+
+
+        const sales = orders.reduce(
+            (sum, order) => {
+                return sum + getOrderTotal(order);
+            },
+            0
+        );
+
+
+        const average =
+            orders.length
+                ? sales / orders.length
+                : 0;
+
+
+        const customers = new Set();
+
+
+        orders.forEach(order => {
+
+            const email =
+                order.customer?.email ||
+                order.email ||
+                "";
+
+            const phone =
+                order.customer?.phone ||
+                order.phone ||
+                "";
+
+
+            const identifier =
+                email.toLowerCase() ||
+                phone;
+
+
+            if (identifier) {
+                customers.add(identifier);
+            }
+
+        });
+
+
+        document.getElementById("totalSales").textContent =
+            money(sales);
+
+
+        document.getElementById("totalOrders").textContent =
+            orders.length;
+
+
+        document.getElementById("averageOrder").textContent =
+            money(Math.round(average));
+
+
+        document.getElementById("totalCustomers").textContent =
+            customers.size;
+
+    }
+
+
+    /* =========================================
+       SALES CHART
+    ========================================== */
+
+    function renderSalesChart() {
+
+        const container =
+            document.getElementById("salesChart");
+
+
+        if (!filteredOrders.length) {
+
+            container.innerHTML = `
+                <div class="empty-state">
+                    No sales data available
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        const daily = {};
+
+
+        filteredOrders.forEach(order => {
+
+            const date =
+                getOrderDate(order);
+
+            if (!date) {
+                return;
+            }
+
+
+            const key =
+                formatInputDate(date);
+
+
+            if (!daily[key]) {
+                daily[key] = 0;
+            }
+
+
+            daily[key] += getOrderTotal(order);
+
+        });
+
+
+        const entries =
+            Object.entries(daily)
+                .sort((a, b) =>
+                    a[0].localeCompare(b[0])
+                );
+
+
+        const lastEntries =
+            entries.slice(-14);
+
+
+        const maxValue =
+            Math.max(
+                ...lastEntries.map(item => item[1]),
+                1
+            );
+
+
+        container.innerHTML =
+            lastEntries.map(([date, value]) => {
+
+                const height =
+                    Math.max(
+                        3,
+                        (value / maxValue) * 100
+                    );
+
+
+                const shortDate =
+                    new Date(
+                        date + "T00:00:00"
+                    ).toLocaleDateString(
+                        "en-BD",
+                        {
+                            day: "numeric",
+                            month: "short"
+                        }
+                    );
+
+
+                return `
+
+                    <div class="chart-item">
+
+                        <div
+                            class="chart-bar"
+                            style="height:${height}%"
+                        >
+
+                            <span class="chart-value">
+                                ${money(value)}
+                            </span>
+
+                        </div>
+
+                        <span class="chart-label">
+                            ${escapeHtml(shortDate)}
+                        </span>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+    }
+
+
+    /* =========================================
+       ORDER STATUS
+    ========================================== */
+
+    function renderStatusReport() {
+
+        const container =
+            document.getElementById("statusReport");
+
+
+        const statuses = [
+            {
+                name: "New",
+                className: ""
+            },
+            {
+                name: "Confirmed",
+                className: ""
+            },
+            {
+                name: "Processing",
+                className: ""
+            },
+            {
+                name: "Packed",
+                className: "yellow"
+            },
+            {
+                name: "Shipped",
+                className: ""
+            },
+            {
+                name: "Delivered",
+                className: "green"
+            },
+            {
+                name: "Cancelled",
+                className: "red"
+            },
+            {
+                name: "Returned",
+                className: "purple"
+            },
+            {
+                name: "Refunded",
+                className: "red"
+            }
+        ];
+
+
+        if (!filteredOrders.length) {
+
+            container.innerHTML = `
+                <div class="empty-state">
+                    No order data available
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        const total =
+            filteredOrders.length;
+
+
+        container.innerHTML =
+            statuses.map(item => {
+
+                const count =
+                    filteredOrders.filter(
+                        order =>
+                            String(
+                                order.status || "New"
+                            ) === item.name
+                    ).length;
+
+
+                const percent =
+                    total
+                        ? (count / total) * 100
+                        : 0;
+
+
+                return `
+
+                    <div class="status-row">
+
+                        <div class="status-top">
+
+                            <span>
+                                ${item.name}
+                            </span>
+
+                            <span>
+                                ${count} (${percent.toFixed(1)}%)
+                            </span>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-fill ${item.className}"
+                                style="width:${percent}%"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+    }
+
+
+    /* =========================================
+       TOP PRODUCTS
+    ========================================== */
+
+    function renderTopProducts() {
+
+        const tbody =
+            document.getElementById("topProducts");
+
+
+        const productMap = {};
+
+
+        filteredOrders.forEach(order => {
+
+            getItems(order).forEach(item => {
+
+                const id =
+                    item.id ||
+                    item.productId ||
+                    item.name;
+
+
+                if (!id) {
+                    return;
+                }
+
+
+                if (!productMap[id]) {
+
+                    productMap[id] = {
+                        name:
+                            item.name ||
+                            "Unknown Product",
+
+                        quantity: 0,
+
+                        revenue: 0
+
+                    };
+
+                }
+
+
+                const quantity =
+                    Number(
+                        item.quantity ||
+                        item.qty ||
+                        1
+                    );
+
+
+                const price =
+                    Number(
+                        item.price ||
+                        item.salePrice ||
+                        0
+                    );
+
+
+                productMap[id].quantity +=
+                    quantity;
+
+
+                productMap[id].revenue +=
+                    quantity * price;
+
+            });
+
+        });
+
+
+        const products =
+            Object.values(productMap)
+                .sort(
+                    (a, b) =>
+                        b.quantity - a.quantity
+                )
+                .slice(0, 10);
+
+
+        if (!products.length) {
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="4">
+                        <div class="empty-state">
+                            No product sales available
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+            return;
+
+        }
+
+
+        tbody.innerHTML =
+            products.map((product, index) => {
+
+                return `
+
+                    <tr>
+
+                        <td>
+                            <span class="rank">
+                                ${index + 1}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="product-name">
+                                ${escapeHtml(product.name)}
+                            </span>
+                        </td>
+
+                        <td>
+                            ${product.quantity}
+                        </td>
+
+                        <td>
+                            ${money(product.revenue)}
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }).join("");
+
+    }
+
+
+    /* =========================================
+       PAYMENT REPORT
+    ========================================== */
+
+    function renderPaymentReport() {
+
+        const container =
+            document.getElementById("paymentReport");
+
+
+        const payments = {};
+
+
+        filteredOrders.forEach(order => {
+
+            const method =
+                order.paymentMethod ||
+                order.payment?.method ||
+                "Unknown";
+
+
+            if (!payments[method]) {
+
+                payments[method] = {
+                    count: 0,
+                    total: 0
+                };
+
+            }
+
+
+            payments[method].count++;
+
+            payments[method].total +=
+                getOrderTotal(order);
+
+        });
+
+
+        const entries =
+            Object.entries(payments)
+                .sort(
+                    (a, b) =>
+                        b[1].total - a[1].total
+                );
+
+
+        if (!entries.length) {
+
+            container.innerHTML = `
+                <div class="empty-state">
+                    No payment data available
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML =
+            entries.map(([method, data]) => {
+
+                return `
+
+                    <div class="payment-box">
+
+                        <div>
+
+                            <div class="payment-name">
+                                ${escapeHtml(method)}
+                            </div>
+
+                            <div class="payment-count">
+                                ${data.count} order(s)
+                            </div>
+
+                        </div>
+
+                        <div class="payment-total">
+                            ${money(data.total)}
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+    }
+
+
+    /* =========================================
+       DAILY SALES TABLE
+    ========================================== */
+
+    function renderDailySales() {
+
+        const tbody =
+            document.getElementById(
+                "dailySalesTable"
+            );
+
+
+        const daily = {};
+
+
+        filteredOrders.forEach(order => {
+
+            const date =
+                getOrderDate(order);
+
+            if (!date) {
+                return;
+            }
+
+
+            const key =
+                formatInputDate(date);
+
+
+            if (!daily[key]) {
+
+                daily[key] = {
+                    orders: 0,
+                    items: 0,
+                    sales: 0
+                };
+
+            }
+
+
+            daily[key].orders++;
+
+            daily[key].sales +=
+                getOrderTotal(order);
+
+
+            getItems(order).forEach(item => {
+
+                daily[key].items +=
+                    Number(
+                        item.quantity ||
+                        item.qty ||
+                        1
+                    );
+
+            });
+
+        });
+
+
+        const entries =
+            Object.entries(daily)
+                .sort((a, b) =>
+                    b[0].localeCompare(a[0])
+                );
+
+
+        document.getElementById(
+            "dailyReportCount"
+        ).textContent =
+            `${entries.length} day(s)`;
+
+
+        if (!entries.length) {
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5">
+                        <div class="empty-state">
+                            No daily sales data available
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+            return;
+
+        }
+
+
+        tbody.innerHTML =
+            entries.map(([date, data]) => {
+
+                const average =
+                    data.orders
+                        ? data.sales / data.orders
+                        : 0;
+
+
+                const readableDate =
+                    new Date(
+                        date + "T00:00:00"
+                    ).toLocaleDateString(
+                        "en-BD",
+                        {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric"
+                        }
+                    );
+
+
+                return `
+
+                    <tr>
+
+                        <td>
+                            ${escapeHtml(readableDate)}
+                        </td>
+
+                        <td>
+                            ${data.orders}
+                        </td>
+
+                        <td>
+                            ${data.items}
+                        </td>
+
+                        <td>
+                            <strong>
+                                ${money(data.sales)}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${money(Math.round(average))}
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }).join("");
+
+    }
+
+
+    /* =========================================
+       RENDER EVERYTHING
+    ========================================== */
+
+    function renderReports() {
+
+        renderStats();
+
+        renderSalesChart();
+
+        renderStatusReport();
+
+        renderTopProducts();
+
+        renderPaymentReport();
+
+        renderDailySales();
+
+    }
+
+
+    /* =========================================
+       CSV EXPORT
+    ========================================== */
+
+    function exportCSV() {
+
+        if (!filteredOrders.length) {
+
+            alert(
+                "There is no report data to export."
+            );
+
+            return;
+
+        }
+
+
+        const rows = [
+
+            [
+                "Order ID",
+                "Date",
+                "Customer",
+                "Phone",
+                "Payment Method",
+                "Status",
+                "Total"
+            ]
+
+        ];
+
+
+        filteredOrders.forEach(order => {
+
+            const customer =
+                order.customer?.name ||
+                order.customerName ||
+                order.name ||
+                "Guest";
+
+
+            const phone =
+                order.customer?.phone ||
+                order.phone ||
+                "";
+
+
+            const date =
+                getOrderDate(order);
+
+
+            rows.push([
+
+                order.id || "",
+
+                date
+                    ? date.toLocaleString("en-BD")
+                    : "",
+
+                customer,
+
+                phone,
+
+                order.paymentMethod || "",
+
+                order.status || "New",
+
+                getOrderTotal(order)
+
+            ]);
+
+        });
+
+
+        const csv =
+            rows.map(row =>
+                row.map(value => {
+
+                    const text =
+                        String(value)
+                            .replace(/"/g, '""');
+
+                    return `"${text}"`;
+
+                }).join(",")
+
+            ).join("\n");
+
+
+        const blob =
+            new Blob(
+                [csv],
+                {
+                    type:
+                        "text/csv;charset=utf-8;"
+                }
+            );
+
+
+        const url =
+            URL.createObjectURL(blob);
+
+
+        const link =
+            document.createElement("a");
+
+
+        link.href = url;
+
+        link.download =
+            `alamin-shop-report-${Date.now()}.csv`;
+
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.remove();
+
+        URL.revokeObjectURL(url);
+
+    }
+
+
+    /* =========================================
+       RESET
+    ========================================== */
+
+    function resetFilters() {
+
+        setDefaultDates();
+
+        document.getElementById(
+            "statusFilter"
+        ).value = "all";
+
+
+        applyFilters();
+
+    }
+
+
+    /* =========================================
+       EVENTS
+    ========================================== */
+
+    document.getElementById(
+        "applyFilter"
+    ).addEventListener(
+        "click",
+        applyFilters
+    );
+
+
+    document.getElementById(
+        "resetFilter"
+    ).addEventListener(
+        "click",
+        resetFilters
+    );
+
+
+    document.getElementById(
+        "exportReport"
+    ).addEventListener(
+        "click",
+        exportCSV
+    );
+
+
+    /* =========================================
+       INIT
+    ========================================== */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            allOrders = getOrders();
+
+            setDefaultDates();
+
+            applyFilters();
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

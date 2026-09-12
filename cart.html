@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Shopping Cart - ShopNest</title>
+
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* =========================
+       CART PAGE
+    ========================== */
+
+    .cart-page {
+      padding: 60px 0 80px;
+    }
+
+    .cart-page-header {
+      margin-bottom: 30px;
+    }
+
+    .cart-page-header h1 {
+      color: #fff;
+      font-size: 34px;
+      margin: 0 0 8px;
+    }
+
+    .cart-page-header p {
+      color: #94a3b8;
+      margin: 0;
+    }
+
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 25px;
+      align-items: start;
+    }
+
+    /* =========================
+       CART ITEMS
+    ========================== */
+
+    .cart-items-box {
+      background: #101216;
+      border: 1px solid #272b33;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .cart-box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      padding: 20px 22px;
+      border-bottom: 1px solid #272b33;
+    }
+
+    .cart-box-header h2 {
+      margin: 0;
+      color: #fff;
+      font-size: 18px;
+    }
+
+    .clear-cart-btn {
+      border: none;
+      background: transparent;
+      color: #f87171;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .clear-cart-btn:hover {
+      color: #ef4444;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      gap: 18px;
+      align-items: center;
+      padding: 22px;
+      border-bottom: 1px solid #20242b;
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .cart-item-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 12px;
+      object-fit: cover;
+      background: #181b20;
+    }
+
+    .cart-item-info {
+      min-width: 0;
+    }
+
+    .cart-item-category {
+      color: #64748b;
+      font-size: 12px;
+      text-transform: capitalize;
+      margin-bottom: 6px;
+    }
+
+    .cart-item-name {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .cart-item-name:hover {
+      color: #cbd5e1;
+    }
+
+    .cart-item-price {
+      color: #e2e8f0;
+      font-size: 14px;
+    }
+
+    .cart-item-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    .cart-item-total {
+      color: #fff;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      border: 1px solid #30343d;
+      border-radius: 9px;
+      overflow: hidden;
+    }
+
+    .quantity-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: #181b20;
+      color: #fff;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .quantity-btn:hover {
+      background: #252932;
+    }
+
+    .quantity-number {
+      min-width: 42px;
+      height: 36px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #101216;
+      color: #fff;
+      font-size: 14px;
+      border-left: 1px solid #30343d;
+      border-right: 1px solid #30343d;
+    }
+
+    .remove-btn {
+      border: none;
+      background: transparent;
+      color: #64748b;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .remove-btn:hover {
+      color: #f87171;
+    }
+
+    /* =========================
+       EMPTY CART
+    ========================== */
+
+    .empty-cart {
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .empty-cart-icon {
+      font-size: 55px;
+      margin-bottom: 20px;
+    }
+
+    .empty-cart h2 {
+      color: #fff;
+      margin: 0 0 10px;
+    }
+
+    .empty-cart p {
+      color: #94a3b8;
+      margin: 0 0 25px;
+    }
+
+    .continue-shopping-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 20px;
+      background: #fff;
+      color: #000;
+      text-decoration: none;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    /* =========================
+       ORDER SUMMARY
+    ========================== */
+
+    .summary-box {
+      background: #101216;
+      border: 1px solid #272b33;
+      border-radius: 20px;
+      padding: 24px;
+      position: sticky;
+      top: 20px;
+    }
+
+    .summary-box h2 {
+      color: #fff;
+      margin: 0 0 22px;
+      font-size: 20px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      color: #94a3b8;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .summary-row strong {
+      color: #e2e8f0;
+    }
+
+    .summary-divider {
+      height: 1px;
+      background: #272b33;
+      margin: 20px 0;
+    }
+
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .summary-total span {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .summary-total strong {
+      color: #fff;
+      font-size: 24px;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      min-height: 50px;
+      border: none;
+      border-radius: 10px;
+      background: #22c55e;
+      color: #06130a;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .checkout-btn:hover {
+      background: #16a34a;
+      color: #fff;
+    }
+
+    .checkout-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .secure-payment {
+      text-align: center;
+      color: #64748b;
+      font-size: 12px;
+      margin-top: 15px;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media (max-width: 900px) {
+
+      .cart-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-box {
+        position: static;
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
+      .cart-page {
+        padding: 35px 0 60px;
+      }
+
+      .cart-page-header h1 {
+        font-size: 28px;
+      }
+
+      .cart-item {
+        grid-template-columns: 75px 1fr;
+        gap: 14px;
+        padding: 16px;
+      }
+
+      .cart-item-image {
+        width: 75px;
+        height: 75px;
+      }
+
+      .cart-item-right {
+        grid-column: 1 / -1;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .cart-item-total {
+        font-size: 15px;
+      }
+
+      .cart-box-header {
+        padding: 16px;
+      }
+
+      .summary-box {
+        padding: 20px;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       HEADER
+  ========================== -->
+
+  <header class="header">
+
+    <div class="container header-inner">
+
+      <a href="index.html" class="logo">
+        Shop<span>Nest</span>
+      </a>
+
+      <div class="search-box">
+
+        <input
+          type="text"
+          id="globalSearch"
+          placeholder="Search products..."
+        />
+
+        <button id="globalSearchBtn">
+          🔍
+        </button>
+
+      </div>
+
+      <div class="header-actions">
+
+        <a href="wishlist.html" class="header-action">
+          ♡
+          <span>Wishlist</span>
+        </a>
+
+        <a href="cart.html" class="header-action">
+          🛒
+          <span>
+            Cart (<b id="cartCount">0</b>)
+          </span>
+        </a>
+
+        <a href="login.html" class="header-action">
+          👤
+          <span>Login</span>
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <nav class="nav">
+
+      <div class="container nav-inner">
+
+        <a href="index.html">Home</a>
+
+        <a href="products.html">
+          All Products
+        </a>
+
+        <a href="products.html?category=electronics">
+          Electronics
+        </a>
+
+        <a href="products.html?category=fashion">
+          Fashion
+        </a>
+
+        <a href="products.html?category=beauty">
+          Beauty
+        </a>
+
+        <a href="products.html?category=home">
+          Home & Living
+        </a>
+
+        <a href="products.html?category=offers">
+          Offers
+        </a>
+
+      </div>
+
+    </nav>
+
+  </header>
+
+
+  <!-- =========================
+       CART
+  ========================== -->
+
+  <main class="cart-page">
+
+    <div class="container">
+
+      <div class="cart-page-header">
+
+        <h1>
+          Shopping Cart
+        </h1>
+
+        <p>
+          Review your items before checkout.
+        </p>
+
+      </div>
+
+
+      <div class="cart-layout">
+
+        <!-- =====================
+             CART ITEMS
+        ====================== -->
+
+        <section class="cart-items-box">
+
+          <div class="cart-box-header">
+
+            <h2 id="cartItemsTitle">
+              Your Cart
+            </h2>
+
+            <button
+              class="clear-cart-btn"
+              id="clearCartBtn"
+            >
+              Clear Cart
+            </button>
+
+          </div>
+
+
+          <div id="cartItems">
+
+            <!-- Cart items will load here -->
+
+          </div>
+
+        </section>
+
+
+        <!-- =====================
+             ORDER SUMMARY
+        ====================== -->
+
+        <aside class="summary-box">
+
+          <h2>
+            Order Summary
+          </h2>
+
+
+          <div class="summary-row">
+
+            <span>
+              Subtotal
+            </span>
+
+            <strong id="subtotal">
+              ৳0
+            </strong>
+
+          </div>
+
+
+          <div class="summary-row">
+
+            <span>
+              Delivery
+            </span>
+
+            <strong id="deliveryCharge">
+              ৳0
+            </strong>
+
+          </div>
+
+
+          <div class="summary-row">
+
+            <span>
+              Discount
+            </span>
+
+            <strong id="discount">
+              ৳0
+            </strong>
+
+          </div>
+
+
+          <div class="summary-divider"></div>
+
+
+          <div class="summary-total">
+
+            <span>
+              Total
+            </span>
+
+            <strong id="grandTotal">
+              ৳0
+            </strong>
+
+          </div>
+
+
+          <button
+            class="checkout-btn"
+            id="checkoutBtn"
+            disabled
+          >
+            Proceed to Checkout →
+          </button>
+
+
+          <div class="secure-payment">
+            🔒 Secure checkout & protected payment
+          </div>
+
+        </aside>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer class="footer">
+
+    <div class="container footer-grid">
+
+      <div>
+
+        <h3>
+          ShopNest
+        </h3>
+
+        <p>
+          Your trusted online shopping destination.
+          Quality products, easy shopping and fast delivery.
+        </p>
+
+      </div>
+
+
+      <div>
+
+        <h4>
+          Quick Links
+        </h4>
+
+        <a href="index.html">
+          Home
+        </a>
+
+        <a href="products.html">
+          Products
+        </a>
+
+        <a href="cart.html">
+          Cart
+        </a>
+
+        <a href="wishlist.html">
+          Wishlist
+        </a>
+
+      </div>
+
+
+      <div>
+
+        <h4>
+          Customer Service
+        </h4>
+
+        <a href="contact.html">
+          Contact
+        </a>
+
+        <a href="faq.html">
+          FAQ
+        </a>
+
+        <a href="orders.html">
+          Track Order
+        </a>
+
+      </div>
+
+
+      <div>
+
+        <h4>
+          Legal
+        </h4>
+
+        <a href="privacy.html">
+          Privacy Policy
+        </a>
+
+        <a href="terms.html">
+          Terms & Conditions
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+      <div class="container">
+
+        © 2026 ShopNest.
+        All rights reserved.
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- =========================
+       MAIN JS
+  ========================== -->
+
+  <script src="script.js"></script>
+
+
+  <!-- =========================
+       CART JS
+  ========================== -->
+
+  <script>
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function () {
+
+        const cartItemsContainer =
+          document.getElementById("cartItems");
+
+        const cartItemsTitle =
+          document.getElementById("cartItemsTitle");
+
+        const subtotalElement =
+          document.getElementById("subtotal");
+
+        const deliveryElement =
+          document.getElementById("deliveryCharge");
+
+        const discountElement =
+          document.getElementById("discount");
+
+        const grandTotalElement =
+          document.getElementById("grandTotal");
+
+        const checkoutBtn =
+          document.getElementById("checkoutBtn");
+
+        const clearCartBtn =
+          document.getElementById("clearCartBtn");
+
+
+        /* =========================
+           GET CART
+        ========================== */
+
+        function getCart() {
+
+          return JSON.parse(
+            localStorage.getItem(
+              "shopnest_cart"
+            )
+          ) || [];
+
+        }
+
+
+        /* =========================
+           SAVE CART
+        ========================== */
+
+        function saveCart(cart) {
+
+          localStorage.setItem(
+            "shopnest_cart",
+            JSON.stringify(cart)
+          );
+
+        }
+
+
+        /* =========================
+           RENDER CART
+        ========================== */
+
+        function renderCart() {
+
+          const cart =
+            getCart();
+
+
+          /*
+            Empty cart
+          */
+
+          if (cart.length === 0) {
+
+            cartItemsContainer.innerHTML = `
+
+              <div class="empty-cart">
+
+                <div class="empty-cart-icon">
+                  🛒
+                </div>
+
+                <h2>
+                  Your cart is empty
+                </h2>
+
+                <p>
+                  Looks like you haven't added
+                  anything to your cart yet.
+                </p>
+
+                <a
+                  href="products.html"
+                  class="continue-shopping-btn"
+                >
+                  Continue Shopping
+                </a>
+
+              </div>
+
+            `;
+
+
+            cartItemsTitle.textContent =
+              "Your Cart (0)";
+
+            subtotalElement.textContent =
+              "৳0";
+
+            deliveryElement.textContent =
+              "৳0";
+
+            discountElement.textContent =
+              "৳0";
+
+            grandTotalElement.textContent =
+              "৳0";
+
+            checkoutBtn.disabled = true;
+
+            clearCartBtn.style.display =
+              "none";
+
+            updateCartCount();
+
+            return;
+
+          }
+
+
+          /*
+            Cart has products
+          */
+
+          clearCartBtn.style.display =
+            "block";
+
+          checkoutBtn.disabled = false;
+
+
+          let subtotal = 0;
+
+          let totalItems = 0;
+
+
+          cartItemsContainer.innerHTML = "";
+
+
+          cart.forEach(function (item, index) {
+
+            const itemTotal =
+              Number(item.price) *
+              Number(item.quantity);
+
+
+            subtotal += itemTotal;
+
+            totalItems +=
+              Number(item.quantity);
+
+
+            const product =
+              products.find(
+                product =>
+                  product.id === item.id
+              );
+
+
+            const category =
+              product
+              ?
+              product.category
+              :
+              "Product";
+
+
+            const itemHTML = `
+
+              <div class="cart-item">
+
+                <img
+                  src="${item.image}"
+                  alt="${item.name}"
+                  class="cart-item-image"
+                />
+
+
+                <div class="cart-item-info">
+
+                  <div class="cart-item-category">
+                    ${category}
+                  </div>
+
+
+                  <a
+                    href="product.html?id=${item.id}"
+                    class="cart-item-name"
+                  >
+                    ${item.name}
+                  </a>
+
+
+                  <div class="cart-item-price">
+
+                    ${formatPrice(item.price)}
+                    / item
+
+                  </div>
+
+                </div>
+
+
+                <div class="cart-item-right">
+
+                  <div class="cart-item-total">
+
+                    ${formatPrice(itemTotal)}
+
+                  </div>
+
+
+                  <div class="quantity-control">
+
+                    <button
+                      class="quantity-btn"
+                      data-action="decrease"
+                      data-index="${index}"
+                    >
+                      −
+                    </button>
+
+
+                    <div class="quantity-number">
+                      ${item.quantity}
+                    </div>
+
+
+                    <button
+                      class="quantity-btn"
+                      data-action="increase"
+                      data-index="${index}"
+                    >
+                      +
+                    </button>
+
+                  </div>
+
+
+                  <button
+                    class="remove-btn"
+                    data-action="remove"
+                    data-index="${index}"
+                  >
+                    Remove
+                  </button>
+
+                </div>
+
+              </div>
+
+            `;
+
+
+            cartItemsContainer.insertAdjacentHTML(
+              "beforeend",
+              itemHTML
+            );
+
+          });
+
+
+          /*
+            Delivery charge
+          */
+
+          const deliveryCharge =
+            subtotal >= 5000
+            ? 0
+            : 80;
+
+
+          /*
+            Discount
+          */
+
+          const discount = 0;
+
+
+          /*
+            Grand total
+          */
+
+          const grandTotal =
+            subtotal +
+            deliveryCharge -
+            discount;
+
+
+          /*
+            Update UI
+          */
+
+          cartItemsTitle.textContent =
+            `Your Cart (${totalItems})`;
+
+
+          subtotalElement.textContent =
+            formatPrice(subtotal);
+
+
+          deliveryElement.textContent =
+            deliveryCharge === 0
+            ? "FREE"
+            : formatPrice(deliveryCharge);
+
+
+          discountElement.textContent =
+            formatPrice(discount);
+
+
+          grandTotalElement.textContent =
+            formatPrice(grandTotal);
+
+
+          updateCartCount();
+
+        }
+
+
+        /* =========================
+           CART ACTIONS
+        ========================== */
+
+        cartItemsContainer.addEventListener(
+          "click",
+          function (event) {
+
+            const button =
+              event.target.closest(
+                "[data-action]"
+              );
+
+
+            if (!button) {
+              return;
+            }
+
+
+            const action =
+              button.dataset.action;
+
+
+            const index =
+              Number(button.dataset.index);
+
+
+            const cart =
+              getCart();
+
+
+            if (!cart[index]) {
+              return;
+            }
+
+
+            /* INCREASE */
+
+            if (action === "increase") {
+
+              cart[index].quantity++;
+
+            }
+
+
+            /* DECREASE */
+
+            if (action === "decrease") {
+
+              cart[index].quantity--;
+
+              if (cart[index].quantity <= 0) {
+
+                cart.splice(index, 1);
+
+              }
+
+            }
+
+
+            /* REMOVE */
+
+            if (action === "remove") {
+
+              cart.splice(index, 1);
+
+            }
+
+
+            saveCart(cart);
+
+            renderCart();
+
+          }
+        );
+
+
+        /* =========================
+           CLEAR CART
+        ========================== */
+
+        clearCartBtn.addEventListener(
+          "click",
+          function () {
+
+            const cart =
+              getCart();
+
+
+            if (cart.length === 0) {
+              return;
+            }
+
+
+            const confirmClear =
+              confirm(
+                "Are you sure you want to clear your cart?"
+              );
+
+
+            if (!confirmClear) {
+              return;
+            }
+
+
+            localStorage.removeItem(
+              "shopnest_cart"
+            );
+
+
+            renderCart();
+
+
+            if (
+              typeof showNotification ===
+              "function"
+            ) {
+
+              showNotification(
+                "Cart cleared successfully"
+              );
+
+            }
+
+          }
+        );
+
+
+        /* =========================
+           CHECKOUT
+        ========================== */
+
+        checkoutBtn.addEventListener(
+          "click",
+          function () {
+
+            /*
+              Checkout page আমরা
+              পরের ধাপে বানাবো।
+            */
+
+            window.location.href =
+              "checkout.html";
+
+          }
+        );
+
+
+        /* =========================
+           INITIAL RENDER
+        ========================== */
+
+        renderCart();
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>

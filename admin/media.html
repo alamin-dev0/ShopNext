@@ -1,0 +1,2293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Media Library - Alamin Shop Admin</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    :root {
+      --bg: #08090b;
+      --card: #111318;
+      --card2: #171a20;
+      --border: #272b33;
+      --text: #f8fafc;
+      --muted: #8b93a1;
+      --success: #42d392;
+      --danger: #ff6262;
+      --sidebar: 250px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    /* SIDEBAR */
+
+    .admin-layout {
+      min-height: 100vh;
+    }
+
+    .admin-sidebar {
+      width: var(--sidebar);
+      position: fixed;
+      inset: 0 auto 0 0;
+      background: #0d0f13;
+      border-right: 1px solid var(--border);
+      padding: 22px 15px;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .admin-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 10px 25px;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .admin-logo span {
+      width: 37px;
+      height: 37px;
+      border-radius: 10px;
+      background: #fff;
+      color: #000;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+    }
+
+    .sidebar-title {
+      color: #626a76;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 15px 11px 8px;
+    }
+
+    .admin-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .admin-nav a {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 11px 12px;
+      border-radius: 9px;
+      color: #9da4b0;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    .admin-nav a:hover,
+    .admin-nav a.active {
+      background: #191c22;
+      color: #fff;
+    }
+
+    .nav-icon {
+      width: 21px;
+      text-align: center;
+    }
+
+    /* MAIN */
+
+    .admin-main {
+      margin-left: var(--sidebar);
+      min-height: 100vh;
+    }
+
+    .admin-topbar {
+      height: 70px;
+      padding: 0 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8, 9, 11, .94);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+    }
+
+    .top-title h1 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .top-title p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .admin-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .admin-profile-info strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .admin-profile-info span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .admin-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #fff;
+      color: #000;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+    }
+
+    .admin-content {
+      padding: 28px;
+    }
+
+    /* STATS */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 19px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    /* TOOLBAR */
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .toolbar {
+      padding: 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search {
+      position: relative;
+      flex: 1;
+      min-width: 230px;
+    }
+
+    .search input {
+      width: 100%;
+      height: 43px;
+      background: #0b0d10;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: #fff;
+      padding: 0 14px 0 39px;
+      outline: none;
+    }
+
+    .search span {
+      position: absolute;
+      left: 14px;
+      top: 12px;
+      color: #737b87;
+    }
+
+    .filter {
+      height: 43px;
+      min-width: 145px;
+      background: #0b0d10;
+      border: 1px solid var(--border);
+      color: #fff;
+      border-radius: 9px;
+      padding: 0 12px;
+      outline: none;
+    }
+
+    .btn {
+      height: 43px;
+      padding: 0 16px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: #191c22;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #242832;
+    }
+
+    .btn.primary {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+      font-weight: 600;
+    }
+
+    /* MEDIA GRID */
+
+    .media-grid {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .media-card {
+      background: #0d0f13;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      overflow: hidden;
+      transition: .2s;
+    }
+
+    .media-card:hover {
+      transform: translateY(-2px);
+      border-color: #444a55;
+    }
+
+    .media-image {
+      height: 190px;
+      background: #181b21;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .media-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .media-check {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 19px;
+      height: 19px;
+      cursor: pointer;
+      accent-color: #fff;
+    }
+
+    .media-type {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      padding: 5px 8px;
+      border-radius: 6px;
+      background: rgba(0,0,0,.72);
+      color: #fff;
+      font-size: 10px;
+    }
+
+    .media-info {
+      padding: 13px;
+    }
+
+    .media-name {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .media-meta {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .media-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .small-btn {
+      flex: 1;
+      height: 32px;
+      border-radius: 7px;
+      border: 1px solid var(--border);
+      background: #171a20;
+      color: #fff;
+      cursor: pointer;
+      font-size: 11px;
+    }
+
+    .small-btn:hover {
+      background: #242832;
+    }
+
+    .small-btn.delete:hover {
+      color: var(--danger);
+    }
+
+    /* EMPTY */
+
+    .empty {
+      padding: 70px 20px;
+      text-align: center;
+      color: var(--muted);
+      grid-column: 1 / -1;
+    }
+
+    .empty-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #191c22;
+      display: grid;
+      place-items: center;
+      margin: auto auto 15px;
+      font-size: 24px;
+    }
+
+    .empty h3 {
+      color: #fff;
+      margin: 0 0 7px;
+    }
+
+    .empty p {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    /* MODAL */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 500;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 560px;
+      background: #111318;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .close {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #181b21;
+      color: #fff;
+      cursor: pointer;
+      font-size: 19px;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .preview {
+      background: #0a0c0f;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+
+    .preview img {
+      width: 100%;
+      max-height: 330px;
+      object-fit: contain;
+      border-radius: 7px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      color: #8d95a1;
+      font-size: 11px;
+      margin-bottom: 6px;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      height: 42px;
+      background: #0b0d10;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: #fff;
+      padding: 0 12px;
+      outline: none;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    /* UPLOAD */
+
+    .upload-area {
+      border: 1px dashed #444a55;
+      border-radius: 12px;
+      padding: 30px 20px;
+      text-align: center;
+      background: #0b0d10;
+      cursor: pointer;
+    }
+
+    .upload-area:hover {
+      border-color: #777f8c;
+    }
+
+    .upload-area .upload-icon {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .upload-area strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .upload-area span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    /* PAGINATION */
+
+    .pagination {
+      border-top: 1px solid var(--border);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .pagination-info {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .pagination-buttons {
+      display: flex;
+      gap: 5px;
+    }
+
+    .page {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #171a20;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .page.active {
+      background: #fff;
+      color: #000;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 1100px) {
+      .media-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 800px) {
+      :root {
+        --sidebar: 0px;
+      }
+
+      .admin-sidebar {
+        display: none;
+      }
+
+      .admin-main {
+        margin-left: 0;
+      }
+
+      .admin-content {
+        padding: 18px;
+      }
+
+      .admin-topbar {
+        padding: 0 18px;
+      }
+
+      .media-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .media-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-profile-info {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+  <!-- SIDEBAR -->
+
+  <aside class="admin-sidebar">
+
+    <div class="admin-logo">
+      <span>AS</span>
+      <strong>Alamin Shop</strong>
+    </div>
+
+    <div class="sidebar-title">Overview</div>
+
+    <nav class="admin-nav">
+
+      <a href="index.html">
+        <span class="nav-icon">⌂</span>
+        Dashboard
+      </a>
+
+      <a href="orders.html">
+        <span class="nav-icon">🛒</span>
+        Orders
+      </a>
+
+      <a href="products.html">
+        <span class="nav-icon">▣</span>
+        Products
+      </a>
+
+      <a href="inventory.html">
+        <span class="nav-icon">▤</span>
+        Inventory
+      </a>
+
+      <a href="categories.html">
+        <span class="nav-icon">▦</span>
+        Categories
+      </a>
+
+    </nav>
+
+    <div class="sidebar-title">Customers</div>
+
+    <nav class="admin-nav">
+
+      <a href="customers.html">
+        <span class="nav-icon">♙</span>
+        Customers
+      </a>
+
+      <a href="reviews.html">
+        <span class="nav-icon">★</span>
+        Reviews
+      </a>
+
+      <a href="returns.html">
+        <span class="nav-icon">↩</span>
+        Returns
+      </a>
+
+      <a href="coupons.html">
+        <span class="nav-icon">%</span>
+        Coupons
+      </a>
+
+    </nav>
+
+    <div class="sidebar-title">Store</div>
+
+    <nav class="admin-nav">
+
+      <a href="media.html" class="active">
+        <span class="nav-icon">▧</span>
+        Media
+      </a>
+
+      <a href="reports.html">
+        <span class="nav-icon">◴</span>
+        Reports
+      </a>
+
+      <a href="notifications.html">
+        <span class="nav-icon">♢</span>
+        Notifications
+      </a>
+
+      <a href="payments.html">
+        <span class="nav-icon">৳</span>
+        Payments
+      </a>
+
+      <a href="delivery-zones.html">
+        <span class="nav-icon">▱</span>
+        Delivery Zones
+      </a>
+
+      <a href="settings.html">
+        <span class="nav-icon">⚙</span>
+        Settings
+      </a>
+
+    </nav>
+
+    <div class="sidebar-title">Account</div>
+
+    <nav class="admin-nav">
+
+      <a href="../index.html">
+        <span class="nav-icon">↗</span>
+        View Store
+      </a>
+
+      <a href="../account.html">
+        <span class="nav-icon">♙</span>
+        My Account
+      </a>
+
+      <a href="../login.html">
+        <span class="nav-icon">⇥</span>
+        Logout
+      </a>
+
+    </nav>
+
+  </aside>
+
+
+  <!-- MAIN -->
+
+  <main class="admin-main">
+
+    <header class="admin-topbar">
+
+      <div class="top-title">
+        <h1>Media Library</h1>
+        <p>Manage product and store images</p>
+      </div>
+
+      <div class="admin-profile">
+
+        <div class="admin-profile-info">
+          <strong>Admin</strong>
+          <span>Store Manager</span>
+        </div>
+
+        <div class="admin-avatar">
+          A
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <section class="admin-content">
+
+      <!-- STATS -->
+
+      <div class="stats">
+
+        <div class="stat">
+          <div class="stat-label">Total Media</div>
+          <div class="stat-value" id="totalMedia">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Product Images</div>
+          <div class="stat-value" id="productImages">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Store Images</div>
+          <div class="stat-value" id="storeImages">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Selected</div>
+          <div class="stat-value" id="selectedMedia">0</div>
+        </div>
+
+      </div>
+
+
+      <!-- PANEL -->
+
+      <div class="panel">
+
+        <div class="toolbar">
+
+          <div class="search">
+
+            <span>⌕</span>
+
+            <input
+              type="search"
+              id="mediaSearch"
+              placeholder="Search media..."
+            >
+
+          </div>
+
+
+          <select
+            class="filter"
+            id="typeFilter"
+          >
+
+            <option value="all">
+              All Types
+            </option>
+
+            <option value="product">
+              Product
+            </option>
+
+            <option value="store">
+              Store
+            </option>
+
+            <option value="banner">
+              Banner
+            </option>
+
+            <option value="category">
+              Category
+            </option>
+
+          </select>
+
+
+          <button
+            class="btn"
+            id="selectAllBtn"
+          >
+            Select All
+          </button>
+
+
+          <button
+            class="btn"
+            id="deleteSelectedBtn"
+          >
+            Delete Selected
+          </button>
+
+
+          <button
+            class="btn primary"
+            id="uploadBtn"
+          >
+            + Upload Media
+          </button>
+
+        </div>
+
+
+        <!-- GRID -->
+
+        <div
+          class="media-grid"
+          id="mediaGrid"
+        ></div>
+
+
+        <!-- PAGINATION -->
+
+        <div class="pagination">
+
+          <div
+            class="pagination-info"
+            id="paginationInfo"
+          >
+            Showing 0 media
+          </div>
+
+          <div
+            class="pagination-buttons"
+            id="paginationButtons"
+          ></div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<!-- VIEW / EDIT MODAL -->
+
+<div
+  class="modal-overlay"
+  id="viewModal"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h2>Media Details</h2>
+
+      <button
+        class="close"
+        id="closeViewModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div
+      class="modal-body"
+      id="viewModalBody"
+    ></div>
+
+  </div>
+
+</div>
+
+
+<!-- UPLOAD MODAL -->
+
+<div
+  class="modal-overlay"
+  id="uploadModal"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h2>Upload Media</h2>
+
+      <button
+        class="close"
+        id="closeUploadModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <label
+        class="upload-area"
+        for="fileInput"
+      >
+
+        <div class="upload-icon">
+          ⬆
+        </div>
+
+        <strong>
+          Choose an image
+        </strong>
+
+        <span>
+          PNG, JPG, WEBP supported
+        </span>
+
+      </label>
+
+      <input
+        type="file"
+        id="fileInput"
+        accept="image/png,image/jpeg,image/webp"
+      >
+
+
+      <div
+        id="uploadPreview"
+        style="display:none; margin-top:15px;"
+      >
+
+        <div class="preview">
+
+          <img
+            id="previewImage"
+            src=""
+            alt="Preview"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Media Name
+          </label>
+
+          <input
+            type="text"
+            id="uploadName"
+            placeholder="example-product.jpg"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Media Type
+          </label>
+
+          <select id="uploadType">
+
+            <option value="product">
+              Product
+            </option>
+
+            <option value="store">
+              Store
+            </option>
+
+            <option value="banner">
+              Banner
+            </option>
+
+            <option value="category">
+              Category
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="modal-actions">
+
+          <button
+            class="btn"
+            id="cancelUpload"
+          >
+            Cancel
+          </button>
+
+          <button
+            class="btn primary"
+            id="saveUpload"
+          >
+            Save Media
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script src="../script.js"></script>
+
+<script>
+
+  /* =====================================
+     ALAMIN SHOP MEDIA LIBRARY
+  ===================================== */
+
+  const MEDIA_KEY = "shopnest_media";
+
+  let mediaItems = [];
+
+  let filteredMedia = [];
+
+  let currentPage = 1;
+
+  const itemsPerPage = 8;
+
+
+  const mediaGrid =
+    document.getElementById("mediaGrid");
+
+  const mediaSearch =
+    document.getElementById("mediaSearch");
+
+  const typeFilter =
+    document.getElementById("typeFilter");
+
+  const selectAllBtn =
+    document.getElementById("selectAllBtn");
+
+  const deleteSelectedBtn =
+    document.getElementById("deleteSelectedBtn");
+
+  const uploadBtn =
+    document.getElementById("uploadBtn");
+
+  const totalMedia =
+    document.getElementById("totalMedia");
+
+  const productImages =
+    document.getElementById("productImages");
+
+  const storeImages =
+    document.getElementById("storeImages");
+
+  const selectedMedia =
+    document.getElementById("selectedMedia");
+
+
+  const viewModal =
+    document.getElementById("viewModal");
+
+  const viewModalBody =
+    document.getElementById("viewModalBody");
+
+  const closeViewModal =
+    document.getElementById("closeViewModal");
+
+
+  const uploadModal =
+    document.getElementById("uploadModal");
+
+  const closeUploadModal =
+    document.getElementById("closeUploadModal");
+
+  const cancelUpload =
+    document.getElementById("cancelUpload");
+
+  const fileInput =
+    document.getElementById("fileInput");
+
+  const uploadPreview =
+    document.getElementById("uploadPreview");
+
+  const previewImage =
+    document.getElementById("previewImage");
+
+  const uploadName =
+    document.getElementById("uploadName");
+
+  const uploadType =
+    document.getElementById("uploadType");
+
+  const saveUpload =
+    document.getElementById("saveUpload");
+
+
+  /* =====================================
+     ESCAPE HTML
+  ===================================== */
+
+  function escapeHTML(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  /* =====================================
+     DEMO MEDIA
+  ===================================== */
+
+  function createDemoMedia() {
+
+    if (
+      typeof products === "undefined" ||
+      !Array.isArray(products)
+    ) {
+      return [];
+    }
+
+
+    return products.map((product, index) => {
+
+      return {
+
+        id:
+          "MEDIA" +
+          String(index + 1).padStart(4, "0"),
+
+        name:
+          `${product.name || "Product"} image`,
+
+        type:
+          "product",
+
+        url:
+          product.image || "",
+
+        size:
+          "External image",
+
+        createdAt:
+          new Date().toISOString(),
+
+        productId:
+          product.id
+
+      };
+
+    });
+
+  }
+
+
+  /* =====================================
+     LOAD
+  ===================================== */
+
+  function loadMedia() {
+
+    const saved =
+      localStorage.getItem(MEDIA_KEY);
+
+
+    if (saved) {
+
+      try {
+
+        mediaItems =
+          JSON.parse(saved);
+
+      } catch {
+
+        mediaItems =
+          createDemoMedia();
+
+      }
+
+    } else {
+
+      mediaItems =
+        createDemoMedia();
+
+
+      localStorage.setItem(
+        MEDIA_KEY,
+        JSON.stringify(mediaItems)
+      );
+
+    }
+
+
+    filteredMedia =
+      [...mediaItems];
+
+  }
+
+
+  /* =====================================
+     SAVE
+  ===================================== */
+
+  function saveMedia() {
+
+    localStorage.setItem(
+      MEDIA_KEY,
+      JSON.stringify(mediaItems)
+    );
+
+  }
+
+
+  /* =====================================
+     UPDATE STATS
+  ===================================== */
+
+  function updateStats() {
+
+    totalMedia.textContent =
+      mediaItems.length;
+
+
+    productImages.textContent =
+      mediaItems.filter(
+        item => item.type === "product"
+      ).length;
+
+
+    storeImages.textContent =
+      mediaItems.filter(
+        item =>
+          item.type === "store" ||
+          item.type === "banner" ||
+          item.type === "category"
+      ).length;
+
+
+    selectedMedia.textContent =
+      document.querySelectorAll(
+        ".media-check:checked"
+      ).length;
+
+  }
+
+
+  /* =====================================
+     FILTER
+  ===================================== */
+
+  function applyFilters() {
+
+    const search =
+      mediaSearch.value
+        .trim()
+        .toLowerCase();
+
+    const type =
+      typeFilter.value;
+
+
+    filteredMedia =
+      mediaItems.filter(item => {
+
+        const name =
+          String(item.name || "")
+            .toLowerCase();
+
+
+        const matchesSearch =
+          !search ||
+          name.includes(search);
+
+
+        const matchesType =
+          type === "all" ||
+          item.type === type;
+
+
+        return (
+          matchesSearch &&
+          matchesType
+        );
+
+      });
+
+
+    currentPage = 1;
+
+    renderMedia();
+
+  }
+
+
+  /* =====================================
+     RENDER
+  ===================================== */
+
+  function renderMedia() {
+
+    const start =
+      (currentPage - 1) *
+      itemsPerPage;
+
+
+    const end =
+      start + itemsPerPage;
+
+
+    const pageItems =
+      filteredMedia.slice(
+        start,
+        end
+      );
+
+
+    if (!pageItems.length) {
+
+      mediaGrid.innerHTML = `
+
+        <div class="empty">
+
+          <div class="empty-icon">
+            ▧
+          </div>
+
+          <h3>
+            No media found
+          </h3>
+
+          <p>
+            Upload an image or change your search/filter.
+          </p>
+
+        </div>
+
+      `;
+
+      renderPagination();
+
+      return;
+
+    }
+
+
+    mediaGrid.innerHTML =
+      pageItems.map(item => {
+
+        return `
+
+          <div class="media-card">
+
+            <div class="media-image">
+
+              <input
+                type="checkbox"
+                class="media-check"
+                data-id="${escapeHTML(item.id)}"
+              >
+
+              <img
+                src="${escapeHTML(item.url)}"
+                alt="${escapeHTML(item.name)}"
+                loading="lazy"
+              >
+
+              <span class="media-type">
+                ${escapeHTML(
+                  String(item.type || "image")
+                    .toUpperCase()
+                )}
+              </span>
+
+            </div>
+
+
+            <div class="media-info">
+
+              <div class="media-name">
+                ${escapeHTML(item.name)}
+              </div>
+
+              <div class="media-meta">
+                ${escapeHTML(item.size || "Image")}
+              </div>
+
+              <div class="media-actions">
+
+                <button
+                  class="small-btn"
+                  onclick="viewMedia('${escapeHTML(item.id)}')"
+                >
+                  View
+                </button>
+
+                <button
+                  class="small-btn delete"
+                  onclick="deleteMedia('${escapeHTML(item.id)}')"
+                >
+                  Delete
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        `;
+
+      }).join("");
+
+
+    document
+      .querySelectorAll(".media-check")
+      .forEach(check => {
+
+        check.addEventListener(
+          "change",
+          updateStats
+        );
+
+      });
+
+
+    renderPagination();
+
+    updateStats();
+
+  }
+
+
+  /* =====================================
+     PAGINATION
+  ===================================== */
+
+  function renderPagination() {
+
+    const totalPages =
+      Math.ceil(
+        filteredMedia.length /
+        itemsPerPage
+      );
+
+
+    const info =
+      document.getElementById(
+        "paginationInfo"
+      );
+
+
+    const buttons =
+      document.getElementById(
+        "paginationButtons"
+      );
+
+
+    const start =
+      filteredMedia.length
+        ? (currentPage - 1) *
+            itemsPerPage + 1
+        : 0;
+
+
+    const end =
+      Math.min(
+        currentPage * itemsPerPage,
+        filteredMedia.length
+      );
+
+
+    info.textContent =
+      `Showing ${start}-${end} of ${filteredMedia.length} media`;
+
+
+    buttons.innerHTML = "";
+
+
+    if (totalPages <= 1) {
+      return;
+    }
+
+
+    for (
+      let page = 1;
+      page <= totalPages;
+      page++
+    ) {
+
+      const button =
+        document.createElement("button");
+
+
+      button.className =
+        "page" +
+        (
+          page === currentPage
+            ? " active"
+            : ""
+        );
+
+
+      button.textContent =
+        page;
+
+
+      button.onclick = () => {
+
+        currentPage =
+          page;
+
+        renderMedia();
+
+      };
+
+
+      buttons.appendChild(button);
+
+    }
+
+  }
+
+
+  /* =====================================
+     VIEW MEDIA
+  ===================================== */
+
+  window.viewMedia =
+    function(mediaId) {
+
+      const item =
+        mediaItems.find(
+          media =>
+            String(media.id) ===
+            String(mediaId)
+        );
+
+
+      if (!item) {
+        return;
+      }
+
+
+      viewModalBody.innerHTML = `
+
+        <div class="preview">
+
+          <img
+            src="${escapeHTML(item.url)}"
+            alt="${escapeHTML(item.name)}"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Media Name
+          </label>
+
+          <input
+            type="text"
+            id="editMediaName"
+            value="${escapeHTML(item.name)}"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Media Type
+          </label>
+
+          <select id="editMediaType">
+
+            <option
+              value="product"
+              ${item.type === "product" ? "selected" : ""}
+            >
+              Product
+            </option>
+
+            <option
+              value="store"
+              ${item.type === "store" ? "selected" : ""}
+            >
+              Store
+            </option>
+
+            <option
+              value="banner"
+              ${item.type === "banner" ? "selected" : ""}
+            >
+              Banner
+            </option>
+
+            <option
+              value="category"
+              ${item.type === "category" ? "selected" : ""}
+            >
+              Category
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Image URL
+          </label>
+
+          <input
+            type="text"
+            id="editMediaUrl"
+            value="${escapeHTML(item.url)}"
+          >
+
+        </div>
+
+
+        <div class="modal-actions">
+
+          <button
+            class="btn"
+            onclick="closeView()"
+          >
+            Close
+          </button>
+
+          <button
+            class="btn primary"
+            onclick="saveMediaEdit('${escapeHTML(item.id)}')"
+          >
+            Save Changes
+          </button>
+
+        </div>
+
+      `;
+
+
+      viewModal.classList.add("show");
+
+    };
+
+
+  /* =====================================
+     SAVE EDIT
+  ===================================== */
+
+  window.saveMediaEdit =
+    function(mediaId) {
+
+      const item =
+        mediaItems.find(
+          media =>
+            String(media.id) ===
+            String(mediaId)
+        );
+
+
+      if (!item) {
+        return;
+      }
+
+
+      const name =
+        document.getElementById(
+          "editMediaName"
+        ).value.trim();
+
+
+      const type =
+        document.getElementById(
+          "editMediaType"
+        ).value;
+
+
+      const url =
+        document.getElementById(
+          "editMediaUrl"
+        ).value.trim();
+
+
+      if (!name || !url) {
+
+        alert(
+          "Media name and image URL are required."
+        );
+
+        return;
+
+      }
+
+
+      item.name = name;
+
+      item.type = type;
+
+      item.url = url;
+
+      item.updatedAt =
+        new Date().toISOString();
+
+
+      saveMedia();
+
+      closeView();
+
+      applyFilters();
+
+
+      if (
+        typeof showNotification ===
+        "function"
+      ) {
+
+        showNotification(
+          "Media updated successfully."
+        );
+
+      }
+
+    };
+
+
+  /* =====================================
+     CLOSE VIEW
+  ===================================== */
+
+  function closeView() {
+
+    viewModal.classList.remove(
+      "show"
+    );
+
+  }
+
+
+  closeViewModal.addEventListener(
+    "click",
+    closeView
+  );
+
+
+  viewModal.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target ===
+        viewModal
+      ) {
+
+        closeView();
+
+      }
+
+    }
+  );
+
+
+  /* =====================================
+     DELETE MEDIA
+  ===================================== */
+
+  window.deleteMedia =
+    function(mediaId) {
+
+      const item =
+        mediaItems.find(
+          media =>
+            String(media.id) ===
+            String(mediaId)
+        );
+
+
+      if (!item) {
+        return;
+      }
+
+
+      const confirmed =
+        confirm(
+          `Delete "${item.name}"?`
+        );
+
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      mediaItems =
+        mediaItems.filter(
+          media =>
+            String(media.id) !==
+            String(mediaId)
+        );
+
+
+      saveMedia();
+
+      applyFilters();
+
+      updateStats();
+
+
+      if (
+        typeof showNotification ===
+        "function"
+      ) {
+
+        showNotification(
+          "Media deleted."
+        );
+
+      }
+
+    };
+
+
+  /* =====================================
+     SELECT ALL
+  ===================================== */
+
+  selectAllBtn.addEventListener(
+    "click",
+    () => {
+
+      const checks =
+        document.querySelectorAll(
+          ".media-check"
+        );
+
+
+      const allChecked =
+        checks.length &&
+        [...checks].every(
+          checkbox =>
+            checkbox.checked
+        );
+
+
+      checks.forEach(
+        checkbox => {
+
+          checkbox.checked =
+            !allChecked;
+
+        }
+      );
+
+
+      updateStats();
+
+    }
+  );
+
+
+  /* =====================================
+     DELETE SELECTED
+  ===================================== */
+
+  deleteSelectedBtn.addEventListener(
+    "click",
+    () => {
+
+      const selected =
+        [
+          ...document.querySelectorAll(
+            ".media-check:checked"
+          )
+        ].map(
+          checkbox =>
+            checkbox.dataset.id
+        );
+
+
+      if (!selected.length) {
+
+        alert(
+          "Please select media first."
+        );
+
+        return;
+
+      }
+
+
+      const confirmed =
+        confirm(
+          `Delete ${selected.length} selected media item(s)?`
+        );
+
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      mediaItems =
+        mediaItems.filter(
+          item =>
+            !selected.includes(
+              String(item.id)
+            )
+        );
+
+
+      saveMedia();
+
+      applyFilters();
+
+      updateStats();
+
+
+      if (
+        typeof showNotification ===
+        "function"
+      ) {
+
+        showNotification(
+          "Selected media deleted."
+        );
+
+      }
+
+    }
+  );
+
+
+  /* =====================================
+     OPEN UPLOAD
+  ===================================== */
+
+  uploadBtn.addEventListener(
+    "click",
+    () => {
+
+      uploadModal.classList.add(
+        "show"
+      );
+
+    }
+  );
+
+
+  /* =====================================
+     CLOSE UPLOAD
+  ===================================== */
+
+  function closeUpload() {
+
+    uploadModal.classList.remove(
+      "show"
+    );
+
+    fileInput.value = "";
+
+    uploadPreview.style.display =
+      "none";
+
+    previewImage.src = "";
+
+    uploadName.value = "";
+
+  }
+
+
+  closeUploadModal.addEventListener(
+    "click",
+    closeUpload
+  );
+
+
+  cancelUpload.addEventListener(
+    "click",
+    closeUpload
+  );
+
+
+  uploadModal.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target ===
+        uploadModal
+      ) {
+
+        closeUpload();
+
+      }
+
+    }
+  );
+
+
+  /* =====================================
+     FILE PREVIEW
+  ===================================== */
+
+  fileInput.addEventListener(
+    "change",
+    event => {
+
+      const file =
+        event.target.files[0];
+
+
+      if (!file) {
+        return;
+      }
+
+
+      if (
+        !file.type.startsWith(
+          "image/"
+        )
+      ) {
+
+        alert(
+          "Please select an image file."
+        );
+
+        fileInput.value = "";
+
+        return;
+
+      }
+
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload =
+        function(e) {
+
+          previewImage.src =
+            e.target.result;
+
+
+          uploadPreview.style.display =
+            "block";
+
+
+          uploadName.value =
+            file.name;
+
+        };
+
+
+      reader.readAsDataURL(file);
+
+    }
+  );
+
+
+  /* =====================================
+     SAVE UPLOAD
+  ===================================== */
+
+  saveUpload.addEventListener(
+    "click",
+    () => {
+
+      const file =
+        fileInput.files[0];
+
+
+      if (!file) {
+
+        alert(
+          "Please choose an image first."
+        );
+
+        return;
+
+      }
+
+
+      const name =
+        uploadName.value.trim() ||
+        file.name;
+
+
+      const type =
+        uploadType.value;
+
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload =
+        function(e) {
+
+          const newMedia = {
+
+            id:
+              "MEDIA" +
+              Date.now(),
+
+            name:
+
+              name,
+
+            type:
+
+              type,
+
+            url:
+
+              e.target.result,
+
+            size:
+
+              `${(
+                file.size / 1024
+              ).toFixed(1)} KB`,
+
+            createdAt:
+
+              new Date().toISOString()
+
+          };
+
+
+          mediaItems.unshift(
+            newMedia
+          );
+
+
+          saveMedia();
+
+          closeUpload();
+
+          applyFilters();
+
+          updateStats();
+
+
+          if (
+            typeof showNotification ===
+            "function"
+          ) {
+
+            showNotification(
+              "Media uploaded successfully."
+            );
+
+          }
+
+        };
+
+
+      reader.readAsDataURL(file);
+
+    }
+  );
+
+
+  /* =====================================
+     SEARCH
+  ===================================== */
+
+  mediaSearch.addEventListener(
+    "input",
+    applyFilters
+  );
+
+
+  typeFilter.addEventListener(
+    "change",
+    applyFilters
+  );
+
+
+  /* =====================================
+     INIT
+  ===================================== */
+
+  loadMedia();
+
+  updateStats();
+
+  applyFilters();
+
+</script>
+
+</body>
+</html>

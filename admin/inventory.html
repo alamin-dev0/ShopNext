@@ -1,0 +1,1975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Inventory | Alamin Shop Admin</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #08090b;
+            color: #f8fafc;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .admin-layout {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .admin-sidebar {
+            width: 250px;
+            background: #0f1115;
+            border-right: 1px solid #242832;
+            padding: 22px 16px;
+            position: fixed;
+            inset: 0 auto 0 0;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 21px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            padding: 0 8px;
+        }
+
+        .admin-logo span {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #fff;
+            color: #08090b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+        }
+
+        .menu-title {
+            color: #6f7785;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 10px;
+            margin: 24px 0 9px;
+        }
+
+        .admin-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .admin-nav a {
+            text-decoration: none;
+            color: #9ca3af;
+            padding: 11px 12px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .admin-nav a:hover {
+            background: #181b21;
+            color: #fff;
+        }
+
+        .admin-nav a.active {
+            background: #fff;
+            color: #08090b;
+            font-weight: 700;
+        }
+
+        .nav-icon {
+            width: 22px;
+            text-align: center;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .admin-main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+        }
+
+        .admin-topbar {
+            height: 72px;
+            border-bottom: 1px solid #242832;
+            background: rgba(8, 9, 11, .94);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(12px);
+        }
+
+        .topbar-title h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .topbar-title p {
+            margin: 5px 0 0;
+            color: #737b89;
+            font-size: 12px;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #1b1f27;
+            border: 1px solid #303640;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .admin-user-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .admin-user-info span {
+            color: #6f7785;
+            font-size: 11px;
+        }
+
+        .admin-content {
+            padding: 28px;
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .inventory-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: #101216;
+            border: 1px solid #252a32;
+            border-radius: 14px;
+            padding: 19px;
+        }
+
+        .stat-card p {
+            margin: 0 0 9px;
+            color: #7e8795;
+            font-size: 12px;
+        }
+
+        .stat-card h2 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .stat-card small {
+            display: block;
+            margin-top: 7px;
+            color: #606977;
+            font-size: 11px;
+        }
+
+        /* =========================
+           PANEL
+        ========================= */
+
+        .inventory-panel {
+            background: #101216;
+            border: 1px solid #252a32;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 20px;
+            border-bottom: 1px solid #252a32;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .panel-header h2 {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .panel-header p {
+            margin: 5px 0 0;
+            color: #737b89;
+            font-size: 12px;
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 240px;
+            height: 40px;
+            background: #090a0d;
+            border: 1px solid #2b3039;
+            border-radius: 9px;
+            color: #fff;
+            padding: 0 13px 0 37px;
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 13px;
+            top: 11px;
+            color: #68717f;
+        }
+
+        select {
+            height: 40px;
+            background: #090a0d;
+            border: 1px solid #2b3039;
+            border-radius: 9px;
+            color: #fff;
+            padding: 0 12px;
+            outline: none;
+        }
+
+        .btn {
+            height: 40px;
+            border-radius: 9px;
+            padding: 0 15px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .primary-btn {
+            background: #fff;
+            color: #08090b;
+            border: 1px solid #fff;
+        }
+
+        .secondary-btn {
+            background: #181b21;
+            color: #fff;
+            border: 1px solid #303640;
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .inventory-table {
+            width: 100%;
+            min-width: 1000px;
+            border-collapse: collapse;
+        }
+
+        .inventory-table th {
+            text-align: left;
+            padding: 14px 18px;
+            background: #0c0e11;
+            color: #747d8b;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            border-bottom: 1px solid #252a32;
+        }
+
+        .inventory-table td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #1e2229;
+            font-size: 13px;
+        }
+
+        .inventory-table tbody tr:hover {
+            background: #13161b;
+        }
+
+        .product-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .product-image {
+            width: 48px;
+            height: 48px;
+            border-radius: 9px;
+            object-fit: cover;
+            background: #181b21;
+            border: 1px solid #2a2f38;
+        }
+
+        .product-name {
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .product-category {
+            color: #707987;
+            font-size: 11px;
+        }
+
+        .sku {
+            color: #aeb5c0;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .stock-number {
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .stock-number.low {
+            color: #fbbf24;
+        }
+
+        .stock-number.out {
+            color: #f87171;
+        }
+
+        .stock-number.good {
+            color: #4ade80;
+        }
+
+        .stock-bar {
+            width: 90px;
+            height: 5px;
+            background: #242832;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+
+        .stock-fill {
+            height: 100%;
+            border-radius: 10px;
+            background: #fff;
+        }
+
+        .status {
+            display: inline-flex;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .status.in-stock {
+            background: rgba(34, 197, 94, .12);
+            color: #4ade80;
+        }
+
+        .status.low-stock {
+            background: rgba(245, 158, 11, .12);
+            color: #fbbf24;
+        }
+
+        .status.out-stock {
+            background: rgba(239, 68, 68, .12);
+            color: #f87171;
+        }
+
+        .action-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        .action-btn {
+            height: 31px;
+            padding: 0 9px;
+            border-radius: 7px;
+            background: #181b21;
+            border: 1px solid #303640;
+            color: #fff;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .action-btn:hover {
+            background: #252a32;
+        }
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .78);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            width: min(450px, 100%);
+            background: #111318;
+            border: 1px solid #303640;
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #181b21;
+            border: 1px solid #303640;
+            color: #fff;
+            cursor: pointer;
+            font-size: 17px;
+        }
+
+        .selected-product {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px;
+            background: #090a0d;
+            border: 1px solid #272c34;
+            border-radius: 10px;
+            margin-bottom: 18px;
+        }
+
+        .selected-product img {
+            width: 55px;
+            height: 55px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .selected-product strong {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .selected-product span {
+            color: #747d8b;
+            font-size: 11px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            color: #9ca3af;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            height: 42px;
+            padding: 0 12px;
+            background: #090a0d;
+            color: #fff;
+            border: 1px solid #303640;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 9px;
+            margin-top: 20px;
+        }
+
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 55px 20px;
+            color: #697280;
+        }
+
+        .empty-state .icon {
+            font-size: 35px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            margin: 0 0 7px;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .empty-state p {
+            margin: 0;
+            font-size: 12px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+            .inventory-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+
+            .admin-sidebar {
+                width: 70px;
+                padding: 18px 8px;
+            }
+
+            .admin-logo {
+                justify-content: center;
+                padding: 0;
+            }
+
+            .admin-logo strong,
+            .menu-title,
+            .admin-nav a span:not(.nav-icon) {
+                display: none;
+            }
+
+            .admin-nav a {
+                justify-content: center;
+                padding: 12px 5px;
+            }
+
+            .admin-main {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+            }
+
+            .admin-content {
+                padding: 18px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .admin-topbar {
+                padding: 0 15px;
+            }
+
+            .admin-user-info {
+                display: none;
+            }
+
+            .inventory-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 14px;
+            }
+
+            .stat-card h2 {
+                font-size: 20px;
+            }
+
+            .toolbar {
+                width: 100%;
+            }
+
+            .search-box,
+            .search-box input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="admin-sidebar">
+
+        <a href="index.html" class="admin-logo">
+            <span>A</span>
+            <strong>Alamin Shop</strong>
+        </a>
+
+        <div class="menu-title">
+            Main
+        </div>
+
+        <nav class="admin-nav">
+
+            <a href="index.html">
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="orders.html">
+                <span class="nav-icon">▣</span>
+                <span>Orders</span>
+            </a>
+
+            <a href="products.html">
+                <span class="nav-icon">□</span>
+                <span>Products</span>
+            </a>
+
+            <a href="inventory.html" class="active">
+                <span class="nav-icon">▤</span>
+                <span>Inventory</span>
+            </a>
+
+            <a href="customers.html">
+                <span class="nav-icon">♙</span>
+                <span>Customers</span>
+            </a>
+
+            <a href="coupons.html">
+                <span class="nav-icon">%</span>
+                <span>Coupons</span>
+            </a>
+
+        </nav>
+
+        <div class="menu-title">
+            Store
+        </div>
+
+        <nav class="admin-nav">
+
+            <a href="../index.html">
+                <span class="nav-icon">↗</span>
+                <span>View Store</span>
+            </a>
+
+            <a href="../account.html">
+                <span class="nav-icon">◎</span>
+                <span>My Account</span>
+            </a>
+
+            <a href="../login.html">
+                <span class="nav-icon">⇥</span>
+                <span>Logout</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="admin-main">
+
+        <header class="admin-topbar">
+
+            <div class="topbar-title">
+
+                <h1>
+                    Inventory
+                </h1>
+
+                <p>
+                    Monitor and update your product stock
+                </p>
+
+            </div>
+
+
+            <div class="admin-user">
+
+                <div class="admin-avatar">
+                    A
+                </div>
+
+                <div class="admin-user-info">
+
+                    <strong>
+                        Admin
+                    </strong>
+
+                    <span>
+                        Administrator
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <section class="admin-content">
+
+            <!-- =========================
+                 STATS
+            ========================= -->
+
+            <div class="inventory-stats">
+
+                <div class="stat-card">
+
+                    <p>
+                        Total Products
+                    </p>
+
+                    <h2 id="totalProducts">
+                        0
+                    </h2>
+
+                    <small>
+                        Products in inventory
+                    </small>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <p>
+                        In Stock
+                    </p>
+
+                    <h2 id="inStockProducts">
+                        0
+                    </h2>
+
+                    <small>
+                        Healthy stock
+                    </small>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <p>
+                        Low Stock
+                    </p>
+
+                    <h2 id="lowStockProducts">
+                        0
+                    </h2>
+
+                    <small>
+                        Needs attention
+                    </small>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <p>
+                        Out of Stock
+                    </p>
+
+                    <h2 id="outStockProducts">
+                        0
+                    </h2>
+
+                    <small>
+                        Currently unavailable
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 INVENTORY PANEL
+            ========================= -->
+
+            <div class="inventory-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>
+                            Stock Management
+                        </h2>
+
+                        <p>
+                            View SKU, stock quantity and product status
+                        </p>
+
+                    </div>
+
+
+                    <div class="toolbar">
+
+                        <div class="search-box">
+
+                            <span class="search-icon">
+                                ⌕
+                            </span>
+
+                            <input
+                                type="text"
+                                id="searchInput"
+                                placeholder="Search product or SKU..."
+                            >
+
+                        </div>
+
+
+                        <select id="stockFilter">
+
+                            <option value="all">
+                                All Stock
+                            </option>
+
+                            <option value="in-stock">
+                                In Stock
+                            </option>
+
+                            <option value="low-stock">
+                                Low Stock
+                            </option>
+
+                            <option value="out-stock">
+                                Out of Stock
+                            </option>
+
+                        </select>
+
+
+                        <button
+                            class="btn secondary-btn"
+                            id="resetBtn"
+                        >
+                            Reset
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrap">
+
+                    <table class="inventory-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Product
+                                </th>
+
+                                <th>
+                                    SKU
+                                </th>
+
+                                <th>
+                                    Price
+                                </th>
+
+                                <th>
+                                    Stock
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="inventoryBody"></tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div
+                    class="empty-state"
+                    id="emptyState"
+                >
+
+                    <div class="icon">
+                        📦
+                    </div>
+
+                    <h3>
+                        No products found
+                    </h3>
+
+                    <p>
+                        Try changing your search or stock filter.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================
+     STOCK UPDATE MODAL
+========================= -->
+
+<div
+    class="modal-overlay"
+    id="stockModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h2>
+                Update Stock
+            </h2>
+
+            <button
+                class="close-btn"
+                id="closeModal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            class="selected-product"
+            id="selectedProduct"
+        ></div>
+
+
+        <div class="form-group">
+
+            <label>
+                Current Stock
+            </label>
+
+            <input
+                type="number"
+                id="currentStock"
+                readonly
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                New Stock Quantity
+            </label>
+
+            <input
+                type="number"
+                id="newStock"
+                min="0"
+                placeholder="Enter quantity"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Stock Action
+            </label>
+
+            <select id="stockAction">
+
+                <option value="set">
+                    Set exact quantity
+                </option>
+
+                <option value="add">
+                    Add quantity
+                </option>
+
+                <option value="remove">
+                    Remove quantity
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button
+                type="button"
+                class="btn secondary-btn"
+                id="cancelModal"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                class="btn primary-btn"
+                id="saveStock"
+            >
+                Update Stock
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="../script.js"></script>
+
+<script>
+
+    /* =========================
+       INVENTORY STORAGE
+    ========================= */
+
+    const INVENTORY_KEY =
+        "shopnest_inventory";
+
+
+    let inventoryProducts = [];
+
+    let selectedProductId = null;
+
+
+    /* =========================
+       HELPERS
+    ========================= */
+
+    function escapeHtml(value) {
+
+        return String(value || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    function money(value) {
+
+        return "৳" +
+            Number(value || 0)
+                .toLocaleString("en-BD");
+
+    }
+
+
+    function getStoredInventory() {
+
+        try {
+
+            return JSON.parse(
+                localStorage.getItem(
+                    INVENTORY_KEY
+                )
+            ) || {};
+
+        } catch (error) {
+
+            return {};
+
+        }
+
+    }
+
+
+    function saveInventory() {
+
+        const stockData = {};
+
+        inventoryProducts.forEach(
+            product => {
+
+                stockData[product.id] =
+                    Number(product.stock || 0);
+
+            }
+        );
+
+
+        localStorage.setItem(
+            INVENTORY_KEY,
+            JSON.stringify(stockData)
+        );
+
+    }
+
+
+    /* =========================
+       LOAD PRODUCTS
+    ========================= */
+
+    function loadInventory() {
+
+        const stored =
+            getStoredInventory();
+
+
+        /*
+            products comes from
+            ../script.js
+        */
+
+        if (
+            typeof products ===
+            "undefined"
+        ) {
+
+            inventoryProducts = [];
+
+            return;
+
+        }
+
+
+        inventoryProducts =
+            products.map(
+                product => ({
+
+                    ...product,
+
+                    stock:
+                        stored[
+                            product.id
+                        ] !== undefined
+
+                            ? Number(
+                                stored[
+                                    product.id
+                                ]
+                            )
+
+                            : Number(
+                                product.stock || 0
+                            )
+
+                })
+            );
+
+
+        saveInventory();
+
+    }
+
+
+    /* =========================
+       STOCK STATUS
+    ========================= */
+
+    function getStockStatus(
+        stock
+    ) {
+
+        stock =
+            Number(stock || 0);
+
+
+        if (stock <= 0) {
+
+            return "out-stock";
+
+        }
+
+
+        if (stock <= 5) {
+
+            return "low-stock";
+
+        }
+
+
+        return "in-stock";
+
+    }
+
+
+    function getStatusLabel(
+        status
+    ) {
+
+        if (
+            status ===
+            "out-stock"
+        ) {
+
+            return "Out of Stock";
+
+        }
+
+
+        if (
+            status ===
+            "low-stock"
+        ) {
+
+            return "Low Stock";
+
+        }
+
+
+        return "In Stock";
+
+    }
+
+
+    /* =========================
+       STATS
+    ========================= */
+
+    function renderStats() {
+
+        const total =
+            inventoryProducts.length;
+
+
+        const inStock =
+            inventoryProducts.filter(
+                product =>
+                    getStockStatus(
+                        product.stock
+                    ) ===
+                    "in-stock"
+            ).length;
+
+
+        const lowStock =
+            inventoryProducts.filter(
+                product =>
+                    getStockStatus(
+                        product.stock
+                    ) ===
+                    "low-stock"
+            ).length;
+
+
+        const outStock =
+            inventoryProducts.filter(
+                product =>
+                    getStockStatus(
+                        product.stock
+                    ) ===
+                    "out-stock"
+            ).length;
+
+
+        document.getElementById(
+            "totalProducts"
+        ).textContent =
+            total;
+
+
+        document.getElementById(
+            "inStockProducts"
+        ).textContent =
+            inStock;
+
+
+        document.getElementById(
+            "lowStockProducts"
+        ).textContent =
+            lowStock;
+
+
+        document.getElementById(
+            "outStockProducts"
+        ).textContent =
+            outStock;
+
+    }
+
+
+    /* =========================
+       RENDER TABLE
+    ========================= */
+
+    function renderInventory() {
+
+        const tbody =
+            document.getElementById(
+                "inventoryBody"
+            );
+
+
+        const table =
+            document.querySelector(
+                ".table-wrap"
+            );
+
+
+        const empty =
+            document.getElementById(
+                "emptyState"
+            );
+
+
+        const search =
+            document.getElementById(
+                "searchInput"
+            ).value
+                .trim()
+                .toLowerCase();
+
+
+        const filter =
+            document.getElementById(
+                "stockFilter"
+            ).value;
+
+
+        const filtered =
+            inventoryProducts.filter(
+                product => {
+
+                    const name =
+                        String(
+                            product.name || ""
+                        ).toLowerCase();
+
+
+                    const category =
+                        String(
+                            product.category || ""
+                        ).toLowerCase();
+
+
+                    const sku =
+                        String(
+                            product.sku ||
+                            "SKU-" +
+                            product.id
+                        ).toLowerCase();
+
+
+                    const status =
+                        getStockStatus(
+                            product.stock
+                        );
+
+
+                    const matchesSearch =
+                        !search ||
+                        name.includes(search) ||
+                        category.includes(search) ||
+                        sku.includes(search);
+
+
+                    const matchesFilter =
+                        filter === "all" ||
+                        filter === status;
+
+
+                    return (
+                        matchesSearch &&
+                        matchesFilter
+                    );
+
+                }
+            );
+
+
+        tbody.innerHTML = "";
+
+
+        if (!filtered.length) {
+
+            table.style.display =
+                "none";
+
+            empty.style.display =
+                "block";
+
+            return;
+
+        }
+
+
+        table.style.display =
+            "block";
+
+        empty.style.display =
+            "none";
+
+
+        filtered.forEach(
+            product => {
+
+                const stock =
+                    Number(
+                        product.stock || 0
+                    );
+
+
+                const status =
+                    getStockStatus(
+                        stock
+                    );
+
+
+                const sku =
+                    product.sku ||
+                    "SKU-" +
+                    product.id;
+
+
+                const stockPercent =
+                    Math.min(
+                        100,
+                        Math.max(
+                            0,
+                            stock * 4
+                        )
+                    );
+
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                row.innerHTML = `
+
+                    <td>
+
+                        <div class="product-info">
+
+                            <img
+                                class="product-image"
+                                src="${escapeHtml(
+                                    product.image || ""
+                                )}"
+                                alt="${escapeHtml(
+                                    product.name
+                                )}"
+                            >
+
+                            <div>
+
+                                <div class="product-name">
+                                    ${escapeHtml(
+                                        product.name
+                                    )}
+                                </div>
+
+                                <div class="product-category">
+                                    ${escapeHtml(
+                                        product.category
+                                    )}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="sku">
+                            ${escapeHtml(
+                                sku
+                            )}
+                        </span>
+
+                    </td>
+
+
+                    <td>
+                        ${money(
+                            product.price
+                        )}
+                    </td>
+
+
+                    <td>
+
+                        <div
+                            class="stock-number ${
+                                status === "low-stock"
+                                    ? "low"
+                                    : status === "out-stock"
+                                        ? "out"
+                                        : "good"
+                            }"
+                        >
+                            ${stock}
+                        </div>
+
+                        <div class="stock-bar">
+
+                            <div
+                                class="stock-fill"
+                                style="width:${stockPercent}%"
+                            ></div>
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="status ${status}"
+                        >
+                            ${getStatusLabel(
+                                status
+                            )}
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="action-group">
+
+                            <button
+                                class="action-btn"
+                                onclick="openStockModal('${product.id}')"
+                            >
+                                Update Stock
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                `;
+
+
+                tbody.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================
+       OPEN STOCK MODAL
+    ========================= */
+
+    function openStockModal(id) {
+
+        const product =
+            inventoryProducts.find(
+                item =>
+                    String(item.id) ===
+                    String(id)
+            );
+
+
+        if (!product) {
+            return;
+        }
+
+
+        selectedProductId =
+            product.id;
+
+
+        document.getElementById(
+            "selectedProduct"
+        ).innerHTML = `
+
+            <img
+                src="${escapeHtml(
+                    product.image || ""
+                )}"
+                alt="${escapeHtml(
+                    product.name
+                )}"
+            >
+
+            <div>
+
+                <strong>
+                    ${escapeHtml(
+                        product.name
+                    )}
+                </strong>
+
+                <span>
+                    ${
+                        escapeHtml(
+                            product.category
+                        )
+                    }
+                </span>
+
+            </div>
+
+        `;
+
+
+        document.getElementById(
+            "currentStock"
+        ).value =
+            Number(
+                product.stock || 0
+            );
+
+
+        document.getElementById(
+            "newStock"
+        ).value = "";
+
+
+        document.getElementById(
+            "stockAction"
+        ).value =
+            "set";
+
+
+        document.getElementById(
+            "stockModal"
+        ).classList.add(
+            "show"
+        );
+
+    }
+
+
+    /* =========================
+       CLOSE MODAL
+    ========================= */
+
+    function closeStockModal() {
+
+        document.getElementById(
+            "stockModal"
+        ).classList.remove(
+            "show"
+        );
+
+
+        selectedProductId =
+            null;
+
+    }
+
+
+    /* =========================
+       SAVE STOCK
+    ========================= */
+
+    document.getElementById(
+        "saveStock"
+    ).addEventListener(
+        "click",
+        () => {
+
+            if (
+                selectedProductId ===
+                null
+            ) {
+
+                return;
+
+            }
+
+
+            const product =
+                inventoryProducts.find(
+                    item =>
+                        String(item.id) ===
+                        String(
+                            selectedProductId
+                        )
+                );
+
+
+            if (!product) {
+                return;
+            }
+
+
+            const inputValue =
+                Number(
+                    document.getElementById(
+                        "newStock"
+                    ).value
+                );
+
+
+            if (
+                !Number.isFinite(
+                    inputValue
+                ) ||
+                inputValue < 0
+            ) {
+
+                alert(
+                    "Please enter a valid stock quantity."
+                );
+
+                return;
+
+            }
+
+
+            const action =
+                document.getElementById(
+                    "stockAction"
+                ).value;
+
+
+            const current =
+                Number(
+                    product.stock || 0
+                );
+
+
+            let finalStock;
+
+
+            if (
+                action ===
+                "add"
+            ) {
+
+                finalStock =
+                    current +
+                    inputValue;
+
+            } else if (
+                action ===
+                "remove"
+            ) {
+
+                finalStock =
+                    Math.max(
+                        0,
+                        current -
+                        inputValue
+                    );
+
+            } else {
+
+                finalStock =
+                    inputValue;
+
+            }
+
+
+            product.stock =
+                finalStock;
+
+
+            saveInventory();
+
+            renderStats();
+
+            renderInventory();
+
+            closeStockModal();
+
+
+            alert(
+                "Stock updated successfully."
+            );
+
+        }
+    );
+
+
+    /* =========================
+       EVENTS
+    ========================= */
+
+    document.getElementById(
+        "closeModal"
+    ).addEventListener(
+        "click",
+        closeStockModal
+    );
+
+
+    document.getElementById(
+        "cancelModal"
+    ).addEventListener(
+        "click",
+        closeStockModal
+    );
+
+
+    document.getElementById(
+        "stockModal"
+    ).addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.id ===
+                "stockModal"
+            ) {
+
+                closeStockModal();
+
+            }
+
+        }
+    );
+
+
+    document.getElementById(
+        "searchInput"
+    ).addEventListener(
+        "input",
+        renderInventory
+    );
+
+
+    document.getElementById(
+        "stockFilter"
+    ).addEventListener(
+        "change",
+        renderInventory
+    );
+
+
+    document.getElementById(
+        "resetBtn"
+    ).addEventListener(
+        "click",
+        () => {
+
+            document.getElementById(
+                "searchInput"
+            ).value = "";
+
+
+            document.getElementById(
+                "stockFilter"
+            ).value =
+                "all";
+
+
+            renderInventory();
+
+        }
+    );
+
+
+    /* =========================
+       START
+    ========================= */
+
+    loadInventory();
+
+    renderStats();
+
+    renderInventory();
+
+</script>
+
+</body>
+</html>

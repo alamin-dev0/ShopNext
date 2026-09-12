@@ -1,0 +1,2994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Homepage Manager | Alamin Shop Admin</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #080a0d;
+      --panel: #101318;
+      --panel-2: #151920;
+      --border: #252a33;
+      --text: #f5f7fa;
+      --muted: #9299a5;
+      --success: #45d483;
+      --danger: #ff5c5c;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ================= SIDEBAR ================= */
+
+    .sidebar {
+      width: 250px;
+      background: #0d1014;
+      border-right: 1px solid var(--border);
+      padding: 22px 15px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      overflow-y: auto;
+      z-index: 100;
+      transition: 0.3s ease;
+    }
+
+    .logo {
+      padding: 5px 10px 25px;
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .logo span {
+      color: #8e96a3;
+    }
+
+    .nav-title {
+      font-size: 10px;
+      color: #656d79;
+      text-transform: uppercase;
+      letter-spacing: 1.3px;
+      padding: 15px 10px 8px;
+    }
+
+    .nav a {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      color: #aeb5bf;
+      text-decoration: none;
+      padding: 11px 12px;
+      border-radius: 9px;
+      margin-bottom: 3px;
+      font-size: 13px;
+      transition: 0.2s;
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      background: #1a1e25;
+      color: #fff;
+    }
+
+    .nav-icon {
+      width: 20px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    /* ================= MAIN ================= */
+
+    .main {
+      width: calc(100% - 250px);
+      margin-left: 250px;
+      min-width: 0;
+    }
+
+    .topbar {
+      height: 72px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8, 10, 13, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(15px);
+    }
+
+    .topbar h1 {
+      font-size: 19px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .view-store {
+      color: #d9dde3;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 9px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+
+    .admin-avatar {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background: #fff;
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    .content {
+      padding: 30px;
+      max-width: 1500px;
+      margin: auto;
+    }
+
+    .page-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .page-head h2 {
+      font-size: 25px;
+      margin-bottom: 7px;
+    }
+
+    .page-head p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      background: #1b2028;
+    }
+
+    .btn.primary {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+      font-weight: 700;
+    }
+
+    .btn.primary:hover {
+      opacity: 0.9;
+    }
+
+    /* ================= STATS ================= */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      margin-bottom: 7px;
+    }
+
+    .stat strong {
+      font-size: 21px;
+    }
+
+    /* ================= GRID ================= */
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .card-head {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .card-head h3 {
+      font-size: 14px;
+    }
+
+    .card-head p {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    /* ================= FORM ================= */
+
+    .field {
+      margin-bottom: 17px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      color: #d8dce2;
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      background: #0b0e12;
+      border: 1px solid var(--border);
+      color: white;
+      border-radius: 8px;
+      padding: 11px 12px;
+      outline: none;
+      font-size: 12px;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #555d69;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    /* ================= IMAGE SYSTEM ================= */
+
+    .image-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .image-tab {
+      border: 1px solid var(--border);
+      background: #0b0e12;
+      color: #9299a5;
+      padding: 9px 13px;
+      border-radius: 7px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .image-tab:hover {
+      background: #151a21;
+      color: #fff;
+    }
+
+    .image-tab.active {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+      font-weight: 700;
+    }
+
+    .image-input {
+      display: flex;
+      gap: 8px;
+    }
+
+    .image-input input {
+      flex: 1;
+    }
+
+    .upload-box {
+      width: 100%;
+      min-height: 140px;
+      border: 1px dashed #3a414c;
+      background: #0b0e12;
+      border-radius: 10px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      cursor: pointer;
+      transition: 0.2s;
+      text-align: center;
+    }
+
+    .upload-box:hover {
+      border-color: #777f8b;
+      background: #10141a;
+    }
+
+    .upload-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #1b2028;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 20px;
+      margin-bottom: 9px;
+    }
+
+    .upload-box strong {
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .upload-box span {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .selected-file {
+      margin-top: 9px;
+      color: #8f98a5;
+      font-size: 10px;
+      display: none;
+    }
+
+    .selected-file.show {
+      display: block;
+    }
+
+    .image-preview {
+      margin-top: 12px;
+      width: 100%;
+      height: 150px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: #0b0e12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .image-preview.empty::after {
+      content: "Image preview";
+      color: #555c66;
+      font-size: 11px;
+    }
+
+    /* ================= TOGGLE ================= */
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid #1e232b;
+    }
+
+    .toggle-row:last-child {
+      border-bottom: none;
+    }
+
+    .toggle-info strong {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .toggle-info span {
+      display: block;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .switch {
+      width: 43px;
+      height: 24px;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: #282d35;
+      border-radius: 30px;
+      transition: 0.25s;
+      cursor: pointer;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      top: 3px;
+      background: #8d949e;
+      border-radius: 50%;
+      transition: 0.25s;
+    }
+
+    .switch input:checked + .slider {
+      background: #fff;
+    }
+
+    .switch input:checked + .slider::before {
+      transform: translateX(19px);
+      background: #000;
+    }
+
+    /* ================= HERO PREVIEW ================= */
+
+    .hero-preview {
+      min-height: 250px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      position: relative;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(0,0,0,.9),
+          rgba(0,0,0,.35)
+        ),
+        url("https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80")
+        center/cover;
+
+      display: flex;
+      align-items: center;
+      padding: 30px;
+    }
+
+    .hero-preview-content {
+      max-width: 470px;
+    }
+
+    .hero-preview-content small {
+      color: #cbd0d7;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .hero-preview-content h2 {
+      font-size: 29px;
+      line-height: 1.1;
+      margin: 10px 0;
+    }
+
+    .hero-preview-content p {
+      color: #c2c7cf;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .preview-btn {
+      display: inline-block;
+      margin-top: 16px;
+      background: white;
+      color: black;
+      padding: 9px 15px;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    /* ================= SECTION LIST ================= */
+
+    .section-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid var(--border);
+      background: #0d1014;
+      border-radius: 9px;
+      padding: 13px;
+      margin-bottom: 9px;
+    }
+
+    .section-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .drag {
+      color: #69717c;
+      cursor: grab;
+      font-size: 17px;
+    }
+
+    .section-icon {
+      width: 35px;
+      height: 35px;
+      border-radius: 8px;
+      background: #1a1f27;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .section-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .section-info strong {
+      font-size: 12px;
+      display: block;
+    }
+
+    .section-info span {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    /* ================= TOAST ================= */
+
+    .toast {
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      background: #fff;
+      color: #000;
+      padding: 12px 18px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: bold;
+
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: .3s;
+
+      z-index: 999;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ================= MOBILE MENU ================= */
+
+    .mobile-menu {
+      display: none;
+      background: transparent;
+      color: white;
+      border: 0;
+      font-size: 22px;
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media (max-width: 1050px) {
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+    @media (max-width: 800px) {
+
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        width: 100%;
+        margin-left: 0;
+      }
+
+      .mobile-menu {
+        display: block;
+      }
+
+      .topbar {
+        padding: 0 18px;
+      }
+
+      .content {
+        padding: 20px 15px;
+      }
+
+      .page-head {
+        flex-direction: column;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-preview {
+        min-height: 270px;
+        padding: 22px;
+      }
+
+      .hero-preview-content h2 {
+        font-size: 23px;
+      }
+
+      .view-store {
+        display: none;
+      }
+
+      .admin-avatar {
+        width: 32px;
+        height: 32px;
+      }
+
+      .topbar h1 {
+        font-size: 16px;
+      }
+
+      .image-input {
+        flex-direction: column;
+      }
+
+      .image-input .btn {
+        width: 100%;
+      }
+
+      .image-tabs {
+        width: 100%;
+      }
+
+      .image-tab {
+        flex: 1;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- ================= SIDEBAR ================= -->
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+      Alamin <span>Shop</span>
+    </div>
+
+    <nav class="nav">
+
+      <div class="nav-title">Main</div>
+
+      <a href="index.html">
+        <span class="nav-icon">▦</span>
+        Dashboard
+      </a>
+
+      <a href="orders.html">
+        <span class="nav-icon">◫</span>
+        Orders
+      </a>
+
+      <a href="products.html">
+        <span class="nav-icon">□</span>
+        Products
+      </a>
+
+      <a href="customers.html">
+        <span class="nav-icon">♙</span>
+        Customers
+      </a>
+
+      <div class="nav-title">Store</div>
+
+      <a href="homepage.html" class="active">
+        <span class="nav-icon">⌂</span>
+        Homepage
+      </a>
+
+      <a href="banners.html">
+        <span class="nav-icon">▤</span>
+        Banners
+      </a>
+
+      <a href="categories.html">
+        <span class="nav-icon">◈</span>
+        Categories
+      </a>
+
+      <a href="reviews.html">
+        <span class="nav-icon">★</span>
+        Reviews
+      </a>
+
+      <a href="media.html">
+        <span class="nav-icon">▧</span>
+        Media
+      </a>
+
+      <div class="nav-title">Sales</div>
+
+      <a href="coupons.html">
+        <span class="nav-icon">%</span>
+        Coupons
+      </a>
+
+      <a href="inventory.html">
+        <span class="nav-icon">▥</span>
+        Inventory
+      </a>
+
+      <a href="returns.html">
+        <span class="nav-icon">↩</span>
+        Returns
+      </a>
+
+      <a href="reports.html">
+        <span class="nav-icon">⌁</span>
+        Reports
+      </a>
+
+      <div class="nav-title">Settings</div>
+
+      <a href="payments.html">
+        <span class="nav-icon">৳</span>
+        Payments
+      </a>
+
+      <a href="shipping.html">
+        <span class="nav-icon">▰</span>
+        Shipping
+      </a>
+
+      <a href="delivery-zones.html">
+        <span class="nav-icon">⌖</span>
+        Delivery Zones
+      </a>
+
+      <a href="couriers.html">
+        <span class="nav-icon">▱</span>
+        Couriers
+      </a>
+
+      <a href="settings.html">
+        <span class="nav-icon">⚙</span>
+        Settings
+      </a>
+
+    </nav>
+
+  </aside>
+
+
+  <!-- ================= MAIN ================= -->
+
+  <main class="main">
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+      <div style="display:flex;align-items:center;gap:12px;">
+
+        <button
+          class="mobile-menu"
+          id="menuBtn"
+          type="button"
+        >
+          ☰
+        </button>
+
+        <h1>Homepage Manager</h1>
+
+      </div>
+
+      <div class="topbar-right">
+
+        <a
+          href="../index.html"
+          target="_blank"
+          class="view-store"
+        >
+          View Store ↗
+        </a>
+
+        <div class="admin-avatar">
+          AA
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- CONTENT -->
+
+    <section class="content">
+
+      <!-- PAGE HEADER -->
+
+      <div class="page-head">
+
+        <div>
+
+          <h2>Homepage</h2>
+
+          <p>
+            Manage your storefront homepage sections and content.
+          </p>
+
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="btn"
+            id="resetBtn"
+            type="button"
+          >
+            Reset
+          </button>
+
+          <button
+            class="btn primary"
+            id="saveBtn"
+            type="button"
+          >
+            Save Changes
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= STATS ================= -->
+
+      <div class="stats">
+
+        <div class="stat">
+
+          <span>
+            ACTIVE SECTIONS
+          </span>
+
+          <strong id="activeCount">
+            6
+          </strong>
+
+        </div>
+
+        <div class="stat">
+
+          <span>
+            HERO STATUS
+          </span>
+
+          <strong id="heroStatus">
+            ON
+          </strong>
+
+        </div>
+
+        <div class="stat">
+
+          <span>
+            LAST SAVED
+          </span>
+
+          <strong id="lastSaved">
+            Never
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="grid">
+
+        <!-- ================= LEFT COLUMN ================= -->
+
+        <div>
+
+          <!-- HERO SECTION -->
+
+          <div class="card">
+
+            <div class="card-head">
+
+              <div>
+
+                <h3>
+                  Hero Section
+                </h3>
+
+                <p>
+                  Main promotional section at the top of your store.
+                </p>
+
+              </div>
+
+              <label class="switch">
+
+                <input
+                  type="checkbox"
+                  id="heroEnabled"
+                  checked
+                >
+
+                <span class="slider"></span>
+
+              </label>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="field">
+
+                <label>
+                  Small Label
+                </label>
+
+                <input
+                  type="text"
+                  id="heroLabel"
+                  value="WELCOME TO ALAMIN SHOP"
+                >
+
+              </div>
+
+
+              <div class="field">
+
+                <label>
+                  Headline
+                </label>
+
+                <input
+                  type="text"
+                  id="heroTitle"
+                  value="Everything you need. All in one place."
+                >
+
+              </div>
+
+
+              <div class="field">
+
+                <label>
+                  Description
+                </label>
+
+                <textarea id="heroDescription">Discover quality products at great prices with fast and reliable delivery.</textarea>
+
+              </div>
+
+
+              <div class="two-col">
+
+                <div class="field">
+
+                  <label>
+                    Button Text
+                  </label>
+
+                  <input
+                    type="text"
+                    id="heroButton"
+                    value="Shop Now"
+                  >
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Button Link
+                  </label>
+
+                  <input
+                    type="text"
+                    id="heroLink"
+                    value="products.html"
+                  >
+
+                </div>
+
+              </div>
+
+
+              <!-- ================= IMAGE ================= -->
+
+              <div class="field">
+
+                <label>
+                  Hero Image
+                </label>
+
+
+                <div class="image-tabs">
+
+                  <button
+                    type="button"
+                    class="image-tab active"
+                    id="urlTab"
+                  >
+                    🔗 Image URL
+                  </button>
+
+                  <button
+                    type="button"
+                    class="image-tab"
+                    id="uploadTab"
+                  >
+                    📁 Upload Image
+                  </button>
+
+                </div>
+
+
+                <!-- URL -->
+
+                <div id="urlImageBox">
+
+                  <div class="image-input">
+
+                    <input
+                      type="url"
+                      id="heroImage"
+                      value="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80"
+                      placeholder="https://example.com/image.jpg"
+                    >
+
+                    <button
+                      type="button"
+                      class="btn"
+                      id="previewBtn"
+                    >
+                      Preview
+                    </button>
+
+                  </div>
+
+                </div>
+
+
+                <!-- UPLOAD -->
+
+                <div
+                  id="uploadImageBox"
+                  style="display:none;"
+                >
+
+                  <label
+                    class="upload-box"
+                    for="heroImageFile"
+                  >
+
+                    <div class="upload-icon">
+                      ↑
+                    </div>
+
+                    <strong>
+                      Click to upload image
+                    </strong>
+
+                    <span>
+                      PNG, JPG, JPEG or WEBP • Max 5MB
+                    </span>
+
+                  </label>
+
+
+                  <input
+                    type="file"
+                    id="heroImageFile"
+                    accept="image/png,image/jpeg,image/jpg,image/webp"
+                    hidden
+                  >
+
+
+                  <div
+                    class="selected-file"
+                    id="selectedFile"
+                  ></div>
+
+                </div>
+
+
+                <!-- PREVIEW -->
+
+                <div
+                  class="image-preview"
+                  id="imagePreview"
+                >
+
+                  <img
+                    id="heroImagePreview"
+                    src=""
+                    alt="Hero Preview"
+                  >
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- ================= ANNOUNCEMENT ================= -->
+
+          <div class="card">
+
+            <div class="card-head">
+
+              <div>
+
+                <h3>
+                  Announcement Bar
+                </h3>
+
+                <p>
+                  Show a small message at the top of the storefront.
+                </p>
+
+              </div>
+
+              <label class="switch">
+
+                <input
+                  type="checkbox"
+                  id="announcementEnabled"
+                  checked
+                >
+
+                <span class="slider"></span>
+
+              </label>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="field">
+
+                <label>
+                  Announcement Text
+                </label>
+
+                <input
+                  type="text"
+                  id="announcementText"
+                  value="Free delivery on orders over ৳5,000"
+                >
+
+              </div>
+
+
+              <div class="two-col">
+
+                <div class="field">
+
+                  <label>
+                    Link Text
+                  </label>
+
+                  <input
+                    type="text"
+                    id="announcementLinkText"
+                    value="Shop Now"
+                  >
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Link
+                  </label>
+
+                  <input
+                    type="text"
+                    id="announcementLink"
+                    value="products.html"
+                  >
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- ================= FEATURED PRODUCTS ================= -->
+
+          <div class="card">
+
+            <div class="card-head">
+
+              <div>
+
+                <h3>
+                  Featured Products
+                </h3>
+
+                <p>
+                  Control how featured products appear on homepage.
+                </p>
+
+              </div>
+
+              <label class="switch">
+
+                <input
+                  type="checkbox"
+                  id="featuredEnabled"
+                  checked
+                >
+
+                <span class="slider"></span>
+
+              </label>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="two-col">
+
+                <div class="field">
+
+                  <label>
+                    Section Title
+                  </label>
+
+                  <input
+                    type="text"
+                    id="featuredTitle"
+                    value="Featured Products"
+                  >
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Products to Show
+                  </label>
+
+                  <select id="featuredLimit">
+
+                    <option value="4">
+                      4 Products
+                    </option>
+
+                    <option
+                      value="8"
+                      selected
+                    >
+                      8 Products
+                    </option>
+
+                    <option value="12">
+                      12 Products
+                    </option>
+
+                    <option value="16">
+                      16 Products
+                    </option>
+
+                  </select>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- ================= CATEGORIES ================= -->
+
+          <div class="card">
+
+            <div class="card-head">
+
+              <div>
+
+                <h3>
+                  Categories Section
+                </h3>
+
+                <p>
+                  Display product categories on your homepage.
+                </p>
+
+              </div>
+
+              <label class="switch">
+
+                <input
+                  type="checkbox"
+                  id="categoriesEnabled"
+                  checked
+                >
+
+                <span class="slider"></span>
+
+              </label>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="two-col">
+
+                <div class="field">
+
+                  <label>
+                    Section Title
+                  </label>
+
+                  <input
+                    type="text"
+                    id="categoriesTitle"
+                    value="Shop by Category"
+                  >
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Categories to Show
+                  </label>
+
+                  <select id="categoriesLimit">
+
+                    <option value="4">
+                      4 Categories
+                    </option>
+
+                    <option
+                      value="6"
+                      selected
+                    >
+                      6 Categories
+                    </option>
+
+                    <option value="8">
+                      8 Categories
+                    </option>
+
+                  </select>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================= RIGHT COLUMN ================= -->
+
+        <div>
+
+
+          <!-- HERO PREVIEW -->
+
+          <div class="card">
+
+            <div class="card-head">
+
+              <div>
+
+                <h3>
+                  Hero Preview
+                </h3>
+
+                <p>
+                  Approximate storefront appearance.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div
+                class="hero-preview"
+                id="heroPreview"
+              >
+
+                <div class="hero-preview-content">
+
+                  <small id="previewLabel">
+                    WELCOME TO ALAMIN SHOP
+                  </small>
+
+                  <h2 id="previewTitle">
+                    Everything you need. All in one place.
+                  </h2>
+
+                  <p id="previewDescription">
+                    Discover quality products at great prices with fast and reliable delivery.
+                  </p>
+
+                  <span
+                    class="preview-btn"
+                    id="previewButton"
+                  >
+                    Shop Now
+                  </span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- HOMEPAGE SECTIONS -->
+
+          <div class="card">
+
+            <div class="card-head">
+
+              <div>
+
+                <h3>
+                  Homepage Sections
+                </h3>
+
+                <p>
+                  Control which sections appear on homepage.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div class="card-body">
+
+
+              <div class="section-item">
+
+                <div class="drag">
+                  ☷
+                </div>
+
+                <div class="section-icon">
+                  ▣
+                </div>
+
+                <div class="section-info">
+
+                  <strong>
+                    Hero Banner
+                  </strong>
+
+                  <span>
+                    Main promotional area
+                  </span>
+
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    type="checkbox"
+                    class="sectionToggle"
+                    data-section="hero"
+                    checked
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+
+              <div class="section-item">
+
+                <div class="drag">
+                  ☷
+                </div>
+
+                <div class="section-icon">
+                  ★
+                </div>
+
+                <div class="section-info">
+
+                  <strong>
+                    Featured Products
+                  </strong>
+
+                  <span>
+                    Featured product grid
+                  </span>
+
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    type="checkbox"
+                    class="sectionToggle"
+                    data-section="featured"
+                    checked
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+
+              <div class="section-item">
+
+                <div class="drag">
+                  ☷
+                </div>
+
+                <div class="section-icon">
+                  ◈
+                </div>
+
+                <div class="section-info">
+
+                  <strong>
+                    Categories
+                  </strong>
+
+                  <span>
+                    Shop by category
+                  </span>
+
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    type="checkbox"
+                    class="sectionToggle"
+                    data-section="categories"
+                    checked
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+
+              <div class="section-item">
+
+                <div class="drag">
+                  ☷
+                </div>
+
+                <div class="section-icon">
+                  ⚡
+                </div>
+
+                <div class="section-info">
+
+                  <strong>
+                    Best Sellers
+                  </strong>
+
+                  <span>
+                    Popular products
+                  </span>
+
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    type="checkbox"
+                    class="sectionToggle"
+                    data-section="bestsellers"
+                    checked
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+
+              <div class="section-item">
+
+                <div class="drag">
+                  ☷
+                </div>
+
+                <div class="section-icon">
+                  ✦
+                </div>
+
+                <div class="section-info">
+
+                  <strong>
+                    New Arrivals
+                  </strong>
+
+                  <span>
+                    Latest products
+                  </span>
+
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    type="checkbox"
+                    class="sectionToggle"
+                    data-section="newarrivals"
+                    checked
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+
+              <div class="section-item">
+
+                <div class="drag">
+                  ☷
+                </div>
+
+                <div class="section-icon">
+                  💬
+                </div>
+
+                <div class="section-info">
+
+                  <strong>
+                    Customer Reviews
+                  </strong>
+
+                  <span>
+                    Customer testimonials
+                  </span>
+
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    type="checkbox"
+                    class="sectionToggle"
+                    data-section="reviews"
+                    checked
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+
+              <div class="section-item">
+
+                <div class="drag">
+                  ☷
+                </div>
+
+                <div class="section-icon">
+                  ✉
+                </div>
+
+                <div class="section-info">
+
+                  <strong>
+                    Newsletter
+                  </strong>
+
+                  <span>
+                    Email subscription section
+                  </span>
+
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    type="checkbox"
+                    class="sectionToggle"
+                    data-section="newsletter"
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+
+          <!-- ================= PROMOTION ================= -->
+
+          <div class="card">
+
+            <div class="card-head">
+
+              <div>
+
+                <h3>
+                  Promotion Section
+                </h3>
+
+                <p>
+                  Optional promotional message.
+                </p>
+
+              </div>
+
+              <label class="switch">
+
+                <input
+                  type="checkbox"
+                  id="promotionEnabled"
+                >
+
+                <span class="slider"></span>
+
+              </label>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="field">
+
+                <label>
+                  Promotion Title
+                </label>
+
+                <input
+                  type="text"
+                  id="promotionTitle"
+                  value="Special Offers"
+                >
+
+              </div>
+
+
+              <div class="field">
+
+                <label>
+                  Promotion Text
+                </label>
+
+                <textarea id="promotionText">Save more when you shop more.</textarea>
+
+              </div>
+
+
+              <div class="field">
+
+                <label>
+                  Promotion Link
+                </label>
+
+                <input
+                  type="text"
+                  id="promotionLink"
+                  value="products.html"
+                >
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+  class="toast"
+  id="toast"
+>
+  Homepage settings saved successfully.
+</div>
+
+
+<script>
+
+  /* =====================================================
+     STORAGE
+  ===================================================== */
+
+  const STORAGE_KEY = "shopnest_homepage_settings";
+
+
+  /* =====================================================
+     DEFAULT SETTINGS
+  ===================================================== */
+
+  const defaultSettings = {
+
+    heroEnabled: true,
+
+    heroLabel:
+      "WELCOME TO ALAMIN SHOP",
+
+    heroTitle:
+      "Everything you need. All in one place.",
+
+    heroDescription:
+      "Discover quality products at great prices with fast and reliable delivery.",
+
+    heroButton:
+      "Shop Now",
+
+    heroLink:
+      "products.html",
+
+    heroImage:
+      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80",
+
+
+    announcementEnabled: true,
+
+    announcementText:
+      "Free delivery on orders over ৳5,000",
+
+    announcementLinkText:
+      "Shop Now",
+
+    announcementLink:
+      "products.html",
+
+
+    featuredEnabled: true,
+
+    featuredTitle:
+      "Featured Products",
+
+    featuredLimit: 8,
+
+
+    categoriesEnabled: true,
+
+    categoriesTitle:
+      "Shop by Category",
+
+    categoriesLimit: 6,
+
+
+    promotionEnabled: false,
+
+    promotionTitle:
+      "Special Offers",
+
+    promotionText:
+      "Save more when you shop more.",
+
+    promotionLink:
+      "products.html",
+
+
+    sections: {
+
+      hero: true,
+
+      featured: true,
+
+      categories: true,
+
+      bestsellers: true,
+
+      newarrivals: true,
+
+      reviews: true,
+
+      newsletter: false
+
+    },
+
+
+    lastSaved: null
+
+  };
+
+
+  /* =====================================================
+     SHORT SELECTOR
+  ===================================================== */
+
+  function $(id) {
+    return document.getElementById(id);
+  }
+
+
+  /* =====================================================
+     LOAD SETTINGS
+  ===================================================== */
+
+  function loadSettings() {
+
+    const saved =
+      localStorage.getItem(STORAGE_KEY);
+
+
+    if (!saved) {
+
+      return {
+        ...defaultSettings,
+        sections: {
+          ...defaultSettings.sections
+        }
+      };
+
+    }
+
+
+    try {
+
+      const parsed =
+        JSON.parse(saved);
+
+
+      return {
+
+        ...defaultSettings,
+
+        ...parsed,
+
+        sections: {
+
+          ...defaultSettings.sections,
+
+          ...(parsed.sections || {})
+
+        }
+
+      };
+
+    } catch (error) {
+
+      console.error(
+        "Settings load error:",
+        error
+      );
+
+
+      return {
+        ...defaultSettings,
+        sections: {
+          ...defaultSettings.sections
+        }
+      };
+
+    }
+
+  }
+
+
+  /* =====================================================
+     GET FORM SETTINGS
+  ===================================================== */
+
+  function getFormSettings() {
+
+    const sections = {};
+
+
+    document
+      .querySelectorAll(".sectionToggle")
+      .forEach(toggle => {
+
+        sections[toggle.dataset.section] =
+          toggle.checked;
+
+      });
+
+
+    return {
+
+      heroEnabled:
+        $("heroEnabled").checked,
+
+      heroLabel:
+        $("heroLabel").value.trim(),
+
+      heroTitle:
+        $("heroTitle").value.trim(),
+
+      heroDescription:
+        $("heroDescription").value.trim(),
+
+      heroButton:
+        $("heroButton").value.trim(),
+
+      heroLink:
+        $("heroLink").value.trim(),
+
+      heroImage:
+        $("heroImage").value.trim(),
+
+
+      announcementEnabled:
+        $("announcementEnabled").checked,
+
+      announcementText:
+        $("announcementText").value.trim(),
+
+      announcementLinkText:
+        $("announcementLinkText").value.trim(),
+
+      announcementLink:
+        $("announcementLink").value.trim(),
+
+
+      featuredEnabled:
+        $("featuredEnabled").checked,
+
+      featuredTitle:
+        $("featuredTitle").value.trim(),
+
+      featuredLimit:
+        Number($("featuredLimit").value),
+
+
+      categoriesEnabled:
+        $("categoriesEnabled").checked,
+
+      categoriesTitle:
+        $("categoriesTitle").value.trim(),
+
+      categoriesLimit:
+        Number($("categoriesLimit").value),
+
+
+      promotionEnabled:
+        $("promotionEnabled").checked,
+
+      promotionTitle:
+        $("promotionTitle").value.trim(),
+
+      promotionText:
+        $("promotionText").value.trim(),
+
+      promotionLink:
+        $("promotionLink").value.trim(),
+
+
+      sections,
+
+      lastSaved:
+        new Date().toISOString()
+
+    };
+
+  }
+
+
+  /* =====================================================
+     FILL FORM
+  ===================================================== */
+
+  function fillForm(settings) {
+
+    $("heroEnabled").checked =
+      settings.heroEnabled;
+
+    $("heroLabel").value =
+      settings.heroLabel;
+
+    $("heroTitle").value =
+      settings.heroTitle;
+
+    $("heroDescription").value =
+      settings.heroDescription;
+
+    $("heroButton").value =
+      settings.heroButton;
+
+    $("heroLink").value =
+      settings.heroLink;
+
+    $("heroImage").value =
+      settings.heroImage;
+
+
+    $("announcementEnabled").checked =
+      settings.announcementEnabled;
+
+    $("announcementText").value =
+      settings.announcementText;
+
+    $("announcementLinkText").value =
+      settings.announcementLinkText;
+
+    $("announcementLink").value =
+      settings.announcementLink;
+
+
+    $("featuredEnabled").checked =
+      settings.featuredEnabled;
+
+    $("featuredTitle").value =
+      settings.featuredTitle;
+
+    $("featuredLimit").value =
+      settings.featuredLimit;
+
+
+    $("categoriesEnabled").checked =
+      settings.categoriesEnabled;
+
+    $("categoriesTitle").value =
+      settings.categoriesTitle;
+
+    $("categoriesLimit").value =
+      settings.categoriesLimit;
+
+
+    $("promotionEnabled").checked =
+      settings.promotionEnabled;
+
+    $("promotionTitle").value =
+      settings.promotionTitle;
+
+    $("promotionText").value =
+      settings.promotionText;
+
+    $("promotionLink").value =
+      settings.promotionLink;
+
+
+    document
+      .querySelectorAll(".sectionToggle")
+      .forEach(toggle => {
+
+        const section =
+          toggle.dataset.section;
+
+
+        toggle.checked =
+          settings.sections &&
+          settings.sections[section] !== undefined
+            ? settings.sections[section]
+            : false;
+
+      });
+
+
+    updateUI(settings);
+
+  }
+
+
+  /* =====================================================
+     UPDATE UI
+  ===================================================== */
+
+  function updateUI(settings) {
+
+    $("previewLabel").textContent =
+      settings.heroLabel ||
+      "WELCOME TO ALAMIN SHOP";
+
+
+    $("previewTitle").textContent =
+      settings.heroTitle ||
+      "Everything you need. All in one place.";
+
+
+    $("previewDescription").textContent =
+      settings.heroDescription ||
+      "";
+
+
+    $("previewButton").textContent =
+      settings.heroButton ||
+      "Shop Now";
+
+
+    /* IMAGE PREVIEW */
+
+    if (settings.heroImage) {
+
+      $("heroImagePreview").src =
+        settings.heroImage;
+
+      $("imagePreview")
+        .classList
+        .remove("empty");
+
+    } else {
+
+      $("heroImagePreview").removeAttribute("src");
+
+      $("imagePreview")
+        .classList
+        .add("empty");
+
+    }
+
+
+    /* HERO BACKGROUND */
+
+    if (settings.heroImage) {
+
+      $("heroPreview").style.background =
+        `linear-gradient(90deg, rgba(0,0,0,.9), rgba(0,0,0,.35)), url("${settings.heroImage}") center/cover`;
+
+    }
+
+
+    /* STATUS */
+
+    $("heroStatus").textContent =
+      settings.heroEnabled
+        ? "ON"
+        : "OFF";
+
+
+    /* ACTIVE SECTIONS */
+
+    const activeSections =
+      Object.values(
+        settings.sections || {}
+      ).filter(Boolean).length;
+
+
+    $("activeCount").textContent =
+      activeSections;
+
+
+    /* LAST SAVED */
+
+    if (settings.lastSaved) {
+
+      const date =
+        new Date(settings.lastSaved);
+
+
+      $("lastSaved").textContent =
+        date.toLocaleTimeString(
+          [],
+          {
+            hour: "2-digit",
+            minute: "2-digit"
+          }
+        );
+
+    } else {
+
+      $("lastSaved").textContent =
+        "Never";
+
+    }
+
+  }
+
+
+  /* =====================================================
+     SAVE SETTINGS
+  ===================================================== */
+
+  function saveSettings(showMessage = true) {
+
+    const settings =
+      getFormSettings();
+
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(settings)
+    );
+
+
+    updateUI(settings);
+
+
+    if (showMessage) {
+
+      showToast(
+        "Homepage settings saved successfully."
+      );
+
+    }
+
+  }
+
+
+  /* =====================================================
+     TOAST
+  ===================================================== */
+
+  function showToast(message) {
+
+    const toast =
+      $("toast");
+
+
+    toast.textContent =
+      message;
+
+
+    toast.classList.add("show");
+
+
+    setTimeout(() => {
+
+      toast.classList.remove("show");
+
+    }, 2500);
+
+  }
+
+
+  /* =====================================================
+     RESET
+  ===================================================== */
+
+  function resetSettings() {
+
+    const confirmed =
+      confirm(
+        "Are you sure you want to reset homepage settings?"
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    localStorage.removeItem(
+      STORAGE_KEY
+    );
+
+
+    const freshSettings = {
+
+      ...defaultSettings,
+
+      sections: {
+        ...defaultSettings.sections
+      }
+
+    };
+
+
+    fillForm(
+      freshSettings
+    );
+
+
+    $("selectedFile").textContent =
+      "";
+
+    $("selectedFile")
+      .classList
+      .remove("show");
+
+
+    showToast(
+      "Homepage settings reset."
+    );
+
+  }
+
+
+  /* =====================================================
+     LIVE PREVIEW
+  ===================================================== */
+
+  function updatePreview() {
+
+    const settings =
+      getFormSettings();
+
+
+    updateUI(settings);
+
+  }
+
+
+  /* =====================================================
+     IMAGE TABS
+  ===================================================== */
+
+  $("urlTab").addEventListener(
+    "click",
+    () => {
+
+      $("urlTab")
+        .classList
+        .add("active");
+
+      $("uploadTab")
+        .classList
+        .remove("active");
+
+
+      $("urlImageBox").style.display =
+        "block";
+
+      $("uploadImageBox").style.display =
+        "none";
+
+    }
+  );
+
+
+  $("uploadTab").addEventListener(
+    "click",
+    () => {
+
+      $("uploadTab")
+        .classList
+        .add("active");
+
+      $("urlTab")
+        .classList
+        .remove("active");
+
+
+      $("uploadImageBox").style.display =
+        "block";
+
+      $("urlImageBox").style.display =
+        "none";
+
+    }
+  );
+
+
+  /* =====================================================
+     URL IMAGE PREVIEW
+  ===================================================== */
+
+  $("previewBtn").addEventListener(
+    "click",
+    () => {
+
+      const url =
+        $("heroImage").value.trim();
+
+
+      if (!url) {
+
+        showToast(
+          "Please enter an image URL."
+        );
+
+        return;
+
+      }
+
+
+      const img =
+        new Image();
+
+
+      img.onload = () => {
+
+        $("heroImagePreview").src =
+          url;
+
+        $("imagePreview")
+          .classList
+          .remove("empty");
+
+
+        updatePreview();
+
+
+        showToast(
+          "Image preview updated."
+        );
+
+      };
+
+
+      img.onerror = () => {
+
+        showToast(
+          "Could not load this image URL."
+        );
+
+      };
+
+
+      img.src = url;
+
+    }
+  );
+
+
+  /* =====================================================
+     URL LIVE PREVIEW
+  ===================================================== */
+
+  $("heroImage").addEventListener(
+    "input",
+    () => {
+
+      const url =
+        $("heroImage").value.trim();
+
+
+      if (!url) {
+        return;
+      }
+
+
+      updatePreview();
+
+    }
+  );
+
+
+  /* =====================================================
+     UPLOAD IMAGE
+  ===================================================== */
+
+  $("heroImageFile").addEventListener(
+    "change",
+    function () {
+
+      const file =
+        this.files[0];
+
+
+      if (!file) {
+        return;
+      }
+
+
+      const allowedTypes = [
+
+        "image/png",
+
+        "image/jpeg",
+
+        "image/jpg",
+
+        "image/webp"
+
+      ];
+
+
+      if (
+        !allowedTypes.includes(
+          file.type
+        )
+      ) {
+
+        alert(
+          "Please select PNG, JPG, JPEG or WEBP image."
+        );
+
+
+        this.value = "";
+
+        return;
+
+      }
+
+
+      /* 5MB LIMIT */
+
+      const maxSize =
+        5 * 1024 * 1024;
+
+
+      if (file.size > maxSize) {
+
+        alert(
+          "Image size must be less than 5MB."
+        );
+
+
+        this.value = "";
+
+        return;
+
+      }
+
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload =
+        function (event) {
+
+          const imageData =
+            event.target.result;
+
+
+          /*
+            IMPORTANT:
+            Uploaded image is stored
+            inside heroImage field as
+            Base64 data.
+          */
+
+          $("heroImage").value =
+            imageData;
+
+
+          $("heroImagePreview").src =
+            imageData;
+
+
+          $("imagePreview")
+            .classList
+            .remove("empty");
+
+
+          /* FILE NAME */
+
+          $("selectedFile").textContent =
+            `Selected: ${file.name} (${formatFileSize(file.size)})`;
+
+
+          $("selectedFile")
+            .classList
+            .add("show");
+
+
+          updatePreview();
+
+
+          showToast(
+            "Image uploaded and preview updated."
+          );
+
+        };
+
+
+      reader.onerror =
+        function () {
+
+          showToast(
+            "Could not read this image."
+          );
+
+        };
+
+
+      reader.readAsDataURL(file);
+
+    }
+  );
+
+
+  /* =====================================================
+     FILE SIZE
+  ===================================================== */
+
+  function formatFileSize(bytes) {
+
+    if (bytes < 1024) {
+
+      return bytes + " B";
+
+    }
+
+
+    if (bytes < 1024 * 1024) {
+
+      return (
+        (bytes / 1024).toFixed(1) +
+        " KB"
+      );
+
+    }
+
+
+    return (
+      (bytes / (1024 * 1024)).toFixed(1) +
+      " MB"
+    );
+
+  }
+
+
+  /* =====================================================
+     LIVE TEXT PREVIEW
+  ===================================================== */
+
+  [
+
+    "heroLabel",
+
+    "heroTitle",
+
+    "heroDescription",
+
+    "heroButton",
+
+    "heroImage"
+
+  ].forEach(id => {
+
+    $(id).addEventListener(
+      "input",
+      updatePreview
+    );
+
+  });
+
+
+  /* =====================================================
+     HERO TOGGLE
+  ===================================================== */
+
+  $("heroEnabled").addEventListener(
+    "change",
+    updatePreview
+  );
+
+
+  /* =====================================================
+     SECTION TOGGLES
+  ===================================================== */
+
+  document
+    .querySelectorAll(".sectionToggle")
+    .forEach(toggle => {
+
+      toggle.addEventListener(
+        "change",
+        () => {
+
+          const settings =
+            getFormSettings();
+
+
+          updateUI(settings);
+
+        }
+      );
+
+    });
+
+
+  /* =====================================================
+     SAVE BUTTON
+  ===================================================== */
+
+  $("saveBtn").addEventListener(
+    "click",
+    () => {
+
+      saveSettings(true);
+
+    }
+  );
+
+
+  /* =====================================================
+     RESET BUTTON
+  ===================================================== */
+
+  $("resetBtn").addEventListener(
+    "click",
+    resetSettings
+  );
+
+
+  /* =====================================================
+     MOBILE MENU
+  ===================================================== */
+
+  $("menuBtn").addEventListener(
+    "click",
+    () => {
+
+      $("sidebar")
+        .classList
+        .toggle("open");
+
+    }
+  );
+
+
+  /* =====================================================
+     CLOSE MOBILE MENU
+  ===================================================== */
+
+  document
+    .querySelectorAll(".nav a")
+    .forEach(link => {
+
+      link.addEventListener(
+        "click",
+        () => {
+
+          $("sidebar")
+            .classList
+            .remove("open");
+
+        }
+      );
+
+    });
+
+
+  /* =====================================================
+     INITIALIZE
+  ===================================================== */
+
+  const settings =
+    loadSettings();
+
+
+  fillForm(settings);
+
+</script>
+
+</body>
+</html>

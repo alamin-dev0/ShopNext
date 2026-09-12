@@ -1,0 +1,2183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customers | Alamin Shop Admin</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #08090b;
+            color: #f8fafc;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .admin-layout {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .admin-sidebar {
+            width: 250px;
+            background: #0f1115;
+            border-right: 1px solid #242832;
+            padding: 22px 16px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 21px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            padding: 0 8px;
+        }
+
+        .admin-logo span {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #08090b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+        }
+
+        .menu-title {
+            color: #6f7785;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 10px;
+            margin: 24px 0 9px;
+        }
+
+        .admin-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .admin-nav a {
+            text-decoration: none;
+            color: #9ca3af;
+            padding: 11px 12px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-size: 14px;
+            transition: 0.2s ease;
+        }
+
+        .admin-nav a:hover {
+            background: #181b21;
+            color: #ffffff;
+        }
+
+        .admin-nav a.active {
+            background: #ffffff;
+            color: #08090b;
+            font-weight: 700;
+        }
+
+        .nav-icon {
+            width: 22px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .admin-main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+        }
+
+        .admin-topbar {
+            height: 72px;
+            border-bottom: 1px solid #242832;
+            background: rgba(8, 9, 11, 0.94);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(12px);
+        }
+
+        .topbar-title h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .topbar-title p {
+            margin: 5px 0 0;
+            color: #737b89;
+            font-size: 12px;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #1b1f27;
+            border: 1px solid #303640;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .admin-user-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .admin-user-info span {
+            color: #6f7785;
+            font-size: 11px;
+        }
+
+        .admin-content {
+            padding: 28px;
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .customer-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: #101216;
+            border: 1px solid #252a32;
+            border-radius: 14px;
+            padding: 19px;
+        }
+
+        .stat-card p {
+            margin: 0 0 9px;
+            color: #7e8795;
+            font-size: 12px;
+        }
+
+        .stat-card h2 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .stat-card small {
+            display: block;
+            margin-top: 7px;
+            color: #606977;
+            font-size: 11px;
+        }
+
+        /* =========================
+           TOOLBAR
+        ========================= */
+
+        .customer-panel {
+            background: #101216;
+            border: 1px solid #252a32;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 20px;
+            border-bottom: 1px solid #252a32;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .panel-header h2 {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .panel-header p {
+            margin: 5px 0 0;
+            color: #737b89;
+            font-size: 12px;
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 270px;
+            height: 40px;
+            background: #090a0d;
+            border: 1px solid #2b3039;
+            border-radius: 9px;
+            color: #ffffff;
+            padding: 0 13px 0 38px;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .search-box input:focus {
+            border-color: #555d6b;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 13px;
+            top: 11px;
+            color: #68717f;
+            font-size: 14px;
+        }
+
+        .filter-select {
+            height: 40px;
+            background: #090a0d;
+            border: 1px solid #2b3039;
+            border-radius: 9px;
+            color: #ffffff;
+            padding: 0 12px;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .reset-btn,
+        .export-btn {
+            height: 40px;
+            border-radius: 9px;
+            padding: 0 14px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .reset-btn {
+            background: #181b21;
+            border: 1px solid #303640;
+            color: #ffffff;
+        }
+
+        .export-btn {
+            background: #ffffff;
+            border: 1px solid #ffffff;
+            color: #08090b;
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .customer-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        .customer-table th {
+            text-align: left;
+            padding: 14px 18px;
+            background: #0c0e11;
+            color: #747d8b;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+            border-bottom: 1px solid #252a32;
+        }
+
+        .customer-table td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #1e2229;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        .customer-table tbody tr:hover {
+            background: #13161b;
+        }
+
+        .customer-info {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .customer-avatar {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            border-radius: 50%;
+            background: #1c2027;
+            border: 1px solid #303640;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .customer-name {
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 4px;
+        }
+
+        .customer-email {
+            color: #6e7785;
+            font-size: 11px;
+        }
+
+        .customer-phone {
+            color: #aeb5c0;
+            font-size: 12px;
+        }
+
+        .amount {
+            font-weight: 700;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .status.active {
+            background: rgba(34, 197, 94, 0.12);
+            color: #4ade80;
+        }
+
+        .status.blocked {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+        }
+
+        .action-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        .action-btn {
+            border: 1px solid #303640;
+            background: #181b21;
+            color: #ffffff;
+            border-radius: 7px;
+            height: 31px;
+            padding: 0 9px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .action-btn:hover {
+            background: #252a32;
+        }
+
+        .action-btn.danger:hover {
+            border-color: #7f1d1d;
+            color: #f87171;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 55px 20px;
+            color: #697280;
+        }
+
+        .empty-icon {
+            font-size: 35px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            margin: 0 0 7px;
+            color: #ffffff;
+            font-size: 16px;
+        }
+
+        .empty-state p {
+            margin: 0;
+            font-size: 12px;
+        }
+
+        /* =========================
+           PAGINATION
+        ========================= */
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 18px;
+            border-top: 1px solid #252a32;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .pagination-info {
+            color: #697280;
+            font-size: 11px;
+        }
+
+        .pagination-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .page-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 7px;
+            background: #181b21;
+            border: 1px solid #303640;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .page-btn.active {
+            background: #ffffff;
+            color: #08090b;
+            border-color: #ffffff;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.72);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .customer-modal {
+            width: min(600px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            background: #111318;
+            border: 1px solid #303640;
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .close-modal {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #181b21;
+            border: 1px solid #303640;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .profile-box {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 15px;
+            background: #0b0d10;
+            border: 1px solid #252a32;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .profile-avatar {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: #20242c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .profile-box h3 {
+            margin: 0 0 5px;
+            font-size: 16px;
+        }
+
+        .profile-box p {
+            margin: 3px 0;
+            color: #78818f;
+            font-size: 12px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .detail-item {
+            background: #0b0d10;
+            border: 1px solid #252a32;
+            border-radius: 10px;
+            padding: 13px;
+        }
+
+        .detail-item span {
+            display: block;
+            color: #697280;
+            font-size: 10px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .detail-item strong {
+            font-size: 13px;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 1100px) {
+            .customer-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+            .admin-sidebar {
+                width: 70px;
+                padding: 18px 8px;
+            }
+
+            .admin-logo {
+                justify-content: center;
+                padding: 0;
+            }
+
+            .admin-logo strong,
+            .menu-title,
+            .admin-nav a span:not(.nav-icon) {
+                display: none;
+            }
+
+            .admin-nav a {
+                justify-content: center;
+                padding: 12px 5px;
+            }
+
+            .admin-main {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+            }
+
+            .admin-content {
+                padding: 18px;
+            }
+
+            .search-box input {
+                width: 210px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .admin-topbar {
+                padding: 0 15px;
+            }
+
+            .admin-user-info {
+                display: none;
+            }
+
+            .customer-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 14px;
+            }
+
+            .stat-card h2 {
+                font-size: 20px;
+            }
+
+            .panel-header {
+                align-items: stretch;
+            }
+
+            .toolbar {
+                width: 100%;
+            }
+
+            .search-box,
+            .search-box input {
+                width: 100%;
+            }
+
+            .filter-select {
+                flex: 1;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="admin-sidebar">
+
+        <a href="index.html" class="admin-logo">
+            <span>A</span>
+            <strong>Alamin Shop</strong>
+        </a>
+
+        <div class="menu-title">Main</div>
+
+        <nav class="admin-nav">
+
+            <a href="index.html">
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="orders.html">
+                <span class="nav-icon">▣</span>
+                <span>Orders</span>
+            </a>
+
+            <a href="products.html">
+                <span class="nav-icon">□</span>
+                <span>Products</span>
+            </a>
+
+            <a href="customers.html" class="active">
+                <span class="nav-icon">♙</span>
+                <span>Customers</span>
+            </a>
+
+        </nav>
+
+        <div class="menu-title">Store</div>
+
+        <nav class="admin-nav">
+
+            <a href="../index.html">
+                <span class="nav-icon">↗</span>
+                <span>View Store</span>
+            </a>
+
+            <a href="../account.html">
+                <span class="nav-icon">◎</span>
+                <span>My Account</span>
+            </a>
+
+            <a href="../login.html">
+                <span class="nav-icon">⇥</span>
+                <span>Logout</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main class="admin-main">
+
+        <header class="admin-topbar">
+
+            <div class="topbar-title">
+                <h1>Customers</h1>
+                <p>Manage your store customers</p>
+            </div>
+
+            <div class="admin-user">
+
+                <div class="admin-avatar">
+                    A
+                </div>
+
+                <div class="admin-user-info">
+                    <strong>Admin</strong>
+                    <span>Administrator</span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <section class="admin-content">
+
+            <!-- =========================
+                 STATS
+            ========================== -->
+
+            <div class="customer-stats">
+
+                <div class="stat-card">
+                    <p>Total Customers</p>
+                    <h2 id="totalCustomers">0</h2>
+                    <small>Registered customers</small>
+                </div>
+
+                <div class="stat-card">
+                    <p>Active Customers</p>
+                    <h2 id="activeCustomers">0</h2>
+                    <small>Currently active</small>
+                </div>
+
+                <div class="stat-card">
+                    <p>New Customers</p>
+                    <h2 id="newCustomers">0</h2>
+                    <small>Last 30 days</small>
+                </div>
+
+                <div class="stat-card">
+                    <p>Total Customer Value</p>
+                    <h2 id="customerValue">৳0</h2>
+                    <small>Total order value</small>
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 CUSTOMER PANEL
+            ========================== -->
+
+            <div class="customer-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h2>All Customers</h2>
+                        <p>Search and manage registered customers</p>
+                    </div>
+
+                    <div class="toolbar">
+
+                        <div class="search-box">
+
+                            <span class="search-icon">⌕</span>
+
+                            <input
+                                type="text"
+                                id="customerSearch"
+                                placeholder="Search name, email or phone..."
+                            >
+
+                        </div>
+
+                        <select id="customerStatusFilter" class="filter-select">
+                            <option value="all">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="blocked">Blocked</option>
+                        </select>
+
+                        <button class="reset-btn" id="resetBtn">
+                            Reset
+                        </button>
+
+                        <button class="export-btn" id="exportBtn">
+                            Export CSV
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrap">
+
+                    <table class="customer-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Customer</th>
+                                <th>Phone</th>
+                                <th>Orders</th>
+                                <th>Total Spent</th>
+                                <th>Status</th>
+                                <th>Joined</th>
+                                <th>Action</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="customerTableBody"></tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div id="emptyState" class="empty-state" style="display:none;">
+
+                    <div class="empty-icon">♙</div>
+
+                    <h3>No customers found</h3>
+
+                    <p>
+                        Try changing your search or filter.
+                    </p>
+
+                </div>
+
+
+                <div class="pagination">
+
+                    <div class="pagination-info" id="paginationInfo">
+                        Showing 0 customers
+                    </div>
+
+                    <div class="pagination-buttons" id="paginationButtons"></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================
+     CUSTOMER MODAL
+========================== -->
+
+<div class="modal-overlay" id="customerModal">
+
+    <div class="customer-modal">
+
+        <div class="modal-header">
+
+            <h2>Customer Details</h2>
+
+            <button class="close-modal" id="closeModal">
+                ×
+            </button>
+
+        </div>
+
+        <div id="customerDetails"></div>
+
+    </div>
+
+</div>
+
+
+<script src="../script.js"></script>
+
+<script>
+
+    /* =========================================
+       CUSTOMER MANAGEMENT
+    ========================================= */
+
+    const USERS_KEY = "shopnest_users";
+    const ORDERS_KEY = "shopnest_orders";
+
+    let allCustomers = [];
+    let filteredCustomers = [];
+
+    let currentPage = 1;
+
+    const customersPerPage = 10;
+
+
+    /* =========================================
+       HELPERS
+    ========================================= */
+
+    function getUsers() {
+
+        try {
+
+            return JSON.parse(
+                localStorage.getItem(USERS_KEY)
+            ) || [];
+
+        } catch (error) {
+
+            return [];
+
+        }
+
+    }
+
+
+    function getOrders() {
+
+        try {
+
+            return JSON.parse(
+                localStorage.getItem(ORDERS_KEY)
+            ) || [];
+
+        } catch (error) {
+
+            return [];
+
+        }
+
+    }
+
+
+    function formatMoney(amount) {
+
+        return "৳" + Number(amount || 0).toLocaleString("en-BD");
+
+    }
+
+
+    function escapeHtml(value) {
+
+        return String(value || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    function getInitials(name) {
+
+        const cleanName = String(name || "Customer").trim();
+
+        if (!cleanName) {
+            return "C";
+        }
+
+        const parts = cleanName.split(/\s+/);
+
+        if (parts.length === 1) {
+            return parts[0].slice(0, 2).toUpperCase();
+        }
+
+        return (
+            parts[0][0] +
+            parts[parts.length - 1][0]
+        ).toUpperCase();
+
+    }
+
+
+    function getCustomerStatus(user) {
+
+        return user.account_status === "blocked"
+            ? "blocked"
+            : "active";
+
+    }
+
+
+    /* =========================================
+       BUILD CUSTOMER DATA
+    ========================================= */
+
+    function buildCustomers() {
+
+        const users = getUsers();
+
+        const orders = getOrders();
+
+        return users.map((user, index) => {
+
+            const email = String(
+                user.email || ""
+            ).toLowerCase();
+
+            const phone = String(
+                user.phone || ""
+            );
+
+            const customerOrders = orders.filter(order => {
+
+                const orderEmail =
+                    String(
+                        order.customer?.email || ""
+                    ).toLowerCase();
+
+                const orderPhone =
+                    String(
+                        order.customer?.phone || ""
+                    );
+
+                return (
+                    (email && orderEmail === email) ||
+                    (phone && orderPhone === phone)
+                );
+
+            });
+
+
+            const totalSpent = customerOrders.reduce(
+                (total, order) => {
+
+                    return total + Number(
+                        order.total || 0
+                    );
+
+                },
+                0
+            );
+
+
+            return {
+
+                ...user,
+
+                customerIndex: index,
+
+                customerOrders,
+
+                orderCount: customerOrders.length,
+
+                totalSpent,
+
+                status: getCustomerStatus(user),
+
+                joinedAt:
+                    user.created_at ||
+                    user.registered_at ||
+                    user.joined_at ||
+                    null
+
+            };
+
+        });
+
+    }
+
+
+    /* =========================================
+       STATS
+    ========================================= */
+
+    function renderStats() {
+
+        const customers = allCustomers;
+
+        const total = customers.length;
+
+        const active = customers.filter(
+            customer =>
+                customer.status === "active"
+        ).length;
+
+
+        const thirtyDaysAgo =
+            Date.now() -
+            (30 * 24 * 60 * 60 * 1000);
+
+
+        const newCustomers =
+            customers.filter(customer => {
+
+                if (!customer.joinedAt) {
+                    return false;
+                }
+
+                const time =
+                    new Date(
+                        customer.joinedAt
+                    ).getTime();
+
+                return time >= thirtyDaysAgo;
+
+            }).length;
+
+
+        const totalValue =
+            customers.reduce(
+                (sum, customer) =>
+                    sum + customer.totalSpent,
+                0
+            );
+
+
+        document.getElementById(
+            "totalCustomers"
+        ).textContent = total;
+
+
+        document.getElementById(
+            "activeCustomers"
+        ).textContent = active;
+
+
+        document.getElementById(
+            "newCustomers"
+        ).textContent = newCustomers;
+
+
+        document.getElementById(
+            "customerValue"
+        ).textContent =
+            formatMoney(totalValue);
+
+    }
+
+
+    /* =========================================
+       FILTER
+    ========================================= */
+
+    function applyFilters() {
+
+        const search =
+            document
+                .getElementById("customerSearch")
+                .value
+                .trim()
+                .toLowerCase();
+
+
+        const status =
+            document
+                .getElementById("customerStatusFilter")
+                .value;
+
+
+        filteredCustomers =
+            allCustomers.filter(customer => {
+
+                const name =
+                    String(
+                        customer.name ||
+                        customer.full_name ||
+                        ""
+                    ).toLowerCase();
+
+
+                const email =
+                    String(
+                        customer.email || ""
+                    ).toLowerCase();
+
+
+                const phone =
+                    String(
+                        customer.phone || ""
+                    ).toLowerCase();
+
+
+                const matchesSearch =
+                    !search ||
+                    name.includes(search) ||
+                    email.includes(search) ||
+                    phone.includes(search);
+
+
+                const matchesStatus =
+                    status === "all" ||
+                    customer.status === status;
+
+
+                return (
+                    matchesSearch &&
+                    matchesStatus
+                );
+
+            });
+
+
+        currentPage = 1;
+
+        renderCustomers();
+
+    }
+
+
+    /* =========================================
+       RENDER TABLE
+    ========================================= */
+
+    function renderCustomers() {
+
+        const tbody =
+            document.getElementById(
+                "customerTableBody"
+            );
+
+
+        const emptyState =
+            document.getElementById(
+                "emptyState"
+            );
+
+
+        const start =
+            (currentPage - 1) *
+            customersPerPage;
+
+
+        const end =
+            start + customersPerPage;
+
+
+        const pageCustomers =
+            filteredCustomers.slice(
+                start,
+                end
+            );
+
+
+        tbody.innerHTML = "";
+
+
+        if (!pageCustomers.length) {
+
+            emptyState.style.display =
+                "block";
+
+            document.querySelector(
+                ".table-wrap"
+            ).style.display = "none";
+
+        } else {
+
+            emptyState.style.display =
+                "none";
+
+            document.querySelector(
+                ".table-wrap"
+            ).style.display = "block";
+
+
+            pageCustomers.forEach(
+                customer => {
+
+                    const name =
+                        customer.name ||
+                        customer.full_name ||
+                        "Customer";
+
+
+                    const email =
+                        customer.email ||
+                        "No email";
+
+
+                    const phone =
+                        customer.phone ||
+                        "No phone";
+
+
+                    const joined =
+                        customer.joinedAt
+                            ? new Date(
+                                customer.joinedAt
+                              ).toLocaleDateString(
+                                "en-BD"
+                              )
+                            : "—";
+
+
+                    const statusClass =
+                        customer.status === "blocked"
+                            ? "blocked"
+                            : "active";
+
+
+                    const statusText =
+                        customer.status === "blocked"
+                            ? "Blocked"
+                            : "Active";
+
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    row.innerHTML = `
+
+                        <td>
+
+                            <div class="customer-info">
+
+                                <div class="customer-avatar">
+                                    ${escapeHtml(
+                                        getInitials(name)
+                                    )}
+                                </div>
+
+                                <div>
+
+                                    <div class="customer-name">
+                                        ${escapeHtml(name)}
+                                    </div>
+
+                                    <div class="customer-email">
+                                        ${escapeHtml(email)}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+
+                            <div class="customer-phone">
+                                ${escapeHtml(phone)}
+                            </div>
+
+                        </td>
+
+
+                        <td>
+                            <strong>
+                                ${customer.orderCount}
+                            </strong>
+                        </td>
+
+
+                        <td>
+
+                            <span class="amount">
+                                ${formatMoney(
+                                    customer.totalSpent
+                                )}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="status ${statusClass}">
+                                ${statusText}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+                            ${joined}
+                        </td>
+
+
+                        <td>
+
+                            <div class="action-group">
+
+                                <button
+                                    class="action-btn"
+                                    onclick="viewCustomer(${customer.customerIndex})"
+                                >
+                                    View
+                                </button>
+
+
+                                <button
+                                    class="action-btn danger"
+                                    onclick="toggleCustomerStatus(${customer.customerIndex})"
+                                >
+                                    ${
+                                        customer.status === "blocked"
+                                            ? "Activate"
+                                            : "Block"
+                                    }
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    `;
+
+
+                    tbody.appendChild(row);
+
+                }
+            );
+
+        }
+
+
+        renderPagination();
+
+    }
+
+
+    /* =========================================
+       PAGINATION
+    ========================================= */
+
+    function renderPagination() {
+
+        const total =
+            filteredCustomers.length;
+
+
+        const totalPages =
+            Math.ceil(
+                total /
+                customersPerPage
+            );
+
+
+        const info =
+            document.getElementById(
+                "paginationInfo"
+            );
+
+
+        const buttons =
+            document.getElementById(
+                "paginationButtons"
+            );
+
+
+        if (!total) {
+
+            info.textContent =
+                "Showing 0 customers";
+
+            buttons.innerHTML = "";
+
+            return;
+
+        }
+
+
+        const start =
+            ((currentPage - 1) *
+                customersPerPage) + 1;
+
+
+        const end =
+            Math.min(
+                currentPage *
+                    customersPerPage,
+                total
+            );
+
+
+        info.textContent =
+            `Showing ${start}-${end} of ${total} customers`;
+
+
+        buttons.innerHTML = "";
+
+
+        const previous =
+            document.createElement("button");
+
+
+        previous.className =
+            "page-btn";
+
+
+        previous.textContent =
+            "‹";
+
+
+        previous.disabled =
+            currentPage === 1;
+
+
+        previous.onclick = () => {
+
+            if (currentPage > 1) {
+
+                currentPage--;
+
+                renderCustomers();
+
+            }
+
+        };
+
+
+        buttons.appendChild(previous);
+
+
+        for (
+            let page = 1;
+            page <= totalPages;
+            page++
+        ) {
+
+            if (
+                totalPages > 7 &&
+                page > 3 &&
+                page < totalPages - 2 &&
+                Math.abs(page - currentPage) > 1
+            ) {
+
+                if (
+                    page === 4 ||
+                    page === totalPages - 3
+                ) {
+
+                    const dots =
+                        document.createElement(
+                            "span"
+                        );
+
+                    dots.textContent = "...";
+
+                    dots.style.padding =
+                        "7px";
+
+                    dots.style.color =
+                        "#697280";
+
+                    buttons.appendChild(dots);
+
+                }
+
+                continue;
+
+            }
+
+
+            const pageButton =
+                document.createElement(
+                    "button"
+                );
+
+
+            pageButton.className =
+                "page-btn";
+
+
+            if (
+                page === currentPage
+            ) {
+
+                pageButton.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            pageButton.textContent =
+                page;
+
+
+            pageButton.onclick = () => {
+
+                currentPage = page;
+
+                renderCustomers();
+
+            };
+
+
+            buttons.appendChild(
+                pageButton
+            );
+
+        }
+
+
+        const next =
+            document.createElement("button");
+
+
+        next.className =
+            "page-btn";
+
+
+        next.textContent =
+            "›";
+
+
+        next.disabled =
+            currentPage === totalPages;
+
+
+        next.onclick = () => {
+
+            if (
+                currentPage <
+                totalPages
+            ) {
+
+                currentPage++;
+
+                renderCustomers();
+
+            }
+
+        };
+
+
+        buttons.appendChild(next);
+
+    }
+
+
+    /* =========================================
+       VIEW CUSTOMER
+    ========================================= */
+
+    function viewCustomer(index) {
+
+        const customer =
+            allCustomers.find(
+                item =>
+                    item.customerIndex === index
+            );
+
+
+        if (!customer) {
+            return;
+        }
+
+
+        const name =
+            customer.name ||
+            customer.full_name ||
+            "Customer";
+
+
+        const email =
+            customer.email ||
+            "No email";
+
+
+        const phone =
+            customer.phone ||
+            "No phone";
+
+
+        const joined =
+            customer.joinedAt
+                ? new Date(
+                    customer.joinedAt
+                  ).toLocaleString("en-BD")
+                : "Not available";
+
+
+        const details =
+            document.getElementById(
+                "customerDetails"
+            );
+
+
+        details.innerHTML = `
+
+            <div class="profile-box">
+
+                <div class="profile-avatar">
+                    ${escapeHtml(
+                        getInitials(name)
+                    )}
+                </div>
+
+                <div>
+
+                    <h3>
+                        ${escapeHtml(name)}
+                    </h3>
+
+                    <p>
+                        ${escapeHtml(email)}
+                    </p>
+
+                    <p>
+                        ${escapeHtml(phone)}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="detail-grid">
+
+                <div class="detail-item">
+                    <span>Status</span>
+                    <strong>
+                        ${
+                            customer.status === "blocked"
+                                ? "Blocked"
+                                : "Active"
+                        }
+                    </strong>
+                </div>
+
+
+                <div class="detail-item">
+                    <span>Total Orders</span>
+                    <strong>
+                        ${customer.orderCount}
+                    </strong>
+                </div>
+
+
+                <div class="detail-item">
+                    <span>Total Spent</span>
+                    <strong>
+                        ${formatMoney(
+                            customer.totalSpent
+                        )}
+                    </strong>
+                </div>
+
+
+                <div class="detail-item">
+                    <span>Joined</span>
+                    <strong>
+                        ${joined}
+                    </strong>
+                </div>
+
+            </div>
+
+        `;
+
+
+        document
+            .getElementById(
+                "customerModal"
+            )
+            .classList.add("show");
+
+    }
+
+
+    /* =========================================
+       BLOCK / ACTIVATE
+    ========================================= */
+
+    function toggleCustomerStatus(index) {
+
+        const users =
+            getUsers();
+
+
+        const user =
+            users[index];
+
+
+        if (!user) {
+            return;
+        }
+
+
+        const current =
+            user.account_status === "blocked"
+                ? "blocked"
+                : "active";
+
+
+        const next =
+            current === "blocked"
+                ? "active"
+                : "blocked";
+
+
+        const action =
+            next === "blocked"
+                ? "block"
+                : "activate";
+
+
+        const confirmed =
+            confirm(
+                `Are you sure you want to ${action} this customer?`
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        user.account_status =
+            next;
+
+
+        localStorage.setItem(
+            USERS_KEY,
+            JSON.stringify(users)
+        );
+
+
+        loadCustomers();
+
+
+        alert(
+            next === "blocked"
+                ? "Customer blocked successfully."
+                : "Customer activated successfully."
+        );
+
+    }
+
+
+    /* =========================================
+       EXPORT CSV
+    ========================================= */
+
+    function exportCSV() {
+
+        if (!filteredCustomers.length) {
+
+            alert(
+                "There are no customers to export."
+            );
+
+            return;
+
+        }
+
+
+        const headers = [
+            "Name",
+            "Email",
+            "Phone",
+            "Orders",
+            "Total Spent",
+            "Status",
+            "Joined"
+        ];
+
+
+        const rows =
+            filteredCustomers.map(
+                customer => {
+
+                    const name =
+                        customer.name ||
+                        customer.full_name ||
+                        "Customer";
+
+
+                    const joined =
+                        customer.joinedAt
+                            ? new Date(
+                                customer.joinedAt
+                              ).toLocaleDateString(
+                                "en-BD"
+                              )
+                            : "";
+
+
+                    return [
+
+                        name,
+
+                        customer.email || "",
+
+                        customer.phone || "",
+
+                        customer.orderCount,
+
+                        customer.totalSpent,
+
+                        customer.status,
+
+                        joined
+
+                    ];
+
+                }
+            );
+
+
+        const csv = [
+
+            headers,
+
+            ...rows
+
+        ]
+
+        .map(row =>
+            row.map(value => {
+
+                const text =
+                    String(value)
+                    .replace(/"/g, '""');
+
+                return `"${text}"`;
+
+            }).join(",")
+        )
+
+        .join("\n");
+
+
+        const blob =
+            new Blob(
+                [csv],
+                {
+                    type:
+                        "text/csv;charset=utf-8;"
+                }
+            );
+
+
+        const url =
+            URL.createObjectURL(blob);
+
+
+        const link =
+            document.createElement("a");
+
+
+        link.href = url;
+
+        link.download =
+            "alamin-shop-customers.csv";
+
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.remove();
+
+        URL.revokeObjectURL(url);
+
+    }
+
+
+    /* =========================================
+       LOAD
+    ========================================= */
+
+    function loadCustomers() {
+
+        allCustomers =
+            buildCustomers();
+
+        filteredCustomers =
+            [...allCustomers];
+
+        renderStats();
+
+        renderCustomers();
+
+    }
+
+
+    /* =========================================
+       EVENTS
+    ========================================= */
+
+    document
+        .getElementById(
+            "customerSearch"
+        )
+        .addEventListener(
+            "input",
+            applyFilters
+        );
+
+
+    document
+        .getElementById(
+            "customerStatusFilter"
+        )
+        .addEventListener(
+            "change",
+            applyFilters
+        );
+
+
+    document
+        .getElementById(
+            "resetBtn"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                document
+                    .getElementById(
+                        "customerSearch"
+                    )
+                    .value = "";
+
+
+                document
+                    .getElementById(
+                        "customerStatusFilter"
+                    )
+                    .value = "all";
+
+
+                applyFilters();
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "exportBtn"
+        )
+        .addEventListener(
+            "click",
+            exportCSV
+        );
+
+
+    document
+        .getElementById(
+            "closeModal"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                document
+                    .getElementById(
+                        "customerModal"
+                    )
+                    .classList.remove(
+                        "show"
+                    );
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "customerModal"
+        )
+        .addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target.id ===
+                    "customerModal"
+                ) {
+
+                    event.currentTarget
+                        .classList
+                        .remove("show");
+
+                }
+
+            }
+        );
+
+
+    /* =========================================
+       START
+    ========================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        loadCustomers
+    );
+
+</script>
+
+</body>
+</html>

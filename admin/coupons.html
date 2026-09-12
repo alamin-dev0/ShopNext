@@ -1,0 +1,2484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Coupons | Alamin Shop Admin</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #08090b;
+            color: #f8fafc;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .admin-layout {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .admin-sidebar {
+            width: 250px;
+            background: #0f1115;
+            border-right: 1px solid #242832;
+            padding: 22px 16px;
+            position: fixed;
+            inset: 0 auto 0 0;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 21px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            padding: 0 8px;
+        }
+
+        .admin-logo span {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #fff;
+            color: #08090b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+        }
+
+        .menu-title {
+            color: #6f7785;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 10px;
+            margin: 24px 0 9px;
+        }
+
+        .admin-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .admin-nav a {
+            text-decoration: none;
+            color: #9ca3af;
+            padding: 11px 12px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .admin-nav a:hover {
+            background: #181b21;
+            color: #fff;
+        }
+
+        .admin-nav a.active {
+            background: #fff;
+            color: #08090b;
+            font-weight: 700;
+        }
+
+        .nav-icon {
+            width: 22px;
+            text-align: center;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .admin-main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+        }
+
+        .admin-topbar {
+            height: 72px;
+            border-bottom: 1px solid #242832;
+            background: rgba(8, 9, 11, .94);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(12px);
+        }
+
+        .topbar-title h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .topbar-title p {
+            margin: 5px 0 0;
+            color: #737b89;
+            font-size: 12px;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #1b1f27;
+            border: 1px solid #303640;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .admin-user-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .admin-user-info span {
+            color: #6f7785;
+            font-size: 11px;
+        }
+
+        .admin-content {
+            padding: 28px;
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .coupon-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: #101216;
+            border: 1px solid #252a32;
+            border-radius: 14px;
+            padding: 19px;
+        }
+
+        .stat-card p {
+            margin: 0 0 9px;
+            color: #7e8795;
+            font-size: 12px;
+        }
+
+        .stat-card h2 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .stat-card small {
+            display: block;
+            margin-top: 7px;
+            color: #606977;
+            font-size: 11px;
+        }
+
+        /* =========================
+           PANEL
+        ========================= */
+
+        .coupon-panel {
+            background: #101216;
+            border: 1px solid #252a32;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 20px;
+            border-bottom: 1px solid #252a32;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .panel-header h2 {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .panel-header p {
+            margin: 5px 0 0;
+            color: #737b89;
+            font-size: 12px;
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 250px;
+            height: 40px;
+            background: #090a0d;
+            border: 1px solid #2b3039;
+            border-radius: 9px;
+            color: #fff;
+            padding: 0 13px 0 38px;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: #555d6b;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 13px;
+            top: 11px;
+            color: #68717f;
+        }
+
+        select {
+            height: 40px;
+            background: #090a0d;
+            border: 1px solid #2b3039;
+            border-radius: 9px;
+            color: #fff;
+            padding: 0 12px;
+            outline: none;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .reset-btn,
+        .export-btn,
+        .add-btn {
+            height: 40px;
+            border-radius: 9px;
+            padding: 0 14px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .reset-btn {
+            background: #181b21;
+            border: 1px solid #303640;
+            color: #fff;
+        }
+
+        .export-btn {
+            background: #181b21;
+            border: 1px solid #303640;
+            color: #fff;
+        }
+
+        .add-btn {
+            background: #fff;
+            border: 1px solid #fff;
+            color: #08090b;
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .coupon-table {
+            width: 100%;
+            min-width: 900px;
+            border-collapse: collapse;
+        }
+
+        .coupon-table th {
+            text-align: left;
+            padding: 14px 18px;
+            background: #0c0e11;
+            color: #747d8b;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            border-bottom: 1px solid #252a32;
+        }
+
+        .coupon-table td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #1e2229;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        .coupon-table tbody tr:hover {
+            background: #13161b;
+        }
+
+        .coupon-code {
+            display: inline-block;
+            background: #1a1e25;
+            border: 1px dashed #414854;
+            padding: 7px 10px;
+            border-radius: 7px;
+            font-weight: 800;
+            letter-spacing: .7px;
+            font-size: 12px;
+        }
+
+        .discount-value {
+            font-weight: 800;
+        }
+
+        .usage-text {
+            color: #9ba3af;
+        }
+
+        .usage-bar {
+            width: 90px;
+            height: 5px;
+            background: #252a32;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+
+        .usage-fill {
+            height: 100%;
+            background: #fff;
+            border-radius: 10px;
+        }
+
+        .status {
+            display: inline-flex;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .status.active {
+            background: rgba(34,197,94,.12);
+            color: #4ade80;
+        }
+
+        .status.inactive {
+            background: rgba(148,163,184,.12);
+            color: #94a3b8;
+        }
+
+        .status.expired {
+            background: rgba(239,68,68,.12);
+            color: #f87171;
+        }
+
+        .action-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        .action-btn {
+            height: 31px;
+            padding: 0 9px;
+            border-radius: 7px;
+            background: #181b21;
+            border: 1px solid #303640;
+            color: #fff;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .action-btn:hover {
+            background: #252a32;
+        }
+
+        .action-btn.delete:hover {
+            color: #f87171;
+            border-color: #7f1d1d;
+        }
+
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 55px 20px;
+            color: #697280;
+        }
+
+        .empty-state .icon {
+            font-size: 35px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            margin: 0 0 7px;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .empty-state p {
+            margin: 0;
+            font-size: 12px;
+        }
+
+        /* =========================
+           PAGINATION
+        ========================= */
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 18px;
+            border-top: 1px solid #252a32;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .pagination-info {
+            color: #697280;
+            font-size: 11px;
+        }
+
+        .pagination-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .page-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 7px;
+            background: #181b21;
+            border: 1px solid #303640;
+            color: #fff;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .page-btn.active {
+            background: #fff;
+            color: #08090b;
+            border-color: #fff;
+        }
+
+        .page-btn:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+        }
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.75);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .coupon-modal {
+            width: min(650px, 100%);
+            max-height: 92vh;
+            overflow-y: auto;
+            background: #111318;
+            border: 1px solid #303640;
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #181b21;
+            border: 1px solid #303640;
+            color: #fff;
+            cursor: pointer;
+            font-size: 17px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            color: #aeb5c0;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            height: 42px;
+            background: #090a0d;
+            border: 1px solid #2b3039;
+            border-radius: 9px;
+            color: #fff;
+            padding: 0 12px;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #555d6b;
+        }
+
+        .form-help {
+            color: #68717f;
+            font-size: 10px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .cancel-btn,
+        .save-btn {
+            height: 40px;
+            padding: 0 16px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .cancel-btn {
+            background: #181b21;
+            border: 1px solid #303640;
+            color: #fff;
+        }
+
+        .save-btn {
+            background: #fff;
+            border: 1px solid #fff;
+            color: #08090b;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+            .coupon-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+
+            .admin-sidebar {
+                width: 70px;
+                padding: 18px 8px;
+            }
+
+            .admin-logo {
+                justify-content: center;
+                padding: 0;
+            }
+
+            .admin-logo strong,
+            .menu-title,
+            .admin-nav a span:not(.nav-icon) {
+                display: none;
+            }
+
+            .admin-nav a {
+                justify-content: center;
+                padding: 12px 5px;
+            }
+
+            .admin-main {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+            }
+
+            .admin-content {
+                padding: 18px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .admin-topbar {
+                padding: 0 15px;
+            }
+
+            .admin-user-info {
+                display: none;
+            }
+
+            .coupon-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 14px;
+            }
+
+            .stat-card h2 {
+                font-size: 20px;
+            }
+
+            .search-box,
+            .search-box input {
+                width: 100%;
+            }
+
+            .toolbar {
+                width: 100%;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="admin-sidebar">
+
+        <a href="index.html" class="admin-logo">
+            <span>A</span>
+            <strong>Alamin Shop</strong>
+        </a>
+
+        <div class="menu-title">Main</div>
+
+        <nav class="admin-nav">
+
+            <a href="index.html">
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="orders.html">
+                <span class="nav-icon">▣</span>
+                <span>Orders</span>
+            </a>
+
+            <a href="products.html">
+                <span class="nav-icon">□</span>
+                <span>Products</span>
+            </a>
+
+            <a href="customers.html">
+                <span class="nav-icon">♙</span>
+                <span>Customers</span>
+            </a>
+
+            <a href="coupons.html" class="active">
+                <span class="nav-icon">%</span>
+                <span>Coupons</span>
+            </a>
+
+        </nav>
+
+        <div class="menu-title">Store</div>
+
+        <nav class="admin-nav">
+
+            <a href="../index.html">
+                <span class="nav-icon">↗</span>
+                <span>View Store</span>
+            </a>
+
+            <a href="../account.html">
+                <span class="nav-icon">◎</span>
+                <span>My Account</span>
+            </a>
+
+            <a href="../login.html">
+                <span class="nav-icon">⇥</span>
+                <span>Logout</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="admin-main">
+
+        <header class="admin-topbar">
+
+            <div class="topbar-title">
+                <h1>Coupons</h1>
+                <p>Create and manage discount coupons</p>
+            </div>
+
+            <div class="admin-user">
+
+                <div class="admin-avatar">
+                    A
+                </div>
+
+                <div class="admin-user-info">
+                    <strong>Admin</strong>
+                    <span>Administrator</span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <section class="admin-content">
+
+            <!-- STATS -->
+
+            <div class="coupon-stats">
+
+                <div class="stat-card">
+                    <p>Total Coupons</p>
+                    <h2 id="totalCoupons">0</h2>
+                    <small>All created coupons</small>
+                </div>
+
+                <div class="stat-card">
+                    <p>Active Coupons</p>
+                    <h2 id="activeCoupons">0</h2>
+                    <small>Currently available</small>
+                </div>
+
+                <div class="stat-card">
+                    <p>Used Coupons</p>
+                    <h2 id="usedCoupons">0</h2>
+                    <small>Total redemptions</small>
+                </div>
+
+                <div class="stat-card">
+                    <p>Total Discount</p>
+                    <h2 id="totalDiscount">৳0</h2>
+                    <small>Recorded discount value</small>
+                </div>
+
+            </div>
+
+
+            <!-- PANEL -->
+
+            <div class="coupon-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h2>All Coupons</h2>
+                        <p>Manage discount codes for your customers</p>
+                    </div>
+
+                    <div class="toolbar">
+
+                        <div class="search-box">
+
+                            <span class="search-icon">⌕</span>
+
+                            <input
+                                type="text"
+                                id="couponSearch"
+                                placeholder="Search coupon code..."
+                            >
+
+                        </div>
+
+                        <select id="statusFilter">
+                            <option value="all">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="expired">Expired</option>
+                        </select>
+
+                        <button class="reset-btn" id="resetBtn">
+                            Reset
+                        </button>
+
+                        <button class="export-btn" id="exportBtn">
+                            Export
+                        </button>
+
+                        <button class="add-btn" id="addCouponBtn">
+                            + Add Coupon
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrap">
+
+                    <table class="coupon-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Coupon</th>
+                                <th>Discount</th>
+                                <th>Minimum Order</th>
+                                <th>Usage</th>
+                                <th>Expiry</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="couponTableBody"></tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div class="empty-state" id="emptyState">
+
+                    <div class="icon">%</div>
+
+                    <h3>No coupons found</h3>
+
+                    <p>
+                        Create a coupon or change your search/filter.
+                    </p>
+
+                </div>
+
+
+                <div class="pagination">
+
+                    <div
+                        class="pagination-info"
+                        id="paginationInfo"
+                    >
+                        Showing 0 coupons
+                    </div>
+
+                    <div
+                        class="pagination-buttons"
+                        id="paginationButtons"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- COUPON MODAL -->
+
+<div
+    class="modal-overlay"
+    id="couponModal"
+>
+
+    <div class="coupon-modal">
+
+        <div class="modal-header">
+
+            <h2 id="modalTitle">
+                Add Coupon
+            </h2>
+
+            <button
+                class="close-btn"
+                id="closeModal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="couponForm">
+
+            <input
+                type="hidden"
+                id="couponId"
+            >
+
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label for="couponCode">
+                        Coupon Code
+                    </label>
+
+                    <input
+                        type="text"
+                        id="couponCode"
+                        placeholder="Example: SAVE20"
+                        required
+                    >
+
+                    <div class="form-help">
+                        Use letters and numbers only.
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="discountType">
+                        Discount Type
+                    </label>
+
+                    <select id="discountType">
+
+                        <option value="percentage">
+                            Percentage (%)
+                        </option>
+
+                        <option value="fixed">
+                            Fixed Amount (৳)
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="discountValue">
+                        Discount Value
+                    </label>
+
+                    <input
+                        type="number"
+                        id="discountValue"
+                        min="0"
+                        step="0.01"
+                        placeholder="20"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="minimumOrder">
+                        Minimum Order
+                    </label>
+
+                    <input
+                        type="number"
+                        id="minimumOrder"
+                        min="0"
+                        step="1"
+                        placeholder="1000"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="usageLimit">
+                        Usage Limit
+                    </label>
+
+                    <input
+                        type="number"
+                        id="usageLimit"
+                        min="0"
+                        step="1"
+                        placeholder="100"
+                    >
+
+                    <div class="form-help">
+                        0 means unlimited.
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="expiryDate">
+                        Expiry Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="expiryDate"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="couponStatus">
+                        Status
+                    </label>
+
+                    <select id="couponStatus">
+
+                        <option value="active">
+                            Active
+                        </option>
+
+                        <option value="inactive">
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="usagePerCustomer">
+                        Usage Per Customer
+                    </label>
+
+                    <input
+                        type="number"
+                        id="usagePerCustomer"
+                        min="1"
+                        step="1"
+                        value="1"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    id="cancelBtn"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                >
+                    Save Coupon
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="../script.js"></script>
+
+<script>
+
+    const COUPONS_KEY = "shopnest_coupons";
+
+    let coupons = [];
+
+    let filteredCoupons = [];
+
+    let currentPage = 1;
+
+    const couponsPerPage = 10;
+
+
+    /* =========================
+       HELPERS
+    ========================= */
+
+    function getCoupons() {
+
+        try {
+
+            return JSON.parse(
+                localStorage.getItem(COUPONS_KEY)
+            ) || [];
+
+        } catch (error) {
+
+            return [];
+
+        }
+
+    }
+
+
+    function saveCoupons() {
+
+        localStorage.setItem(
+            COUPONS_KEY,
+            JSON.stringify(coupons)
+        );
+
+    }
+
+
+    function money(value) {
+
+        return "৳" +
+            Number(value || 0)
+                .toLocaleString("en-BD");
+
+    }
+
+
+    function escapeHtml(value) {
+
+        return String(value || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    function getCouponStatus(coupon) {
+
+        if (
+            coupon.status === "inactive"
+        ) {
+            return "inactive";
+        }
+
+        if (
+            coupon.expiryDate
+        ) {
+
+            const expiry =
+                new Date(
+                    coupon.expiryDate +
+                    "T23:59:59"
+                ).getTime();
+
+            if (
+                Date.now() > expiry
+            ) {
+
+                return "expired";
+
+            }
+
+        }
+
+        if (
+            coupon.usageLimit > 0 &&
+            coupon.usedCount >= coupon.usageLimit
+        ) {
+
+            return "inactive";
+
+        }
+
+        return "active";
+
+    }
+
+
+    function statusLabel(status) {
+
+        if (status === "expired") {
+            return "Expired";
+        }
+
+        if (status === "inactive") {
+            return "Inactive";
+        }
+
+        return "Active";
+
+    }
+
+
+    /* =========================
+       STATS
+    ========================= */
+
+    function renderStats() {
+
+        const total =
+            coupons.length;
+
+
+        const active =
+            coupons.filter(
+                coupon =>
+                    getCouponStatus(coupon) === "active"
+            ).length;
+
+
+        const used =
+            coupons.reduce(
+                (sum, coupon) =>
+                    sum +
+                    Number(
+                        coupon.usedCount || 0
+                    ),
+                0
+            );
+
+
+        const discount =
+            coupons.reduce(
+                (sum, coupon) =>
+                    sum +
+                    Number(
+                        coupon.totalDiscount || 0
+                    ),
+                0
+            );
+
+
+        document.getElementById(
+            "totalCoupons"
+        ).textContent = total;
+
+
+        document.getElementById(
+            "activeCoupons"
+        ).textContent = active;
+
+
+        document.getElementById(
+            "usedCoupons"
+        ).textContent = used;
+
+
+        document.getElementById(
+            "totalDiscount"
+        ).textContent =
+            money(discount);
+
+    }
+
+
+    /* =========================
+       FILTER
+    ========================= */
+
+    function applyFilters() {
+
+        const search =
+            document.getElementById(
+                "couponSearch"
+            ).value
+                .trim()
+                .toLowerCase();
+
+
+        const status =
+            document.getElementById(
+                "statusFilter"
+            ).value;
+
+
+        filteredCoupons =
+            coupons.filter(coupon => {
+
+                const code =
+                    String(
+                        coupon.code || ""
+                    ).toLowerCase();
+
+
+                const matchesSearch =
+                    !search ||
+                    code.includes(search);
+
+
+                const matchesStatus =
+                    status === "all" ||
+                    getCouponStatus(coupon) === status;
+
+
+                return (
+                    matchesSearch &&
+                    matchesStatus
+                );
+
+            });
+
+
+        currentPage = 1;
+
+        renderTable();
+
+    }
+
+
+    /* =========================
+       RENDER TABLE
+    ========================= */
+
+    function renderTable() {
+
+        const tbody =
+            document.getElementById(
+                "couponTableBody"
+            );
+
+
+        const empty =
+            document.getElementById(
+                "emptyState"
+            );
+
+
+        tbody.innerHTML = "";
+
+
+        const start =
+            (currentPage - 1) *
+            couponsPerPage;
+
+
+        const end =
+            start + couponsPerPage;
+
+
+        const pageItems =
+            filteredCoupons.slice(
+                start,
+                end
+            );
+
+
+        if (!pageItems.length) {
+
+            empty.style.display =
+                "block";
+
+            document.querySelector(
+                ".table-wrap"
+            ).style.display =
+                "none";
+
+        } else {
+
+            empty.style.display =
+                "none";
+
+            document.querySelector(
+                ".table-wrap"
+            ).style.display =
+                "block";
+
+
+            pageItems.forEach(
+                coupon => {
+
+                    const status =
+                        getCouponStatus(
+                            coupon
+                        );
+
+
+                    const used =
+                        Number(
+                            coupon.usedCount || 0
+                        );
+
+
+                    const limit =
+                        Number(
+                            coupon.usageLimit || 0
+                        );
+
+
+                    let usagePercent = 0;
+
+                    if (limit > 0) {
+
+                        usagePercent =
+                            Math.min(
+                                100,
+                                (used / limit) * 100
+                            );
+
+                    }
+
+
+                    const discountText =
+                        coupon.discountType === "fixed"
+                            ? money(
+                                coupon.discountValue
+                              )
+                            : `${coupon.discountValue}%`;
+
+
+                    const expiry =
+                        coupon.expiryDate
+                            ? new Date(
+                                coupon.expiryDate +
+                                "T00:00:00"
+                              ).toLocaleDateString(
+                                "en-BD"
+                              )
+                            : "No expiry";
+
+
+                    const usageText =
+                        limit > 0
+                            ? `${used} / ${limit}`
+                            : `${used} / Unlimited`;
+
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    row.innerHTML = `
+
+                        <td>
+                            <span class="coupon-code">
+                                ${escapeHtml(
+                                    coupon.code
+                                )}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="discount-value">
+                                ${discountText}
+                            </span>
+                        </td>
+
+                        <td>
+                            ${money(
+                                coupon.minimumOrder
+                            )}
+                        </td>
+
+                        <td>
+
+                            <div class="usage-text">
+                                ${usageText}
+                            </div>
+
+                            ${
+                                limit > 0
+                                    ? `
+                                        <div class="usage-bar">
+                                            <div
+                                                class="usage-fill"
+                                                style="width:${usagePercent}%"
+                                            ></div>
+                                        </div>
+                                      `
+                                    : ""
+                            }
+
+                        </td>
+
+                        <td>
+                            ${expiry}
+                        </td>
+
+                        <td>
+
+                            <span class="status ${status}">
+                                ${statusLabel(status)}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="action-group">
+
+                                <button
+                                    class="action-btn"
+                                    onclick="editCoupon('${coupon.id}')"
+                                >
+                                    Edit
+                                </button>
+
+                                <button
+                                    class="action-btn delete"
+                                    onclick="deleteCoupon('${coupon.id}')"
+                                >
+                                    Delete
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    `;
+
+
+                    tbody.appendChild(row);
+
+                }
+            );
+
+        }
+
+
+        renderPagination();
+
+    }
+
+
+    /* =========================
+       PAGINATION
+    ========================= */
+
+    function renderPagination() {
+
+        const total =
+            filteredCoupons.length;
+
+
+        const totalPages =
+            Math.ceil(
+                total /
+                couponsPerPage
+            );
+
+
+        const info =
+            document.getElementById(
+                "paginationInfo"
+            );
+
+
+        const buttons =
+            document.getElementById(
+                "paginationButtons"
+            );
+
+
+        if (!total) {
+
+            info.textContent =
+                "Showing 0 coupons";
+
+            buttons.innerHTML = "";
+
+            return;
+
+        }
+
+
+        const start =
+            ((currentPage - 1) *
+                couponsPerPage) + 1;
+
+
+        const end =
+            Math.min(
+                currentPage *
+                    couponsPerPage,
+                total
+            );
+
+
+        info.textContent =
+            `Showing ${start}-${end} of ${total} coupons`;
+
+
+        buttons.innerHTML = "";
+
+
+        const prev =
+            document.createElement(
+                "button"
+            );
+
+
+        prev.className =
+            "page-btn";
+
+
+        prev.textContent =
+            "‹";
+
+
+        prev.disabled =
+            currentPage === 1;
+
+
+        prev.onclick = () => {
+
+            if (
+                currentPage > 1
+            ) {
+
+                currentPage--;
+
+                renderTable();
+
+            }
+
+        };
+
+
+        buttons.appendChild(prev);
+
+
+        for (
+            let page = 1;
+            page <= totalPages;
+            page++
+        ) {
+
+            const btn =
+                document.createElement(
+                    "button"
+                );
+
+
+            btn.className =
+                "page-btn";
+
+
+            if (
+                page === currentPage
+            ) {
+
+                btn.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            btn.textContent =
+                page;
+
+
+            btn.onclick = () => {
+
+                currentPage =
+                    page;
+
+                renderTable();
+
+            };
+
+
+            buttons.appendChild(btn);
+
+        }
+
+
+        const next =
+            document.createElement(
+                "button"
+            );
+
+
+        next.className =
+            "page-btn";
+
+
+        next.textContent =
+            "›";
+
+
+        next.disabled =
+            currentPage === totalPages;
+
+
+        next.onclick = () => {
+
+            if (
+                currentPage <
+                totalPages
+            ) {
+
+                currentPage++;
+
+                renderTable();
+
+            }
+
+        };
+
+
+        buttons.appendChild(next);
+
+    }
+
+
+    /* =========================
+       OPEN MODAL
+    ========================= */
+
+    function openModal(coupon = null) {
+
+        const modal =
+            document.getElementById(
+                "couponModal"
+            );
+
+
+        const title =
+            document.getElementById(
+                "modalTitle"
+            );
+
+
+        const form =
+            document.getElementById(
+                "couponForm"
+            );
+
+
+        form.reset();
+
+
+        document.getElementById(
+            "couponId"
+        ).value = "";
+
+
+        document.getElementById(
+            "usagePerCustomer"
+        ).value = "1";
+
+
+        document.getElementById(
+            "couponStatus"
+        ).value = "active";
+
+
+        if (coupon) {
+
+            title.textContent =
+                "Edit Coupon";
+
+
+            document.getElementById(
+                "couponId"
+            ).value =
+                coupon.id;
+
+
+            document.getElementById(
+                "couponCode"
+            ).value =
+                coupon.code;
+
+
+            document.getElementById(
+                "discountType"
+            ).value =
+                coupon.discountType;
+
+
+            document.getElementById(
+                "discountValue"
+            ).value =
+                coupon.discountValue;
+
+
+            document.getElementById(
+                "minimumOrder"
+            ).value =
+                coupon.minimumOrder || 0;
+
+
+            document.getElementById(
+                "usageLimit"
+            ).value =
+                coupon.usageLimit || 0;
+
+
+            document.getElementById(
+                "expiryDate"
+            ).value =
+                coupon.expiryDate || "";
+
+
+            document.getElementById(
+                "couponStatus"
+            ).value =
+                coupon.status || "active";
+
+
+            document.getElementById(
+                "usagePerCustomer"
+            ).value =
+                coupon.usagePerCustomer || 1;
+
+        } else {
+
+            title.textContent =
+                "Add Coupon";
+
+        }
+
+
+        modal.classList.add(
+            "show"
+        );
+
+    }
+
+
+    /* =========================
+       CLOSE MODAL
+    ========================= */
+
+    function closeModal() {
+
+        document.getElementById(
+            "couponModal"
+        ).classList.remove(
+            "show"
+        );
+
+    }
+
+
+    /* =========================
+       SAVE COUPON
+    ========================= */
+
+    document.getElementById(
+        "couponForm"
+    ).addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            const id =
+                document.getElementById(
+                    "couponId"
+                ).value;
+
+
+            const code =
+                document.getElementById(
+                    "couponCode"
+                ).value
+                    .trim()
+                    .toUpperCase();
+
+
+            const discountType =
+                document.getElementById(
+                    "discountType"
+                ).value;
+
+
+            const discountValue =
+                Number(
+                    document.getElementById(
+                        "discountValue"
+                    ).value
+                );
+
+
+            const minimumOrder =
+                Number(
+                    document.getElementById(
+                        "minimumOrder"
+                    ).value
+                ) || 0;
+
+
+            const usageLimit =
+                Number(
+                    document.getElementById(
+                        "usageLimit"
+                    ).value
+                ) || 0;
+
+
+            const expiryDate =
+                document.getElementById(
+                    "expiryDate"
+                ).value;
+
+
+            const status =
+                document.getElementById(
+                    "couponStatus"
+                ).value;
+
+
+            const usagePerCustomer =
+                Number(
+                    document.getElementById(
+                        "usagePerCustomer"
+                    ).value
+                ) || 1;
+
+
+            if (!code) {
+
+                alert(
+                    "Please enter a coupon code."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !/^[A-Z0-9_-]+$/.test(code)
+            ) {
+
+                alert(
+                    "Coupon code can contain only letters, numbers, _ and -."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                discountValue <= 0
+            ) {
+
+                alert(
+                    "Please enter a valid discount value."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                discountType === "percentage" &&
+                discountValue > 100
+            ) {
+
+                alert(
+                    "Percentage discount cannot be more than 100%."
+                );
+
+                return;
+
+            }
+
+
+            const duplicate =
+                coupons.find(
+                    coupon =>
+                        coupon.code === code &&
+                        coupon.id !== id
+                );
+
+
+            if (duplicate) {
+
+                alert(
+                    "This coupon code already exists."
+                );
+
+                return;
+
+            }
+
+
+            if (id) {
+
+                const index =
+                    coupons.findIndex(
+                        coupon =>
+                            coupon.id === id
+                    );
+
+
+                if (index !== -1) {
+
+                    coupons[index] = {
+
+                        ...coupons[index],
+
+                        code,
+
+                        discountType,
+
+                        discountValue,
+
+                        minimumOrder,
+
+                        usageLimit,
+
+                        expiryDate,
+
+                        status,
+
+                        usagePerCustomer
+
+                    };
+
+                }
+
+            } else {
+
+                coupons.unshift({
+
+                    id:
+                        "CP" +
+                        Date.now(),
+
+                    code,
+
+                    discountType,
+
+                    discountValue,
+
+                    minimumOrder,
+
+                    usageLimit,
+
+                    usedCount: 0,
+
+                    totalDiscount: 0,
+
+                    expiryDate,
+
+                    status,
+
+                    usagePerCustomer,
+
+                    createdAt:
+                        new Date()
+                            .toISOString()
+
+                });
+
+            }
+
+
+            saveCoupons();
+
+            loadCoupons();
+
+            closeModal();
+
+
+            alert(
+                id
+                    ? "Coupon updated successfully."
+                    : "Coupon created successfully."
+            );
+
+        }
+    );
+
+
+    /* =========================
+       EDIT
+    ========================= */
+
+    function editCoupon(id) {
+
+        const coupon =
+            coupons.find(
+                item =>
+                    item.id === id
+            );
+
+
+        if (!coupon) {
+            return;
+        }
+
+
+        openModal(coupon);
+
+    }
+
+
+    /* =========================
+       DELETE
+    ========================= */
+
+    function deleteCoupon(id) {
+
+        const coupon =
+            coupons.find(
+                item =>
+                    item.id === id
+            );
+
+
+        if (!coupon) {
+            return;
+        }
+
+
+        const confirmed =
+            confirm(
+                `Delete coupon "${coupon.code}"?`
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        coupons =
+            coupons.filter(
+                item =>
+                    item.id !== id
+            );
+
+
+        saveCoupons();
+
+        loadCoupons();
+
+
+        alert(
+            "Coupon deleted successfully."
+        );
+
+    }
+
+
+    /* =========================
+       EXPORT CSV
+    ========================= */
+
+    function exportCSV() {
+
+        if (!filteredCoupons.length) {
+
+            alert(
+                "There are no coupons to export."
+            );
+
+            return;
+
+        }
+
+
+        const headers = [
+            "Code",
+            "Discount Type",
+            "Discount Value",
+            "Minimum Order",
+            "Usage Limit",
+            "Used Count",
+            "Expiry Date",
+            "Status"
+        ];
+
+
+        const rows =
+            filteredCoupons.map(
+                coupon => [
+
+                    coupon.code,
+
+                    coupon.discountType,
+
+                    coupon.discountValue,
+
+                    coupon.minimumOrder,
+
+                    coupon.usageLimit,
+
+                    coupon.usedCount,
+
+                    coupon.expiryDate,
+
+                    getCouponStatus(coupon)
+
+                ]
+            );
+
+
+        const csv = [
+
+            headers,
+
+            ...rows
+
+        ]
+        .map(row =>
+            row.map(value =>
+                `"${String(value ?? "")
+                    .replace(/"/g, '""')}"`
+            ).join(",")
+        )
+        .join("\n");
+
+
+        const blob =
+            new Blob(
+                [csv],
+                {
+                    type:
+                        "text/csv;charset=utf-8;"
+                }
+            );
+
+
+        const url =
+            URL.createObjectURL(blob);
+
+
+        const link =
+            document.createElement(
+                "a"
+            );
+
+
+        link.href = url;
+
+        link.download =
+            "alamin-shop-coupons.csv";
+
+
+        document.body.appendChild(
+            link
+        );
+
+        link.click();
+
+        link.remove();
+
+        URL.revokeObjectURL(
+            url
+        );
+
+    }
+
+
+    /* =========================
+       LOAD
+    ========================= */
+
+    function loadCoupons() {
+
+        coupons =
+            getCoupons();
+
+
+        filteredCoupons =
+            [...coupons];
+
+
+        renderStats();
+
+        applyFilters();
+
+    }
+
+
+    /* =========================
+       EVENTS
+    ========================= */
+
+    document.getElementById(
+        "addCouponBtn"
+    ).addEventListener(
+        "click",
+        () => openModal()
+    );
+
+
+    document.getElementById(
+        "closeModal"
+    ).addEventListener(
+        "click",
+        closeModal
+    );
+
+
+    document.getElementById(
+        "cancelBtn"
+    ).addEventListener(
+        "click",
+        closeModal
+    );
+
+
+    document.getElementById(
+        "couponModal"
+    ).addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.id ===
+                "couponModal"
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+    document.getElementById(
+        "couponSearch"
+    ).addEventListener(
+        "input",
+        applyFilters
+    );
+
+
+    document.getElementById(
+        "statusFilter"
+    ).addEventListener(
+        "change",
+        applyFilters
+    );
+
+
+    document.getElementById(
+        "resetBtn"
+    ).addEventListener(
+        "click",
+        () => {
+
+            document.getElementById(
+                "couponSearch"
+            ).value = "";
+
+            document.getElementById(
+                "statusFilter"
+            ).value = "all";
+
+            applyFilters();
+
+        }
+    );
+
+
+    document.getElementById(
+        "exportBtn"
+    ).addEventListener(
+        "click",
+        exportCSV
+    );
+
+
+    /* =========================
+       START
+    ========================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        loadCoupons
+    );
+
+</script>
+
+</body>
+</html>

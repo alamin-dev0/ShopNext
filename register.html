@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account - Alamin Shop</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .register-page {
+            min-height: calc(100vh - 160px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+
+        .register-wrapper {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .register-card {
+            background: #101216;
+            border: 1px solid #272b33;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, .35);
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .register-icon {
+            width: 68px;
+            height: 68px;
+            margin: 0 auto 18px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,.06);
+            border: 1px solid #2c313b;
+            font-size: 30px;
+        }
+
+        .register-header h1 {
+            margin: 0 0 10px;
+            color: #fff;
+            font-size: 30px;
+        }
+
+        .register-header p {
+            margin: 0;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        .register-form {
+            display: flex;
+            flex-direction: column;
+            gap: 17px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            color: #e5e7eb;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .form-input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 14px 15px;
+            border-radius: 12px;
+            border: 1px solid #2c313b;
+            background: #08090b;
+            color: #fff;
+            outline: none;
+            font-size: 14px;
+            transition: .25s ease;
+        }
+
+        .form-input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,.12);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .password-input {
+            padding-right: 55px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 0;
+            background: transparent;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 7px;
+        }
+
+        .password-toggle:hover {
+            color: #fff;
+        }
+
+        .password-strength {
+            height: 4px;
+            width: 100%;
+            background: #272b33;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 2px;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: .3s ease;
+        }
+
+        .password-hint {
+            color: #71717a;
+            font-size: 11px;
+        }
+
+        .terms-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            color: #9ca3af;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .terms-row input {
+            margin-top: 3px;
+            accent-color: #6366f1;
+        }
+
+        .terms-row a {
+            color: #818cf8;
+            text-decoration: none;
+        }
+
+        .terms-row a:hover {
+            text-decoration: underline;
+        }
+
+        .register-button {
+            width: 100%;
+            border: 0;
+            border-radius: 12px;
+            padding: 15px;
+            background: #6366f1;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .25s ease;
+        }
+
+        .register-button:hover {
+            background: #5558e8;
+            transform: translateY(-1px);
+        }
+
+        .register-button:disabled {
+            opacity: .7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .register-message {
+            display: none;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .register-message.error {
+            display: block;
+            color: #fca5a5;
+            background: rgba(239,68,68,.08);
+            border: 1px solid rgba(239,68,68,.25);
+        }
+
+        .register-message.success {
+            display: block;
+            color: #86efac;
+            background: rgba(34,197,94,.08);
+            border: 1px solid rgba(34,197,94,.25);
+        }
+
+        .login-link-box {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 22px;
+            border-top: 1px solid #272b33;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        .login-link-box a {
+            color: #818cf8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link-box a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .register-page {
+                padding: 40px 15px;
+            }
+
+            .register-card {
+                padding: 28px 20px;
+                border-radius: 18px;
+            }
+
+            .register-header h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="header">
+        <div class="container">
+
+            <div class="header-main">
+
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">A</span>
+                    <span>Alamin Shop</span>
+                </a>
+
+                <div class="search-box">
+                    <input
+                        type="text"
+                        id="globalSearch"
+                        placeholder="Search products..."
+                    >
+
+                    <button
+                        type="button"
+                        id="globalSearchBtn"
+                    >
+                        🔍
+                    </button>
+                </div>
+
+                <div class="header-actions">
+
+                    <a href="wishlist.html" class="header-action">
+                        ❤️
+                        <span>Wishlist</span>
+                    </a>
+
+                    <a href="cart.html" class="header-action">
+                        🛒
+                        <span>Cart</span>
+                        <span id="cartCount" class="cart-count">0</span>
+                    </a>
+
+                    <a href="login.html" class="header-action">
+                        👤
+                        <span>Login</span>
+                    </a>
+
+                </div>
+
+            </div>
+
+            <nav class="main-nav">
+
+                <a href="index.html">Home</a>
+
+                <a href="products.html">All Products</a>
+
+                <a href="products.html?category=electronics">
+                    Electronics
+                </a>
+
+                <a href="products.html?category=fashion">
+                    Fashion
+                </a>
+
+                <a href="products.html?category=beauty">
+                    Beauty
+                </a>
+
+                <a href="products.html?category=home">
+                    Home & Living
+                </a>
+
+                <a href="products.html?category=offers">
+                    Offers
+                </a>
+
+            </nav>
+
+        </div>
+    </header>
+
+
+    <!-- REGISTER -->
+
+    <main class="register-page">
+
+        <div class="register-wrapper">
+
+            <div class="register-card">
+
+                <div class="register-header">
+
+                    <div class="register-icon">
+                        👤
+                    </div>
+
+                    <h1>Create Account</h1>
+
+                    <p>
+                        Create your Alamin Shop customer account
+                    </p>
+
+                </div>
+
+
+                <form
+                    id="registerForm"
+                    class="register-form"
+                >
+
+                    <!-- NAME -->
+
+                    <div class="form-group">
+
+                        <label for="registerName">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="registerName"
+                            class="form-input"
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label for="registerEmail">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="registerEmail"
+                            class="form-input"
+                            placeholder="Enter your email"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="form-group">
+
+                        <label for="registerPhone">
+                            Phone Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="registerPhone"
+                            class="form-input"
+                            placeholder="01XXXXXXXXX"
+                            maxlength="11"
+                            autocomplete="tel"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="registerPassword">
+                            Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <input
+                                type="password"
+                                id="registerPassword"
+                                class="form-input password-input"
+                                placeholder="Create a password"
+                                autocomplete="new-password"
+                                minlength="6"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="passwordToggle"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+                        <div class="password-strength">
+
+                            <div
+                                id="passwordStrengthBar"
+                                class="password-strength-bar"
+                            ></div>
+
+                        </div>
+
+                        <span class="password-hint">
+                            Use at least 6 characters.
+                        </span>
+
+                    </div>
+
+
+                    <!-- CONFIRM PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="confirmPassword">
+                            Confirm Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                class="form-input password-input"
+                                placeholder="Confirm your password"
+                                autocomplete="new-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="confirmPasswordToggle"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- TERMS -->
+
+                    <label class="terms-row">
+
+                        <input
+                            type="checkbox"
+                            id="acceptTerms"
+                            required
+                        >
+
+                        <span>
+                            I agree to the
+                            <a href="terms.html">
+                                Terms & Conditions
+                            </a>
+                            and
+                            <a href="privacy.html">
+                                Privacy Policy
+                            </a>.
+                        </span>
+
+                    </label>
+
+
+                    <!-- MESSAGE -->
+
+                    <div
+                        id="registerMessage"
+                        class="register-message"
+                    ></div>
+
+
+                    <!-- REGISTER BUTTON -->
+
+                    <button
+                        type="submit"
+                        id="registerButton"
+                        class="register-button"
+                    >
+                        Create Account
+                    </button>
+
+                </form>
+
+
+                <!-- LOGIN -->
+
+                <div class="login-link-box">
+
+                    Already have an account?
+
+                    <a href="login.html">
+                        Login
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <div class="footer-grid">
+
+                <div class="footer-column">
+
+                    <h3>Alamin Shop</h3>
+
+                    <p>
+                        Your trusted online shopping destination
+                        for quality products.
+                    </p>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h4>Quick Links</h4>
+
+                    <a href="index.html">Home</a>
+                    <a href="products.html">Products</a>
+                    <a href="cart.html">Cart</a>
+                    <a href="orders.html">My Orders</a>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h4>Customer Service</h4>
+
+                    <a href="contact.html">Contact Us</a>
+                    <a href="faq.html">FAQ</a>
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms & Conditions</a>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <p>
+                    © 2026 Alamin Shop. All rights reserved.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                /* ============================
+                   CART COUNT
+                ============================ */
+
+                if (
+                    typeof updateCartCount ===
+                    "function"
+                ) {
+                    updateCartCount();
+                }
+
+
+                /* ============================
+                   ELEMENTS
+                ============================ */
+
+                const form =
+                    document.getElementById(
+                        "registerForm"
+                    );
+
+                const nameInput =
+                    document.getElementById(
+                        "registerName"
+                    );
+
+                const emailInput =
+                    document.getElementById(
+                        "registerEmail"
+                    );
+
+                const phoneInput =
+                    document.getElementById(
+                        "registerPhone"
+                    );
+
+                const passwordInput =
+                    document.getElementById(
+                        "registerPassword"
+                    );
+
+                const confirmPasswordInput =
+                    document.getElementById(
+                        "confirmPassword"
+                    );
+
+                const acceptTerms =
+                    document.getElementById(
+                        "acceptTerms"
+                    );
+
+                const message =
+                    document.getElementById(
+                        "registerMessage"
+                    );
+
+                const registerButton =
+                    document.getElementById(
+                        "registerButton"
+                    );
+
+                const strengthBar =
+                    document.getElementById(
+                        "passwordStrengthBar"
+                    );
+
+
+                /* ============================
+                   PASSWORD TOGGLE
+                ============================ */
+
+                function setupPasswordToggle(
+                    input,
+                    button
+                ) {
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            if (
+                                input.type ===
+                                "password"
+                            ) {
+
+                                input.type =
+                                    "text";
+
+                                button.textContent =
+                                    "Hide";
+
+                            } else {
+
+                                input.type =
+                                    "password";
+
+                                button.textContent =
+                                    "Show";
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                setupPasswordToggle(
+                    passwordInput,
+                    document.getElementById(
+                        "passwordToggle"
+                    )
+                );
+
+
+                setupPasswordToggle(
+                    confirmPasswordInput,
+                    document.getElementById(
+                        "confirmPasswordToggle"
+                    )
+                );
+
+
+                /* ============================
+                   PASSWORD STRENGTH
+                ============================ */
+
+                passwordInput.addEventListener(
+                    "input",
+                    function () {
+
+                        const password =
+                            passwordInput.value;
+
+                        let strength = 0;
+
+                        if (
+                            password.length >= 6
+                        ) {
+                            strength++;
+                        }
+
+                        if (
+                            password.length >= 10
+                        ) {
+                            strength++;
+                        }
+
+                        if (
+                            /[A-Z]/.test(password)
+                        ) {
+                            strength++;
+                        }
+
+                        if (
+                            /[0-9]/.test(password)
+                        ) {
+                            strength++;
+                        }
+
+                        if (
+                            /[^A-Za-z0-9]/.test(
+                                password
+                            )
+                        ) {
+                            strength++;
+                        }
+
+
+                        if (strength === 0) {
+
+                            strengthBar.style.width =
+                                "0";
+
+                        } else if (strength <= 2) {
+
+                            strengthBar.style.width =
+                                "35%";
+
+                        } else if (strength <= 4) {
+
+                            strengthBar.style.width =
+                                "70%";
+
+                        } else {
+
+                            strengthBar.style.width =
+                                "100%";
+
+                        }
+
+                    }
+                );
+
+
+                /* ============================
+                   PHONE INPUT
+                ============================ */
+
+                phoneInput.addEventListener(
+                    "input",
+                    function () {
+
+                        this.value =
+                            this.value.replace(
+                                /\D/g,
+                                ""
+                            ).slice(0, 11);
+
+                    }
+                );
+
+
+                /* ============================
+                   SHOW MESSAGE
+                ============================ */
+
+                function showMessage(
+                    text,
+                    type
+                ) {
+
+                    message.textContent =
+                        text;
+
+                    message.className =
+                        "register-message " +
+                        type;
+
+                }
+
+
+                /* ============================
+                   REGISTER
+                ============================ */
+
+                form.addEventListener(
+                    "submit",
+                    function (event) {
+
+                        event.preventDefault();
+
+
+                        const name =
+                            nameInput.value.trim();
+
+                        const email =
+                            emailInput.value
+                                .trim()
+                                .toLowerCase();
+
+                        const phone =
+                            phoneInput.value.trim();
+
+                        const password =
+                            passwordInput.value;
+
+                        const confirmPassword =
+                            confirmPasswordInput
+                                .value;
+
+
+                        /* NAME */
+
+                        if (name.length < 2) {
+
+                            showMessage(
+                                "Please enter your full name.",
+                                "error"
+                            );
+
+                            return;
+
+                        }
+
+
+                        /* EMAIL */
+
+                        const emailPattern =
+                            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+                        if (
+                            !emailPattern.test(
+                                email
+                            )
+                        ) {
+
+                            showMessage(
+                                "Please enter a valid email address.",
+                                "error"
+                            );
+
+                            return;
+
+                        }
+
+
+                        /* PHONE */
+
+                        const phonePattern =
+                            /^01[3-9]\d{8}$/;
+
+
+                        if (
+                            !phonePattern.test(
+                                phone
+                            )
+                        ) {
+
+                            showMessage(
+                                "Please enter a valid Bangladesh phone number.",
+                                "error"
+                            );
+
+                            return;
+
+                        }
+
+
+                        /* PASSWORD */
+
+                        if (
+                            password.length < 6
+                        ) {
+
+                            showMessage(
+                                "Password must be at least 6 characters.",
+                                "error"
+                            );
+
+                            return;
+
+                        }
+
+
+                        /* CONFIRM PASSWORD */
+
+                        if (
+                            password !==
+                            confirmPassword
+                        ) {
+
+                            showMessage(
+                                "Passwords do not match.",
+                                "error"
+                            );
+
+                            return;
+
+                        }
+
+
+                        /* TERMS */
+
+                        if (
+                            !acceptTerms.checked
+                        ) {
+
+                            showMessage(
+                                "Please accept the Terms & Conditions.",
+                                "error"
+                            );
+
+                            return;
+
+                        }
+
+
+                        /* ============================
+                           GET EXISTING USERS
+                        ============================ */
+
+                        let users = [];
+
+
+                        try {
+
+                            users =
+                                JSON.parse(
+                                    localStorage.getItem(
+                                        "shopnest_users"
+                                    )
+                                ) || [];
+
+                        } catch (error) {
+
+                            users = [];
+
+                        }
+
+
+                        /* ============================
+                           DUPLICATE CHECK
+                        ============================ */
+
+                        const emailExists =
+                            users.some(
+                                function (user) {
+
+                                    return (
+                                        user.email
+                                            .toLowerCase() ===
+                                        email
+                                    );
+
+                                }
+                            );
+
+
+                        const phoneExists =
+                            users.some(
+                                function (user) {
+
+                                    return (
+                                        user.phone ===
+                                        phone
+                                    );
+
+                                }
+                            );
+
+
+                        if (emailExists) {
+
+                            showMessage(
+                                "An account with this email already exists.",
+                                "error"
+                            );
+
+                            return;
+
+                        }
+
+
+                        if (phoneExists) {
+
+                            showMessage(
+                                "An account with this phone number already exists.",
+                                "error"
+                            );
+
+                            return;
+
+                        }
+
+
+                        /* ============================
+                           CREATE USER
+                        ============================ */
+
+                        const newUser = {
+
+                            id:
+                                "CUS" +
+                                Date.now(),
+
+                            name:
+                                name,
+
+                            email:
+                                email,
+
+                            phone:
+                                phone,
+
+                            /*
+                             * Temporary demo storage.
+                             *
+                             * IMPORTANT:
+                             * Real website এ password
+                             * কখনো LocalStorage-এ রাখা হবে না।
+                             *
+                             * Later PHP + database
+                             * authentication ব্যবহার করব।
+                             */
+
+                            password:
+                                password,
+
+                            createdAt:
+                                new Date()
+                                    .toISOString()
+
+                        };
+
+
+                        users.push(newUser);
+
+
+                        localStorage.setItem(
+                            "shopnest_users",
+                            JSON.stringify(
+                                users
+                            )
+                        );
+
+
+                        /* ============================
+                           AUTO LOGIN
+                        ============================ */
+
+                        const loggedInUser = {
+
+                            id:
+                                newUser.id,
+
+                            name:
+                                newUser.name,
+
+                            email:
+                                newUser.email,
+
+                            phone:
+                                newUser.phone,
+
+                            loggedInAt:
+                                new Date()
+                                    .toISOString()
+
+                        };
+
+
+                        localStorage.setItem(
+                            "shopnest_logged_in_user",
+                            JSON.stringify(
+                                loggedInUser
+                            )
+                        );
+
+
+                        /* ============================
+                           SUCCESS
+                        ============================ */
+
+                        showMessage(
+                            "Account created successfully! Redirecting...",
+                            "success"
+                        );
+
+
+                        registerButton.disabled =
+                            true;
+
+                        registerButton.textContent =
+                            "Account Created ✓";
+
+
+                        setTimeout(
+                            function () {
+
+                                window.location.href =
+                                    "index.html";
+
+                            },
+                            1000
+                        );
+
+                    }
+                );
+
+            });
+
+    </script>
+
+
+    <!-- Shared JavaScript -->
+
+    <script src="script.js"></script>
+
+</body>
+</html>

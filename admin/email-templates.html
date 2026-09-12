@@ -1,0 +1,2220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Email Templates - Alamin Shop Admin</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f7fb;
+      color: #111827;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font-family: inherit;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 250px;
+      height: 100vh;
+      background: #111827;
+      color: #fff;
+      overflow-y: auto;
+      z-index: 1000;
+      transition: 0.3s;
+    }
+
+    .brand {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      padding: 0 22px;
+      font-size: 21px;
+      font-weight: 700;
+      border-bottom: 1px solid #263143;
+    }
+
+    .brand span {
+      color: #60a5fa;
+    }
+
+    .menu-title {
+      padding: 22px 20px 8px;
+      color: #8f9bad;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      margin: 3px 10px;
+      border-radius: 8px;
+      color: #cbd5e1;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    .nav-link:hover {
+      background: #1e293b;
+      color: #fff;
+    }
+
+    .nav-link.active {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    .nav-icon {
+      width: 20px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .main {
+      margin-left: 250px;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      height: 70px;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .menu-btn {
+      display: none;
+      border: 0;
+      background: #f1f5f9;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .page-title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .admin-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #2563eb;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: bold;
+    }
+
+    .content {
+      padding: 28px;
+    }
+
+    /* =========================
+       PAGE HEADER
+    ========================= */
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .page-header h1 {
+      font-size: 25px;
+      margin-bottom: 6px;
+    }
+
+    .page-header p {
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .primary-btn {
+      border: 0;
+      background: #2563eb;
+      color: #fff;
+      padding: 11px 17px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    .primary-btn:hover {
+      background: #1d4ed8;
+    }
+
+    /* =========================
+       STATS
+    ========================= */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .stat-label {
+      color: #64748b;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .stat-number {
+      font-size: 25px;
+      font-weight: 700;
+    }
+
+    /* =========================
+       TOOLBAR
+    ========================= */
+
+    .card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .toolbar {
+      padding: 18px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .search-box input {
+      width: 100%;
+      height: 42px;
+      padding: 0 14px 0 40px;
+      border: 1px solid #dbe1e8;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: #2563eb;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 12px;
+      color: #64748b;
+    }
+
+    .filter-box {
+      display: flex;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      border: 1px solid #dbe1e8;
+      background: #fff;
+      color: #475569;
+      padding: 9px 13px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .filter-btn.active {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: #fff;
+    }
+
+    /* =========================
+       TABLE
+    ========================= */
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 850px;
+    }
+
+    th,
+    td {
+      padding: 15px 18px;
+      border-bottom: 1px solid #edf0f3;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    th {
+      background: #f8fafc;
+      color: #64748b;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    tr:hover td {
+      background: #fafcff;
+    }
+
+    .template-name {
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    .template-key {
+      color: #64748b;
+      font-size: 11px;
+    }
+
+    .badge {
+      display: inline-flex;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge.active {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .badge.inactive {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .badge.category {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .actions {
+      display: flex;
+      gap: 7px;
+    }
+
+    .action-btn {
+      border: 0;
+      padding: 7px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .edit-btn {
+      background: #eff6ff;
+      color: #2563eb;
+    }
+
+    .preview-btn {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    .delete-btn {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+
+    .toggle-btn {
+      background: #f0fdf4;
+      color: #15803d;
+    }
+
+    /* =========================
+       EMPTY
+    ========================= */
+
+    .empty {
+      padding: 50px 20px;
+      text-align: center;
+      color: #64748b;
+      display: none;
+    }
+
+    .empty-icon {
+      font-size: 35px;
+      margin-bottom: 10px;
+    }
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 2000;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      width: 700px;
+      max-width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+      padding: 18px 22px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 18px;
+    }
+
+    .close-btn {
+      border: 0;
+      background: transparent;
+      font-size: 24px;
+      color: #64748b;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      padding: 22px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 17px;
+    }
+
+    .form-group {
+      margin-bottom: 17px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #dbe1e8;
+      border-radius: 7px;
+      outline: none;
+      font-size: 13px;
+    }
+
+    .form-control:focus {
+      border-color: #2563eb;
+    }
+
+    textarea.form-control {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .modal-footer {
+      padding: 17px 22px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .secondary-btn {
+      border: 1px solid #dbe1e8;
+      background: #fff;
+      color: #475569;
+      padding: 10px 16px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* =========================
+       PREVIEW
+    ========================= */
+
+    .preview-modal {
+      width: 800px;
+    }
+
+    .email-preview {
+      background: #f1f5f9;
+      padding: 25px;
+    }
+
+    .email-box {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+    }
+
+    .email-header {
+      padding: 20px;
+      background: #111827;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .email-content {
+      padding: 25px;
+      color: #334155;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast {
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      background: #111827;
+      color: #fff;
+      padding: 13px 17px;
+      border-radius: 8px;
+      font-size: 13px;
+      transform: translateY(100px);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.3s;
+      z-index: 5000;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 900;
+    }
+
+    @media (max-width: 1000px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .overlay.show {
+        display: block;
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      .content {
+        padding: 18px;
+      }
+
+      .page-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .topbar {
+        padding: 0 18px;
+      }
+
+      .admin-name {
+        display: none;
+      }
+    }
+
+    @media (max-width: 550px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+
+      .filter-box {
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      .filter-btn {
+        white-space: nowrap;
+      }
+
+      .page-header h1 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+      Alamin <span>Shop</span>
+    </div>
+
+    <div class="menu-title">Main</div>
+
+    <a href="index.html" class="nav-link">
+      <span class="nav-icon">📊</span>
+      Dashboard
+    </a>
+
+    <a href="orders.html" class="nav-link">
+      <span class="nav-icon">🛒</span>
+      Orders
+    </a>
+
+    <a href="products.html" class="nav-link">
+      <span class="nav-icon">📦</span>
+      Products
+    </a>
+
+    <a href="customers.html" class="nav-link">
+      <span class="nav-icon">👥</span>
+      Customers
+    </a>
+
+    <a href="categories.html" class="nav-link">
+      <span class="nav-icon">🗂️</span>
+      Categories
+    </a>
+
+    <a href="inventory.html" class="nav-link">
+      <span class="nav-icon">📋</span>
+      Inventory
+    </a>
+
+    <div class="menu-title">Marketing</div>
+
+    <a href="coupons.html" class="nav-link">
+      <span class="nav-icon">🎟️</span>
+      Coupons
+    </a>
+
+    <a href="reviews.html" class="nav-link">
+      <span class="nav-icon">⭐</span>
+      Reviews
+    </a>
+
+    <a href="banners.html" class="nav-link">
+      <span class="nav-icon">🖼️</span>
+      Banners
+    </a>
+
+    <a href="homepage.html" class="nav-link">
+      <span class="nav-icon">🏠</span>
+      Homepage
+    </a>
+
+    <div class="menu-title">Communication</div>
+
+    <a href="notifications.html" class="nav-link">
+      <span class="nav-icon">🔔</span>
+      Notifications
+    </a>
+
+    <a href="email-template.html" class="nav-link active">
+      <span class="nav-icon">✉️</span>
+      Email Templates
+    </a>
+
+    <a href="sms-templates.html" class="nav-link">
+      <span class="nav-icon">📱</span>
+      SMS Templates
+    </a>
+
+    <div class="menu-title">Shipping</div>
+
+    <a href="shipping.html" class="nav-link">
+      <span class="nav-icon">🚚</span>
+      Shipping
+    </a>
+
+    <a href="couriers.html" class="nav-link">
+      <span class="nav-icon">🚛</span>
+      Couriers
+    </a>
+
+    <a href="delivery-zones.html" class="nav-link">
+      <span class="nav-icon">📍</span>
+      Delivery Zones
+    </a>
+
+    <a href="returns.html" class="nav-link">
+      <span class="nav-icon">↩️</span>
+      Returns
+    </a>
+
+    <div class="menu-title">Payments</div>
+
+    <a href="payments.html" class="nav-link">
+      <span class="nav-icon">💳</span>
+      Payments
+    </a>
+
+    <div class="menu-title">Reports</div>
+
+    <a href="reports.html" class="nav-link">
+      <span class="nav-icon">📈</span>
+      Reports
+    </a>
+
+    <a href="search.html" class="nav-link">
+      <span class="nav-icon">🔎</span>
+      Global Search
+    </a>
+
+    <div class="menu-title">System</div>
+
+    <a href="media.html" class="nav-link">
+      <span class="nav-icon">🗃️</span>
+      Media
+    </a>
+
+    <a href="staff.html" class="nav-link">
+      <span class="nav-icon">👤</span>
+      Staff
+    </a>
+
+    <a href="audit-logs.html" class="nav-link">
+      <span class="nav-icon">📜</span>
+      Audit Logs
+    </a>
+
+    <a href="seo.html" class="nav-link">
+      <span class="nav-icon">🔍</span>
+      SEO
+    </a>
+
+    <a href="security.html" class="nav-link">
+      <span class="nav-icon">🔐</span>
+      Security
+    </a>
+
+    <a href="settings.html" class="nav-link">
+      <span class="nav-icon">⚙️</span>
+      Settings
+    </a>
+
+  </aside>
+
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <header class="topbar">
+
+      <div class="topbar-left">
+
+        <button class="menu-btn" onclick="toggleSidebar()">
+          ☰
+        </button>
+
+        <div class="page-title">
+          Email Templates
+        </div>
+
+      </div>
+
+      <div class="admin-profile">
+
+        <span class="admin-name">
+          Admin
+        </span>
+
+        <div class="avatar">
+          A
+        </div>
+
+      </div>
+
+    </header>
+
+    <section class="content">
+
+      <!-- HEADER -->
+      <div class="page-header">
+
+        <div>
+          <h1>Email Templates</h1>
+          <p>Manage your store's automated email templates.</p>
+        </div>
+
+        <button class="primary-btn" onclick="openAddModal()">
+          + Add Template
+        </button>
+
+      </div>
+
+      <!-- STATS -->
+      <div class="stats">
+
+        <div class="stat-card">
+          <div class="stat-label">
+            Total Templates
+          </div>
+
+          <div class="stat-number" id="totalTemplates">
+            0
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">
+            Active
+          </div>
+
+          <div class="stat-number" id="activeTemplates">
+            0
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">
+            Inactive
+          </div>
+
+          <div class="stat-number" id="inactiveTemplates">
+            0
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">
+            Categories
+          </div>
+
+          <div class="stat-number" id="categoryCount">
+            0
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TABLE CARD -->
+      <div class="card">
+
+        <div class="toolbar">
+
+          <div class="search-box">
+
+            <span class="search-icon">
+              🔎
+            </span>
+
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search email templates..."
+              oninput="renderTemplates()"
+            >
+
+          </div>
+
+          <div class="filter-box">
+
+            <button
+              class="filter-btn active"
+              data-filter="all"
+              onclick="setFilter('all', this)"
+            >
+              All
+            </button>
+
+            <button
+              class="filter-btn"
+              data-filter="active"
+              onclick="setFilter('active', this)"
+            >
+              Active
+            </button>
+
+            <button
+              class="filter-btn"
+              data-filter="inactive"
+              onclick="setFilter('inactive', this)"
+            >
+              Inactive
+            </button>
+
+          </div>
+
+        </div>
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Template</th>
+                <th>Category</th>
+                <th>Subject</th>
+                <th>Status</th>
+                <th>Updated</th>
+                <th>Actions</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="templateTable"></tbody>
+
+          </table>
+
+          <div class="empty" id="emptyState">
+
+            <div class="empty-icon">
+              ✉️
+            </div>
+
+            <div>
+              No email templates found.
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ADD / EDIT MODAL -->
+  <div class="modal-overlay" id="templateModal">
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <h2 id="modalTitle">
+          Add Email Template
+        </h2>
+
+        <button class="close-btn" onclick="closeModal()">
+          ×
+        </button>
+
+      </div>
+
+      <form id="templateForm" onsubmit="saveTemplate(event)">
+
+        <div class="modal-body">
+
+          <div class="form-grid">
+
+            <div class="form-group">
+
+              <label>
+                Template Name
+              </label>
+
+              <input
+                type="text"
+                id="templateName"
+                class="form-control"
+                placeholder="Example: Order Confirmation"
+                required
+              >
+
+            </div>
+
+            <div class="form-group">
+
+              <label>
+                Template Key
+              </label>
+
+              <input
+                type="text"
+                id="templateKey"
+                class="form-control"
+                placeholder="order_confirmation"
+                required
+              >
+
+            </div>
+
+            <div class="form-group">
+
+              <label>
+                Category
+              </label>
+
+              <select
+                id="templateCategory"
+                class="form-control"
+                required
+              >
+
+                <option value="Orders">
+                  Orders
+                </option>
+
+                <option value="Customers">
+                  Customers
+                </option>
+
+                <option value="Payments">
+                  Payments
+                </option>
+
+                <option value="Shipping">
+                  Shipping
+                </option>
+
+                <option value="Marketing">
+                  Marketing
+                </option>
+
+                <option value="Other">
+                  Other
+                </option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group">
+
+              <label>
+                Status
+              </label>
+
+              <select
+                id="templateStatus"
+                class="form-control"
+              >
+
+                <option value="active">
+                  Active
+                </option>
+
+                <option value="inactive">
+                  Inactive
+                </option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group full">
+
+              <label>
+                Email Subject
+              </label>
+
+              <input
+                type="text"
+                id="templateSubject"
+                class="form-control"
+                placeholder="Your order has been confirmed"
+                required
+              >
+
+            </div>
+
+            <div class="form-group full">
+
+              <label>
+                Email Content
+              </label>
+
+              <textarea
+                id="templateContent"
+                class="form-control"
+                placeholder="Write your email content here..."
+                required
+              ></textarea>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="secondary-btn"
+            onclick="closeModal()"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="primary-btn"
+          >
+            Save Template
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+  <!-- PREVIEW MODAL -->
+  <div class="modal-overlay" id="previewModal">
+
+    <div class="modal preview-modal">
+
+      <div class="modal-header">
+
+        <h2>
+          Email Preview
+        </h2>
+
+        <button class="close-btn" onclick="closePreview()">
+          ×
+        </button>
+
+      </div>
+
+      <div class="email-preview">
+
+        <div class="email-box">
+
+          <div
+            class="email-header"
+            id="previewTitle"
+          >
+            Email Preview
+          </div>
+
+          <div
+            class="email-content"
+            id="previewContent"
+          ></div>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button
+          class="secondary-btn"
+          onclick="closePreview()"
+        >
+          Close
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+
+    /* ======================================
+       STORAGE
+    ====================================== */
+
+    const STORAGE_KEY = "shopnest_email_templates";
+
+    let templates = [];
+    let currentFilter = "all";
+    let editingId = null;
+
+
+    /* ======================================
+       DEFAULT TEMPLATES
+    ====================================== */
+
+    const defaultTemplates = [
+
+      {
+        id: "email_001",
+        name: "Order Confirmation",
+        key: "order_confirmation",
+        category: "Orders",
+        subject: "Your order has been confirmed",
+        content:
+`Hello {{customer_name}},
+
+Thank you for your order.
+
+Your order #{{order_id}} has been successfully confirmed.
+
+Order Total: {{order_total}}
+
+We will notify you when your order is shipped.
+
+Thank you for shopping with Alamin Shop.`,
+        status: "active",
+        updated: "Today"
+      },
+
+      {
+        id: "email_002",
+        name: "Order Shipped",
+        key: "order_shipped",
+        category: "Shipping",
+        subject: "Your order is on the way",
+        content:
+`Hello {{customer_name}},
+
+Good news!
+
+Your order #{{order_id}} has been shipped.
+
+Tracking Number:
+{{tracking_number}}
+
+You can use the tracking number to check your delivery status.
+
+Thank you for shopping with Alamin Shop.`,
+        status: "active",
+        updated: "Today"
+      },
+
+      {
+        id: "email_003",
+        name: "Order Delivered",
+        key: "order_delivered",
+        category: "Shipping",
+        subject: "Your order has been delivered",
+        content:
+`Hello {{customer_name}},
+
+Your order #{{order_id}} has been delivered successfully.
+
+We hope you enjoy your purchase.
+
+Thank you for shopping with Alamin Shop.`,
+        status: "active",
+        updated: "Today"
+      },
+
+      {
+        id: "email_004",
+        name: "Welcome Email",
+        key: "welcome_customer",
+        category: "Customers",
+        subject: "Welcome to Alamin Shop",
+        content:
+`Hello {{customer_name}},
+
+Welcome to Alamin Shop!
+
+Your account has been created successfully.
+
+Thank you for joining us.`,
+        status: "active",
+        updated: "Today"
+      },
+
+      {
+        id: "email_005",
+        name: "Password Reset",
+        key: "password_reset",
+        category: "Customers",
+        subject: "Reset your password",
+        content:
+`Hello {{customer_name}},
+
+We received a request to reset your password.
+
+Click the password reset link to create a new password.
+
+If you did not request this, you can safely ignore this email.`,
+        status: "active",
+        updated: "Today"
+      },
+
+      {
+        id: "email_006",
+        name: "Payment Confirmation",
+        key: "payment_confirmation",
+        category: "Payments",
+        subject: "Payment received for your order",
+        content:
+`Hello {{customer_name}},
+
+We have received your payment for order #{{order_id}}.
+
+Payment Amount:
+{{payment_amount}}
+
+Thank you for your purchase.`,
+        status: "active",
+        updated: "Today"
+      }
+
+    ];
+
+
+    /* ======================================
+       LOAD DATA
+    ====================================== */
+
+    function loadTemplates() {
+
+      const saved =
+        localStorage.getItem(STORAGE_KEY);
+
+      if (saved) {
+
+        try {
+
+          templates = JSON.parse(saved);
+
+        } catch (error) {
+
+          templates = [...defaultTemplates];
+
+        }
+
+      } else {
+
+        templates = [...defaultTemplates];
+
+        saveToStorage();
+
+      }
+
+      renderTemplates();
+      updateStats();
+
+    }
+
+
+    /* ======================================
+       SAVE STORAGE
+    ====================================== */
+
+    function saveToStorage() {
+
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(templates)
+      );
+
+    }
+
+
+    /* ======================================
+       RENDER
+    ====================================== */
+
+    function renderTemplates() {
+
+      const table =
+        document.getElementById("templateTable");
+
+      const empty =
+        document.getElementById("emptyState");
+
+      const search =
+        document
+          .getElementById("searchInput")
+          .value
+          .trim()
+          .toLowerCase();
+
+      let filtered = [...templates];
+
+
+      /* FILTER */
+
+      if (currentFilter !== "all") {
+
+        filtered =
+          filtered.filter(
+            template =>
+              template.status === currentFilter
+          );
+
+      }
+
+
+      /* SEARCH */
+
+      if (search) {
+
+        filtered =
+          filtered.filter(template => {
+
+            return (
+
+              template.name
+                .toLowerCase()
+                .includes(search)
+
+              ||
+
+              template.key
+                .toLowerCase()
+                .includes(search)
+
+              ||
+
+              template.category
+                .toLowerCase()
+                .includes(search)
+
+              ||
+
+              template.subject
+                .toLowerCase()
+                .includes(search)
+
+            );
+
+          });
+
+      }
+
+
+      table.innerHTML = "";
+
+
+      if (!filtered.length) {
+
+        empty.style.display = "block";
+
+        updateStats();
+
+        return;
+
+      }
+
+
+      empty.style.display = "none";
+
+
+      filtered.forEach(template => {
+
+        const row =
+          document.createElement("tr");
+
+        row.innerHTML = `
+
+          <td>
+
+            <div class="template-name">
+              ${escapeHtml(template.name)}
+            </div>
+
+            <div class="template-key">
+              ${escapeHtml(template.key)}
+            </div>
+
+          </td>
+
+          <td>
+
+            <span class="badge category">
+              ${escapeHtml(template.category)}
+            </span>
+
+          </td>
+
+          <td>
+            ${escapeHtml(template.subject)}
+          </td>
+
+          <td>
+
+            <span class="badge ${template.status}">
+              ${
+                template.status === "active"
+                  ? "Active"
+                  : "Inactive"
+              }
+            </span>
+
+          </td>
+
+          <td>
+            ${escapeHtml(template.updated || "Today")}
+          </td>
+
+          <td>
+
+            <div class="actions">
+
+              <button
+                class="action-btn preview-btn"
+                onclick="previewTemplate('${template.id}')"
+              >
+                View
+              </button>
+
+              <button
+                class="action-btn edit-btn"
+                onclick="editTemplate('${template.id}')"
+              >
+                Edit
+              </button>
+
+              <button
+                class="action-btn toggle-btn"
+                onclick="toggleTemplate('${template.id}')"
+              >
+                ${
+                  template.status === "active"
+                    ? "Disable"
+                    : "Enable"
+                }
+              </button>
+
+              <button
+                class="action-btn delete-btn"
+                onclick="deleteTemplate('${template.id}')"
+              >
+                Delete
+              </button>
+
+            </div>
+
+          </td>
+
+        `;
+
+        table.appendChild(row);
+
+      });
+
+
+      updateStats();
+
+    }
+
+
+    /* ======================================
+       STATS
+    ====================================== */
+
+    function updateStats() {
+
+      const total =
+        templates.length;
+
+      const active =
+        templates.filter(
+          t => t.status === "active"
+        ).length;
+
+      const inactive =
+        templates.filter(
+          t => t.status === "inactive"
+        ).length;
+
+      const categories =
+        new Set(
+          templates.map(t => t.category)
+        ).size;
+
+
+      document.getElementById(
+        "totalTemplates"
+      ).textContent = total;
+
+      document.getElementById(
+        "activeTemplates"
+      ).textContent = active;
+
+      document.getElementById(
+        "inactiveTemplates"
+      ).textContent = inactive;
+
+      document.getElementById(
+        "categoryCount"
+      ).textContent = categories;
+
+    }
+
+
+    /* ======================================
+       FILTER
+    ====================================== */
+
+    function setFilter(filter, button) {
+
+      currentFilter = filter;
+
+      document
+        .querySelectorAll(".filter-btn")
+        .forEach(btn => {
+
+          btn.classList.remove("active");
+
+        });
+
+      button.classList.add("active");
+
+      renderTemplates();
+
+    }
+
+
+    /* ======================================
+       ADD MODAL
+    ====================================== */
+
+    function openAddModal() {
+
+      editingId = null;
+
+      document.getElementById(
+        "modalTitle"
+      ).textContent = "Add Email Template";
+
+      document
+        .getElementById("templateForm")
+        .reset();
+
+      document.getElementById(
+        "templateStatus"
+      ).value = "active";
+
+      document.getElementById(
+        "templateModal"
+      ).classList.add("show");
+
+    }
+
+
+    /* ======================================
+       EDIT
+    ====================================== */
+
+    function editTemplate(id) {
+
+      const template =
+        templates.find(
+          t => t.id === id
+        );
+
+      if (!template) return;
+
+      editingId = id;
+
+      document.getElementById(
+        "modalTitle"
+      ).textContent = "Edit Email Template";
+
+      document.getElementById(
+        "templateName"
+      ).value = template.name;
+
+      document.getElementById(
+        "templateKey"
+      ).value = template.key;
+
+      document.getElementById(
+        "templateCategory"
+      ).value = template.category;
+
+      document.getElementById(
+        "templateStatus"
+      ).value = template.status;
+
+      document.getElementById(
+        "templateSubject"
+      ).value = template.subject;
+
+      document.getElementById(
+        "templateContent"
+      ).value = template.content;
+
+      document.getElementById(
+        "templateModal"
+      ).classList.add("show");
+
+    }
+
+
+    /* ======================================
+       SAVE
+    ====================================== */
+
+    function saveTemplate(event) {
+
+      event.preventDefault();
+
+
+      const name =
+        document.getElementById(
+          "templateName"
+        ).value.trim();
+
+      const key =
+        document.getElementById(
+          "templateKey"
+        ).value.trim();
+
+      const category =
+        document.getElementById(
+          "templateCategory"
+        ).value;
+
+      const status =
+        document.getElementById(
+          "templateStatus"
+        ).value;
+
+      const subject =
+        document.getElementById(
+          "templateSubject"
+        ).value.trim();
+
+      const content =
+        document.getElementById(
+          "templateContent"
+        ).value.trim();
+
+
+      if (
+        !name ||
+        !key ||
+        !subject ||
+        !content
+      ) {
+
+        showToast(
+          "Please fill all required fields."
+        );
+
+        return;
+
+      }
+
+
+      /* CHECK DUPLICATE KEY */
+
+      const duplicate =
+        templates.find(
+          template =>
+            template.key.toLowerCase() ===
+              key.toLowerCase() &&
+            template.id !== editingId
+        );
+
+
+      if (duplicate) {
+
+        showToast(
+          "This template key already exists."
+        );
+
+        return;
+
+      }
+
+
+      if (editingId) {
+
+        const index =
+          templates.findIndex(
+            t => t.id === editingId
+          );
+
+        if (index !== -1) {
+
+          templates[index] = {
+
+            ...templates[index],
+
+            name,
+            key,
+            category,
+            status,
+            subject,
+            content,
+            updated: "Just now"
+
+          };
+
+        }
+
+        showToast(
+          "Email template updated successfully."
+        );
+
+      } else {
+
+        const newTemplate = {
+
+          id:
+            "email_" +
+            Date.now(),
+
+          name,
+          key,
+          category,
+          status,
+          subject,
+          content,
+          updated: "Just now"
+
+        };
+
+        templates.unshift(
+          newTemplate
+        );
+
+        showToast(
+          "Email template added successfully."
+        );
+
+      }
+
+
+      saveToStorage();
+
+      closeModal();
+
+      renderTemplates();
+
+    }
+
+
+    /* ======================================
+       DELETE
+    ====================================== */
+
+    function deleteTemplate(id) {
+
+      const template =
+        templates.find(
+          t => t.id === id
+        );
+
+      if (!template) return;
+
+
+      const confirmed =
+        confirm(
+          `Delete "${template.name}"?`
+        );
+
+
+      if (!confirmed) return;
+
+
+      templates =
+        templates.filter(
+          t => t.id !== id
+        );
+
+
+      saveToStorage();
+
+      renderTemplates();
+
+      showToast(
+        "Email template deleted."
+      );
+
+    }
+
+
+    /* ======================================
+       ENABLE / DISABLE
+    ====================================== */
+
+    function toggleTemplate(id) {
+
+      const template =
+        templates.find(
+          t => t.id === id
+        );
+
+      if (!template) return;
+
+
+      template.status =
+        template.status === "active"
+          ? "inactive"
+          : "active";
+
+      template.updated =
+        "Just now";
+
+
+      saveToStorage();
+
+      renderTemplates();
+
+
+      showToast(
+        template.status === "active"
+          ? "Template enabled."
+          : "Template disabled."
+      );
+
+    }
+
+
+    /* ======================================
+       PREVIEW
+    ====================================== */
+
+    function previewTemplate(id) {
+
+      const template =
+        templates.find(
+          t => t.id === id
+        );
+
+      if (!template) return;
+
+
+      document.getElementById(
+        "previewTitle"
+      ).textContent =
+        template.subject;
+
+
+      document.getElementById(
+        "previewContent"
+      ).textContent =
+        template.content
+          .replace(
+            /{{customer_name}}/g,
+            "Al Amin"
+          )
+          .replace(
+            /{{order_id}}/g,
+            "ORD-10025"
+          )
+          .replace(
+            /{{order_total}}/g,
+            "৳ 2,500"
+          )
+          .replace(
+            /{{payment_amount}}/g,
+            "৳ 2,500"
+          )
+          .replace(
+            /{{tracking_number}}/g,
+            "TRK123456789"
+          );
+
+
+      document.getElementById(
+        "previewModal"
+      ).classList.add("show");
+
+    }
+
+
+    /* ======================================
+       CLOSE MODALS
+    ====================================== */
+
+    function closeModal() {
+
+      document.getElementById(
+        "templateModal"
+      ).classList.remove("show");
+
+      editingId = null;
+
+    }
+
+
+    function closePreview() {
+
+      document.getElementById(
+        "previewModal"
+      ).classList.remove("show");
+
+    }
+
+
+    /* ======================================
+       TOAST
+    ====================================== */
+
+    let toastTimer;
+
+
+    function showToast(message) {
+
+      const toast =
+        document.getElementById("toast");
+
+      toast.textContent = message;
+
+      toast.classList.add("show");
+
+
+      clearTimeout(toastTimer);
+
+
+      toastTimer =
+        setTimeout(() => {
+
+          toast.classList.remove(
+            "show"
+          );
+
+        }, 2500);
+
+    }
+
+
+    /* ======================================
+       ESCAPE HTML
+    ====================================== */
+
+    function escapeHtml(value) {
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* ======================================
+       SIDEBAR
+    ====================================== */
+
+    function toggleSidebar() {
+
+      document
+        .getElementById("sidebar")
+        .classList.toggle("open");
+
+      document
+        .getElementById("overlay")
+        .classList.toggle("show");
+
+    }
+
+
+    function closeSidebar() {
+
+      document
+        .getElementById("sidebar")
+        .classList.remove("open");
+
+      document
+        .getElementById("overlay")
+        .classList.remove("show");
+
+    }
+
+
+    /* ======================================
+       CLOSE MODAL ON OUTSIDE CLICK
+    ====================================== */
+
+    document
+      .getElementById("templateModal")
+      .addEventListener(
+        "click",
+        function(event) {
+
+          if (
+            event.target === this
+          ) {
+
+            closeModal();
+
+          }
+
+        }
+      );
+
+
+    document
+      .getElementById("previewModal")
+      .addEventListener(
+        "click",
+        function(event) {
+
+          if (
+            event.target === this
+          ) {
+
+            closePreview();
+
+          }
+
+        }
+      );
+
+
+    /* ======================================
+       ESC KEY
+    ====================================== */
+
+    document.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (event.key === "Escape") {
+
+          closeModal();
+          closePreview();
+          closeSidebar();
+
+        }
+
+      }
+    );
+
+
+    /* ======================================
+       START
+    ====================================== */
+
+    loadTemplates();
+
+  </script>
+
+</body>
+</html>

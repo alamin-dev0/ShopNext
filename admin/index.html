@@ -1,0 +1,3109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - Alamin Shop Admin</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #08090b;
+            --sidebar: #0d0f12;
+            --card: #111318;
+            --card2: #15181e;
+            --border: #242830;
+            --text: #f5f7fa;
+            --muted: #8b93a1;
+            --primary: #7c5cff;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        .admin-layout {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            width: 250px;
+            min-height: 100vh;
+            background: var(--sidebar);
+            border-right: 1px solid var(--border);
+
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            padding: 22px 14px;
+
+            z-index: 100;
+
+            overflow-y: auto;
+
+            transition: .25s;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+
+            padding: 4px 10px 28px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 12px;
+
+            background: linear-gradient(
+                135deg,
+                #7c5cff,
+                #4f46e5
+            );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .brand-text h2 {
+            font-size: 17px;
+        }
+
+        .brand-text span {
+            display: block;
+
+            color: var(--muted);
+            font-size: 11px;
+
+            margin-top: 2px;
+        }
+
+        .menu-title {
+            color: #596170;
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.5px;
+
+            padding: 12px;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 11px 12px;
+
+            border-radius: 10px;
+
+            color: #aeb5c1;
+
+            font-size: 13px;
+
+            transition: .2s;
+        }
+
+        .nav-item:hover {
+            background: #171a20;
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(124, 92, 255, .14);
+
+            color: #b8a9ff;
+
+            border: 1px solid rgba(
+                124,
+                92,
+                255,
+                .18
+            );
+        }
+
+        .nav-icon {
+            width: 22px;
+
+            text-align: center;
+
+            font-size: 15px;
+        }
+
+        .sidebar-bottom {
+            margin-top: 25px;
+
+            border-top: 1px solid var(--border);
+
+            padding-top: 15px;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            width: calc(100% - 250px);
+
+            margin-left: 250px;
+
+            min-height: 100vh;
+        }
+
+        /* =========================
+           TOPBAR
+        ========================= */
+
+        .topbar {
+            height: 70px;
+
+            background: rgba(
+                8,
+                9,
+                11,
+                .94
+            );
+
+            backdrop-filter: blur(12px);
+
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 28px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 50;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .page-title {
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .breadcrumb {
+            color: var(--muted);
+
+            font-size: 11px;
+
+            margin-top: 3px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .icon-btn {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 10px;
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            color: #cbd1db;
+        }
+
+        .icon-btn:hover {
+            background: #171a20;
+            color: white;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            padding-left: 8px;
+        }
+
+        .admin-avatar {
+            width: 36px;
+            height: 36px;
+
+            border-radius: 50%;
+
+            background: linear-gradient(
+                135deg,
+                #7c5cff,
+                #22c55e
+            );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 700;
+        }
+
+        .admin-info strong {
+            display: block;
+
+            font-size: 12px;
+        }
+
+        .admin-info span {
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            margin-top: 2px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+
+            width: 38px;
+            height: 38px;
+
+            background: var(--card);
+
+            color: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 9px;
+        }
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            padding: 28px;
+        }
+
+        .welcome {
+            margin-bottom: 24px;
+        }
+
+        .welcome h1 {
+            font-size: 27px;
+
+            margin-bottom: 7px;
+        }
+
+        .welcome p {
+            color: var(--muted);
+
+            font-size: 13px;
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 14px;
+
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 14px;
+
+            padding: 18px;
+
+            transition: .2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+
+            border-color: #333944;
+        }
+
+        .stat-top {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 15px;
+        }
+
+        .stat-label {
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+        .stat-icon {
+            width: 35px;
+            height: 35px;
+
+            border-radius: 9px;
+
+            background: #1b1e25;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 15px;
+        }
+
+        .stat-number {
+            font-size: 25px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+        }
+
+        .stat-bottom {
+            color: var(--muted);
+
+            font-size: 10px;
+        }
+
+        .positive {
+            color: var(--success);
+        }
+
+        .warning-text {
+            color: var(--warning);
+        }
+
+        .danger-text {
+            color: var(--danger);
+        }
+
+        /* =========================
+           GRID
+        ========================= */
+
+        .dashboard-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.7fr)
+                minmax(300px, 1fr);
+
+            gap: 16px;
+
+            margin-bottom: 16px;
+        }
+
+        .card {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 14px;
+
+            overflow: hidden;
+        }
+
+        .card-header {
+            min-height: 62px;
+
+            padding: 15px 17px;
+
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 10px;
+        }
+
+        .card-header h2 {
+            font-size: 13px;
+        }
+
+        .card-header p {
+            color: var(--muted);
+
+            font-size: 10px;
+
+            margin-top: 4px;
+        }
+
+        .view-link {
+            color: #a99aff;
+
+            font-size: 11px;
+        }
+
+        .view-link:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================
+           SALES CHART
+        ========================= */
+
+        .chart-area {
+            padding: 20px;
+        }
+
+        .chart-summary {
+            display: flex;
+            align-items: flex-end;
+
+            justify-content: space-between;
+
+            margin-bottom: 20px;
+        }
+
+        .chart-sales {
+            font-size: 27px;
+
+            font-weight: 700;
+        }
+
+        .chart-sales-label {
+            color: var(--muted);
+
+            font-size: 10px;
+
+            margin-bottom: 4px;
+        }
+
+        .chart-period {
+            background: #0b0d10;
+
+            border: 1px solid var(--border);
+
+            color: #adb4bf;
+
+            border-radius: 8px;
+
+            padding: 8px 10px;
+
+            font-size: 10px;
+
+            outline: none;
+        }
+
+        .chart {
+            height: 230px;
+
+            display: flex;
+
+            align-items: stretch;
+
+            gap: 10px;
+        }
+
+        .chart-y {
+            width: 38px;
+
+            display: flex;
+            flex-direction: column;
+
+            justify-content: space-between;
+
+            padding-bottom: 22px;
+        }
+
+        .chart-y span {
+            color: #626a77;
+
+            font-size: 9px;
+        }
+
+        .chart-content {
+            flex: 1;
+
+            position: relative;
+
+            border-bottom: 1px solid #252932;
+
+            background-image:
+                linear-gradient(
+                    to bottom,
+                    rgba(255,255,255,.045) 1px,
+                    transparent 1px
+                );
+
+            background-size:
+                100% 25%;
+        }
+
+        .bars {
+            position: absolute;
+
+            inset: 0;
+
+            display: flex;
+
+            align-items: flex-end;
+
+            justify-content: space-around;
+
+            gap: 8px;
+
+            padding: 10px 8px 0;
+        }
+
+        .bar-group {
+            height: 100%;
+
+            flex: 1;
+
+            max-width: 50px;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: flex-end;
+
+            gap: 7px;
+        }
+
+        .bar {
+            width: 100%;
+
+            max-width: 30px;
+
+            min-height: 3px;
+
+            border-radius: 6px 6px 0 0;
+
+            background:
+                linear-gradient(
+                    to top,
+                    #5942d9,
+                    #8b73ff
+                );
+
+            transition: .3s;
+        }
+
+        .bar:hover {
+            opacity: .75;
+        }
+
+        .bar-label {
+            color: #69717e;
+
+            font-size: 9px;
+        }
+
+        /* =========================
+           ORDER STATUS
+        ========================= */
+
+        .status-body {
+            padding: 20px;
+        }
+
+        .donut-area {
+            display: flex;
+            align-items: center;
+
+            gap: 25px;
+
+            margin-bottom: 22px;
+        }
+
+        .donut {
+            width: 135px;
+            height: 135px;
+
+            border-radius: 50%;
+
+            background:
+                conic-gradient(
+                    #7c5cff 0 42%,
+                    #3b82f6 42% 65%,
+                    #22c55e 65% 84%,
+                    #f59e0b 84% 94%,
+                    #ef4444 94% 100%
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+        }
+
+        .donut::after {
+            content: "";
+
+            width: 86px;
+            height: 86px;
+
+            background: var(--card);
+
+            border-radius: 50%;
+
+            position: absolute;
+        }
+
+        .donut-center {
+            position: relative;
+
+            z-index: 2;
+
+            text-align: center;
+        }
+
+        .donut-center strong {
+            display: block;
+
+            font-size: 23px;
+        }
+
+        .donut-center span {
+            color: var(--muted);
+
+            font-size: 9px;
+        }
+
+        .legend {
+            flex: 1;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 11px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+
+            justify-content: space-between;
+
+            font-size: 10px;
+        }
+
+        .legend-left {
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+
+            color: #aeb5c1;
+        }
+
+        .legend-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+        }
+
+        .legend-value {
+            color: white;
+
+            font-weight: 600;
+        }
+
+        /* =========================
+           LOWER GRID
+        ========================= */
+
+        .lower-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.5fr)
+                minmax(300px, 1fr);
+
+            gap: 16px;
+        }
+
+        /* =========================
+           ORDERS
+        ========================= */
+
+        .orders-list {
+            width: 100%;
+        }
+
+        .order-row {
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                90px
+                110px
+                90px;
+
+            gap: 10px;
+
+            align-items: center;
+
+            padding: 14px 17px;
+
+            border-bottom: 1px solid #1c1f25;
+
+            transition: .2s;
+        }
+
+        .order-row:hover {
+            background: #15181d;
+        }
+
+        .order-row:last-child {
+            border-bottom: none;
+        }
+
+        .order-id {
+            font-weight: 600;
+
+            font-size: 11px;
+
+            margin-bottom: 4px;
+        }
+
+        .customer-name {
+            color: var(--muted);
+
+            font-size: 10px;
+        }
+
+        .order-price {
+            font-weight: 600;
+
+            font-size: 11px;
+        }
+
+        .order-date {
+            color: var(--muted);
+
+            font-size: 10px;
+        }
+
+        .order-status {
+            display: inline-flex;
+
+            align-items: center;
+
+            width: fit-content;
+
+            padding: 5px 8px;
+
+            border-radius: 20px;
+
+            font-size: 9px;
+
+            font-weight: 600;
+        }
+
+        .status-new {
+            color: #a99aff;
+
+            background: rgba(
+                124,
+                92,
+                255,
+                .12
+            );
+        }
+
+        .status-processing {
+            color: #60a5fa;
+
+            background: rgba(
+                59,
+                130,
+                246,
+                .12
+            );
+        }
+
+        .status-shipped {
+            color: #fbbf24;
+
+            background: rgba(
+                245,
+                158,
+                11,
+                .12
+            );
+        }
+
+        .status-delivered {
+            color: #4ade80;
+
+            background: rgba(
+                34,
+                197,
+                94,
+                .12
+            );
+        }
+
+        .status-cancelled {
+            color: #f87171;
+
+            background: rgba(
+                239,
+                68,
+                68,
+                .12
+            );
+        }
+
+        .status-returned {
+            color: #fb923c;
+
+            background: rgba(
+                249,
+                115,
+                22,
+                .12
+            );
+        }
+
+        /* =========================
+           LOW STOCK
+        ========================= */
+
+        .stock-list {
+            padding: 5px 0;
+        }
+
+        .stock-item {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            padding: 13px 17px;
+
+            border-bottom: 1px solid #1c1f25;
+        }
+
+        .stock-item:last-child {
+            border-bottom: none;
+        }
+
+        .stock-product {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            min-width: 0;
+        }
+
+        .stock-img {
+            width: 40px;
+            height: 40px;
+
+            object-fit: cover;
+
+            border-radius: 8px;
+
+            background: #1b1e24;
+
+            border: 1px solid var(--border);
+
+            flex-shrink: 0;
+        }
+
+        .stock-name {
+            font-size: 10px;
+
+            font-weight: 600;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+        .stock-sku {
+            color: #69717e;
+
+            font-size: 9px;
+
+            margin-top: 4px;
+        }
+
+        .stock-count {
+            text-align: right;
+
+            flex-shrink: 0;
+        }
+
+        .stock-count strong {
+            display: block;
+
+            font-size: 12px;
+        }
+
+        .stock-count span {
+            color: var(--muted);
+
+            font-size: 8px;
+        }
+
+        .low {
+            color: var(--warning);
+        }
+
+        .out {
+            color: var(--danger);
+        }
+
+        /* =========================
+           QUICK ACTIONS
+        ========================= */
+
+        .quick-actions {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 10px;
+
+            margin-top: 16px;
+        }
+
+        .quick-action {
+            padding: 15px;
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            transition: .2s;
+        }
+
+        .quick-action:hover {
+            background: #15181e;
+
+            border-color: #343945;
+
+            transform: translateY(-2px);
+        }
+
+        .quick-icon {
+            width: 34px;
+            height: 34px;
+
+            border-radius: 9px;
+
+            background: #1b1e25;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 10px;
+        }
+
+        .quick-action strong {
+            display: block;
+
+            font-size: 11px;
+
+            margin-bottom: 4px;
+        }
+
+        .quick-action span {
+            color: var(--muted);
+
+            font-size: 9px;
+        }
+
+        /* =========================
+           EMPTY
+        ========================= */
+
+        .empty {
+            padding: 35px 20px;
+
+            text-align: center;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+        .empty strong {
+            display: block;
+
+            color: white;
+
+            font-size: 13px;
+
+            margin-bottom: 6px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1150px) {
+
+            .stats-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .dashboard-grid,
+            .lower-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 850px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                width: 100%;
+
+                margin-left: 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .topbar {
+                padding: 0 16px;
+            }
+
+            .content {
+                padding: 18px;
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .donut-area {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+            .order-row {
+                grid-template-columns:
+                    1fr
+                    80px;
+            }
+
+            .order-date {
+                display: none;
+            }
+
+            .admin-info {
+                display: none;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                A
+            </div>
+
+            <div class="brand-text">
+
+                <h2>Alamin Shop</h2>
+
+                <span>
+                    Admin Panel
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            Main
+        </div>
+
+
+        <nav class="nav-menu">
+
+            <a
+                href="index.html"
+                class="nav-item active"
+            >
+                <span class="nav-icon">
+                    ▦
+                </span>
+
+                Dashboard
+            </a>
+
+
+            <a
+                href="products.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ▣
+                </span>
+
+                Products
+            </a>
+
+
+            <a
+                href="orders.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ⌑
+                </span>
+
+                Orders
+            </a>
+
+
+            <a
+                href="customers.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ♙
+                </span>
+
+                Customers
+            </a>
+
+
+            <a
+                href="categories.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ▤
+                </span>
+
+                Categories
+            </a>
+
+
+            <a
+                href="coupons.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    %
+                </span>
+
+                Coupons
+            </a>
+
+        </nav>
+
+
+        <div class="menu-title">
+            Management
+        </div>
+
+
+        <nav class="nav-menu">
+
+            <a
+                href="inventory.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ◫
+                </span>
+
+                Inventory
+            </a>
+
+
+            <a
+                href="reports.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ◒
+                </span>
+
+                Reports
+            </a>
+
+
+            <a
+                href="messages.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ✉
+                </span>
+
+                Messages
+            </a>
+
+
+            <a
+                href="settings.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ⚙
+                </span>
+
+                Settings
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="../index.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ↗
+                </span>
+
+                View Store
+            </a>
+
+
+            <a
+                href="../login.html"
+                class="nav-item"
+                id="logoutBtn"
+            >
+                <span class="nav-icon">
+                    ⇥
+                </span>
+
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    class="mobile-menu-btn"
+                    id="mobileMenuBtn"
+                >
+                    ☰
+                </button>
+
+
+                <div>
+
+                    <div class="page-title">
+                        Dashboard
+                    </div>
+
+                    <div class="breadcrumb">
+                        Admin / Dashboard
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <button
+                    class="icon-btn"
+                    title="Notifications"
+                >
+                    ♧
+                </button>
+
+
+                <div class="admin-profile">
+
+                    <div class="admin-avatar">
+                        A
+                    </div>
+
+                    <div class="admin-info">
+
+                        <strong>
+                            Admin
+                        </strong>
+
+                        <span>
+                            Administrator
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+
+        <section class="content">
+
+
+            <!-- WELCOME -->
+
+            <div class="welcome">
+
+                <h1>
+                    Good evening, Admin 👋
+                </h1>
+
+                <p>
+                    Here's what's happening with your store today.
+                </p>
+
+            </div>
+
+
+            <!-- STATS -->
+
+            <div class="stats-grid">
+
+
+                <!-- SALES -->
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            Total Sales
+                        </span>
+
+                        <div class="stat-icon">
+                            ৳
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="stat-number"
+                        id="totalSales"
+                    >
+                        ৳0
+                    </div>
+
+                    <div class="stat-bottom">
+                        From all completed orders
+                    </div>
+
+                </div>
+
+
+                <!-- ORDERS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            Total Orders
+                        </span>
+
+                        <div class="stat-icon">
+                            🛒
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="stat-number"
+                        id="totalOrders"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-bottom">
+                        All customer orders
+                    </div>
+
+                </div>
+
+
+                <!-- PRODUCTS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            Total Products
+                        </span>
+
+                        <div class="stat-icon">
+                            📦
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="stat-number"
+                        id="totalProducts"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-bottom">
+                        <span
+                            class="positive"
+                            id="activeProductText"
+                        >
+                            0 active
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <!-- CUSTOMERS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            Customers
+                        </span>
+
+                        <div class="stat-icon">
+                            👥
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="stat-number"
+                        id="totalCustomers"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-bottom">
+                        Registered customers
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CHART + STATUS -->
+
+            <div class="dashboard-grid">
+
+
+                <!-- SALES CHART -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Sales Overview
+                            </h2>
+
+                            <p>
+                                Recent order sales
+                            </p>
+
+                        </div>
+
+
+                        <select
+                            class="chart-period"
+                            id="chartPeriod"
+                        >
+
+                            <option value="7">
+                                Last 7 Days
+                            </option>
+
+                            <option value="14">
+                                Last 14 Days
+                            </option>
+
+                            <option value="30">
+                                Last 30 Days
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="chart-area">
+
+                        <div class="chart-summary">
+
+                            <div>
+
+                                <div class="chart-sales-label">
+                                    Sales
+                                </div>
+
+                                <div
+                                    class="chart-sales"
+                                    id="chartTotal"
+                                >
+                                    ৳0
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="chart">
+
+                            <div class="chart-y">
+
+                                <span>৳5k</span>
+                                <span>৳4k</span>
+                                <span>৳3k</span>
+                                <span>৳2k</span>
+                                <span>৳1k</span>
+                                <span>৳0</span>
+
+                            </div>
+
+
+                            <div
+                                class="chart-content"
+                                id="chartContent"
+                            >
+
+                                <div
+                                    class="bars"
+                                    id="chartBars"
+                                >
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ORDER STATUS -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Order Status
+                            </h2>
+
+                            <p>
+                                Current order breakdown
+                            </p>
+
+                        </div>
+
+                        <a
+                            href="orders.html"
+                            class="view-link"
+                        >
+                            View all
+                        </a>
+
+                    </div>
+
+
+                    <div class="status-body">
+
+                        <div class="donut-area">
+
+                            <div class="donut">
+
+                                <div class="donut-center">
+
+                                    <strong
+                                        id="donutTotal"
+                                    >
+                                        0
+                                    </strong>
+
+                                    <span>
+                                        Orders
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                class="legend"
+                                id="statusLegend"
+                            >
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- LOWER GRID -->
+
+            <div class="lower-grid">
+
+
+                <!-- RECENT ORDERS -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Recent Orders
+                            </h2>
+
+                            <p>
+                                Latest customer orders
+                            </p>
+
+                        </div>
+
+                        <a
+                            href="orders.html"
+                            class="view-link"
+                        >
+                            View all
+                        </a>
+
+                    </div>
+
+
+                    <div
+                        class="orders-list"
+                        id="recentOrders"
+                    >
+                    </div>
+
+                </div>
+
+
+                <!-- LOW STOCK -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Low Stock
+                            </h2>
+
+                            <p>
+                                Products that need attention
+                            </p>
+
+                        </div>
+
+                        <a
+                            href="inventory.html"
+                            class="view-link"
+                        >
+                            Inventory
+                        </a>
+
+                    </div>
+
+
+                    <div
+                        class="stock-list"
+                        id="lowStockList"
+                    >
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUICK ACTIONS -->
+
+            <div class="quick-actions">
+
+
+                <a
+                    href="products.html"
+                    class="quick-action"
+                >
+
+                    <div class="quick-icon">
+                        +
+                    </div>
+
+                    <strong>
+                        Add Product
+                    </strong>
+
+                    <span>
+                        Create a new product
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="orders.html"
+                    class="quick-action"
+                >
+
+                    <div class="quick-icon">
+                        🛒
+                    </div>
+
+                    <strong>
+                        Manage Orders
+                    </strong>
+
+                    <span>
+                        Process customer orders
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="inventory.html"
+                    class="quick-action"
+                >
+
+                    <div class="quick-icon">
+                        📦
+                    </div>
+
+                    <strong>
+                        Check Inventory
+                    </strong>
+
+                    <span>
+                        Manage stock levels
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="reports.html"
+                    class="quick-action"
+                >
+
+                    <div class="quick-icon">
+                        ◒
+                    </div>
+
+                    <strong>
+                        View Reports
+                    </strong>
+
+                    <span>
+                        Analyze store performance
+                    </span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /* =========================================
+       STORAGE
+    ========================================= */
+
+    const PRODUCTS_KEY =
+        "shopnest_admin_products";
+
+    const ORDERS_KEY =
+        "shopnest_orders";
+
+    const USERS_KEY =
+        "shopnest_users";
+
+
+    /* =========================================
+       DEFAULT PRODUCTS
+    ========================================= */
+
+    const defaultProducts = [
+
+        {
+            id: 1,
+            name: "Wireless Headphones",
+            sku: "ALM-ELE-001",
+            category: "Electronics",
+            price: 2490,
+            stock: 25,
+            status: "Active",
+            image:
+                "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=200&q=80"
+        },
+
+        {
+            id: 2,
+            name: "Smart Watch Pro",
+            sku: "ALM-ELE-002",
+            category: "Electronics",
+            price: 3590,
+            stock: 18,
+            status: "Active",
+            image:
+                "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=200&q=80"
+        },
+
+        {
+            id: 3,
+            name: "Premium Sneakers",
+            sku: "ALM-FAS-001",
+            category: "Fashion",
+            price: 2890,
+            stock: 32,
+            status: "Active",
+            image:
+                "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&q=80"
+        },
+
+        {
+            id: 4,
+            name: "Minimal Backpack",
+            sku: "ALM-FAS-002",
+            category: "Fashion",
+            price: 1890,
+            stock: 15,
+            status: "Active",
+            image:
+                "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=200&q=80"
+        },
+
+        {
+            id: 5,
+            name: "Classic Sunglasses",
+            sku: "ALM-FAS-003",
+            category: "Fashion",
+            price: 1290,
+            stock: 20,
+            status: "Draft",
+            image:
+                "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=200&q=80"
+        },
+
+        {
+            id: 6,
+            name: "Modern Desk Lamp",
+            sku: "ALM-HOM-001",
+            category: "Home",
+            price: 1590,
+            stock: 4,
+            status: "Active",
+            image:
+                "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=200&q=80"
+        },
+
+        {
+            id: 7,
+            name: "Premium Skin Care Set",
+            sku: "ALM-BEA-001",
+            category: "Beauty",
+            price: 2190,
+            stock: 0,
+            status: "Out of Stock",
+            image:
+                "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&w=200&q=80"
+        },
+
+        {
+            id: 8,
+            name: "Portable Bluetooth Speaker",
+            sku: "ALM-ELE-003",
+            category: "Electronics",
+            price: 1990,
+            stock: 21,
+            status: "Active",
+            image:
+                "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=200&q=80"
+        }
+
+    ];
+
+
+    /* =========================================
+       LOAD DATA
+    ========================================= */
+
+    function loadProducts() {
+
+        const saved =
+            localStorage.getItem(
+                PRODUCTS_KEY
+            );
+
+        if (saved) {
+
+            try {
+
+                return JSON.parse(saved);
+
+            } catch (error) {
+
+                console.log(error);
+
+            }
+
+        }
+
+        localStorage.setItem(
+            PRODUCTS_KEY,
+            JSON.stringify(defaultProducts)
+        );
+
+        return [...defaultProducts];
+
+    }
+
+
+    function loadOrders() {
+
+        const saved =
+            localStorage.getItem(
+                ORDERS_KEY
+            );
+
+        if (!saved) {
+            return [];
+        }
+
+        try {
+
+            return JSON.parse(saved);
+
+        } catch (error) {
+
+            return [];
+
+        }
+
+    }
+
+
+    function loadUsers() {
+
+        const saved =
+            localStorage.getItem(
+                USERS_KEY
+            );
+
+        if (!saved) {
+            return [];
+        }
+
+        try {
+
+            return JSON.parse(saved);
+
+        } catch (error) {
+
+            return [];
+
+        }
+
+    }
+
+
+    let products =
+        loadProducts();
+
+    let orders =
+        loadOrders();
+
+    let users =
+        loadUsers();
+
+
+    /* =========================================
+       FORMAT PRICE
+    ========================================= */
+
+    function formatPrice(value) {
+
+        return "৳" +
+            Number(
+                value || 0
+            ).toLocaleString(
+                "en-BD"
+            );
+
+    }
+
+
+    /* =========================================
+       TOTAL SALES
+    ========================================= */
+
+    function calculateSales() {
+
+        return orders
+            .filter(order => {
+
+                return (
+                    order.status !== "Cancelled" &&
+                    order.status !== "Returned" &&
+                    order.status !== "Refunded"
+                );
+
+            })
+            .reduce(
+                (
+                    total,
+                    order
+                ) => {
+
+                    return total +
+                        Number(
+                            order.total || 0
+                        );
+
+                },
+                0
+            );
+
+    }
+
+
+    /* =========================================
+       STATS
+    ========================================= */
+
+    function renderStats() {
+
+        const sales =
+            calculateSales();
+
+        const activeProducts =
+            products.filter(
+                product =>
+                    product.status === "Active"
+            ).length;
+
+
+        document.getElementById(
+            "totalSales"
+        ).textContent =
+            formatPrice(sales);
+
+
+        document.getElementById(
+            "totalOrders"
+        ).textContent =
+            orders.length;
+
+
+        document.getElementById(
+            "totalProducts"
+        ).textContent =
+            products.length;
+
+
+        document.getElementById(
+            "activeProductText"
+        ).textContent =
+            `${activeProducts} active`;
+
+
+        document.getElementById(
+            "totalCustomers"
+        ).textContent =
+            users.length;
+
+
+        document.getElementById(
+            "chartTotal"
+        ).textContent =
+            formatPrice(sales);
+
+    }
+
+
+    /* =========================================
+       ORDER STATUS
+    ========================================= */
+
+    function renderOrderStatus() {
+
+        const statuses = [
+
+            {
+                name: "New",
+                key: "New"
+            },
+
+            {
+                name: "Processing",
+                key: "Processing"
+            },
+
+            {
+                name: "Shipped",
+                key: "Shipped"
+            },
+
+            {
+                name: "Delivered",
+                key: "Delivered"
+            },
+
+            {
+                name: "Cancelled",
+                key: "Cancelled"
+            }
+
+        ];
+
+
+        const total =
+            orders.length;
+
+
+        document.getElementById(
+            "donutTotal"
+        ).textContent =
+            total;
+
+
+        const legend =
+            document.getElementById(
+                "statusLegend"
+            );
+
+
+        legend.innerHTML = "";
+
+
+        statuses.forEach(
+            (
+                status,
+                index
+            ) => {
+
+                const count =
+                    orders.filter(
+                        order =>
+                            order.status ===
+                            status.key
+                    ).length;
+
+
+                const colors = [
+                    "#7c5cff",
+                    "#3b82f6",
+                    "#22c55e",
+                    "#f59e0b",
+                    "#ef4444"
+                ];
+
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+                item.className =
+                    "legend-item";
+
+
+                item.innerHTML = `
+
+                    <div class="legend-left">
+
+                        <span
+                            class="legend-dot"
+                            style="
+                                background:
+                                ${colors[index]};
+                            "
+                        ></span>
+
+                        ${status.name}
+
+                    </div>
+
+                    <span class="legend-value">
+                        ${count}
+                    </span>
+
+                `;
+
+
+                legend.appendChild(item);
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       RECENT ORDERS
+    ========================================= */
+
+    function renderRecentOrders() {
+
+        const container =
+            document.getElementById(
+                "recentOrders"
+            );
+
+
+        container.innerHTML = "";
+
+
+        const recentOrders =
+            [...orders]
+                .sort(
+                    (
+                        a,
+                        b
+                    ) => {
+
+                        return new Date(
+                            b.createdAt || 0
+                        ) -
+                        new Date(
+                            a.createdAt || 0
+                        );
+
+                    }
+                )
+                .slice(
+                    0,
+                    5
+                );
+
+
+        if (!recentOrders.length) {
+
+            container.innerHTML = `
+
+                <div class="empty">
+
+                    <strong>
+                        No orders yet
+                    </strong>
+
+                    Customer orders will appear here.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        recentOrders.forEach(
+            order => {
+
+                const row =
+                    document.createElement(
+                        "div"
+                    );
+
+                row.className =
+                    "order-row";
+
+
+                const customer =
+                    order.customer?.name ||
+                    order.customerName ||
+                    "Customer";
+
+
+                const date =
+                    formatDate(
+                        order.createdAt
+                    );
+
+
+                const statusClass =
+                    getStatusClass(
+                        order.status
+                    );
+
+
+                row.innerHTML = `
+
+                    <div>
+
+                        <div class="order-id">
+                            #${escapeHtml(
+                                order.id ||
+                                "ORDER"
+                            )}
+                        </div>
+
+                        <div class="customer-name">
+                            ${escapeHtml(
+                                customer
+                            )}
+                        </div>
+
+                    </div>
+
+
+                    <div class="order-price">
+                        ${formatPrice(
+                            order.total
+                        )}
+                    </div>
+
+
+                    <div class="order-date">
+                        ${date}
+                    </div>
+
+
+                    <div>
+
+                        <span
+                            class="
+                                order-status
+                                ${statusClass}
+                            "
+                        >
+                            ${escapeHtml(
+                                order.status ||
+                                "New"
+                            )}
+                        </span>
+
+                    </div>
+
+                `;
+
+
+                container.appendChild(row);
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       LOW STOCK
+    ========================================= */
+
+    function renderLowStock() {
+
+        const container =
+            document.getElementById(
+                "lowStockList"
+            );
+
+
+        container.innerHTML = "";
+
+
+        const lowStock =
+            products
+                .filter(
+                    product =>
+                        Number(
+                            product.stock
+                        ) <= 5
+                )
+                .sort(
+                    (
+                        a,
+                        b
+                    ) =>
+                        Number(
+                            a.stock
+                        ) -
+                        Number(
+                            b.stock
+                        )
+                )
+                .slice(
+                    0,
+                    5
+                );
+
+
+        if (!lowStock.length) {
+
+            container.innerHTML = `
+
+                <div class="empty">
+
+                    <strong>
+                        Stock looks good 🎉
+                    </strong>
+
+                    No products are currently low on stock.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        lowStock.forEach(
+            product => {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+                item.className =
+                    "stock-item";
+
+
+                const stock =
+                    Number(
+                        product.stock
+                    );
+
+
+                const stockClass =
+                    stock <= 0
+                        ? "out"
+                        : "low";
+
+
+                item.innerHTML = `
+
+                    <div class="stock-product">
+
+                        <img
+                            class="stock-img"
+                            src="${product.image || ""}"
+                            alt="${escapeHtml(
+                                product.name
+                            )}"
+                            onerror="
+                                this.src=
+                                'https://via.placeholder.com/100'
+                            "
+                        >
+
+                        <div>
+
+                            <div class="stock-name">
+                                ${escapeHtml(
+                                    product.name
+                                )}
+                            </div>
+
+                            <div class="stock-sku">
+                                ${escapeHtml(
+                                    product.sku ||
+                                    "No SKU"
+                                )}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stock-count">
+
+                        <strong
+                            class="${stockClass}"
+                        >
+                            ${stock}
+                        </strong>
+
+                        <span>
+                            ${stock <= 0
+                                ? "Out of stock"
+                                : "left"}
+                        </span>
+
+                    </div>
+
+                `;
+
+
+                container.appendChild(item);
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       SALES CHART
+    ========================================= */
+
+    function renderChart() {
+
+        const bars =
+            document.getElementById(
+                "chartBars"
+            );
+
+
+        bars.innerHTML = "";
+
+
+        const days =
+            Number(
+                document.getElementById(
+                    "chartPeriod"
+                ).value
+            );
+
+
+        const data = [];
+
+
+        for (
+            let i = days - 1;
+            i >= 0;
+            i--
+        ) {
+
+            const date =
+                new Date();
+
+            date.setHours(
+                0,
+                0,
+                0,
+                0
+            );
+
+            date.setDate(
+                date.getDate() - i
+            );
+
+
+            const nextDate =
+                new Date(
+                    date
+                );
+
+            nextDate.setDate(
+                nextDate.getDate() + 1
+            );
+
+
+            const total =
+                orders
+                    .filter(order => {
+
+                        if (!order.createdAt) {
+                            return false;
+                        }
+
+                        const orderDate =
+                            new Date(
+                                order.createdAt
+                            );
+
+                        return (
+                            orderDate >= date &&
+                            orderDate < nextDate &&
+                            order.status !==
+                                "Cancelled" &&
+                            order.status !==
+                                "Returned" &&
+                            order.status !==
+                                "Refunded"
+                        );
+
+                    })
+                    .reduce(
+                        (
+                            sum,
+                            order
+                        ) => {
+
+                            return sum +
+                                Number(
+                                    order.total || 0
+                                );
+
+                        },
+                        0
+                    );
+
+
+            data.push({
+
+                date,
+                total
+
+            });
+
+        }
+
+
+        const max =
+            Math.max(
+                ...data.map(
+                    item =>
+                        item.total
+                ),
+                1000
+            );
+
+
+        data.forEach(
+            item => {
+
+                const group =
+                    document.createElement(
+                        "div"
+                    );
+
+                group.className =
+                    "bar-group";
+
+
+                const height =
+                    Math.max(
+                        3,
+                        (
+                            item.total /
+                            max
+                        ) * 100
+                    );
+
+
+                const bar =
+                    document.createElement(
+                        "div"
+                    );
+
+                bar.className =
+                    "bar";
+
+
+                bar.style.height =
+                    `${height}%`;
+
+
+                bar.title =
+                    `${formatPrice(
+                        item.total
+                    )}`;
+
+
+                const label =
+                    document.createElement(
+                        "div"
+                    );
+
+                label.className =
+                    "bar-label";
+
+
+                label.textContent =
+                    item.date.toLocaleDateString(
+                        "en-US",
+                        {
+                            weekday: "short"
+                        }
+                    ).slice(
+                        0,
+                        2
+                    );
+
+
+                group.appendChild(bar);
+
+                group.appendChild(label);
+
+                bars.appendChild(group);
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       STATUS CLASS
+    ========================================= */
+
+    function getStatusClass(
+        status
+    ) {
+
+        switch (
+            String(
+                status || ""
+            ).toLowerCase()
+        ) {
+
+            case "new":
+                return "status-new";
+
+            case "processing":
+            case "confirmed":
+            case "packed":
+                return "status-processing";
+
+            case "shipped":
+                return "status-shipped";
+
+            case "delivered":
+                return "status-delivered";
+
+            case "cancelled":
+            case "refunded":
+                return "status-cancelled";
+
+            case "returned":
+                return "status-returned";
+
+            default:
+                return "status-new";
+
+        }
+
+    }
+
+
+    /* =========================================
+       DATE
+    ========================================= */
+
+    function formatDate(
+        value
+    ) {
+
+        if (!value) {
+            return "—";
+        }
+
+
+        const date =
+            new Date(
+                value
+            );
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return "—";
+
+        }
+
+
+        return date.toLocaleDateString(
+            "en-BD",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       ESCAPE HTML
+    ========================================= */
+
+    function escapeHtml(
+        value
+    ) {
+
+        return String(
+            value ?? ""
+        )
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+    }
+
+
+    /* =========================================
+       CHART PERIOD
+    ========================================= */
+
+    document.getElementById(
+        "chartPeriod"
+    ).addEventListener(
+        "change",
+        renderChart
+    );
+
+
+    /* =========================================
+       MOBILE MENU
+    ========================================= */
+
+    document.getElementById(
+        "mobileMenuBtn"
+    ).addEventListener(
+        "click",
+        () => {
+
+            document
+                .getElementById(
+                    "sidebar"
+                )
+                .classList.toggle(
+                    "open"
+                );
+
+        }
+    );
+
+
+    /* =========================================
+       LOGOUT
+    ========================================= */
+
+    document.getElementById(
+        "logoutBtn"
+    ).addEventListener(
+        "click",
+        event => {
+
+            event.preventDefault();
+
+            localStorage.removeItem(
+                "shopnest_logged_in_user"
+            );
+
+            window.location.href =
+                "../login.html";
+
+        }
+    );
+
+
+    /* =========================================
+       INITIAL LOAD
+    ========================================= */
+
+    function initDashboard() {
+
+        products =
+            loadProducts();
+
+        orders =
+            loadOrders();
+
+        users =
+            loadUsers();
+
+
+        renderStats();
+
+        renderOrderStatus();
+
+        renderRecentOrders();
+
+        renderLowStock();
+
+        renderChart();
+
+    }
+
+
+    initDashboard();
+
+</script>
+
+</body>
+</html>

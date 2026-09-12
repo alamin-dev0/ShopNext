@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Verify Email | Alamin Shop</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .verify-page {
+            min-height: calc(100vh - 180px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+
+        .verify-box {
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            background: #101217;
+            border: 1px solid #292f38;
+            border-radius: 22px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.35);
+        }
+
+        .verify-icon {
+            width: 70px;
+            height: 70px;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 22px;
+            border-radius: 50%;
+            background: #1b1f27;
+            border: 1px solid #343b47;
+            font-size: 30px;
+        }
+
+        .verify-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .verify-header h1 {
+            margin: 0 0 12px;
+            font-size: 32px;
+        }
+
+        .verify-header p {
+            margin: 0;
+            color: #929aa7;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .verify-email {
+            display: block;
+            margin-top: 8px;
+            color: #fff;
+            font-weight: 700;
+            word-break: break-word;
+        }
+
+        .otp-inputs {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin: 25px 0;
+        }
+
+        .otp-input {
+            width: 100%;
+            height: 58px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            background: #171a20;
+            border: 1px solid #303640;
+            border-radius: 12px;
+            outline: none;
+        }
+
+        .otp-input:focus {
+            border-color: #6b7280;
+            background: #1b1f26;
+        }
+
+        .verify-btn {
+            width: 100%;
+            height: 50px;
+            border: 0;
+            border-radius: 10px;
+            background: #fff;
+            color: #08090b;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: .25s ease;
+        }
+
+        .verify-btn:hover {
+            transform: translateY(-2px);
+            background: #e5e7eb;
+        }
+
+        .verify-btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .verify-message {
+            display: none;
+            padding: 12px 14px;
+            margin-bottom: 18px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .verify-message.show {
+            display: block;
+        }
+
+        .verify-message.error {
+            background: rgba(239,68,68,.08);
+            border: 1px solid rgba(239,68,68,.25);
+            color: #fca5a5;
+        }
+
+        .verify-message.success {
+            background: rgba(34,197,94,.08);
+            border: 1px solid rgba(34,197,94,.25);
+            color: #86efac;
+        }
+
+        .verify-demo {
+            margin-top: 22px;
+            padding: 15px;
+            border: 1px dashed #353b46;
+            border-radius: 12px;
+            background: #0d0f13;
+            color: #8f98a5;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .verify-demo strong {
+            color: #e5e7eb;
+        }
+
+        .verify-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .verify-actions button,
+        .verify-actions a {
+            border: 0;
+            background: none;
+            color: #cbd5e1;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .verify-actions button:hover,
+        .verify-actions a:hover {
+            color: #fff;
+        }
+
+        .resend-btn:disabled {
+            color: #555d69;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 520px) {
+            .verify-box {
+                padding: 28px 20px;
+            }
+
+            .otp-inputs {
+                gap: 6px;
+            }
+
+            .otp-input {
+                height: 50px;
+                font-size: 20px;
+            }
+
+            .verify-header h1 {
+                font-size: 27px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="site-header">
+
+        <div class="container">
+
+            <div class="header-main">
+
+                <a href="index.html" class="logo">
+                    Alamin<span>Shop</span>
+                </a>
+
+                <div class="header-actions">
+
+                    <a href="cart.html" class="header-action">
+                        <span>🛒</span>
+                        <small>Cart</small>
+                        <b id="cartCount">0</b>
+                    </a>
+
+                    <a href="login.html" class="header-action">
+                        <span>👤</span>
+                        <small>Login</small>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- VERIFY EMAIL -->
+
+    <main class="verify-page">
+
+        <div class="verify-box">
+
+            <div class="verify-icon">
+                ✉️
+            </div>
+
+            <div class="verify-header">
+
+                <h1>Verify your email</h1>
+
+                <p>
+                    We need to verify your email address before you
+                    can continue using your account.
+                </p>
+
+                <span
+                    class="verify-email"
+                    id="userEmail"
+                >
+                    your@email.com
+                </span>
+
+            </div>
+
+
+            <div
+                id="verifyMessage"
+                class="verify-message"
+            ></div>
+
+
+            <form id="verifyForm">
+
+                <div class="otp-inputs">
+
+                    <input
+                        type="text"
+                        class="otp-input"
+                        maxlength="1"
+                        inputmode="numeric"
+                        autocomplete="one-time-code"
+                    >
+
+                    <input
+                        type="text"
+                        class="otp-input"
+                        maxlength="1"
+                        inputmode="numeric"
+                    >
+
+                    <input
+                        type="text"
+                        class="otp-input"
+                        maxlength="1"
+                        inputmode="numeric"
+                    >
+
+                    <input
+                        type="text"
+                        class="otp-input"
+                        maxlength="1"
+                        inputmode="numeric"
+                    >
+
+                    <input
+                        type="text"
+                        class="otp-input"
+                        maxlength="1"
+                        inputmode="numeric"
+                    >
+
+                    <input
+                        type="text"
+                        class="otp-input"
+                        maxlength="1"
+                        inputmode="numeric"
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="verify-btn"
+                    id="verifyBtn"
+                >
+                    Verify Email
+                </button>
+
+            </form>
+
+
+            <div class="verify-actions">
+
+                <button
+                    type="button"
+                    id="resendBtn"
+                    class="resend-btn"
+                >
+                    Resend code
+                </button>
+
+                <a href="login.html">
+                    Back to Login
+                </a>
+
+            </div>
+
+
+            <!-- DEMO INFORMATION -->
+
+            <div class="verify-demo">
+
+                <strong>Demo mode:</strong>
+
+                For the current frontend version, use:
+
+                <strong>123456</strong>
+
+                as the verification code.
+
+                <br><br>
+
+                In the final PHP + MySQL version, this code will be
+                generated by the server and sent to the user's email.
+                
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="site-footer">
+
+        <div class="container">
+
+            <div class="footer-bottom">
+
+                <p>
+                    © 2026 Alamin Shop. All rights reserved.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            /* =========================================
+               CART COUNT
+            ========================================= */
+
+            if (typeof updateCartCount === "function") {
+                updateCartCount();
+            }
+
+
+            /* =========================================
+               GET USER EMAIL
+            ========================================= */
+
+            const pendingEmail =
+                localStorage.getItem("shopnest_pending_verification_email");
+
+            const userEmail =
+                document.getElementById("userEmail");
+
+
+            if (pendingEmail) {
+
+                userEmail.textContent = pendingEmail;
+
+            } else {
+
+                userEmail.textContent = "your registered email";
+
+            }
+
+
+            /* =========================================
+               OTP INPUTS
+            ========================================= */
+
+            const otpInputs =
+                document.querySelectorAll(".otp-input");
+
+
+            otpInputs.forEach((input, index) => {
+
+                input.addEventListener("input", function () {
+
+                    this.value =
+                        this.value.replace(/\D/g, "").slice(0, 1);
+
+
+                    if (
+                        this.value &&
+                        index < otpInputs.length - 1
+                    ) {
+
+                        otpInputs[index + 1].focus();
+
+                    }
+
+                });
+
+
+                input.addEventListener("keydown", function (event) {
+
+                    if (
+                        event.key === "Backspace" &&
+                        !this.value &&
+                        index > 0
+                    ) {
+
+                        otpInputs[index - 1].focus();
+
+                    }
+
+                });
+
+
+                input.addEventListener("paste", function (event) {
+
+                    event.preventDefault();
+
+                    const pasted =
+                        event.clipboardData
+                            .getData("text")
+                            .replace(/\D/g, "")
+                            .slice(0, 6);
+
+
+                    pasted
+                        .split("")
+                        .forEach((digit, i) => {
+
+                            if (otpInputs[i]) {
+                                otpInputs[i].value = digit;
+                            }
+
+                        });
+
+
+                    if (otpInputs[pasted.length - 1]) {
+
+                        otpInputs[pasted.length - 1].focus();
+
+                    }
+
+                });
+
+            });
+
+
+            /* =========================================
+               MESSAGE
+            ========================================= */
+
+            const messageBox =
+                document.getElementById("verifyMessage");
+
+
+            function showMessage(text, type) {
+
+                messageBox.textContent = text;
+
+                messageBox.className =
+                    "verify-message show " + type;
+
+            }
+
+
+            /* =========================================
+               VERIFY OTP
+            ========================================= */
+
+            const verifyForm =
+                document.getElementById("verifyForm");
+
+
+            verifyForm.addEventListener("submit", function (event) {
+
+                event.preventDefault();
+
+
+                const otp =
+                    Array.from(otpInputs)
+                        .map(input => input.value)
+                        .join("");
+
+
+                if (otp.length !== 6) {
+
+                    showMessage(
+                        "Please enter the complete 6-digit verification code.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                 * Demo OTP
+                 */
+
+                if (otp !== "123456") {
+
+                    showMessage(
+                        "Invalid verification code. Please try again.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                 * Get registered users
+                 */
+
+                const users =
+                    JSON.parse(
+                        localStorage.getItem("shopnest_users") || "[]"
+                    );
+
+
+                const email =
+                    pendingEmail
+                        ? pendingEmail.toLowerCase()
+                        : "";
+
+
+                const userIndex =
+                    users.findIndex(
+                        user =>
+                            user.email &&
+                            user.email.toLowerCase() === email
+                    );
+
+
+                /*
+                 * Update user verification
+                 */
+
+                if (userIndex !== -1) {
+
+                    users[userIndex].email_verified = true;
+
+                    users[userIndex].account_status = "active";
+
+                    users[userIndex].verified_at =
+                        new Date().toISOString();
+
+
+                    localStorage.setItem(
+                        "shopnest_users",
+                        JSON.stringify(users)
+                    );
+
+                }
+
+
+                /*
+                 * Save verification status
+                 */
+
+                if (email) {
+
+                    localStorage.setItem(
+                        "shopnest_verified_email",
+                        email
+                    );
+
+                }
+
+
+                localStorage.removeItem(
+                    "shopnest_pending_verification_email"
+                );
+
+
+                showMessage(
+                    "Email verified successfully! Redirecting to login...",
+                    "success"
+                );
+
+
+                setTimeout(function () {
+
+                    window.location.href = "login.html";
+
+                }, 1500);
+
+            });
+
+
+            /* =========================================
+               RESEND CODE
+            ========================================= */
+
+            const resendBtn =
+                document.getElementById("resendBtn");
+
+
+            let resendSeconds = 30;
+
+
+            resendBtn.addEventListener("click", function () {
+
+                if (resendBtn.disabled) {
+                    return;
+                }
+
+
+                /*
+                 * Demo version
+                 */
+
+                showMessage(
+                    "A new verification code has been sent. Demo code: 123456",
+                    "success"
+                );
+
+
+                resendBtn.disabled = true;
+
+
+                let seconds = resendSeconds;
+
+
+                resendBtn.textContent =
+                    "Resend in " + seconds + "s";
+
+
+                const timer =
+                    setInterval(function () {
+
+                        seconds--;
+
+                        resendBtn.textContent =
+                            "Resend in " + seconds + "s";
+
+
+                        if (seconds <= 0) {
+
+                            clearInterval(timer);
+
+                            resendBtn.disabled = false;
+
+                            resendBtn.textContent =
+                                "Resend code";
+
+                        }
+
+                    }, 1000);
+
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>

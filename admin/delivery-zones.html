@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Delivery Zones - Alamin Shop Admin</title>
+
+  <link rel="stylesheet" href="../style.css" />
+
+  <style>
+    /* =========================
+       ADMIN LAYOUT
+    ========================== */
+
+    body {
+      background: #070809;
+      color: #f8fafc;
+      min-height: 100vh;
+    }
+
+    .admin-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .admin-sidebar {
+      width: 250px;
+      background: #0d0f12;
+      border-right: 1px solid #22262d;
+      padding: 22px 16px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    .admin-logo {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 30px;
+      padding: 0 10px;
+    }
+
+    .admin-logo span {
+      color: #22c55e;
+    }
+
+    .admin-nav-title {
+      color: #6b7280;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 20px 10px 8px;
+    }
+
+    .admin-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .admin-nav a {
+      text-decoration: none;
+      color: #a1a1aa;
+      padding: 11px 12px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      transition: 0.2s ease;
+    }
+
+    .admin-nav a:hover,
+    .admin-nav a.active {
+      background: #171a1f;
+      color: #fff;
+    }
+
+    .admin-nav a.active {
+      border: 1px solid #272b32;
+    }
+
+    .admin-main {
+      margin-left: 250px;
+      width: calc(100% - 250px);
+      min-height: 100vh;
+    }
+
+    .admin-topbar {
+      height: 72px;
+      border-bottom: 1px solid #22262d;
+      background: #0b0d10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .admin-topbar h1 {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .admin-topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-user {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #171a1f;
+      border: 1px solid #2a2f37;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .admin-content {
+      padding: 30px;
+    }
+
+    /* =========================
+       STATS
+    ========================== */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card {
+      background: #101216;
+      border: 1px solid #252932;
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .stat-label {
+      color: #8b929d;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    /* =========================
+       TOOLBAR
+    ========================== */
+
+    .page-toolbar {
+      background: #101216;
+      border: 1px solid #252932;
+      border-radius: 16px;
+      padding: 18px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .page-toolbar input,
+    .page-toolbar select {
+      background: #0a0c0f;
+      color: #fff;
+      border: 1px solid #2a2f37;
+      border-radius: 10px;
+      padding: 11px 13px;
+      outline: none;
+    }
+
+    .page-toolbar input {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .page-toolbar input:focus,
+    .page-toolbar select:focus {
+      border-color: #22c55e;
+    }
+
+    .admin-btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 16px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .admin-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: #22c55e;
+      color: #041008;
+    }
+
+    .btn-secondary {
+      background: #1a1d22;
+      color: #fff;
+      border: 1px solid #2a2f37;
+    }
+
+    .btn-danger {
+      background: #3a1518;
+      color: #ff8f96;
+      border: 1px solid #612127;
+    }
+
+    /* =========================
+       TABLE
+    ========================== */
+
+    .table-card {
+      background: #101216;
+      border: 1px solid #252932;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 20px;
+      border-bottom: 1px solid #252932;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-header h2 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 850px;
+    }
+
+    th,
+    td {
+      padding: 15px 18px;
+      border-bottom: 1px solid #20242b;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    th {
+      color: #8b929d;
+      font-weight: 600;
+      background: #0d0f12;
+    }
+
+    td {
+      color: #e5e7eb;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .zone-name {
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .zone-sub {
+      color: #717783;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .status-active {
+      background: #12351f;
+      color: #65e493;
+    }
+
+    .status-inactive {
+      background: #302e18;
+      color: #f5d96c;
+    }
+
+    .action-group {
+      display: flex;
+      gap: 7px;
+    }
+
+    .small-btn {
+      padding: 7px 10px;
+      border-radius: 8px;
+      background: #181b20;
+      border: 1px solid #2a2f37;
+      color: #fff;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .small-btn:hover {
+      background: #22262c;
+    }
+
+    .small-btn.delete {
+      color: #ff8b92;
+    }
+
+    .empty-state {
+      padding: 50px 20px;
+      text-align: center;
+      color: #737984;
+    }
+
+    /* =========================
+       MODAL
+    ========================== */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 2000;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #101216;
+      border: 1px solid #2a2f37;
+      border-radius: 18px;
+      padding: 25px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .close-modal {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      border: 1px solid #2a2f37;
+      background: #171a1f;
+      color: #fff;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-size: 13px;
+      color: #a1a1aa;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      box-sizing: border-box;
+      background: #0a0c0f;
+      border: 1px solid #2a2f37;
+      color: #fff;
+      border-radius: 10px;
+      padding: 11px 12px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .form-group textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #22c55e;
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0b0d10;
+      border: 1px solid #252932;
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .toggle {
+      width: 44px;
+      height: 24px;
+      position: relative;
+    }
+
+    .toggle input {
+      display: none;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: #30343b;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .toggle-slider::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      top: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.2s;
+    }
+
+    .toggle input:checked + .toggle-slider {
+      background: #22c55e;
+    }
+
+    .toggle input:checked + .toggle-slider::before {
+      transform: translateX(20px);
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media (max-width: 1100px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 800px) {
+      .admin-sidebar {
+        width: 210px;
+      }
+
+      .admin-main {
+        margin-left: 210px;
+        width: calc(100% - 210px);
+      }
+
+      .admin-content {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .admin-sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+
+      .admin-layout {
+        flex-direction: column;
+      }
+
+      .admin-main {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+
+      .admin-topbar {
+        padding: 0 15px;
+      }
+
+      .admin-content {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="admin-layout">
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="admin-sidebar">
+
+      <div class="admin-logo">
+        Alamin <span>Shop</span>
+      </div>
+
+      <div class="admin-nav-title">Main</div>
+
+      <nav class="admin-nav">
+
+        <a href="index.html">
+          📊 Dashboard
+        </a>
+
+        <a href="orders.html">
+          📦 Orders
+        </a>
+
+        <a href="products.html">
+          🛍️ Products
+        </a>
+
+        <a href="inventory.html">
+          📋 Inventory
+        </a>
+
+        <a href="categories.html">
+          🗂️ Categories
+        </a>
+
+        <a href="customers.html">
+          👥 Customers
+        </a>
+
+        <a href="coupons.html">
+          🎟️ Coupons
+        </a>
+
+      </nav>
+
+      <div class="admin-nav-title">Store</div>
+
+      <nav class="admin-nav">
+
+        <a href="delivery-zones.html" class="active">
+          🚚 Delivery Zones
+        </a>
+
+        <a href="payments.html">
+          💳 Payments
+        </a>
+
+        <a href="returns.html">
+          ↩️ Returns
+        </a>
+
+        <a href="reviews.html">
+          ⭐ Reviews
+        </a>
+
+        <a href="banners.html">
+          🖼️ Banners
+        </a>
+
+        <a href="media.html">
+          🗃️ Media
+        </a>
+
+      </nav>
+
+      <div class="admin-nav-title">Management</div>
+
+      <nav class="admin-nav">
+
+        <a href="reports.html">
+          📈 Reports
+        </a>
+
+        <a href="notifications.html">
+          🔔 Notifications
+        </a>
+
+        <a href="staff.html">
+          👤 Staff
+        </a>
+
+        <a href="audit-logs.html">
+          📝 Audit Logs
+        </a>
+
+        <a href="seo.html">
+          🔎 SEO
+        </a>
+
+        <a href="settings.html">
+          ⚙️ Settings
+        </a>
+
+      </nav>
+
+      <div class="admin-nav-title">Account</div>
+
+      <nav class="admin-nav">
+
+        <a href="../index.html">
+          🏠 View Store
+        </a>
+
+        <a href="../account.html">
+          👤 Account
+        </a>
+
+        <a href="../login.html">
+          🚪 Logout
+        </a>
+
+      </nav>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main class="admin-main">
+
+      <header class="admin-topbar">
+
+        <h1>Delivery Zones</h1>
+
+        <div class="admin-topbar-right">
+          <div class="admin-user">A</div>
+        </div>
+
+      </header>
+
+
+      <section class="admin-content">
+
+        <!-- STATS -->
+
+        <div class="stats-grid">
+
+          <div class="stat-card">
+            <div class="stat-label">Total Zones</div>
+            <div class="stat-value" id="totalZones">0</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Active Zones</div>
+            <div class="stat-value" id="activeZones">0</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Inactive Zones</div>
+            <div class="stat-value" id="inactiveZones">0</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Free Delivery From</div>
+            <div class="stat-value" id="freeDeliveryAmount">
+              ৳5,000
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- TOOLBAR -->
+
+        <div class="page-toolbar">
+
+          <input
+            type="text"
+            id="searchZone"
+            placeholder="Search delivery zone..."
+          />
+
+          <select id="statusFilter">
+            <option value="all">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+
+          <button
+            class="admin-btn btn-secondary"
+            id="resetBtn"
+          >
+            Reset
+          </button>
+
+          <button
+            class="admin-btn btn-primary"
+            id="addZoneBtn"
+          >
+            + Add Delivery Zone
+          </button>
+
+        </div>
+
+
+        <!-- TABLE -->
+
+        <div class="table-card">
+
+          <div class="table-header">
+            <h2>Delivery Zones</h2>
+
+            <span
+              id="zoneCountText"
+              style="color:#777f8b;font-size:13px;"
+            >
+              0 zones
+            </span>
+          </div>
+
+          <div class="table-wrapper">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>Zone</th>
+                  <th>Area</th>
+                  <th>Delivery Charge</th>
+                  <th>Free Delivery</th>
+                  <th>Estimated Time</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="zoneTableBody"></tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <!-- =========================
+       MODAL
+  ========================== -->
+
+  <div class="modal" id="zoneModal">
+
+    <div class="modal-box">
+
+      <div class="modal-header">
+
+        <h2 id="modalTitle">
+          Add Delivery Zone
+        </h2>
+
+        <button
+          class="close-modal"
+          id="closeModal"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <form id="zoneForm">
+
+        <input
+          type="hidden"
+          id="zoneId"
+        />
+
+
+        <div class="form-grid">
+
+          <div class="form-group">
+
+            <label>Zone Name</label>
+
+            <input
+              type="text"
+              id="zoneName"
+              placeholder="Example: Inside Dhaka"
+              required
+            />
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Delivery Charge (৳)</label>
+
+            <input
+              type="number"
+              id="zoneCharge"
+              min="0"
+              value="80"
+              required
+            />
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label>Areas</label>
+
+            <textarea
+              id="zoneAreas"
+              placeholder="Example: Dhaka City, Mohammadpur, Mirpur, Uttara..."
+              required
+            ></textarea>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Estimated Delivery</label>
+
+            <input
+              type="text"
+              id="zoneTime"
+              placeholder="1-3 business days"
+              required
+            />
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Free Delivery Minimum (৳)</label>
+
+            <input
+              type="number"
+              id="zoneFreeMinimum"
+              min="0"
+              value="5000"
+              required
+            />
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <div class="toggle-row">
+
+              <div>
+                <strong>Zone Active</strong>
+
+                <div
+                  style="font-size:12px;color:#707783;margin-top:3px;"
+                >
+                  Allow customers to select this delivery zone
+                </div>
+
+              </div>
+
+              <label class="toggle">
+
+                <input
+                  type="checkbox"
+                  id="zoneActive"
+                  checked
+                />
+
+                <span class="toggle-slider"></span>
+
+              </label>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="admin-btn btn-secondary"
+            id="cancelModal"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="admin-btn btn-primary"
+          >
+            Save Zone
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <script src="../script.js"></script>
+
+  <script>
+    /* =========================================
+       DELIVERY ZONES
+    ========================================== */
+
+    const STORAGE_KEY = "shopnest_delivery_zones";
+
+    const defaultZones = [
+      {
+        id: "zone_dhaka",
+        name: "Inside Dhaka",
+        areas: "Dhaka City, Mohammadpur, Mirpur, Uttara, Dhanmondi, Gulshan, Banani",
+        charge: 80,
+        freeMinimum: 5000,
+        estimatedTime: "1-3 business days",
+        active: true
+      },
+      {
+        id: "zone_outside",
+        name: "Outside Dhaka",
+        areas: "All districts outside Dhaka",
+        charge: 130,
+        freeMinimum: 5000,
+        estimatedTime: "2-5 business days",
+        active: true
+      }
+    ];
+
+    let zones = [];
+
+
+    /* =========================================
+       LOAD DATA
+    ========================================== */
+
+    function loadZones() {
+
+      const saved = localStorage.getItem(STORAGE_KEY);
+
+      if (!saved) {
+
+        zones = defaultZones;
+
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify(zones)
+        );
+
+        return;
+      }
+
+      try {
+
+        zones = JSON.parse(saved);
+
+        if (!Array.isArray(zones)) {
+          zones = defaultZones;
+        }
+
+      } catch (error) {
+
+        zones = defaultZones;
+
+      }
+
+    }
+
+
+    /* =========================================
+       SAVE DATA
+    ========================================== */
+
+    function saveZones() {
+
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(zones)
+      );
+
+    }
+
+
+    /* =========================================
+       FORMAT PRICE
+    ========================================== */
+
+    function price(value) {
+
+      return "৳" + Number(value || 0).toLocaleString("en-BD");
+
+    }
+
+
+    /* =========================================
+       UPDATE STATS
+    ========================================== */
+
+    function updateStats() {
+
+      const total = zones.length;
+
+      const active = zones.filter(
+        zone => zone.active
+      ).length;
+
+      const inactive = total - active;
+
+      document.getElementById("totalZones").textContent =
+        total;
+
+      document.getElementById("activeZones").textContent =
+        active;
+
+      document.getElementById("inactiveZones").textContent =
+        inactive;
+
+
+      const settings =
+        JSON.parse(
+          localStorage.getItem("shopnest_settings") || "{}"
+        );
+
+      const freeMinimum =
+        settings.freeDeliveryMinimum ??
+        zones.find(zone => zone.active)?.freeMinimum ??
+        5000;
+
+      document.getElementById("freeDeliveryAmount").textContent =
+        price(freeMinimum);
+
+    }
+
+
+    /* =========================================
+       RENDER TABLE
+    ========================================== */
+
+    function renderZones() {
+
+      const tbody =
+        document.getElementById("zoneTableBody");
+
+      const search =
+        document.getElementById("searchZone")
+          .value
+          .trim()
+          .toLowerCase();
+
+      const status =
+        document.getElementById("statusFilter").value;
+
+
+      let filtered = zones.filter(zone => {
+
+        const matchesSearch =
+          zone.name.toLowerCase().includes(search) ||
+          zone.areas.toLowerCase().includes(search);
+
+
+        const matchesStatus =
+          status === "all" ||
+          (status === "active" && zone.active) ||
+          (status === "inactive" && !zone.active);
+
+
+        return matchesSearch && matchesStatus;
+
+      });
+
+
+      document.getElementById("zoneCountText").textContent =
+        `${filtered.length} zone${filtered.length !== 1 ? "s" : ""}`;
+
+
+      if (!filtered.length) {
+
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7">
+              <div class="empty-state">
+                No delivery zones found.
+              </div>
+            </td>
+          </tr>
+        `;
+
+        return;
+
+      }
+
+
+      tbody.innerHTML = filtered.map(zone => {
+
+        return `
+          <tr>
+
+            <td>
+              <div class="zone-name">
+                ${escapeHtml(zone.name)}
+              </div>
+
+              <div class="zone-sub">
+                ID: ${escapeHtml(zone.id)}
+              </div>
+            </td>
+
+            <td>
+              ${escapeHtml(zone.areas)}
+            </td>
+
+            <td>
+              <strong>
+                ${price(zone.charge)}
+              </strong>
+            </td>
+
+            <td>
+              ${
+                Number(zone.freeMinimum) > 0
+                  ? `Orders ${price(zone.freeMinimum)}+`
+                  : "No minimum"
+              }
+            </td>
+
+            <td>
+              ${escapeHtml(zone.estimatedTime)}
+            </td>
+
+            <td>
+              ${
+                zone.active
+                  ? `
+                    <span class="status-badge status-active">
+                      Active
+                    </span>
+                  `
+                  : `
+                    <span class="status-badge status-inactive">
+                      Inactive
+                    </span>
+                  `
+              }
+            </td>
+
+            <td>
+
+              <div class="action-group">
+
+                <button
+                  class="small-btn"
+                  onclick="editZone('${zone.id}')"
+                >
+                  Edit
+                </button>
+
+                <button
+                  class="small-btn"
+                  onclick="toggleZone('${zone.id}')"
+                >
+                  ${zone.active ? "Disable" : "Enable"}
+                </button>
+
+                <button
+                  class="small-btn delete"
+                  onclick="deleteZone('${zone.id}')"
+                >
+                  Delete
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+        `;
+
+      }).join("");
+
+    }
+
+
+    /* =========================================
+       ESCAPE HTML
+    ========================================== */
+
+    function escapeHtml(value) {
+
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =========================================
+       OPEN MODAL
+    ========================================== */
+
+    function openModal(zone = null) {
+
+      const modal =
+        document.getElementById("zoneModal");
+
+      const title =
+        document.getElementById("modalTitle");
+
+
+      if (zone) {
+
+        title.textContent = "Edit Delivery Zone";
+
+        document.getElementById("zoneId").value =
+          zone.id;
+
+        document.getElementById("zoneName").value =
+          zone.name;
+
+        document.getElementById("zoneAreas").value =
+          zone.areas;
+
+        document.getElementById("zoneCharge").value =
+          zone.charge;
+
+        document.getElementById("zoneFreeMinimum").value =
+          zone.freeMinimum;
+
+        document.getElementById("zoneTime").value =
+          zone.estimatedTime;
+
+        document.getElementById("zoneActive").checked =
+          zone.active;
+
+      } else {
+
+        title.textContent = "Add Delivery Zone";
+
+        document.getElementById("zoneForm").reset();
+
+        document.getElementById("zoneId").value = "";
+
+        document.getElementById("zoneCharge").value = 80;
+
+        document.getElementById("zoneFreeMinimum").value =
+          5000;
+
+        document.getElementById("zoneActive").checked =
+          true;
+
+      }
+
+
+      modal.classList.add("show");
+
+    }
+
+
+    /* =========================================
+       CLOSE MODAL
+    ========================================== */
+
+    function closeModal() {
+
+      document
+        .getElementById("zoneModal")
+        .classList.remove("show");
+
+    }
+
+
+    /* =========================================
+       EDIT ZONE
+    ========================================== */
+
+    function editZone(id) {
+
+      const zone =
+        zones.find(item => item.id === id);
+
+      if (!zone) return;
+
+      openModal(zone);
+
+    }
+
+
+    /* =========================================
+       TOGGLE ZONE
+    ========================================== */
+
+    function toggleZone(id) {
+
+      const zone =
+        zones.find(item => item.id === id);
+
+      if (!zone) return;
+
+      zone.active = !zone.active;
+
+      saveZones();
+
+      renderZones();
+
+      updateStats();
+
+    }
+
+
+    /* =========================================
+       DELETE ZONE
+    ========================================== */
+
+    function deleteZone(id) {
+
+      const zone =
+        zones.find(item => item.id === id);
+
+      if (!zone) return;
+
+
+      const confirmed =
+        confirm(
+          `Delete "${zone.name}" delivery zone?`
+        );
+
+
+      if (!confirmed) return;
+
+
+      zones =
+        zones.filter(item => item.id !== id);
+
+      saveZones();
+
+      renderZones();
+
+      updateStats();
+
+
+      if (typeof showNotification === "function") {
+
+        showNotification(
+          "Delivery zone deleted."
+        );
+
+      }
+
+    }
+
+
+    /* =========================================
+       SAVE FORM
+    ========================================== */
+
+    document
+      .getElementById("zoneForm")
+      .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        const id =
+          document.getElementById("zoneId").value.trim();
+
+        const name =
+          document.getElementById("zoneName").value.trim();
+
+        const areas =
+          document.getElementById("zoneAreas").value.trim();
+
+        const charge =
+          Number(
+            document.getElementById("zoneCharge").value
+          );
+
+        const freeMinimum =
+          Number(
+            document.getElementById("zoneFreeMinimum").value
+          );
+
+        const estimatedTime =
+          document.getElementById("zoneTime").value.trim();
+
+        const active =
+          document.getElementById("zoneActive").checked;
+
+
+        if (!name || !areas || !estimatedTime) {
+
+          alert("Please fill in all required fields.");
+
+          return;
+
+        }
+
+
+        if (charge < 0 || freeMinimum < 0) {
+
+          alert("Charge and minimum amount cannot be negative.");
+
+          return;
+
+        }
+
+
+        const zoneData = {
+
+          id: id || `zone_${Date.now()}`,
+
+          name,
+
+          areas,
+
+          charge,
+
+          freeMinimum,
+
+          estimatedTime,
+
+          active
+
+        };
+
+
+        if (id) {
+
+          const index =
+            zones.findIndex(
+              zone => zone.id === id
+            );
+
+          if (index !== -1) {
+
+            zones[index] = zoneData;
+
+          }
+
+        } else {
+
+          zones.push(zoneData);
+
+        }
+
+
+        saveZones();
+
+        renderZones();
+
+        updateStats();
+
+        closeModal();
+
+
+        if (typeof showNotification === "function") {
+
+          showNotification(
+            id
+              ? "Delivery zone updated."
+              : "Delivery zone added."
+          );
+
+        }
+
+      });
+
+
+    /* =========================================
+       SEARCH
+    ========================================== */
+
+    document
+      .getElementById("searchZone")
+      .addEventListener(
+        "input",
+        renderZones
+      );
+
+
+    /* =========================================
+       FILTER
+    ========================================== */
+
+    document
+      .getElementById("statusFilter")
+      .addEventListener(
+        "change",
+        renderZones
+      );
+
+
+    /* =========================================
+       RESET
+    ========================================== */
+
+    document
+      .getElementById("resetBtn")
+      .addEventListener(
+        "click",
+        function() {
+
+          document.getElementById("searchZone").value = "";
+
+          document.getElementById("statusFilter").value =
+            "all";
+
+          renderZones();
+
+        }
+      );
+
+
+    /* =========================================
+       ADD BUTTON
+    ========================================== */
+
+    document
+      .getElementById("addZoneBtn")
+      .addEventListener(
+        "click",
+        function() {
+
+          openModal();
+
+        }
+      );
+
+
+    /* =========================================
+       CLOSE BUTTONS
+    ========================================== */
+
+    document
+      .getElementById("closeModal")
+      .addEventListener(
+        "click",
+        closeModal
+      );
+
+
+    document
+      .getElementById("cancelModal")
+      .addEventListener(
+        "click",
+        closeModal
+      );
+
+
+    /* =========================================
+       CLICK OUTSIDE MODAL
+    ========================================== */
+
+    document
+      .getElementById("zoneModal")
+      .addEventListener(
+        "click",
+        function(event) {
+
+          if (event.target === this) {
+
+            closeModal();
+
+          }
+
+        }
+      );
+
+
+    /* =========================================
+       INITIALIZE
+    ========================================== */
+
+    loadZones();
+
+    renderZones();
+
+    updateStats();
+
+  </script>
+
+</body>
+</html>

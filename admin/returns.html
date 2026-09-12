@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Returns - Alamin Shop Admin</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    body {
+      background: #070809;
+      color: #f8fafc;
+      min-height: 100vh;
+    }
+
+    .admin-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .admin-sidebar {
+      width: 250px;
+      background: #0d0f12;
+      border-right: 1px solid #22262d;
+      padding: 22px 16px;
+      position: fixed;
+      inset: 0 auto 0 0;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    .admin-logo {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 30px;
+      padding: 0 10px;
+    }
+
+    .admin-logo span {
+      color: #22c55e;
+    }
+
+    .admin-nav-title {
+      color: #6b7280;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 20px 10px 8px;
+    }
+
+    .admin-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .admin-nav a {
+      text-decoration: none;
+      color: #a1a1aa;
+      padding: 11px 12px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    .admin-nav a:hover,
+    .admin-nav a.active {
+      background: #171a1f;
+      color: #fff;
+    }
+
+    .admin-main {
+      margin-left: 250px;
+      width: calc(100% - 250px);
+      min-height: 100vh;
+    }
+
+    .admin-topbar {
+      height: 72px;
+      background: #0b0d10;
+      border-bottom: 1px solid #22262d;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .admin-topbar h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .admin-user {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #171a1f;
+      border: 1px solid #2a2f37;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .admin-content {
+      padding: 30px;
+    }
+
+    /* STATS */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card {
+      background: #101216;
+      border: 1px solid #252932;
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .stat-label {
+      color: #8b929d;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    /* TOOLBAR */
+
+    .page-toolbar {
+      background: #101216;
+      border: 1px solid #252932;
+      border-radius: 16px;
+      padding: 18px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .page-toolbar input,
+    .page-toolbar select {
+      background: #0a0c0f;
+      color: #fff;
+      border: 1px solid #2a2f37;
+      border-radius: 10px;
+      padding: 11px 13px;
+      outline: none;
+    }
+
+    .page-toolbar input {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .page-toolbar input:focus,
+    .page-toolbar select:focus {
+      border-color: #22c55e;
+    }
+
+    .admin-btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 16px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .btn-primary {
+      background: #22c55e;
+      color: #041008;
+    }
+
+    .btn-secondary {
+      background: #181b20;
+      color: #fff;
+      border: 1px solid #2a2f37;
+    }
+
+    /* TABLE */
+
+    .table-card {
+      background: #101216;
+      border: 1px solid #252932;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 20px;
+      border-bottom: 1px solid #252932;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-header h2 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1000px;
+    }
+
+    th,
+    td {
+      padding: 15px 18px;
+      border-bottom: 1px solid #20242b;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    th {
+      color: #8b929d;
+      font-weight: 600;
+      background: #0d0f12;
+    }
+
+    td {
+      color: #e5e7eb;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .pending {
+      background: #3a3011;
+      color: #f6d75d;
+    }
+
+    .approved {
+      background: #12351f;
+      color: #65e493;
+    }
+
+    .rejected {
+      background: #3a1518;
+      color: #ff8f96;
+    }
+
+    .refunded {
+      background: #172b3d;
+      color: #76bdf2;
+    }
+
+    .received {
+      background: #2c2138;
+      color: #d1a5ff;
+    }
+
+    .action-group {
+      display: flex;
+      gap: 7px;
+    }
+
+    .small-btn {
+      padding: 7px 10px;
+      border-radius: 8px;
+      background: #181b20;
+      border: 1px solid #2a2f37;
+      color: #fff;
+      cursor: pointer;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .small-btn:hover {
+      background: #22262c;
+    }
+
+    .empty-state {
+      padding: 50px 20px;
+      text-align: center;
+      color: #737984;
+    }
+
+    /* MODAL */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.78);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 2000;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 650px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #101216;
+      border: 1px solid #2a2f37;
+      border-radius: 18px;
+      padding: 25px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .close-modal {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      border: 1px solid #2a2f37;
+      background: #171a1f;
+      color: #fff;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .detail-box {
+      background: #0b0d10;
+      border: 1px solid #252932;
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .detail-box.full {
+      grid-column: 1 / -1;
+    }
+
+    .detail-label {
+      color: #737984;
+      font-size: 11px;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+
+    .detail-value {
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      word-break: break-word;
+    }
+
+    .form-group {
+      margin-top: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      color: #a1a1aa;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      box-sizing: border-box;
+      background: #0a0c0f;
+      color: #fff;
+      border: 1px solid #2a2f37;
+      border-radius: 10px;
+      padding: 11px;
+      outline: none;
+    }
+
+    .form-group textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 1100px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 800px) {
+      .admin-sidebar {
+        width: 210px;
+      }
+
+      .admin-main {
+        margin-left: 210px;
+        width: calc(100% - 210px);
+      }
+
+      .admin-content {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .admin-layout {
+        flex-direction: column;
+      }
+
+      .admin-sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+
+      .admin-main {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-box.full {
+        grid-column: auto;
+      }
+
+      .admin-content {
+        padding: 15px;
+      }
+
+      .admin-topbar {
+        padding: 0 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+  <!-- SIDEBAR -->
+
+  <aside class="admin-sidebar">
+
+    <div class="admin-logo">
+      Alamin <span>Shop</span>
+    </div>
+
+    <div class="admin-nav-title">Main</div>
+
+    <nav class="admin-nav">
+
+      <a href="index.html">📊 Dashboard</a>
+      <a href="orders.html">📦 Orders</a>
+      <a href="products.html">🛍️ Products</a>
+      <a href="inventory.html">📋 Inventory</a>
+      <a href="categories.html">🗂️ Categories</a>
+      <a href="customers.html">👥 Customers</a>
+      <a href="coupons.html">🎟️ Coupons</a>
+
+    </nav>
+
+    <div class="admin-nav-title">Store</div>
+
+    <nav class="admin-nav">
+
+      <a href="delivery-zones.html">🚚 Delivery Zones</a>
+      <a href="payments.html">💳 Payments</a>
+      <a href="returns.html" class="active">↩️ Returns</a>
+      <a href="reviews.html">⭐ Reviews</a>
+      <a href="banners.html">🖼️ Banners</a>
+      <a href="media.html">🗃️ Media</a>
+
+    </nav>
+
+    <div class="admin-nav-title">Management</div>
+
+    <nav class="admin-nav">
+
+      <a href="reports.html">📈 Reports</a>
+      <a href="notifications.html">🔔 Notifications</a>
+      <a href="staff.html">👤 Staff</a>
+      <a href="audit-logs.html">📝 Audit Logs</a>
+      <a href="seo.html">🔎 SEO</a>
+      <a href="settings.html">⚙️ Settings</a>
+
+    </nav>
+
+    <div class="admin-nav-title">Account</div>
+
+    <nav class="admin-nav">
+
+      <a href="../index.html">🏠 View Store</a>
+      <a href="../account.html">👤 Account</a>
+      <a href="../login.html">🚪 Logout</a>
+
+    </nav>
+
+  </aside>
+
+
+  <!-- MAIN -->
+
+  <main class="admin-main">
+
+    <header class="admin-topbar">
+
+      <h1>Returns & Refunds</h1>
+
+      <div class="admin-user">
+        A
+      </div>
+
+    </header>
+
+
+    <section class="admin-content">
+
+      <!-- STATS -->
+
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-label">Total Requests</div>
+          <div class="stat-value" id="totalReturns">0</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Pending</div>
+          <div class="stat-value" id="pendingReturns">0</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Approved</div>
+          <div class="stat-value" id="approvedReturns">0</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Refunded</div>
+          <div class="stat-value" id="refundedReturns">0</div>
+        </div>
+
+      </div>
+
+
+      <!-- TOOLBAR -->
+
+      <div class="page-toolbar">
+
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search order ID, customer or phone..."
+        >
+
+        <select id="statusFilter">
+
+          <option value="all">
+            All Status
+          </option>
+
+          <option value="Pending">
+            Pending
+          </option>
+
+          <option value="Approved">
+            Approved
+          </option>
+
+          <option value="Received">
+            Received
+          </option>
+
+          <option value="Refunded">
+            Refunded
+          </option>
+
+          <option value="Rejected">
+            Rejected
+          </option>
+
+        </select>
+
+        <select id="typeFilter">
+
+          <option value="all">
+            All Types
+          </option>
+
+          <option value="Return">
+            Return
+          </option>
+
+          <option value="Exchange">
+            Exchange
+          </option>
+
+          <option value="Refund">
+            Refund
+          </option>
+
+        </select>
+
+        <button
+          class="admin-btn btn-secondary"
+          id="resetBtn"
+        >
+          Reset
+        </button>
+
+      </div>
+
+
+      <!-- TABLE -->
+
+      <div class="table-card">
+
+        <div class="table-header">
+
+          <h2>Return Requests</h2>
+
+          <span
+            id="resultCount"
+            style="color:#777f8b;font-size:13px;"
+          >
+            0 requests
+          </span>
+
+        </div>
+
+        <div class="table-wrapper">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Request</th>
+                <th>Order</th>
+                <th>Customer</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="returnTableBody"></tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<!-- MODAL -->
+
+<div class="modal" id="returnModal">
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+
+      <h2>Return Request Details</h2>
+
+      <button
+        class="close-modal"
+        id="closeModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div id="returnDetails"></div>
+
+
+    <div class="form-group">
+
+      <label>
+        Update Status
+      </label>
+
+      <select id="updateStatus">
+
+        <option value="Pending">
+          Pending
+        </option>
+
+        <option value="Approved">
+          Approved
+        </option>
+
+        <option value="Received">
+          Received
+        </option>
+
+        <option value="Refunded">
+          Refunded
+        </option>
+
+        <option value="Rejected">
+          Rejected
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>
+        Admin Note
+      </label>
+
+      <textarea
+        id="adminNote"
+        placeholder="Add internal note..."
+      ></textarea>
+
+    </div>
+
+
+    <div class="modal-footer">
+
+      <button
+        class="admin-btn btn-secondary"
+        id="cancelModal"
+      >
+        Close
+      </button>
+
+      <button
+        class="admin-btn btn-primary"
+        id="saveStatus"
+      >
+        Save Changes
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script src="../script.js"></script>
+
+<script>
+
+  /* =========================================
+     RETURN MANAGEMENT
+  ========================================== */
+
+  const RETURN_KEY = "shopnest_returns";
+
+  let returns = [];
+
+  let selectedReturnId = null;
+
+
+  /* =========================================
+     DEMO RETURN DATA
+  ========================================== */
+
+  const demoReturns = [
+
+    {
+      id: "RET1001",
+      orderId: "SN100001",
+      customerName: "Demo Customer",
+      email: "customer@example.com",
+      phone: "01700000000",
+      type: "Return",
+      amount: 2490,
+      reason: "Product is not suitable",
+      description: "Customer wants to return the product.",
+      status: "Pending",
+      createdAt: new Date().toISOString(),
+      adminNote: ""
+    }
+
+  ];
+
+
+  /* =========================================
+     LOAD RETURNS
+  ========================================== */
+
+  function loadReturns() {
+
+    const saved =
+      localStorage.getItem(RETURN_KEY);
+
+    if (!saved) {
+
+      returns = demoReturns;
+
+      localStorage.setItem(
+        RETURN_KEY,
+        JSON.stringify(returns)
+      );
+
+      return;
+    }
+
+    try {
+
+      returns = JSON.parse(saved);
+
+      if (!Array.isArray(returns)) {
+        returns = [];
+      }
+
+    } catch (error) {
+
+      returns = [];
+
+    }
+
+  }
+
+
+  /* =========================================
+     SAVE RETURNS
+  ========================================== */
+
+  function saveReturns() {
+
+    localStorage.setItem(
+      RETURN_KEY,
+      JSON.stringify(returns)
+    );
+
+  }
+
+
+  /* =========================================
+     PRICE
+  ========================================== */
+
+  function formatBDT(value) {
+
+    return "৳" +
+      Number(value || 0)
+        .toLocaleString("en-BD");
+
+  }
+
+
+  /* =========================================
+     ESCAPE HTML
+  ========================================== */
+
+  function escapeHtml(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  /* =========================================
+     STATUS CLASS
+  ========================================== */
+
+  function statusClass(status) {
+
+    const map = {
+      Pending: "pending",
+      Approved: "approved",
+      Received: "received",
+      Refunded: "refunded",
+      Rejected: "rejected"
+    };
+
+    return map[status] || "pending";
+
+  }
+
+
+  /* =========================================
+     FORMAT DATE
+  ========================================== */
+
+  function formatDate(date) {
+
+    if (!date) return "-";
+
+    const d = new Date(date);
+
+    if (Number.isNaN(d.getTime())) {
+      return "-";
+    }
+
+    return d.toLocaleDateString(
+      "en-BD",
+      {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      }
+    );
+
+  }
+
+
+  /* =========================================
+     UPDATE STATS
+  ========================================== */
+
+  function updateStats() {
+
+    document.getElementById("totalReturns").textContent =
+      returns.length;
+
+    document.getElementById("pendingReturns").textContent =
+      returns.filter(
+        item => item.status === "Pending"
+      ).length;
+
+    document.getElementById("approvedReturns").textContent =
+      returns.filter(
+        item => item.status === "Approved"
+      ).length;
+
+    document.getElementById("refundedReturns").textContent =
+      returns.filter(
+        item => item.status === "Refunded"
+      ).length;
+
+  }
+
+
+  /* =========================================
+     FILTER
+  ========================================== */
+
+  function getFilteredReturns() {
+
+    const search =
+      document.getElementById("searchInput")
+        .value
+        .trim()
+        .toLowerCase();
+
+    const status =
+      document.getElementById("statusFilter").value;
+
+    const type =
+      document.getElementById("typeFilter").value;
+
+
+    return returns.filter(item => {
+
+      const searchable = [
+        item.id,
+        item.orderId,
+        item.customerName,
+        item.phone,
+        item.email
+      ]
+        .join(" ")
+        .toLowerCase();
+
+
+      const searchMatch =
+        !search ||
+        searchable.includes(search);
+
+
+      const statusMatch =
+        status === "all" ||
+        item.status === status;
+
+
+      const typeMatch =
+        type === "all" ||
+        item.type === type;
+
+
+      return (
+        searchMatch &&
+        statusMatch &&
+        typeMatch
+      );
+
+    });
+
+  }
+
+
+  /* =========================================
+     RENDER
+  ========================================== */
+
+  function renderReturns() {
+
+    const tbody =
+      document.getElementById(
+        "returnTableBody"
+      );
+
+    const filtered =
+      getFilteredReturns();
+
+
+    document.getElementById(
+      "resultCount"
+    ).textContent =
+      `${filtered.length} request${filtered.length !== 1 ? "s" : ""}`;
+
+
+    if (!filtered.length) {
+
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8">
+            <div class="empty-state">
+              No return requests found.
+            </div>
+          </td>
+        </tr>
+      `;
+
+      return;
+
+    }
+
+
+    tbody.innerHTML =
+      filtered.map(item => `
+
+        <tr>
+
+          <td>
+
+            <strong>
+              ${escapeHtml(item.id)}
+            </strong>
+
+          </td>
+
+
+          <td>
+            ${escapeHtml(item.orderId)}
+          </td>
+
+
+          <td>
+
+            <strong>
+              ${escapeHtml(item.customerName)}
+            </strong>
+
+            <div
+              style="color:#737984;font-size:11px;margin-top:3px;"
+            >
+              ${escapeHtml(item.phone)}
+            </div>
+
+          </td>
+
+
+          <td>
+            ${escapeHtml(item.type)}
+          </td>
+
+
+          <td>
+            <strong>
+              ${formatBDT(item.amount)}
+            </strong>
+          </td>
+
+
+          <td>
+            ${formatDate(item.createdAt)}
+          </td>
+
+
+          <td>
+
+            <span
+              class="status-badge ${statusClass(item.status)}"
+            >
+              ${escapeHtml(item.status)}
+            </span>
+
+          </td>
+
+
+          <td>
+
+            <div class="action-group">
+
+              <button
+                class="small-btn"
+                onclick="viewReturn('${item.id}')"
+              >
+                View
+              </button>
+
+            </div>
+
+          </td>
+
+        </tr>
+
+      `).join("");
+
+  }
+
+
+  /* =========================================
+     VIEW RETURN
+  ========================================== */
+
+  function viewReturn(id) {
+
+    const item =
+      returns.find(
+        returnItem => returnItem.id === id
+      );
+
+    if (!item) return;
+
+
+    selectedReturnId = id;
+
+
+    document.getElementById(
+      "updateStatus"
+    ).value = item.status;
+
+
+    document.getElementById(
+      "adminNote"
+    ).value = item.adminNote || "";
+
+
+    document.getElementById(
+      "returnDetails"
+    ).innerHTML = `
+
+      <div class="detail-grid">
+
+        <div class="detail-box">
+
+          <div class="detail-label">
+            Request ID
+          </div>
+
+          <div class="detail-value">
+            ${escapeHtml(item.id)}
+          </div>
+
+        </div>
+
+
+        <div class="detail-box">
+
+          <div class="detail-label">
+            Order ID
+          </div>
+
+          <div class="detail-value">
+            ${escapeHtml(item.orderId)}
+          </div>
+
+        </div>
+
+
+        <div class="detail-box">
+
+          <div class="detail-label">
+            Customer
+          </div>
+
+          <div class="detail-value">
+            ${escapeHtml(item.customerName)}
+          </div>
+
+        </div>
+
+
+        <div class="detail-box">
+
+          <div class="detail-label">
+            Phone
+          </div>
+
+          <div class="detail-value">
+            ${escapeHtml(item.phone)}
+          </div>
+
+        </div>
+
+
+        <div class="detail-box">
+
+          <div class="detail-label">
+            Email
+          </div>
+
+          <div class="detail-value">
+            ${escapeHtml(item.email)}
+          </div>
+
+        </div>
+
+
+        <div class="detail-box">
+
+          <div class="detail-label">
+            Type
+          </div>
+
+          <div class="detail-value">
+            ${escapeHtml(item.type)}
+          </div>
+
+        </div>
+
+
+        <div class="detail-box">
+
+          <div class="detail-label">
+            Amount
+          </div>
+
+          <div class="detail-value">
+            ${formatBDT(item.amount)}
+          </div>
+
+        </div>
+
+
+        <div class="detail-box">
+
+          <div class="detail-label">
+            Request Date
+          </div>
+
+          <div class="detail-value">
+            ${formatDate(item.createdAt)}
+          </div>
+
+        </div>
+
+
+        <div class="detail-box full">
+
+          <div class="detail-label">
+            Reason
+          </div>
+
+          <div class="detail-value">
+            ${escapeHtml(item.reason || "No reason provided")}
+          </div>
+
+        </div>
+
+
+        <div class="detail-box full">
+
+          <div class="detail-label">
+            Customer Description
+          </div>
+
+          <div class="detail-value">
+            ${escapeHtml(
+              item.description ||
+              "No additional description."
+            )}
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    document
+      .getElementById("returnModal")
+      .classList.add("show");
+
+  }
+
+
+  /* =========================================
+     SAVE STATUS
+  ========================================== */
+
+  document
+    .getElementById("saveStatus")
+    .addEventListener(
+      "click",
+      function() {
+
+        if (!selectedReturnId) return;
+
+
+        const item =
+          returns.find(
+            returnItem =>
+              returnItem.id === selectedReturnId
+          );
+
+
+        if (!item) return;
+
+
+        const oldStatus =
+          item.status;
+
+
+        item.status =
+          document.getElementById(
+            "updateStatus"
+          ).value;
+
+
+        item.adminNote =
+          document.getElementById(
+            "adminNote"
+          ).value.trim();
+
+
+        item.updatedAt =
+          new Date().toISOString();
+
+
+        saveReturns();
+
+        updateStats();
+
+        renderReturns();
+
+        closeModal();
+
+
+        if (
+          typeof showNotification ===
+          "function"
+        ) {
+
+          showNotification(
+            `Return status changed from ${oldStatus} to ${item.status}.`
+          );
+
+        }
+
+      }
+    );
+
+
+  /* =========================================
+     CLOSE MODAL
+  ========================================== */
+
+  function closeModal() {
+
+    document
+      .getElementById("returnModal")
+      .classList.remove("show");
+
+    selectedReturnId = null;
+
+  }
+
+
+  document
+    .getElementById("closeModal")
+    .addEventListener(
+      "click",
+      closeModal
+    );
+
+
+  document
+    .getElementById("cancelModal")
+    .addEventListener(
+      "click",
+      closeModal
+    );
+
+
+  document
+    .getElementById("returnModal")
+    .addEventListener(
+      "click",
+      function(event) {
+
+        if (event.target === this) {
+          closeModal();
+        }
+
+      }
+    );
+
+
+  /* =========================================
+     FILTER EVENTS
+  ========================================== */
+
+  document
+    .getElementById("searchInput")
+    .addEventListener(
+      "input",
+      renderReturns
+    );
+
+
+  document
+    .getElementById("statusFilter")
+    .addEventListener(
+      "change",
+      renderReturns
+    );
+
+
+  document
+    .getElementById("typeFilter")
+    .addEventListener(
+      "change",
+      renderReturns
+    );
+
+
+  document
+    .getElementById("resetBtn")
+    .addEventListener(
+      "click",
+      function() {
+
+        document.getElementById(
+          "searchInput"
+        ).value = "";
+
+        document.getElementById(
+          "statusFilter"
+        ).value = "all";
+
+        document.getElementById(
+          "typeFilter"
+        ).value = "all";
+
+        renderReturns();
+
+      }
+    );
+
+
+  /* =========================================
+     INIT
+  ========================================== */
+
+  loadReturns();
+
+  updateStats();
+
+  renderReturns();
+
+</script>
+
+</body>
+</html>

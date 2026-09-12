@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Modern online shopping store"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0b0b0f"
+    >
+
+    <title>ShopNest — Online Store</title>
+
+    <!-- CSS will be connected in the next step -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+    <header class="site-header">
+
+        <div class="container header-inner">
+
+            <!-- Logo -->
+            <a href="index.html" class="logo">
+                Shop<span>Nest</span>
+            </a>
+
+            <!-- Search -->
+            <div class="search-box">
+                <input
+                    type="search"
+                    id="searchInput"
+                    placeholder="Search products..."
+                    autocomplete="off"
+                >
+
+                <button
+                    type="button"
+                    id="searchButton"
+                    aria-label="Search"
+                >
+                    🔍
+                </button>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="header-actions">
+
+                <a href="#" class="header-link">
+                    ♡
+                    <span>Wishlist</span>
+                </a>
+
+                <a href="cart.html" class="header-link cart-link">
+                    🛒
+                    <span>Cart</span>
+                    <strong id="cartCount">0</strong>
+                </a>
+
+                <a href="login.html" class="header-link">
+                    👤
+                    <span>Login</span>
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- Navigation -->
+        <nav class="main-nav">
+
+            <div class="container nav-inner">
+
+                <a href="index.html">Home</a>
+
+                <a href="products.html">All Products</a>
+
+                <a href="products.html?category=electronics">
+                    Electronics
+                </a>
+
+                <a href="products.html?category=fashion">
+                    Fashion
+                </a>
+
+                <a href="products.html?category=beauty">
+                    Beauty
+                </a>
+
+                <a href="products.html?category=home">
+                    Home & Living
+                </a>
+
+                <a href="products.html?category=offers">
+                    Offers
+                </a>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+    <main>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+
+            <div class="container hero-content">
+
+                <div class="hero-text">
+
+                    <span class="hero-badge">
+                        NEW COLLECTION
+                    </span>
+
+                    <h1>
+                        Discover Products
+                        You’ll Love.
+                    </h1>
+
+                    <p>
+                        Shop quality products at great prices.
+                        Fast delivery, secure checkout and
+                        an easy shopping experience.
+                    </p>
+
+                    <div class="hero-buttons">
+
+                        <a
+                            href="products.html"
+                            class="btn btn-primary"
+                        >
+                            Shop Now
+                        </a>
+
+                        <a
+                            href="products.html?category=offers"
+                            class="btn btn-secondary"
+                        >
+                            View Offers
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <div class="hero-image">
+
+                    <div class="hero-image-placeholder">
+                        <span>SHOP</span>
+                        <strong>NEST</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CATEGORIES
+        ========================== -->
+        <section class="categories-section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <div>
+                        <span class="section-label">
+                            EXPLORE
+                        </span>
+
+                        <h2>
+                            Shop by Category
+                        </h2>
+                    </div>
+
+                    <a href="products.html">
+                        View All →
+                    </a>
+
+                </div>
+
+
+                <div class="category-grid">
+
+                    <a
+                        href="products.html?category=electronics"
+                        class="category-card"
+                    >
+                        <div class="category-icon">
+                            💻
+                        </div>
+
+                        <h3>Electronics</h3>
+
+                        <p>
+                            Latest gadgets
+                        </p>
+                    </a>
+
+
+                    <a
+                        href="products.html?category=fashion"
+                        class="category-card"
+                    >
+                        <div class="category-icon">
+                            👕
+                        </div>
+
+                        <h3>Fashion</h3>
+
+                        <p>
+                            Style & trends
+                        </p>
+                    </a>
+
+
+                    <a
+                        href="products.html?category=beauty"
+                        class="category-card"
+                    >
+                        <div class="category-icon">
+                            ✨
+                        </div>
+
+                        <h3>Beauty</h3>
+
+                        <p>
+                            Beauty essentials
+                        </p>
+                    </a>
+
+
+                    <a
+                        href="products.html?category=home"
+                        class="category-card"
+                    >
+                        <div class="category-icon">
+                            🏠
+                        </div>
+
+                        <h3>Home & Living</h3>
+
+                        <p>
+                            Make it yours
+                        </p>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             FEATURED PRODUCTS
+        ========================== -->
+        <section class="products-section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <div>
+                        <span class="section-label">
+                            FEATURED
+                        </span>
+
+                        <h2>
+                            Featured Products
+                        </h2>
+                    </div>
+
+                    <a href="products.html">
+                        View All →
+                    </a>
+
+                </div>
+
+
+                <!--
+                    Products will be loaded
+                    dynamically using JavaScript.
+                -->
+
+                <div
+                    id="featuredProducts"
+                    class="product-grid"
+                >
+
+                    <div class="product-loading">
+                        Loading products...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PROMO BANNER
+        ========================== -->
+        <section class="promo-section">
+
+            <div class="container">
+
+                <div class="promo-card">
+
+                    <div>
+
+                        <span class="section-label">
+                            LIMITED OFFER
+                        </span>
+
+                        <h2>
+                            Special Deals
+                            Every Week
+                        </h2>
+
+                        <p>
+                            Get amazing discounts on
+                            selected products.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="products.html?category=offers"
+                        class="btn btn-primary"
+                    >
+                        Explore Deals
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             WHY SHOP WITH US
+        ========================== -->
+        <section class="features-section">
+
+            <div class="container">
+
+                <div class="section-heading centered">
+
+                    <div>
+
+                        <span class="section-label">
+                            WHY US
+                        </span>
+
+                        <h2>
+                            Why Shop With Us?
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="features-grid">
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon">
+                            🚚
+                        </div>
+
+                        <h3>
+                            Fast Delivery
+                        </h3>
+
+                        <p>
+                            Get your orders delivered
+                            quickly and safely.
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon">
+                            🔒
+                        </div>
+
+                        <h3>
+                            Secure Payment
+                        </h3>
+
+                        <p>
+                            Your payment information
+                            stays protected.
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon">
+                            ↩️
+                        </div>
+
+                        <h3>
+                            Easy Returns
+                        </h3>
+
+                        <p>
+                            Simple return and refund
+                            process for eligible orders.
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon">
+                            💬
+                        </div>
+
+                        <h3>
+                            Customer Support
+                        </h3>
+
+                        <p>
+                            We are here to help whenever
+                            you need us.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             NEWSLETTER
+        ========================== -->
+        <section class="newsletter-section">
+
+            <div class="container">
+
+                <div class="newsletter-card">
+
+                    <span class="section-label">
+                        STAY UPDATED
+                    </span>
+
+                    <h2>
+                        Get the Latest Deals
+                    </h2>
+
+                    <p>
+                        Subscribe to receive new product
+                        updates and special offers.
+                    </p>
+
+                    <form
+                        id="newsletterForm"
+                        class="newsletter-form"
+                    >
+
+                        <input
+                            type="email"
+                            id="newsletterEmail"
+                            placeholder="Enter your email"
+                            required
+                        >
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Subscribe
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+    <footer class="site-footer">
+
+        <div class="container footer-grid">
+
+            <div class="footer-brand">
+
+                <a
+                    href="index.html"
+                    class="logo"
+                >
+                    Shop<span>Nest</span>
+                </a>
+
+                <p>
+                    Your trusted online shopping
+                    destination.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Shop
+                </h3>
+
+                <a href="products.html">
+                    All Products
+                </a>
+
+                <a href="products.html?category=electronics">
+                    Electronics
+                </a>
+
+                <a href="products.html?category=fashion">
+                    Fashion
+                </a>
+
+                <a href="products.html?category=offers">
+                    Offers
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Customer
+                </h3>
+
+                <a href="login.html">
+                    My Account
+                </a>
+
+                <a href="orders.html">
+                    My Orders
+                </a>
+
+                <a href="wishlist.html">
+                    Wishlist
+                </a>
+
+                <a href="contact.html">
+                    Contact Us
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Information
+                </h3>
+
+                <a href="about.html">
+                    About Us
+                </a>
+
+                <a href="faq.html">
+                    FAQ
+                </a>
+
+                <a href="privacy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="terms.html">
+                    Terms & Conditions
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <div class="container">
+
+                <p>
+                    © 2026 ShopNest. All rights reserved.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- JavaScript will be connected later -->
+    <script src="script.js"></script>
+
+</body>
+</html>

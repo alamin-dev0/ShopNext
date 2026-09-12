@@ -1,0 +1,2050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Reviews - Alamin Shop Admin</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    :root {
+      --admin-bg: #08090b;
+      --admin-card: #111318;
+      --admin-card-2: #161920;
+      --admin-border: #272b33;
+      --admin-text: #f8fafc;
+      --admin-muted: #8b93a1;
+      --admin-accent: #ffffff;
+      --admin-danger: #ff5c5c;
+      --admin-success: #42d392;
+      --admin-warning: #f5b942;
+      --sidebar-width: 250px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--admin-bg);
+      color: var(--admin-text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .admin-layout {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    .admin-sidebar {
+      width: var(--sidebar-width);
+      background: #0d0f13;
+      border-right: 1px solid var(--admin-border);
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      padding: 22px 15px;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .admin-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 10px 25px;
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .admin-logo span {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #fff;
+      color: #000;
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+    }
+
+    .sidebar-section-title {
+      color: #666e7b;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 14px 11px 8px;
+    }
+
+    .admin-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .admin-nav a {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 11px 12px;
+      border-radius: 9px;
+      color: #9da4b0;
+      font-size: 14px;
+      transition: .2s ease;
+    }
+
+    .admin-nav a:hover,
+    .admin-nav a.active {
+      background: #191c22;
+      color: #fff;
+    }
+
+    .admin-nav-icon {
+      width: 21px;
+      text-align: center;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .admin-main {
+      width: calc(100% - var(--sidebar-width));
+      margin-left: var(--sidebar-width);
+      min-height: 100vh;
+    }
+
+    .admin-topbar {
+      height: 70px;
+      padding: 0 28px;
+      border-bottom: 1px solid var(--admin-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(8, 9, 11, .94);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar-title h1 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .topbar-title p {
+      margin: 4px 0 0;
+      color: var(--admin-muted);
+      font-size: 12px;
+    }
+
+    .admin-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .admin-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #fff;
+      color: #000;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+    }
+
+    .admin-profile-text strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .admin-profile-text span {
+      color: var(--admin-muted);
+      font-size: 11px;
+    }
+
+    .admin-content {
+      padding: 28px;
+    }
+
+    /* =========================
+       STATS
+    ========================= */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: 15px;
+      padding: 20px;
+    }
+
+    .stat-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 13px;
+    }
+
+    .stat-label {
+      color: var(--admin-muted);
+      font-size: 13px;
+    }
+
+    .stat-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: #1b1e25;
+      display: grid;
+      place-items: center;
+    }
+
+    .stat-value {
+      font-size: 27px;
+      font-weight: 800;
+    }
+
+    /* =========================
+       TOOLBAR
+    ========================= */
+
+    .panel {
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .toolbar {
+      padding: 18px;
+      border-bottom: 1px solid var(--admin-border);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      min-width: 230px;
+    }
+
+    .search-box input {
+      width: 100%;
+      height: 43px;
+      background: #0b0d10;
+      border: 1px solid var(--admin-border);
+      color: #fff;
+      border-radius: 9px;
+      padding: 0 14px 0 40px;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: #555d69;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #737b87;
+    }
+
+    .filter-select {
+      height: 43px;
+      min-width: 145px;
+      background: #0b0d10;
+      color: #fff;
+      border: 1px solid var(--admin-border);
+      border-radius: 9px;
+      padding: 0 12px;
+      outline: none;
+    }
+
+    .admin-btn {
+      border: 1px solid var(--admin-border);
+      background: #191c22;
+      color: #fff;
+      height: 43px;
+      padding: 0 15px;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .admin-btn:hover {
+      background: #232731;
+    }
+
+    .admin-btn.primary {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+    }
+
+    .admin-btn.danger {
+      color: #ff8585;
+    }
+
+    /* =========================
+       TABLE
+    ========================= */
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+
+    th {
+      text-align: left;
+      color: #737b87;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--admin-border);
+      background: #0e1014;
+    }
+
+    td {
+      padding: 15px 18px;
+      border-bottom: 1px solid #1d2027;
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: #14171c;
+    }
+
+    .review-product {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 180px;
+    }
+
+    .review-product img {
+      width: 45px;
+      height: 45px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #1a1d22;
+    }
+
+    .review-product strong {
+      display: block;
+      max-width: 180px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .review-product span {
+      color: var(--admin-muted);
+      font-size: 11px;
+    }
+
+    .customer-name {
+      font-weight: 600;
+    }
+
+    .customer-email {
+      color: var(--admin-muted);
+      font-size: 11px;
+      margin-top: 3px;
+    }
+
+    .stars {
+      color: #f5c451;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .rating-number {
+      color: #9da4b0;
+      font-size: 11px;
+      margin-left: 5px;
+    }
+
+    .review-text {
+      max-width: 280px;
+      color: #b6bdc8;
+      line-height: 1.5;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .status-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .status-pending {
+      color: #f5b942;
+      background: rgba(245,185,66,.1);
+    }
+
+    .status-approved {
+      color: #42d392;
+      background: rgba(66,211,146,.1);
+    }
+
+    .status-rejected {
+      color: #ff6969;
+      background: rgba(255,105,105,.1);
+    }
+
+    .action-group {
+      display: flex;
+      gap: 6px;
+    }
+
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--admin-border);
+      background: #171a20;
+      color: #b8bec8;
+      cursor: pointer;
+    }
+
+    .icon-btn:hover {
+      background: #242832;
+      color: #fff;
+    }
+
+    .icon-btn.delete:hover {
+      color: #ff6969;
+      border-color: #542a2a;
+    }
+
+    /* =========================
+       EMPTY
+    ========================= */
+
+    .empty-state {
+      padding: 65px 20px;
+      text-align: center;
+      color: var(--admin-muted);
+    }
+
+    .empty-icon {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      background: #191c22;
+      display: grid;
+      place-items: center;
+      font-size: 23px;
+    }
+
+    .empty-state h3 {
+      color: #fff;
+      margin: 0 0 7px;
+    }
+
+    .empty-state p {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 500;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 650px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #111318;
+      border: 1px solid var(--admin-border);
+      border-radius: 17px;
+      box-shadow: 0 30px 90px rgba(0,0,0,.55);
+    }
+
+    .modal-header {
+      padding: 19px 20px;
+      border-bottom: 1px solid var(--admin-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .modal-close {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--admin-border);
+      background: #181b21;
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .detail-product {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      padding-bottom: 18px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--admin-border);
+    }
+
+    .detail-product img {
+      width: 75px;
+      height: 75px;
+      border-radius: 11px;
+      object-fit: cover;
+    }
+
+    .detail-product h3 {
+      margin: 0 0 5px;
+    }
+
+    .detail-product p {
+      color: var(--admin-muted);
+      margin: 0;
+      font-size: 12px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .detail-item {
+      background: #0c0e12;
+      border: 1px solid var(--admin-border);
+      padding: 13px;
+      border-radius: 10px;
+    }
+
+    .detail-item label {
+      display: block;
+      color: #747c88;
+      font-size: 11px;
+      margin-bottom: 5px;
+    }
+
+    .detail-item strong {
+      font-size: 13px;
+    }
+
+    .full-detail {
+      background: #0c0e12;
+      border: 1px solid var(--admin-border);
+      border-radius: 10px;
+      padding: 15px;
+      color: #c2c8d1;
+      line-height: 1.7;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 9px;
+      justify-content: flex-end;
+    }
+
+    /* =========================
+       PAGINATION
+    ========================= */
+
+    .pagination {
+      padding: 15px 18px;
+      border-top: 1px solid var(--admin-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .pagination-info {
+      color: var(--admin-muted);
+      font-size: 12px;
+    }
+
+    .pagination-buttons {
+      display: flex;
+      gap: 5px;
+    }
+
+    .page-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--admin-border);
+      background: #171a20;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .page-btn.active {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+    }
+
+    .page-btn:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 1050px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 800px) {
+      :root {
+        --sidebar-width: 0px;
+      }
+
+      .admin-sidebar {
+        display: none;
+      }
+
+      .admin-main {
+        width: 100%;
+        margin-left: 0;
+      }
+
+      .admin-content {
+        padding: 18px;
+      }
+
+      .admin-topbar {
+        padding: 0 18px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-profile-text {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+  <!-- =========================
+       SIDEBAR
+  ========================== -->
+
+  <aside class="admin-sidebar">
+
+    <div class="admin-logo">
+      <span>AS</span>
+      <strong>Alamin Shop</strong>
+    </div>
+
+    <div class="sidebar-section-title">Overview</div>
+
+    <nav class="admin-nav">
+      <a href="index.html">
+        <span class="admin-nav-icon">⌂</span>
+        Dashboard
+      </a>
+
+      <a href="orders.html">
+        <span class="admin-nav-icon">🛒</span>
+        Orders
+      </a>
+
+      <a href="products.html">
+        <span class="admin-nav-icon">▣</span>
+        Products
+      </a>
+
+      <a href="inventory.html">
+        <span class="admin-nav-icon">▤</span>
+        Inventory
+      </a>
+
+      <a href="categories.html">
+        <span class="admin-nav-icon">▦</span>
+        Categories
+      </a>
+    </nav>
+
+    <div class="sidebar-section-title">Customers</div>
+
+    <nav class="admin-nav">
+      <a href="customers.html">
+        <span class="admin-nav-icon">♙</span>
+        Customers
+      </a>
+
+      <a href="reviews.html" class="active">
+        <span class="admin-nav-icon">★</span>
+        Reviews
+      </a>
+
+      <a href="returns.html">
+        <span class="admin-nav-icon">↩</span>
+        Returns
+      </a>
+
+      <a href="coupons.html">
+        <span class="admin-nav-icon">%</span>
+        Coupons
+      </a>
+    </nav>
+
+    <div class="sidebar-section-title">Store</div>
+
+    <nav class="admin-nav">
+      <a href="reports.html">
+        <span class="admin-nav-icon">◴</span>
+        Reports
+      </a>
+
+      <a href="notifications.html">
+        <span class="admin-nav-icon">♢</span>
+        Notifications
+      </a>
+
+      <a href="payments.html">
+        <span class="admin-nav-icon">৳</span>
+        Payments
+      </a>
+
+      <a href="delivery-zones.html">
+        <span class="admin-nav-icon">▱</span>
+        Delivery Zones
+      </a>
+
+      <a href="settings.html">
+        <span class="admin-nav-icon">⚙</span>
+        Settings
+      </a>
+    </nav>
+
+    <div class="sidebar-section-title">Account</div>
+
+    <nav class="admin-nav">
+      <a href="../index.html">
+        <span class="admin-nav-icon">↗</span>
+        View Store
+      </a>
+
+      <a href="../account.html">
+        <span class="admin-nav-icon">♙</span>
+        My Account
+      </a>
+
+      <a href="../login.html">
+        <span class="admin-nav-icon">⇥</span>
+        Logout
+      </a>
+    </nav>
+
+  </aside>
+
+
+  <!-- =========================
+       MAIN
+  ========================== -->
+
+  <main class="admin-main">
+
+    <header class="admin-topbar">
+
+      <div class="topbar-title">
+        <h1>Reviews</h1>
+        <p>Manage customer product reviews</p>
+      </div>
+
+      <div class="admin-profile">
+        <div class="admin-profile-text">
+          <strong>Admin</strong>
+          <span>Store Manager</span>
+        </div>
+
+        <div class="admin-avatar">
+          A
+        </div>
+      </div>
+
+    </header>
+
+
+    <section class="admin-content">
+
+      <!-- =========================
+           STATS
+      ========================== -->
+
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">Total Reviews</span>
+            <div class="stat-icon">★</div>
+          </div>
+          <div class="stat-value" id="totalReviews">0</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">Pending</span>
+            <div class="stat-icon">◷</div>
+          </div>
+          <div class="stat-value" id="pendingReviews">0</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">Approved</span>
+            <div class="stat-icon">✓</div>
+          </div>
+          <div class="stat-value" id="approvedReviews">0</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">Average Rating</span>
+            <div class="stat-icon">★</div>
+          </div>
+          <div class="stat-value" id="averageRating">0.0</div>
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           REVIEW PANEL
+      ========================== -->
+
+      <div class="panel">
+
+        <div class="toolbar">
+
+          <div class="search-box">
+            <span class="search-icon">⌕</span>
+            <input
+              type="search"
+              id="reviewSearch"
+              placeholder="Search product, customer or review..."
+            >
+          </div>
+
+          <select id="ratingFilter" class="filter-select">
+            <option value="all">All Ratings</option>
+            <option value="5">5 Stars</option>
+            <option value="4">4 Stars</option>
+            <option value="3">3 Stars</option>
+            <option value="2">2 Stars</option>
+            <option value="1">1 Star</option>
+          </select>
+
+          <select id="statusFilter" class="filter-select">
+            <option value="all">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+
+          <button class="admin-btn" id="resetBtn">
+            Reset
+          </button>
+
+        </div>
+
+
+        <!-- =========================
+             TABLE
+        ========================== -->
+
+        <div class="table-wrapper">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Customer</th>
+                <th>Rating</th>
+                <th>Review</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody id="reviewsTable"></tbody>
+
+          </table>
+
+        </div>
+
+
+        <div class="pagination">
+
+          <div class="pagination-info" id="paginationInfo">
+            Showing 0 reviews
+          </div>
+
+          <div class="pagination-buttons" id="paginationButtons"></div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<!-- =========================
+     VIEW MODAL
+========================== -->
+
+<div class="modal-overlay" id="reviewModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h2>Review Details</h2>
+
+      <button class="modal-close" id="closeModal">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body" id="modalBody"></div>
+
+  </div>
+
+</div>
+
+
+<script src="../script.js"></script>
+
+<script>
+  /* =========================================
+     ALAMIN SHOP - ADMIN REVIEWS
+  ========================================= */
+
+  const REVIEWS_KEY = "shopnest_reviews";
+
+  const reviewsTable = document.getElementById("reviewsTable");
+
+  const reviewSearch = document.getElementById("reviewSearch");
+  const ratingFilter = document.getElementById("ratingFilter");
+  const statusFilter = document.getElementById("statusFilter");
+  const resetBtn = document.getElementById("resetBtn");
+
+  const reviewModal = document.getElementById("reviewModal");
+  const modalBody = document.getElementById("modalBody");
+  const closeModal = document.getElementById("closeModal");
+
+  const totalReviews = document.getElementById("totalReviews");
+  const pendingReviews = document.getElementById("pendingReviews");
+  const approvedReviews = document.getElementById("approvedReviews");
+  const averageRating = document.getElementById("averageRating");
+
+  const paginationInfo = document.getElementById("paginationInfo");
+  const paginationButtons = document.getElementById("paginationButtons");
+
+
+  let reviews = [];
+  let filteredReviews = [];
+
+  let currentPage = 1;
+
+  const itemsPerPage = 8;
+
+
+  /* =========================================
+     DEMO REVIEWS
+  ========================================= */
+
+  const demoReviews = [
+    {
+      id: "REV1001",
+      productId: 1,
+      customerName: "Rahim Ahmed",
+      customerEmail: "rahim@example.com",
+      rating: 5,
+      title: "Excellent headphones",
+      review: "Sound quality is really good. Battery backup is also impressive.",
+      status: "approved",
+      verifiedPurchase: true,
+      createdAt: "2026-09-05T10:20:00"
+    },
+
+    {
+      id: "REV1002",
+      productId: 2,
+      customerName: "Nusrat Jahan",
+      customerEmail: "nusrat@example.com",
+      rating: 4,
+      title: "Good smartwatch",
+      review: "Looks premium and works well. The display is very nice.",
+      status: "pending",
+      verifiedPurchase: true,
+      createdAt: "2026-09-06T14:30:00"
+    },
+
+    {
+      id: "REV1003",
+      productId: 3,
+      customerName: "Sabbir Hasan",
+      customerEmail: "sabbir@example.com",
+      rating: 5,
+      title: "Very comfortable",
+      review: "The sneakers are comfortable and the size was perfect.",
+      status: "approved",
+      verifiedPurchase: true,
+      createdAt: "2026-09-07T09:15:00"
+    },
+
+    {
+      id: "REV1004",
+      productId: 4,
+      customerName: "Mehedi Hasan",
+      customerEmail: "mehedi@example.com",
+      rating: 3,
+      title: "Average backpack",
+      review: "The design is nice but I expected slightly more space.",
+      status: "pending",
+      verifiedPurchase: false,
+      createdAt: "2026-09-08T11:45:00"
+    },
+
+    {
+      id: "REV1005",
+      productId: 5,
+      customerName: "Tanjim Rahman",
+      customerEmail: "tanjim@example.com",
+      rating: 2,
+      title: "Not as expected",
+      review: "The product looks different from what I expected.",
+      status: "rejected",
+      verifiedPurchase: false,
+      createdAt: "2026-09-08T16:20:00"
+    }
+  ];
+
+
+  /* =========================================
+     LOAD REVIEWS
+  ========================================= */
+
+  function loadReviews() {
+
+    const saved = localStorage.getItem(REVIEWS_KEY);
+
+    if (saved) {
+
+      try {
+        reviews = JSON.parse(saved);
+      } catch (error) {
+        reviews = [...demoReviews];
+      }
+
+    } else {
+
+      reviews = [...demoReviews];
+
+      localStorage.setItem(
+        REVIEWS_KEY,
+        JSON.stringify(reviews)
+      );
+    }
+
+    filteredReviews = [...reviews];
+
+  }
+
+
+  /* =========================================
+     SAVE REVIEWS
+  ========================================= */
+
+  function saveReviews() {
+
+    localStorage.setItem(
+      REVIEWS_KEY,
+      JSON.stringify(reviews)
+    );
+
+  }
+
+
+  /* =========================================
+     GET PRODUCT
+  ========================================= */
+
+  function getProduct(productId) {
+
+    if (typeof products === "undefined") {
+      return null;
+    }
+
+    return products.find(
+      product => String(product.id) === String(productId)
+    ) || null;
+
+  }
+
+
+  /* =========================================
+     ESCAPE HTML
+  ========================================= */
+
+  function escapeHTML(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  /* =========================================
+     FORMAT DATE
+  ========================================= */
+
+  function formatDate(dateValue) {
+
+    const date = new Date(dateValue);
+
+    if (Number.isNaN(date.getTime())) {
+      return "-";
+    }
+
+    return date.toLocaleDateString("en-BD", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    });
+
+  }
+
+
+  /* =========================================
+     STARS
+  ========================================= */
+
+  function renderStars(rating) {
+
+    const value = Number(rating) || 0;
+
+    let output = "";
+
+    for (let i = 1; i <= 5; i++) {
+
+      output += i <= value ? "★" : "☆";
+
+    }
+
+    return output;
+
+  }
+
+
+  /* =========================================
+     STATUS
+  ========================================= */
+
+  function getStatusHTML(status) {
+
+    const safeStatus = status || "pending";
+
+    const label =
+      safeStatus.charAt(0).toUpperCase() +
+      safeStatus.slice(1);
+
+    return `
+      <span class="status-badge status-${escapeHTML(safeStatus)}">
+        ${escapeHTML(label)}
+      </span>
+    `;
+
+  }
+
+
+  /* =========================================
+     UPDATE STATS
+  ========================================= */
+
+  function updateStats() {
+
+    const total = reviews.length;
+
+    const pending = reviews.filter(
+      review => review.status === "pending"
+    ).length;
+
+    const approved = reviews.filter(
+      review => review.status === "approved"
+    ).length;
+
+    const ratingTotal = reviews.reduce(
+      (sum, review) => sum + Number(review.rating || 0),
+      0
+    );
+
+    const avg = total
+      ? ratingTotal / total
+      : 0;
+
+    totalReviews.textContent = total;
+
+    pendingReviews.textContent = pending;
+
+    approvedReviews.textContent = approved;
+
+    averageRating.textContent = avg.toFixed(1);
+
+  }
+
+
+  /* =========================================
+     FILTER REVIEWS
+  ========================================= */
+
+  function applyFilters() {
+
+    const searchValue =
+      reviewSearch.value
+        .trim()
+        .toLowerCase();
+
+    const selectedRating =
+      ratingFilter.value;
+
+    const selectedStatus =
+      statusFilter.value;
+
+
+    filteredReviews = reviews.filter(review => {
+
+      const product = getProduct(review.productId);
+
+      const productName =
+        product?.name?.toLowerCase() || "";
+
+      const customerName =
+        String(review.customerName || "")
+          .toLowerCase();
+
+      const customerEmail =
+        String(review.customerEmail || "")
+          .toLowerCase();
+
+      const reviewText =
+        `${review.title || ""} ${review.review || ""}`
+          .toLowerCase();
+
+
+      const matchesSearch =
+        !searchValue ||
+        productName.includes(searchValue) ||
+        customerName.includes(searchValue) ||
+        customerEmail.includes(searchValue) ||
+        reviewText.includes(searchValue);
+
+
+      const matchesRating =
+        selectedRating === "all" ||
+        String(review.rating) === selectedRating;
+
+
+      const matchesStatus =
+        selectedStatus === "all" ||
+        review.status === selectedStatus;
+
+
+      return (
+        matchesSearch &&
+        matchesRating &&
+        matchesStatus
+      );
+
+    });
+
+
+    currentPage = 1;
+
+    renderTable();
+
+  }
+
+
+  /* =========================================
+     RENDER TABLE
+  ========================================= */
+
+  function renderTable() {
+
+    const start =
+      (currentPage - 1) * itemsPerPage;
+
+    const end =
+      start + itemsPerPage;
+
+    const pageReviews =
+      filteredReviews.slice(start, end);
+
+
+    if (!pageReviews.length) {
+
+      reviewsTable.innerHTML = `
+        <tr>
+          <td colspan="7">
+            <div class="empty-state">
+              <div class="empty-icon">★</div>
+              <h3>No reviews found</h3>
+              <p>Try changing your search or filters.</p>
+            </div>
+          </td>
+        </tr>
+      `;
+
+      paginationInfo.textContent =
+        "Showing 0 reviews";
+
+      paginationButtons.innerHTML = "";
+
+      return;
+
+    }
+
+
+    reviewsTable.innerHTML =
+      pageReviews.map(review => {
+
+        const product =
+          getProduct(review.productId);
+
+        const productName =
+          product?.name || "Unknown Product";
+
+        const productImage =
+          product?.image ||
+          "https://via.placeholder.com/80";
+
+
+        return `
+          <tr>
+
+            <td>
+
+              <div class="review-product">
+
+                <img
+                  src="${escapeHTML(productImage)}"
+                  alt="${escapeHTML(productName)}"
+                >
+
+                <div>
+
+                  <strong>
+                    ${escapeHTML(productName)}
+                  </strong>
+
+                  <span>
+                    ID: ${escapeHTML(review.productId)}
+                  </span>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <td>
+
+              <div class="customer-name">
+                ${escapeHTML(review.customerName)}
+              </div>
+
+              <div class="customer-email">
+                ${escapeHTML(review.customerEmail)}
+              </div>
+
+            </td>
+
+
+            <td>
+
+              <div class="stars">
+                ${renderStars(review.rating)}
+
+                <span class="rating-number">
+                  ${escapeHTML(review.rating)}/5
+                </span>
+              </div>
+
+            </td>
+
+
+            <td>
+
+              <div class="review-text">
+
+                <strong>
+                  ${escapeHTML(review.title || "Review")}
+                </strong>
+
+                <br>
+
+                ${escapeHTML(review.review)}
+
+              </div>
+
+            </td>
+
+
+            <td>
+              ${formatDate(review.createdAt)}
+            </td>
+
+
+            <td>
+              ${getStatusHTML(review.status)}
+            </td>
+
+
+            <td>
+
+              <div class="action-group">
+
+                <button
+                  class="icon-btn"
+                  title="View"
+                  onclick="viewReview('${escapeHTML(review.id)}')"
+                >
+                  👁
+                </button>
+
+
+                ${
+                  review.status === "pending"
+                  ? `
+                    <button
+                      class="icon-btn"
+                      title="Approve"
+                      onclick="updateReviewStatus('${escapeHTML(review.id)}', 'approved')"
+                    >
+                      ✓
+                    </button>
+
+                    <button
+                      class="icon-btn"
+                      title="Reject"
+                      onclick="updateReviewStatus('${escapeHTML(review.id)}', 'rejected')"
+                    >
+                      ✕
+                    </button>
+                  `
+                  : ""
+                }
+
+
+                <button
+                  class="icon-btn delete"
+                  title="Delete"
+                  onclick="deleteReview('${escapeHTML(review.id)}')"
+                >
+                  🗑
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+        `;
+
+      }).join("");
+
+
+    renderPagination();
+
+  }
+
+
+  /* =========================================
+     PAGINATION
+  ========================================= */
+
+  function renderPagination() {
+
+    const totalPages =
+      Math.ceil(
+        filteredReviews.length / itemsPerPage
+      );
+
+
+    const start =
+      filteredReviews.length
+        ? ((currentPage - 1) * itemsPerPage) + 1
+        : 0;
+
+
+    const end =
+      Math.min(
+        currentPage * itemsPerPage,
+        filteredReviews.length
+      );
+
+
+    paginationInfo.textContent =
+      `Showing ${start}-${end} of ${filteredReviews.length} reviews`;
+
+
+    paginationButtons.innerHTML = "";
+
+
+    if (totalPages <= 1) {
+      return;
+    }
+
+
+    const previous =
+      document.createElement("button");
+
+    previous.className = "page-btn";
+
+    previous.textContent = "‹";
+
+    previous.disabled =
+      currentPage === 1;
+
+    previous.onclick = () => {
+
+      if (currentPage > 1) {
+
+        currentPage--;
+
+        renderTable();
+
+      }
+
+    };
+
+    paginationButtons.appendChild(previous);
+
+
+    for (let page = 1; page <= totalPages; page++) {
+
+      const button =
+        document.createElement("button");
+
+      button.className =
+        "page-btn" +
+        (page === currentPage ? " active" : "");
+
+      button.textContent = page;
+
+      button.onclick = () => {
+
+        currentPage = page;
+
+        renderTable();
+
+      };
+
+      paginationButtons.appendChild(button);
+
+    }
+
+
+    const next =
+      document.createElement("button");
+
+    next.className = "page-btn";
+
+    next.textContent = "›";
+
+    next.disabled =
+      currentPage === totalPages;
+
+    next.onclick = () => {
+
+      if (currentPage < totalPages) {
+
+        currentPage++;
+
+        renderTable();
+
+      }
+
+    };
+
+    paginationButtons.appendChild(next);
+
+  }
+
+
+  /* =========================================
+     VIEW REVIEW
+  ========================================= */
+
+  window.viewReview = function(reviewId) {
+
+    const review =
+      reviews.find(
+        item => String(item.id) === String(reviewId)
+      );
+
+    if (!review) {
+      return;
+    }
+
+
+    const product =
+      getProduct(review.productId);
+
+
+    const productName =
+      product?.name || "Unknown Product";
+
+
+    const productImage =
+      product?.image ||
+      "https://via.placeholder.com/100";
+
+
+    modalBody.innerHTML = `
+
+      <div class="detail-product">
+
+        <img
+          src="${escapeHTML(productImage)}"
+          alt="${escapeHTML(productName)}"
+        >
+
+        <div>
+
+          <h3>
+            ${escapeHTML(productName)}
+          </h3>
+
+          <p>
+            Product ID: ${escapeHTML(review.productId)}
+          </p>
+
+          <div class="stars">
+            ${renderStars(review.rating)}
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="detail-grid">
+
+        <div class="detail-item">
+
+          <label>Customer</label>
+
+          <strong>
+            ${escapeHTML(review.customerName)}
+          </strong>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <label>Email</label>
+
+          <strong>
+            ${escapeHTML(review.customerEmail)}
+          </strong>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <label>Rating</label>
+
+          <strong>
+            ${escapeHTML(review.rating)} / 5
+          </strong>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <label>Status</label>
+
+          ${getStatusHTML(review.status)}
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <label>Verified Purchase</label>
+
+          <strong>
+            ${review.verifiedPurchase ? "Yes" : "No"}
+          </strong>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <label>Date</label>
+
+          <strong>
+            ${formatDate(review.createdAt)}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="detail-item" style="margin-bottom:14px;">
+
+        <label>Review Title</label>
+
+        <strong>
+          ${escapeHTML(review.title || "No title")}
+        </strong>
+
+      </div>
+
+
+      <div class="full-detail">
+
+        ${escapeHTML(review.review)}
+
+      </div>
+
+
+      <div class="modal-actions">
+
+        ${
+          review.status === "pending"
+          ? `
+            <button
+              class="admin-btn"
+              onclick="updateReviewStatus('${escapeHTML(review.id)}', 'rejected'); closeReviewModal();"
+            >
+              Reject
+            </button>
+
+            <button
+              class="admin-btn primary"
+              onclick="updateReviewStatus('${escapeHTML(review.id)}', 'approved'); closeReviewModal();"
+            >
+              Approve Review
+            </button>
+          `
+          : `
+            <button
+              class="admin-btn"
+              onclick="closeReviewModal();"
+            >
+              Close
+            </button>
+          `
+        }
+
+      </div>
+
+    `;
+
+
+    reviewModal.classList.add("show");
+
+  };
+
+
+  /* =========================================
+     CLOSE MODAL
+  ========================================= */
+
+  function closeReviewModal() {
+
+    reviewModal.classList.remove("show");
+
+  }
+
+  closeModal.addEventListener(
+    "click",
+    closeReviewModal
+  );
+
+
+  reviewModal.addEventListener(
+    "click",
+    event => {
+
+      if (event.target === reviewModal) {
+        closeReviewModal();
+      }
+
+    }
+  );
+
+
+  window.closeReviewModal =
+    closeReviewModal;
+
+
+  /* =========================================
+     UPDATE STATUS
+  ========================================= */
+
+  window.updateReviewStatus =
+    function(reviewId, newStatus) {
+
+      const review =
+        reviews.find(
+          item => String(item.id) === String(reviewId)
+        );
+
+      if (!review) {
+        return;
+      }
+
+
+      review.status = newStatus;
+
+      review.updatedAt =
+        new Date().toISOString();
+
+
+      saveReviews();
+
+      updateStats();
+
+      applyFilters();
+
+
+      if (typeof showNotification === "function") {
+
+        showNotification(
+          `Review ${newStatus}.`
+        );
+
+      }
+
+    };
+
+
+  /* =========================================
+     DELETE REVIEW
+  ========================================= */
+
+  window.deleteReview =
+    function(reviewId) {
+
+      const review =
+        reviews.find(
+          item => String(item.id) === String(reviewId)
+        );
+
+      if (!review) {
+        return;
+      }
+
+
+      const confirmed =
+        confirm(
+          `Delete review "${review.title || review.id}"?`
+        );
+
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      reviews =
+        reviews.filter(
+          item =>
+            String(item.id) !== String(reviewId)
+        );
+
+
+      saveReviews();
+
+      updateStats();
+
+      applyFilters();
+
+
+      if (typeof showNotification === "function") {
+
+        showNotification(
+          "Review deleted."
+        );
+
+      }
+
+    };
+
+
+  /* =========================================
+     EVENTS
+  ========================================= */
+
+  reviewSearch.addEventListener(
+    "input",
+    applyFilters
+  );
+
+
+  ratingFilter.addEventListener(
+    "change",
+    applyFilters
+  );
+
+
+  statusFilter.addEventListener(
+    "change",
+    applyFilters
+  );
+
+
+  resetBtn.addEventListener(
+    "click",
+    () => {
+
+      reviewSearch.value = "";
+
+      ratingFilter.value = "all";
+
+      statusFilter.value = "all";
+
+      applyFilters();
+
+    }
+  );
+
+
+  /* =========================================
+     INITIALIZE
+  ========================================= */
+
+  loadReviews();
+
+  updateStats();
+
+  applyFilters();
+
+</script>
+
+</body>
+</html>

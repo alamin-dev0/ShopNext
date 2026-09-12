@@ -1,0 +1,2883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>SEO Settings - Alamin Shop Admin</title>
+
+  <link rel="stylesheet" href="../style.css" />
+
+  <style>
+    :root {
+      --admin-bg: #08090b;
+      --admin-card: #111317;
+      --admin-card-2: #15181d;
+      --admin-border: #272b33;
+      --admin-text: #f5f7fa;
+      --admin-muted: #9299a6;
+      --admin-accent: #ffffff;
+      --admin-success: #22c55e;
+      --admin-warning: #f59e0b;
+      --admin-danger: #ef4444;
+      --admin-blue: #3b82f6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--admin-bg);
+      color: var(--admin-text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .admin-layout {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ================= SIDEBAR ================= */
+
+    .admin-sidebar {
+      width: 260px;
+      min-height: 100vh;
+      background: #0d0f12;
+      border-right: 1px solid var(--admin-border);
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .admin-brand {
+      padding: 24px 20px;
+      border-bottom: 1px solid var(--admin-border);
+    }
+
+    .admin-brand h2 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .admin-brand span {
+      display: block;
+      margin-top: 5px;
+      color: var(--admin-muted);
+      font-size: 12px;
+    }
+
+    .admin-nav {
+      padding: 18px 12px;
+    }
+
+    .nav-section-title {
+      color: #626975;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 10px 10px 7px;
+    }
+
+    .admin-nav a {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 11px 12px;
+      border-radius: 9px;
+      color: #aeb4bf;
+      margin-bottom: 3px;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    .admin-nav a:hover {
+      background: #171a1f;
+      color: #fff;
+    }
+
+    .admin-nav a.active {
+      background: #fff;
+      color: #08090b;
+      font-weight: 700;
+    }
+
+    .nav-icon {
+      width: 20px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    /* ================= MAIN ================= */
+
+    .admin-main {
+      width: calc(100% - 260px);
+      margin-left: 260px;
+      min-height: 100vh;
+    }
+
+    .admin-topbar {
+      height: 72px;
+      padding: 0 28px;
+      border-bottom: 1px solid var(--admin-border);
+      background: rgba(8, 9, 11, 0.92);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar-title h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .topbar-title p {
+      margin: 4px 0 0;
+      color: var(--admin-muted);
+      font-size: 12px;
+    }
+
+    .admin-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .admin-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #fff;
+      color: #08090b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
+
+    .admin-user-info strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .admin-user-info span {
+      color: var(--admin-muted);
+      font-size: 11px;
+    }
+
+    .admin-content {
+      padding: 28px;
+      max-width: 1500px;
+      margin: auto;
+    }
+
+    /* ================= CARDS ================= */
+
+    .seo-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .stat-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stat-card-label {
+      color: var(--admin-muted);
+      font-size: 13px;
+    }
+
+    .stat-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: #1b1e24;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stat-value {
+      margin-top: 12px;
+      font-size: 27px;
+      font-weight: 800;
+    }
+
+    .stat-help {
+      color: var(--admin-muted);
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    /* ================= GRID ================= */
+
+    .seo-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.9fr);
+      gap: 20px;
+    }
+
+    .seo-card {
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: 16px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--admin-border);
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .card-header p {
+      color: var(--admin-muted);
+      margin: 6px 0 0;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    /* ================= FORMS ================= */
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .form-help {
+      color: var(--admin-muted);
+      font-size: 11px;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .form-control {
+      width: 100%;
+      background: #0b0d10;
+      border: 1px solid var(--admin-border);
+      color: #fff;
+      border-radius: 9px;
+      padding: 11px 12px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .form-control:focus {
+      border-color: #5e6570;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.04);
+    }
+
+    textarea.form-control {
+      min-height: 105px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .counter {
+      text-align: right;
+      color: var(--admin-muted);
+      font-size: 10px;
+      margin-top: 4px;
+    }
+
+    .counter.warning {
+      color: var(--admin-warning);
+    }
+
+    .counter.danger {
+      color: var(--admin-danger);
+    }
+
+    /* ================= SWITCH ================= */
+
+    .setting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 0;
+      border-bottom: 1px solid #1f2228;
+    }
+
+    .setting-row:first-child {
+      padding-top: 0;
+    }
+
+    .setting-row:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .setting-info strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .setting-info span {
+      display: block;
+      color: var(--admin-muted);
+      font-size: 11px;
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    .switch {
+      position: relative;
+      width: 46px;
+      height: 25px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      border-radius: 50px;
+      background: #2a2e35;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 19px;
+      height: 19px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: 0.2s;
+    }
+
+    .switch input:checked + .slider {
+      background: #fff;
+    }
+
+    .switch input:checked + .slider::before {
+      transform: translateX(21px);
+      background: #08090b;
+    }
+
+    /* ================= SEO PREVIEW ================= */
+
+    .google-preview {
+      background: #fff;
+      color: #202124;
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .google-url {
+      color: #202124;
+      font-size: 12px;
+      margin-bottom: 5px;
+      word-break: break-all;
+    }
+
+    .google-title {
+      color: #1a0dab;
+      font-size: 19px;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .google-description {
+      color: #4d5156;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    /* ================= SOCIAL PREVIEW ================= */
+
+    .social-preview {
+      border: 1px solid var(--admin-border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #0d0f12;
+    }
+
+    .social-image {
+      height: 150px;
+      background:
+        linear-gradient(135deg, #171a1f, #090a0c);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #676e79;
+      font-size: 13px;
+    }
+
+    .social-content {
+      padding: 15px;
+    }
+
+    .social-domain {
+      color: var(--admin-muted);
+      text-transform: uppercase;
+      font-size: 10px;
+      margin-bottom: 5px;
+    }
+
+    .social-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .social-description {
+      color: var(--admin-muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    /* ================= SEO SCORE ================= */
+
+    .seo-score {
+      text-align: center;
+      padding: 10px 0 22px;
+    }
+
+    .score-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: auto;
+      border: 9px solid #242830;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .score-number {
+      font-size: 30px;
+      font-weight: 800;
+    }
+
+    .score-label {
+      color: var(--admin-muted);
+      font-size: 10px;
+    }
+
+    .score-status {
+      margin-top: 12px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .seo-checks {
+      margin-top: 18px;
+    }
+
+    .seo-check {
+      display: flex;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #1f2228;
+      font-size: 12px;
+    }
+
+    .seo-check:last-child {
+      border-bottom: 0;
+    }
+
+    .check-icon {
+      width: 20px;
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .check-good {
+      color: var(--admin-success);
+    }
+
+    .check-bad {
+      color: var(--admin-danger);
+    }
+
+    .check-text {
+      color: #c8ccd3;
+      line-height: 1.5;
+    }
+
+    /* ================= BUTTONS ================= */
+
+    .action-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 5px;
+    }
+
+    .btn {
+      border: 1px solid var(--admin-border);
+      background: #171a1f;
+      color: #fff;
+      border-radius: 9px;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      background: #22262d;
+    }
+
+    .btn-primary {
+      background: #fff;
+      color: #08090b;
+      border-color: #fff;
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      background: #ddd;
+    }
+
+    .btn-danger {
+      border-color: #4a2020;
+      color: #ff8b8b;
+    }
+
+    /* ================= TAGS ================= */
+
+    .keyword-box {
+      min-height: 48px;
+      background: #0b0d10;
+      border: 1px solid var(--admin-border);
+      border-radius: 9px;
+      padding: 7px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .keyword-tag {
+      background: #20242b;
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 11px;
+      color: #dce0e7;
+    }
+
+    .keyword-input {
+      flex: 1;
+      min-width: 120px;
+      background: transparent;
+      border: 0;
+      outline: none;
+      color: #fff;
+      padding: 6px;
+    }
+
+    /* ================= NOTICE ================= */
+
+    .notice {
+      padding: 13px 15px;
+      border-radius: 10px;
+      background: #171a1f;
+      border: 1px solid var(--admin-border);
+      color: #b8bec8;
+      font-size: 11px;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .notice strong {
+      color: #fff;
+    }
+
+    /* ================= TOAST ================= */
+
+    .toast {
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      background: #fff;
+      color: #08090b;
+      padding: 13px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 15px 50px rgba(0,0,0,.4);
+      transform: translateY(120px);
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s;
+      z-index: 9999;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media (max-width: 1100px) {
+      .seo-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .seo-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 800px) {
+      .admin-sidebar {
+        width: 72px;
+      }
+
+      .admin-brand {
+        text-align: center;
+        padding: 20px 8px;
+      }
+
+      .admin-brand h2 {
+        font-size: 0;
+      }
+
+      .admin-brand h2::after {
+        content: "AS";
+        font-size: 18px;
+      }
+
+      .admin-brand span {
+        display: none;
+      }
+
+      .admin-nav a {
+        justify-content: center;
+        padding: 12px;
+      }
+
+      .admin-nav a span:not(.nav-icon) {
+        display: none;
+      }
+
+      .nav-section-title {
+        display: none;
+      }
+
+      .admin-main {
+        width: calc(100% - 72px);
+        margin-left: 72px;
+      }
+
+      .admin-content {
+        padding: 18px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 550px) {
+      .seo-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-user-info {
+        display: none;
+      }
+
+      .admin-topbar {
+        padding: 0 15px;
+      }
+
+      .topbar-title h1 {
+        font-size: 17px;
+      }
+
+      .card-header,
+      .card-body {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+  <!-- ================= SIDEBAR ================= -->
+
+  <aside class="admin-sidebar">
+
+    <div class="admin-brand">
+      <h2>Alamin Shop</h2>
+      <span>Admin Dashboard</span>
+    </div>
+
+    <nav class="admin-nav">
+
+      <div class="nav-section-title">Overview</div>
+
+      <a href="index.html">
+        <span class="nav-icon">⌂</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="orders.html">
+        <span class="nav-icon">▣</span>
+        <span>Orders</span>
+      </a>
+
+      <a href="products.html">
+        <span class="nav-icon">◫</span>
+        <span>Products</span>
+      </a>
+
+      <div class="nav-section-title">Store</div>
+
+      <a href="categories.html">
+        <span class="nav-icon">◈</span>
+        <span>Categories</span>
+      </a>
+
+      <a href="inventory.html">
+        <span class="nav-icon">▤</span>
+        <span>Inventory</span>
+      </a>
+
+      <a href="coupons.html">
+        <span class="nav-icon">%</span>
+        <span>Coupons</span>
+      </a>
+
+      <a href="banners.html">
+        <span class="nav-icon">▧</span>
+        <span>Banners</span>
+      </a>
+
+      <a href="media.html">
+        <span class="nav-icon">▦</span>
+        <span>Media</span>
+      </a>
+
+      <div class="nav-section-title">Customers</div>
+
+      <a href="customers.html">
+        <span class="nav-icon">♙</span>
+        <span>Customers</span>
+      </a>
+
+      <a href="reviews.html">
+        <span class="nav-icon">★</span>
+        <span>Reviews</span>
+      </a>
+
+      <a href="returns.html">
+        <span class="nav-icon">↩</span>
+        <span>Returns</span>
+      </a>
+
+      <div class="nav-section-title">Reports</div>
+
+      <a href="reports.html">
+        <span class="nav-icon">▥</span>
+        <span>Reports</span>
+      </a>
+
+      <a href="notifications.html">
+        <span class="nav-icon">♢</span>
+        <span>Notifications</span>
+      </a>
+
+      <a href="audit-logs.html">
+        <span class="nav-icon">◉</span>
+        <span>Audit Logs</span>
+      </a>
+
+      <div class="nav-section-title">Configuration</div>
+
+      <a href="payments.html">
+        <span class="nav-icon">৳</span>
+        <span>Payments</span>
+      </a>
+
+      <a href="delivery-zones.html">
+        <span class="nav-icon">⌁</span>
+        <span>Delivery Zones</span>
+      </a>
+
+      <a href="seo.html" class="active">
+        <span class="nav-icon">⌕</span>
+        <span>SEO</span>
+      </a>
+
+      <a href="settings.html">
+        <span class="nav-icon">⚙</span>
+        <span>Settings</span>
+      </a>
+
+      <a href="staff.html">
+        <span class="nav-icon">♟</span>
+        <span>Staff</span>
+      </a>
+
+      <div class="nav-section-title">Storefront</div>
+
+      <a href="../index.html">
+        <span class="nav-icon">↗</span>
+        <span>View Store</span>
+      </a>
+
+    </nav>
+  </aside>
+
+
+  <!-- ================= MAIN ================= -->
+
+  <main class="admin-main">
+
+    <header class="admin-topbar">
+
+      <div class="topbar-title">
+        <h1>SEO Settings</h1>
+        <p>Manage search engine and social sharing settings</p>
+      </div>
+
+      <div class="admin-user">
+        <div class="admin-avatar">A</div>
+
+        <div class="admin-user-info">
+          <strong>Store Administrator</strong>
+          <span>Administrator</span>
+        </div>
+      </div>
+
+    </header>
+
+
+    <div class="admin-content">
+
+      <!-- ================= STATS ================= -->
+
+      <section class="seo-stats">
+
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <span class="stat-card-label">SEO Score</span>
+            <div class="stat-icon">⌕</div>
+          </div>
+
+          <div class="stat-value" id="statScore">0%</div>
+          <div class="stat-help">Based on your current settings</div>
+        </div>
+
+
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <span class="stat-card-label">Meta Title</span>
+            <div class="stat-icon">T</div>
+          </div>
+
+          <div class="stat-value" id="statTitle">0</div>
+          <div class="stat-help">Characters used</div>
+        </div>
+
+
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <span class="stat-card-label">Meta Description</span>
+            <div class="stat-icon">D</div>
+          </div>
+
+          <div class="stat-value" id="statDescription">0</div>
+          <div class="stat-help">Characters used</div>
+        </div>
+
+
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <span class="stat-card-label">Sitemap</span>
+            <div class="stat-icon">✓</div>
+          </div>
+
+          <div class="stat-value" id="statSitemap">Ready</div>
+          <div class="stat-help">Configuration status</div>
+        </div>
+
+      </section>
+
+
+      <div class="seo-grid">
+
+        <!-- ================= LEFT ================= -->
+
+        <div>
+
+          <!-- GENERAL SEO -->
+
+          <section class="seo-card">
+
+            <div class="card-header">
+              <h2>General SEO</h2>
+              <p>
+                These settings control how Alamin Shop appears in search engines.
+              </p>
+            </div>
+
+            <div class="card-body">
+
+              <div class="notice">
+                <strong>Tip:</strong>
+                Keep your title around 50–60 characters and your description around
+                150–160 characters for a good search preview.
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="siteTitle">
+                  Meta Title
+                </label>
+
+                <input
+                  type="text"
+                  id="siteTitle"
+                  class="form-control"
+                  maxlength="70"
+                  placeholder="Alamin Shop - Quality Products at Best Prices"
+                />
+
+                <div class="counter" id="titleCounter">
+                  0 / 60 recommended
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="siteDescription">
+                  Meta Description
+                </label>
+
+                <textarea
+                  id="siteDescription"
+                  class="form-control"
+                  maxlength="180"
+                  placeholder="Shop quality products at Alamin Shop. Discover electronics, fashion, home essentials and more."
+                ></textarea>
+
+                <div class="counter" id="descriptionCounter">
+                  0 / 160 recommended
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label>Keywords</label>
+
+                <div class="keyword-box" id="keywordBox">
+
+                  <input
+                    type="text"
+                    id="keywordInput"
+                    class="keyword-input"
+                    placeholder="Type keyword and press Enter"
+                  />
+
+                </div>
+
+                <div class="form-help">
+                  Keywords are mainly useful for organization and internal SEO planning.
+                  Search engines do not rely heavily on the old meta-keywords tag.
+                </div>
+
+              </div>
+
+
+              <div class="form-row">
+
+                <div class="form-group">
+
+                  <label for="siteUrl">
+                    Store URL
+                  </label>
+
+                  <input
+                    type="url"
+                    id="siteUrl"
+                    class="form-control"
+                    placeholder="https://example.com"
+                  />
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label for="canonicalUrl">
+                    Canonical URL
+                  </label>
+
+                  <input
+                    type="url"
+                    id="canonicalUrl"
+                    class="form-control"
+                    placeholder="https://example.com"
+                  />
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- SOCIAL SEO -->
+
+          <section class="seo-card">
+
+            <div class="card-header">
+              <h2>Social Sharing</h2>
+              <p>
+                Control how your store looks when someone shares a page on social media.
+              </p>
+            </div>
+
+            <div class="card-body">
+
+              <div class="form-group">
+
+                <label for="ogTitle">
+                  Open Graph Title
+                </label>
+
+                <input
+                  type="text"
+                  id="ogTitle"
+                  class="form-control"
+                  maxlength="100"
+                  placeholder="Alamin Shop - Online Shopping"
+                />
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="ogDescription">
+                  Open Graph Description
+                </label>
+
+                <textarea
+                  id="ogDescription"
+                  class="form-control"
+                  maxlength="200"
+                  placeholder="Discover quality products and great deals at Alamin Shop."
+                ></textarea>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="ogImage">
+                  Social Share Image URL
+                </label>
+
+                <input
+                  type="url"
+                  id="ogImage"
+                  class="form-control"
+                  placeholder="https://example.com/images/social-share.jpg"
+                />
+
+                <div class="form-help">
+                  Recommended size: 1200 × 630 pixels.
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="twitterCard">
+                  Twitter/X Card Type
+                </label>
+
+                <select id="twitterCard" class="form-control">
+
+                  <option value="summary_large_image">
+                    Large Image
+                  </option>
+
+                  <option value="summary">
+                    Summary
+                  </option>
+
+                </select>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- SEARCH ENGINE -->
+
+          <section class="seo-card">
+
+            <div class="card-header">
+              <h2>Search Engine Settings</h2>
+              <p>
+                Configure crawling and indexing behavior.
+              </p>
+            </div>
+
+            <div class="card-body">
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <strong>Allow search engine indexing</strong>
+                  <span>
+                    Allow Google and other search engines to index your store.
+                  </span>
+                </div>
+
+                <label class="switch">
+                  <input type="checkbox" id="allowIndexing" checked />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <strong>Follow links</strong>
+                  <span>
+                    Allow search engines to follow links found on your pages.
+                  </span>
+                </div>
+
+                <label class="switch">
+                  <input type="checkbox" id="allowFollowing" checked />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <strong>Generate sitemap</strong>
+                  <span>
+                    Keep sitemap configuration enabled for search engine discovery.
+                  </span>
+                </div>
+
+                <label class="switch">
+                  <input type="checkbox" id="generateSitemap" checked />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <strong>Enable structured data</strong>
+                  <span>
+                    Use structured data for products and store information.
+                  </span>
+                </div>
+
+                <label class="switch">
+                  <input type="checkbox" id="structuredData" checked />
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- VERIFICATION -->
+
+          <section class="seo-card">
+
+            <div class="card-header">
+              <h2>Search Console Verification</h2>
+              <p>
+                Add verification values when connecting your store to webmaster tools.
+              </p>
+            </div>
+
+            <div class="card-body">
+
+              <div class="form-group">
+
+                <label for="googleVerification">
+                  Google Verification
+                </label>
+
+                <input
+                  type="text"
+                  id="googleVerification"
+                  class="form-control"
+                  placeholder="Google verification code"
+                />
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="bingVerification">
+                  Bing Verification
+                </label>
+
+                <input
+                  type="text"
+                  id="bingVerification"
+                  class="form-control"
+                  placeholder="Bing verification code"
+                />
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="facebookVerification">
+                  Facebook Domain Verification
+                </label>
+
+                <input
+                  type="text"
+                  id="facebookVerification"
+                  class="form-control"
+                  placeholder="Facebook verification code"
+                />
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- PAGE SEO -->
+
+          <section class="seo-card">
+
+            <div class="card-header">
+              <h2>Page SEO Defaults</h2>
+              <p>
+                Default SEO templates for different parts of your store.
+              </p>
+            </div>
+
+            <div class="card-body">
+
+              <div class="form-group">
+
+                <label for="productTitleTemplate">
+                  Product Title Template
+                </label>
+
+                <input
+                  type="text"
+                  id="productTitleTemplate"
+                  class="form-control"
+                  placeholder="%product% | Alamin Shop"
+                />
+
+                <div class="form-help">
+                  Example: %product% | Alamin Shop
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="categoryTitleTemplate">
+                  Category Title Template
+                </label>
+
+                <input
+                  type="text"
+                  id="categoryTitleTemplate"
+                  class="form-control"
+                  placeholder="%category% Products | Alamin Shop"
+                />
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="productDescriptionTemplate">
+                  Product Description Template
+                </label>
+
+                <textarea
+                  id="productDescriptionTemplate"
+                  class="form-control"
+                  placeholder="Buy %product% from Alamin Shop. Check price, availability and details."
+                ></textarea>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- ACTION -->
+
+          <div class="action-bar">
+
+            <button
+              type="button"
+              class="btn"
+              id="resetSeoBtn"
+            >
+              Reset
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="saveSeoBtn"
+            >
+              Save SEO Settings
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================= RIGHT ================= -->
+
+        <div>
+
+          <!-- SEO SCORE -->
+
+          <section class="seo-card">
+
+            <div class="card-header">
+              <h2>SEO Health</h2>
+              <p>
+                Quick overview of your current SEO configuration.
+              </p>
+            </div>
+
+            <div class="card-body">
+
+              <div class="seo-score">
+
+                <div class="score-circle">
+
+                  <div
+                    class="score-number"
+                    id="scoreNumber"
+                  >
+                    0%
+                  </div>
+
+                  <div class="score-label">
+                    SEO SCORE
+                  </div>
+
+                </div>
+
+                <div
+                  class="score-status"
+                  id="scoreStatus"
+                >
+                  Needs improvement
+                </div>
+
+              </div>
+
+
+              <div
+                class="seo-checks"
+                id="seoChecks"
+              ></div>
+
+            </div>
+
+          </section>
+
+
+          <!-- GOOGLE PREVIEW -->
+
+          <section class="seo-card">
+
+            <div class="card-header">
+              <h2>Google Preview</h2>
+              <p>
+                Approximate search result preview.
+              </p>
+            </div>
+
+            <div class="card-body">
+
+              <div class="google-preview">
+
+                <div
+                  class="google-url"
+                  id="previewUrl"
+                >
+                  https://example.com
+                </div>
+
+                <div
+                  class="google-title"
+                  id="previewTitle"
+                >
+                  Alamin Shop - Quality Products at Best Prices
+                </div>
+
+                <div
+                  class="google-description"
+                  id="previewDescription"
+                >
+                  Shop quality products at Alamin Shop. Discover electronics,
+                  fashion, home essentials and more.
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- SOCIAL PREVIEW -->
+
+          <section class="seo-card">
+
+            <div class="card-header">
+              <h2>Social Preview</h2>
+              <p>
+                Facebook, LinkedIn and other Open Graph preview.
+              </p>
+            </div>
+
+            <div class="card-body">
+
+              <div class="social-preview">
+
+                <div class="social-image">
+                  Social Share Image
+                </div>
+
+                <div class="social-content">
+
+                  <div
+                    class="social-domain"
+                    id="socialDomain"
+                  >
+                    example.com
+                  </div>
+
+                  <div
+                    class="social-title"
+                    id="socialTitle"
+                  >
+                    Alamin Shop - Online Shopping
+                  </div>
+
+                  <div
+                    class="social-description"
+                    id="socialDescription"
+                  >
+                    Discover quality products and great deals at Alamin Shop.
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- ROBOTS -->
+
+          <section class="seo-card">
+
+            <div class="card-header">
+              <h2>Robots Preview</h2>
+              <p>
+                Current robots directive generated from your settings.
+              </p>
+            </div>
+
+            <div class="card-body">
+
+              <div
+                class="notice"
+                id="robotsPreview"
+              >
+                index, follow
+              </div>
+
+              <div class="form-help">
+                In production, your PHP backend should generate the actual
+                robots.txt and meta robots tags.
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- SITEMAP -->
+
+          <section class="seo-card">
+
+            <div class="card-header">
+              <h2>Sitemap</h2>
+              <p>
+                Sitemap configuration status.
+              </p>
+            </div>
+
+            <div class="card-body">
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <strong>Sitemap Status</strong>
+                  <span id="sitemapStatusText">
+                    Sitemap generation enabled
+                  </span>
+                </div>
+
+                <span
+                  id="sitemapBadge"
+                  style="
+                    padding:6px 9px;
+                    border-radius:7px;
+                    background:#17251c;
+                    color:#7ee7a0;
+                    font-size:11px;
+                    font-weight:700;
+                  "
+                >
+                  READY
+                </span>
+
+              </div>
+
+
+              <div class="form-help" style="margin-top:14px;">
+                Production URL:
+                <strong style="color:#fff;">
+                  /sitemap.xml
+                </strong>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+
+<div
+  class="toast"
+  id="toast"
+>
+  SEO settings saved successfully
+</div>
+
+
+<script>
+
+  /* =========================================================
+     ALAMIN SHOP - SEO SETTINGS
+     LocalStorage Key:
+     shopnest_seo_settings
+  ========================================================= */
+
+  const SEO_STORAGE_KEY = "shopnest_seo_settings";
+
+
+  const defaultSeoSettings = {
+
+    siteTitle:
+      "Alamin Shop - Quality Products at Best Prices",
+
+    siteDescription:
+      "Shop quality products at Alamin Shop. Discover electronics, fashion, home essentials and more.",
+
+    keywords: [
+      "Alamin Shop",
+      "online shopping",
+      "Bangladesh",
+      "electronics",
+      "fashion",
+      "home products"
+    ],
+
+    siteUrl:
+      "https://example.com",
+
+    canonicalUrl:
+      "https://example.com",
+
+    ogTitle:
+      "Alamin Shop - Online Shopping",
+
+    ogDescription:
+      "Discover quality products and great deals at Alamin Shop.",
+
+    ogImage:
+      "",
+
+    twitterCard:
+      "summary_large_image",
+
+    allowIndexing:
+      true,
+
+    allowFollowing:
+      true,
+
+    generateSitemap:
+      true,
+
+    structuredData:
+      true,
+
+    googleVerification:
+      "",
+
+    bingVerification:
+      "",
+
+    facebookVerification:
+      "",
+
+    productTitleTemplate:
+      "%product% | Alamin Shop",
+
+    categoryTitleTemplate:
+      "%category% Products | Alamin Shop",
+
+    productDescriptionTemplate:
+      "Buy %product% from Alamin Shop. Check price, availability and details."
+
+  };
+
+
+  let seoSettings = { ...defaultSeoSettings };
+
+
+  /* =========================================================
+     DOM
+  ========================================================= */
+
+  const siteTitle =
+    document.getElementById("siteTitle");
+
+  const siteDescription =
+    document.getElementById("siteDescription");
+
+  const siteUrl =
+    document.getElementById("siteUrl");
+
+  const canonicalUrl =
+    document.getElementById("canonicalUrl");
+
+  const ogTitle =
+    document.getElementById("ogTitle");
+
+  const ogDescription =
+    document.getElementById("ogDescription");
+
+  const ogImage =
+    document.getElementById("ogImage");
+
+  const twitterCard =
+    document.getElementById("twitterCard");
+
+  const allowIndexing =
+    document.getElementById("allowIndexing");
+
+  const allowFollowing =
+    document.getElementById("allowFollowing");
+
+  const generateSitemap =
+    document.getElementById("generateSitemap");
+
+  const structuredData =
+    document.getElementById("structuredData");
+
+  const googleVerification =
+    document.getElementById("googleVerification");
+
+  const bingVerification =
+    document.getElementById("bingVerification");
+
+  const facebookVerification =
+    document.getElementById("facebookVerification");
+
+  const productTitleTemplate =
+    document.getElementById("productTitleTemplate");
+
+  const categoryTitleTemplate =
+    document.getElementById("categoryTitleTemplate");
+
+  const productDescriptionTemplate =
+    document.getElementById("productDescriptionTemplate");
+
+  const keywordBox =
+    document.getElementById("keywordBox");
+
+  const keywordInput =
+    document.getElementById("keywordInput");
+
+
+  /* =========================================================
+     LOAD SETTINGS
+  ========================================================= */
+
+  function loadSeoSettings() {
+
+    try {
+
+      const saved =
+        localStorage.getItem(SEO_STORAGE_KEY);
+
+      if (saved) {
+
+        const parsed =
+          JSON.parse(saved);
+
+        seoSettings = {
+          ...defaultSeoSettings,
+          ...parsed
+        };
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "SEO settings load error:",
+        error
+      );
+
+      seoSettings = {
+        ...defaultSeoSettings
+      };
+
+    }
+
+    populateForm();
+
+  }
+
+
+  /* =========================================================
+     POPULATE FORM
+  ========================================================= */
+
+  function populateForm() {
+
+    siteTitle.value =
+      seoSettings.siteTitle || "";
+
+    siteDescription.value =
+      seoSettings.siteDescription || "";
+
+    siteUrl.value =
+      seoSettings.siteUrl || "";
+
+    canonicalUrl.value =
+      seoSettings.canonicalUrl || "";
+
+    ogTitle.value =
+      seoSettings.ogTitle || "";
+
+    ogDescription.value =
+      seoSettings.ogDescription || "";
+
+    ogImage.value =
+      seoSettings.ogImage || "";
+
+    twitterCard.value =
+      seoSettings.twitterCard ||
+      "summary_large_image";
+
+    allowIndexing.checked =
+      seoSettings.allowIndexing !== false;
+
+    allowFollowing.checked =
+      seoSettings.allowFollowing !== false;
+
+    generateSitemap.checked =
+      seoSettings.generateSitemap !== false;
+
+    structuredData.checked =
+      seoSettings.structuredData !== false;
+
+    googleVerification.value =
+      seoSettings.googleVerification || "";
+
+    bingVerification.value =
+      seoSettings.bingVerification || "";
+
+    facebookVerification.value =
+      seoSettings.facebookVerification || "";
+
+    productTitleTemplate.value =
+      seoSettings.productTitleTemplate || "";
+
+    categoryTitleTemplate.value =
+      seoSettings.categoryTitleTemplate || "";
+
+    productDescriptionTemplate.value =
+      seoSettings.productDescriptionTemplate || "";
+
+    renderKeywords();
+
+    updateAll();
+
+  }
+
+
+  /* =========================================================
+     KEYWORDS
+  ========================================================= */
+
+  function renderKeywords() {
+
+    keywordBox
+      .querySelectorAll(".keyword-tag")
+      .forEach(tag => tag.remove());
+
+    const keywords =
+      Array.isArray(seoSettings.keywords)
+        ? seoSettings.keywords
+        : [];
+
+    keywords.forEach((keyword, index) => {
+
+      const tag =
+        document.createElement("span");
+
+      tag.className =
+        "keyword-tag";
+
+      tag.innerHTML = `
+        ${escapeHtml(keyword)}
+        <button
+          type="button"
+          data-index="${index}"
+          style="
+            border:0;
+            background:transparent;
+            color:#8e96a3;
+            cursor:pointer;
+            margin-left:5px;
+          "
+        >
+          ×
+        </button>
+      `;
+
+      keywordBox.insertBefore(
+        tag,
+        keywordInput
+      );
+
+    });
+
+  }
+
+
+  keywordInput.addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key === "Enter" ||
+        event.key === ","
+      ) {
+
+        event.preventDefault();
+
+        const value =
+          keywordInput.value
+            .trim()
+            .replace(/,$/, "");
+
+        if (!value) return;
+
+        if (
+          !seoSettings.keywords
+            .map(k => k.toLowerCase())
+            .includes(value.toLowerCase())
+        ) {
+
+          seoSettings.keywords.push(value);
+
+        }
+
+        keywordInput.value = "";
+
+        renderKeywords();
+
+        updateAll();
+
+      }
+
+    }
+  );
+
+
+  keywordBox.addEventListener(
+    "click",
+    function(event) {
+
+      const button =
+        event.target.closest(
+          "button[data-index]"
+        );
+
+      if (!button) return;
+
+      const index =
+        Number(button.dataset.index);
+
+      seoSettings.keywords.splice(
+        index,
+        1
+      );
+
+      renderKeywords();
+
+      updateAll();
+
+    }
+  );
+
+
+  /* =========================================================
+     GET FORM DATA
+  ========================================================= */
+
+  function collectFormData() {
+
+    seoSettings = {
+
+      ...seoSettings,
+
+      siteTitle:
+        siteTitle.value.trim(),
+
+      siteDescription:
+        siteDescription.value.trim(),
+
+      siteUrl:
+        siteUrl.value.trim(),
+
+      canonicalUrl:
+        canonicalUrl.value.trim(),
+
+      ogTitle:
+        ogTitle.value.trim(),
+
+      ogDescription:
+        ogDescription.value.trim(),
+
+      ogImage:
+        ogImage.value.trim(),
+
+      twitterCard:
+        twitterCard.value,
+
+      allowIndexing:
+        allowIndexing.checked,
+
+      allowFollowing:
+        allowFollowing.checked,
+
+      generateSitemap:
+        generateSitemap.checked,
+
+      structuredData:
+        structuredData.checked,
+
+      googleVerification:
+        googleVerification.value.trim(),
+
+      bingVerification:
+        bingVerification.value.trim(),
+
+      facebookVerification:
+        facebookVerification.value.trim(),
+
+      productTitleTemplate:
+        productTitleTemplate.value.trim(),
+
+      categoryTitleTemplate:
+        categoryTitleTemplate.value.trim(),
+
+      productDescriptionTemplate:
+        productDescriptionTemplate.value.trim()
+
+    };
+
+  }
+
+
+  /* =========================================================
+     LIVE UPDATE
+  ========================================================= */
+
+  const allInputs = document.querySelectorAll(
+    "input:not(#keywordInput), textarea, select"
+  );
+
+
+  allInputs.forEach(input => {
+
+    input.addEventListener(
+      "input",
+      updateAll
+    );
+
+    input.addEventListener(
+      "change",
+      updateAll
+    );
+
+  });
+
+
+  function updateAll() {
+
+    collectFormData();
+
+    updateCounters();
+
+    updatePreviews();
+
+    updateSeoScore();
+
+    updateRobots();
+
+    updateSitemap();
+
+  }
+
+
+  /* =========================================================
+     COUNTERS
+  ========================================================= */
+
+  function updateCounters() {
+
+    const titleLength =
+      seoSettings.siteTitle.length;
+
+    const descriptionLength =
+      seoSettings.siteDescription.length;
+
+
+    const titleCounter =
+      document.getElementById(
+        "titleCounter"
+      );
+
+    const descriptionCounter =
+      document.getElementById(
+        "descriptionCounter"
+      );
+
+
+    titleCounter.textContent =
+      `${titleLength} / 60 recommended`;
+
+
+    descriptionCounter.textContent =
+      `${descriptionLength} / 160 recommended`;
+
+
+    titleCounter.className =
+      "counter " +
+      (
+        titleLength > 60
+          ? "danger"
+          : titleLength > 50
+            ? ""
+            : ""
+      );
+
+
+    descriptionCounter.className =
+      "counter " +
+      (
+        descriptionLength > 160
+          ? "danger"
+          : ""
+      );
+
+
+    document.getElementById(
+      "statTitle"
+    ).textContent =
+      titleLength;
+
+
+    document.getElementById(
+      "statDescription"
+    ).textContent =
+      descriptionLength;
+
+  }
+
+
+  /* =========================================================
+     PREVIEWS
+  ========================================================= */
+
+  function updatePreviews() {
+
+    document.getElementById(
+      "previewUrl"
+    ).textContent =
+      seoSettings.canonicalUrl ||
+      seoSettings.siteUrl ||
+      "https://example.com";
+
+
+    document.getElementById(
+      "previewTitle"
+    ).textContent =
+      seoSettings.siteTitle ||
+      "Alamin Shop";
+
+
+    document.getElementById(
+      "previewDescription"
+    ).textContent =
+      seoSettings.siteDescription ||
+      "Alamin Shop online store.";
+
+
+    document.getElementById(
+      "socialDomain"
+    ).textContent =
+      getDomain(
+        seoSettings.siteUrl
+      );
+
+
+    document.getElementById(
+      "socialTitle"
+    ).textContent =
+      seoSettings.ogTitle ||
+      seoSettings.siteTitle ||
+      "Alamin Shop";
+
+
+    document.getElementById(
+      "socialDescription"
+    ).textContent =
+      seoSettings.ogDescription ||
+      seoSettings.siteDescription ||
+      "";
+
+  }
+
+
+  /* =========================================================
+     SEO SCORE
+  ========================================================= */
+
+  function calculateSeoScore() {
+
+    let score = 0;
+
+    const checks = [];
+
+
+    /* TITLE */
+
+    const titleLength =
+      seoSettings.siteTitle.length;
+
+    if (
+      titleLength >= 30 &&
+      titleLength <= 60
+    ) {
+
+      score += 15;
+
+      checks.push({
+        good: true,
+        text: "Meta title length is within the recommended range."
+      });
+
+    } else {
+
+      checks.push({
+        good: false,
+        text: "Meta title should ideally be around 30–60 characters."
+      });
+
+    }
+
+
+    /* DESCRIPTION */
+
+    const descriptionLength =
+      seoSettings.siteDescription.length;
+
+    if (
+      descriptionLength >= 120 &&
+      descriptionLength <= 160
+    ) {
+
+      score += 15;
+
+      checks.push({
+        good: true,
+        text: "Meta description length looks good."
+      });
+
+    } else {
+
+      checks.push({
+        good: false,
+        text: "Meta description should ideally be around 120–160 characters."
+      });
+
+    }
+
+
+    /* URL */
+
+    if (
+      seoSettings.siteUrl &&
+      isValidUrl(seoSettings.siteUrl)
+    ) {
+
+      score += 10;
+
+      checks.push({
+        good: true,
+        text: "Store URL is configured."
+      });
+
+    } else {
+
+      checks.push({
+        good: false,
+        text: "Add a valid store URL."
+      });
+
+    }
+
+
+    /* CANONICAL */
+
+    if (
+      seoSettings.canonicalUrl &&
+      isValidUrl(seoSettings.canonicalUrl)
+    ) {
+
+      score += 10;
+
+      checks.push({
+        good: true,
+        text: "Canonical URL is configured."
+      });
+
+    } else {
+
+      checks.push({
+        good: false,
+        text: "Add a canonical URL."
+      });
+
+    }
+
+
+    /* KEYWORDS */
+
+    if (
+      seoSettings.keywords &&
+      seoSettings.keywords.length >= 3
+    ) {
+
+      score += 10;
+
+      checks.push({
+        good: true,
+        text: "SEO keyword planning is configured."
+      });
+
+    } else {
+
+      checks.push({
+        good: false,
+        text: "Add a few relevant keywords for your SEO plan."
+      });
+
+    }
+
+
+    /* OPEN GRAPH */
+
+    if (
+      seoSettings.ogTitle &&
+      seoSettings.ogDescription
+    ) {
+
+      score += 10;
+
+      checks.push({
+        good: true,
+        text: "Social sharing title and description are configured."
+      });
+
+    } else {
+
+      checks.push({
+        good: false,
+        text: "Configure Open Graph title and description."
+      });
+
+    }
+
+
+    /* INDEXING */
+
+    if (
+      seoSettings.allowIndexing
+    ) {
+
+      score += 10;
+
+      checks.push({
+        good: true,
+        text: "Search engine indexing is enabled."
+      });
+
+    } else {
+
+      checks.push({
+        good: false,
+        text: "Search engine indexing is currently disabled."
+      });
+
+    }
+
+
+    /* SITEMAP */
+
+    if (
+      seoSettings.generateSitemap
+    ) {
+
+      score += 10;
+
+      checks.push({
+        good: true,
+        text: "Sitemap generation is enabled."
+      });
+
+    } else {
+
+      checks.push({
+        good: false,
+        text: "Enable sitemap generation."
+      });
+
+    }
+
+
+    /* STRUCTURED DATA */
+
+    if (
+      seoSettings.structuredData
+    ) {
+
+      score += 10;
+
+      checks.push({
+        good: true,
+        text: "Structured data is enabled."
+      });
+
+    } else {
+
+      checks.push({
+        good: false,
+        text: "Enable structured data for richer search results."
+      });
+
+    }
+
+
+    return {
+      score,
+      checks
+    };
+
+  }
+
+
+  function updateSeoScore() {
+
+    const result =
+      calculateSeoScore();
+
+
+    document.getElementById(
+      "statScore"
+    ).textContent =
+      `${result.score}%`;
+
+
+    document.getElementById(
+      "scoreNumber"
+    ).textContent =
+      `${result.score}%`;
+
+
+    let status =
+      "Needs improvement";
+
+
+    if (result.score >= 80) {
+
+      status =
+        "Excellent SEO setup";
+
+    } else if (result.score >= 60) {
+
+      status =
+        "Good SEO setup";
+
+    } else if (result.score >= 40) {
+
+      status =
+        "Needs some improvement";
+
+    }
+
+
+    document.getElementById(
+      "scoreStatus"
+    ).textContent =
+      status;
+
+
+    const checksContainer =
+      document.getElementById(
+        "seoChecks"
+      );
+
+
+    checksContainer.innerHTML =
+      result.checks
+        .map(check => {
+
+          return `
+            <div class="seo-check">
+
+              <div class="check-icon ${
+                check.good
+                  ? "check-good"
+                  : "check-bad"
+              }">
+                ${
+                  check.good
+                    ? "✓"
+                    : "!"
+                }
+              </div>
+
+              <div class="check-text">
+                ${escapeHtml(check.text)}
+              </div>
+
+            </div>
+          `;
+
+        })
+        .join("");
+
+  }
+
+
+  /* =========================================================
+     ROBOTS
+  ========================================================= */
+
+  function updateRobots() {
+
+    let robots = "";
+
+    if (
+      seoSettings.allowIndexing
+    ) {
+
+      robots += "index";
+
+    } else {
+
+      robots += "noindex";
+
+    }
+
+
+    robots += ", ";
+
+
+    if (
+      seoSettings.allowFollowing
+    ) {
+
+      robots += "follow";
+
+    } else {
+
+      robots += "nofollow";
+
+    }
+
+
+    document.getElementById(
+      "robotsPreview"
+    ).textContent =
+      robots;
+
+  }
+
+
+  /* =========================================================
+     SITEMAP
+  ========================================================= */
+
+  function updateSitemap() {
+
+    const enabled =
+      seoSettings.generateSitemap;
+
+
+    const statusText =
+      document.getElementById(
+        "sitemapStatusText"
+      );
+
+
+    const badge =
+      document.getElementById(
+        "sitemapBadge"
+      );
+
+
+    const stat =
+      document.getElementById(
+        "statSitemap"
+      );
+
+
+    if (enabled) {
+
+      statusText.textContent =
+        "Sitemap generation enabled";
+
+      badge.textContent =
+        "READY";
+
+      badge.style.background =
+        "#17251c";
+
+      badge.style.color =
+        "#7ee7a0";
+
+      stat.textContent =
+        "Ready";
+
+    } else {
+
+      statusText.textContent =
+        "Sitemap generation disabled";
+
+      badge.textContent =
+        "OFF";
+
+      badge.style.background =
+        "#2a1919";
+
+      badge.style.color =
+        "#ff8b8b";
+
+      stat.textContent =
+        "Off";
+
+    }
+
+  }
+
+
+  /* =========================================================
+     SAVE
+  ========================================================= */
+
+  document.getElementById(
+    "saveSeoBtn"
+  ).addEventListener(
+    "click",
+    function() {
+
+      collectFormData();
+
+      try {
+
+        localStorage.setItem(
+          SEO_STORAGE_KEY,
+          JSON.stringify(
+            seoSettings
+          )
+        );
+
+        showToast(
+          "SEO settings saved successfully"
+        );
+
+      } catch (error) {
+
+        console.error(error);
+
+        showToast(
+          "Could not save SEO settings"
+        );
+
+      }
+
+    }
+  );
+
+
+  /* =========================================================
+     RESET
+  ========================================================= */
+
+  document.getElementById(
+    "resetSeoBtn"
+  ).addEventListener(
+    "click",
+    function() {
+
+      const confirmed =
+        confirm(
+          "Reset all SEO settings to default?"
+        );
+
+      if (!confirmed) return;
+
+      seoSettings = {
+        ...defaultSeoSettings,
+        keywords: [
+          ...defaultSeoSettings.keywords
+        ]
+      };
+
+      localStorage.removeItem(
+        SEO_STORAGE_KEY
+      );
+
+      populateForm();
+
+      showToast(
+        "SEO settings reset"
+      );
+
+    }
+  );
+
+
+  /* =========================================================
+     HELPERS
+  ========================================================= */
+
+  function showToast(message) {
+
+    const toast =
+      document.getElementById(
+        "toast"
+      );
+
+    toast.textContent =
+      message;
+
+    toast.classList.add(
+      "show"
+    );
+
+
+    setTimeout(
+      () => {
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
+      2500
+    );
+
+  }
+
+
+  function escapeHtml(value) {
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  function isValidUrl(value) {
+
+    try {
+
+      new URL(value);
+
+      return true;
+
+    } catch {
+
+      return false;
+
+    }
+
+  }
+
+
+  function getDomain(url) {
+
+    try {
+
+      return new URL(url).hostname;
+
+    } catch {
+
+      return "example.com";
+
+    }
+
+  }
+
+
+  /* =========================================================
+     INIT
+  ========================================================= */
+
+  loadSeoSettings();
+
+</script>
+
+</body>
+</html>

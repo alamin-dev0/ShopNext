@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Terms & Conditions | Alamin Shop</title>
+  <meta
+    name="description"
+    content="Read the Terms and Conditions for using Alamin Shop."
+  />
+
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    .terms-page {
+      padding: 70px 0 90px;
+    }
+
+    .terms-hero {
+      max-width: 800px;
+      margin: 0 auto 55px;
+      text-align: center;
+    }
+
+    .terms-hero h1 {
+      font-size: clamp(34px, 5vw, 58px);
+      margin-bottom: 16px;
+    }
+
+    .terms-hero p {
+      color: #a7adb7;
+      line-height: 1.8;
+      font-size: 16px;
+    }
+
+    .terms-updated {
+      display: inline-flex;
+      margin-top: 20px;
+      padding: 9px 15px;
+      border: 1px solid #292e38;
+      border-radius: 999px;
+      background: #111318;
+      color: #cbd0d8;
+      font-size: 13px;
+    }
+
+    .terms-layout {
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr);
+      gap: 30px;
+      align-items: start;
+    }
+
+    .terms-sidebar {
+      position: sticky;
+      top: 100px;
+      background: #101216;
+      border: 1px solid #272b33;
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .terms-sidebar h3 {
+      font-size: 15px;
+      margin-bottom: 15px;
+    }
+
+    .terms-sidebar a {
+      display: block;
+      color: #9da4af;
+      text-decoration: none;
+      font-size: 14px;
+      padding: 9px 10px;
+      border-radius: 9px;
+      margin-bottom: 4px;
+      transition: 0.2s ease;
+    }
+
+    .terms-sidebar a:hover {
+      color: #fff;
+      background: #191d24;
+    }
+
+    .terms-content {
+      background: #101216;
+      border: 1px solid #272b33;
+      border-radius: 20px;
+      padding: 35px;
+    }
+
+    .terms-section {
+      scroll-margin-top: 100px;
+      padding-bottom: 35px;
+      margin-bottom: 35px;
+      border-bottom: 1px solid #242832;
+    }
+
+    .terms-section:last-child {
+      border-bottom: 0;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .terms-section h2 {
+      font-size: 25px;
+      margin-bottom: 15px;
+    }
+
+    .terms-section h3 {
+      font-size: 17px;
+      margin: 22px 0 10px;
+    }
+
+    .terms-section p {
+      color: #aeb4be;
+      line-height: 1.85;
+      margin-bottom: 12px;
+    }
+
+    .terms-section ul {
+      padding-left: 22px;
+      margin: 12px 0;
+    }
+
+    .terms-section li {
+      color: #aeb4be;
+      line-height: 1.8;
+      margin-bottom: 7px;
+    }
+
+    .terms-highlight {
+      background: #151920;
+      border: 1px solid #2a303a;
+      border-radius: 14px;
+      padding: 18px;
+      margin: 18px 0;
+    }
+
+    .terms-highlight strong {
+      color: #fff;
+    }
+
+    .terms-contact {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 25px;
+    }
+
+    .terms-contact a {
+      text-decoration: none;
+    }
+
+    @media (max-width: 850px) {
+      .terms-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .terms-sidebar {
+        position: static;
+      }
+
+      .terms-content {
+        padding: 25px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .terms-page {
+        padding: 45px 0 65px;
+      }
+
+      .terms-content {
+        padding: 20px;
+        border-radius: 16px;
+      }
+
+      .terms-section h2 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= HEADER ================= -->
+
+  <header class="site-header">
+
+    <div class="container header-inner">
+
+      <a href="index.html" class="logo">
+        <span class="logo-mark">A</span>
+        <span>Alamin Shop</span>
+      </a>
+
+      <div class="header-search">
+
+        <form id="termsSearchForm">
+
+          <input
+            type="search"
+            id="termsSearchInput"
+            placeholder="Search products..."
+            autocomplete="off"
+          />
+
+          <button type="submit">Search</button>
+
+        </form>
+
+      </div>
+
+      <div class="header-actions">
+
+        <a href="wishlist.html" class="header-action">
+          <span>♡</span>
+          <small>Wishlist</small>
+          <b id="wishlistCount">0</b>
+        </a>
+
+        <a href="cart.html" class="header-action">
+          <span>🛒</span>
+          <small>Cart</small>
+          <b id="cartCount">0</b>
+        </a>
+
+        <a href="account.html" class="header-action">
+          <span>👤</span>
+          <small>Account</small>
+        </a>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ================= NAVIGATION ================= -->
+
+  <nav class="main-nav">
+
+    <div class="container nav-inner">
+
+      <a href="index.html">Home</a>
+
+      <a href="products.html">Products</a>
+
+      <a href="products.html?category=electronics">
+        Electronics
+      </a>
+
+      <a href="products.html?category=fashion">
+        Fashion
+      </a>
+
+      <a href="products.html?category=home">
+        Home & Living
+      </a>
+
+      <a href="products.html?category=beauty">
+        Beauty
+      </a>
+
+      <a href="products.html?category=offers">
+        Offers
+      </a>
+
+    </div>
+
+  </nav>
+
+
+  <!-- ================= MAIN ================= -->
+
+  <main class="terms-page">
+
+    <div class="container">
+
+      <div class="terms-hero">
+
+        <h1>Terms & Conditions</h1>
+
+        <p>
+          These Terms & Conditions explain the rules and conditions
+          that apply when using Alamin Shop, placing orders and
+          purchasing products through our website.
+        </p>
+
+        <div class="terms-updated">
+          📄 Last updated: September 2026
+        </div>
+
+      </div>
+
+
+      <div class="terms-layout">
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <aside class="terms-sidebar">
+
+          <h3>On this page</h3>
+
+          <a href="#acceptance">
+            Acceptance of Terms
+          </a>
+
+          <a href="#accounts">
+            Customer Accounts
+          </a>
+
+          <a href="#products">
+            Products & Pricing
+          </a>
+
+          <a href="#orders">
+            Orders
+          </a>
+
+          <a href="#payment">
+            Payment
+          </a>
+
+          <a href="#delivery">
+            Delivery
+          </a>
+
+          <a href="#returns">
+            Returns & Refunds
+          </a>
+
+          <a href="#prohibited">
+            Prohibited Activities
+          </a>
+
+          <a href="#liability">
+            Liability
+          </a>
+
+          <a href="#changes">
+            Changes
+          </a>
+
+          <a href="#contact">
+            Contact
+          </a>
+
+        </aside>
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <article class="terms-content">
+
+
+          <!-- 1 -->
+
+          <section class="terms-section" id="acceptance">
+
+            <h2>1. Acceptance of Terms</h2>
+
+            <p>
+              By accessing or using Alamin Shop, you agree to follow
+              these Terms & Conditions and any applicable policies
+              published on our website.
+            </p>
+
+            <p>
+              If you do not agree with these terms, please do not use
+              the website or place an order.
+            </p>
+
+          </section>
+
+
+          <!-- 2 -->
+
+          <section class="terms-section" id="accounts">
+
+            <h2>2. Customer Accounts</h2>
+
+            <p>
+              Some features of Alamin Shop may require you to create
+              a customer account.
+            </p>
+
+            <p>
+              You are responsible for providing accurate information
+              and keeping your login credentials secure.
+            </p>
+
+            <h3>Account Responsibilities</h3>
+
+            <ul>
+
+              <li>
+                Provide accurate customer information.
+              </li>
+
+              <li>
+                Keep your password confidential.
+              </li>
+
+              <li>
+                Do not share your account with unauthorized people.
+              </li>
+
+              <li>
+                Notify us if you believe your account has been
+                accessed without permission.
+              </li>
+
+            </ul>
+
+          </section>
+
+
+          <!-- 3 -->
+
+          <section class="terms-section" id="products">
+
+            <h2>3. Products & Pricing</h2>
+
+            <p>
+              We try to keep product information, images, descriptions,
+              prices and stock information accurate.
+            </p>
+
+            <p>
+              However, product availability and pricing may change
+              without prior notice.
+            </p>
+
+            <h3>Product Availability</h3>
+
+            <p>
+              An item being displayed on the website does not always
+              guarantee that it will remain available until checkout
+              or delivery.
+            </p>
+
+            <div class="terms-highlight">
+
+              <strong>
+                Important:
+              </strong>
+
+              If an item becomes unavailable after an order is placed,
+              we may contact the customer regarding cancellation,
+              replacement or refund.
+
+            </div>
+
+          </section>
+
+
+          <!-- 4 -->
+
+          <section class="terms-section" id="orders">
+
+            <h2>4. Orders</h2>
+
+            <p>
+              When you place an order, you are requesting to purchase
+              the selected products under the displayed price,
+              delivery and payment conditions.
+            </p>
+
+            <h3>Order Confirmation</h3>
+
+            <p>
+              After placing an order, you may receive an order
+              confirmation containing the order ID and order details.
+            </p>
+
+            <h3>Order Cancellation</h3>
+
+            <p>
+              Orders may be cancelled according to the current
+              cancellation policy and order status.
+            </p>
+
+            <p>
+              Once an order has been shipped or delivered, cancellation
+              may no longer be available and the applicable return
+              policy may apply instead.
+            </p>
+
+          </section>
+
+
+          <!-- 5 -->
+
+          <section class="terms-section" id="payment">
+
+            <h2>5. Payment</h2>
+
+            <p>
+              Alamin Shop may support multiple payment methods,
+              including Cash on Delivery and online payment methods.
+            </p>
+
+            <h3>Online Payments</h3>
+
+            <p>
+              Online payments may be processed through third-party
+              payment providers.
+            </p>
+
+            <p>
+              Payment processing is subject to the terms and security
+              procedures of the relevant payment provider.
+            </p>
+
+            <h3>Cash on Delivery</h3>
+
+            <p>
+              For Cash on Delivery orders, the customer agrees to pay
+              the applicable order amount when the order is delivered.
+            </p>
+
+          </section>
+
+
+          <!-- 6 -->
+
+          <section class="terms-section" id="delivery">
+
+            <h2>6. Delivery</h2>
+
+            <p>
+              Delivery times and charges may depend on the delivery
+              location, courier availability, product availability
+              and other operational factors.
+            </p>
+
+            <p>
+              Estimated delivery times are not always guaranteed.
+            </p>
+
+            <h3>Customer Responsibility</h3>
+
+            <ul>
+
+              <li>
+                Provide a correct delivery address.
+              </li>
+
+              <li>
+                Provide an active phone number.
+              </li>
+
+              <li>
+                Be available or arrange an authorized receiver
+                when the courier arrives.
+              </li>
+
+            </ul>
+
+            <p>
+              Incorrect addresses, unreachable phone numbers or
+              repeated failed delivery attempts may result in
+              additional delivery attempts or order cancellation.
+            </p>
+
+          </section>
+
+
+          <!-- 7 -->
+
+          <section class="terms-section" id="returns">
+
+            <h2>7. Returns & Refunds</h2>
+
+            <p>
+              Returns, exchanges and refunds are handled according
+              to our current Returns & Refunds policy.
+            </p>
+
+            <p>
+              Product eligibility, return time limits, product
+              condition and refund method may vary depending on
+              the product and reason for return.
+            </p>
+
+            <div class="terms-contact">
+
+              <a
+                href="returns.html"
+                class="btn btn-primary"
+              >
+                View Return Policy
+              </a>
+
+            </div>
+
+          </section>
+
+
+          <!-- 8 -->
+
+          <section class="terms-section" id="prohibited">
+
+            <h2>8. Prohibited Activities</h2>
+
+            <p>
+              Customers must not use Alamin Shop for illegal,
+              fraudulent or harmful activities.
+            </p>
+
+            <ul>
+
+              <li>
+                Creating fake orders.
+              </li>
+
+              <li>
+                Providing intentionally false information.
+              </li>
+
+              <li>
+                Attempting unauthorized access to the website.
+              </li>
+
+              <li>
+                Attempting to interfere with website operation.
+              </li>
+
+              <li>
+                Using automated systems to abuse store services.
+              </li>
+
+              <li>
+                Attempting payment fraud or unauthorized transactions.
+              </li>
+
+            </ul>
+
+          </section>
+
+
+          <!-- 9 -->
+
+          <section class="terms-section" id="liability">
+
+            <h2>9. Limitation of Liability</h2>
+
+            <p>
+              We take reasonable steps to provide reliable products
+              and services, but certain circumstances may be outside
+              our control.
+            </p>
+
+            <p>
+              Delivery delays, courier issues, payment-provider
+              interruptions, technical problems or other events may
+              temporarily affect service availability.
+            </p>
+
+            <p>
+              Nothing in these terms is intended to remove or limit
+              any rights or protections that cannot legally be excluded
+              under applicable law.
+            </p>
+
+          </section>
+
+
+          <!-- 10 -->
+
+          <section class="terms-section" id="changes">
+
+            <h2>10. Changes to These Terms</h2>
+
+            <p>
+              We may update these Terms & Conditions from time to time
+              to reflect changes in our services, business operations
+              or legal requirements.
+            </p>
+
+            <p>
+              The latest version will be published on this page.
+            </p>
+
+          </section>
+
+
+          <!-- 11 -->
+
+          <section class="terms-section" id="contact">
+
+            <h2>11. Contact Us</h2>
+
+            <p>
+              If you have questions about these Terms & Conditions,
+              an order or any store policy, please contact our support
+              team.
+            </p>
+
+            <div class="terms-contact">
+
+              <a
+                href="contact.html"
+                class="btn btn-primary"
+              >
+                Contact Support
+              </a>
+
+              <a
+                href="faq.html"
+                class="btn btn-secondary"
+              >
+                Read FAQ
+              </a>
+
+            </div>
+
+          </section>
+
+        </article>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- ================= FOOTER ================= -->
+
+  <footer class="site-footer">
+
+    <div class="container footer-grid">
+
+
+      <div class="footer-brand">
+
+        <a href="index.html" class="logo">
+
+          <span class="logo-mark">A</span>
+
+          <span>Alamin Shop</span>
+
+        </a>
+
+        <p>
+          A modern online shopping experience built for simple,
+          secure and convenient shopping.
+        </p>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h4>Shop</h4>
+
+        <a href="products.html">
+          All Products
+        </a>
+
+        <a href="products.html?category=electronics">
+          Electronics
+        </a>
+
+        <a href="products.html?category=fashion">
+          Fashion
+        </a>
+
+        <a href="products.html?category=home">
+          Home & Living
+        </a>
+
+        <a href="products.html?category=beauty">
+          Beauty
+        </a>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h4>Customer Care</h4>
+
+        <a href="contact.html">
+          Contact Us
+        </a>
+
+        <a href="faq.html">
+          FAQ
+        </a>
+
+        <a href="shipping.html">
+          Shipping
+        </a>
+
+        <a href="returns.html">
+          Returns
+        </a>
+
+        <a href="orders.html">
+          Track Order
+        </a>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h4>Legal</h4>
+
+        <a href="privacy.html">
+          Privacy Policy
+        </a>
+
+        <a href="terms.html">
+          Terms & Conditions
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <div class="container footer-bottom">
+
+      <p>
+        © 2026 Alamin Shop. All rights reserved.
+      </p>
+
+    </div>
+
+  </footer>
+
+
+  <!-- ================= SCRIPT ================= -->
+
+  <script src="script.js"></script>
+
+  <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+      /* ================= CART COUNT ================= */
+
+      if (typeof updateCartCount === "function") {
+        updateCartCount();
+      }
+
+
+      /* ================= WISHLIST COUNT ================= */
+
+      const wishlistCount =
+        document.getElementById("wishlistCount");
+
+      try {
+
+        const wishlist =
+          JSON.parse(
+            localStorage.getItem("shopnest_wishlist")
+          ) || [];
+
+        if (wishlistCount) {
+          wishlistCount.textContent =
+            wishlist.length;
+        }
+
+      } catch (error) {
+
+        if (wishlistCount) {
+          wishlistCount.textContent = "0";
+        }
+
+      }
+
+
+      /* ================= SEARCH ================= */
+
+      const searchForm =
+        document.getElementById("termsSearchForm");
+
+      const searchInput =
+        document.getElementById("termsSearchInput");
+
+
+      if (searchForm && searchInput) {
+
+        searchForm.addEventListener(
+          "submit",
+          function (event) {
+
+            event.preventDefault();
+
+            const query =
+              searchInput.value.trim();
+
+
+            if (!query) {
+
+              window.location.href =
+                "products.html";
+
+              return;
+
+            }
+
+
+            window.location.href =
+              "products.html?search=" +
+              encodeURIComponent(query);
+
+          }
+        );
+
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>

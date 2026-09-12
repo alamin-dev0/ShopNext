@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>My Account - Alamin Shop</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .account-page {
+      min-height: 70vh;
+      padding: 70px 0 100px;
+    }
+
+    .account-header {
+      margin-bottom: 35px;
+    }
+
+    .account-header h1 {
+      margin: 0 0 8px;
+      font-size: 36px;
+      font-weight: 800;
+    }
+
+    .account-header p {
+      margin: 0;
+      color: #94a3b8;
+    }
+
+    .account-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 25px;
+    }
+
+    .account-sidebar,
+    .account-content-card {
+      background: #101216;
+      border: 1px solid #252932;
+      border-radius: 18px;
+    }
+
+    .account-sidebar {
+      padding: 22px;
+      height: fit-content;
+    }
+
+    .profile-box {
+      text-align: center;
+      padding: 10px 5px 25px;
+      border-bottom: 1px solid #252932;
+      margin-bottom: 18px;
+    }
+
+    .profile-avatar {
+      width: 75px;
+      height: 75px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      background: #1d2129;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .profile-box h3 {
+      margin: 0 0 5px;
+      color: #fff;
+      font-size: 18px;
+    }
+
+    .profile-box p {
+      margin: 0;
+      color: #64748b;
+      font-size: 13px;
+      word-break: break-word;
+    }
+
+    .account-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .account-menu button,
+    .account-menu a {
+      width: 100%;
+      padding: 13px 14px;
+      border: 0;
+      border-radius: 9px;
+      background: transparent;
+      color: #94a3b8;
+      text-align: left;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.2s ease;
+    }
+
+    .account-menu button:hover,
+    .account-menu a:hover,
+    .account-menu .active {
+      background: #1b1e25;
+      color: #fff;
+    }
+
+    .logout-menu {
+      color: #fca5a5 !important;
+    }
+
+    .account-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .account-content-card {
+      padding: 28px;
+    }
+
+    .account-content-card h2 {
+      margin: 0 0 6px;
+      font-size: 21px;
+      color: #fff;
+    }
+
+    .account-content-card > p {
+      margin: 0 0 24px;
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .profile-info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .info-box {
+      padding: 17px;
+      border: 1px solid #292d35;
+      border-radius: 11px;
+      background: #0d0f13;
+    }
+
+    .info-label {
+      display: block;
+      margin-bottom: 7px;
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    .info-value {
+      color: #f8fafc;
+      font-size: 14px;
+      word-break: break-word;
+    }
+
+    .dashboard-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .dashboard-card {
+      display: block;
+      padding: 20px;
+      border: 1px solid #292d35;
+      border-radius: 13px;
+      background: #0d0f13;
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-3px);
+      border-color: #444a55;
+    }
+
+    .dashboard-card-icon {
+      margin-bottom: 12px;
+      font-size: 24px;
+    }
+
+    .dashboard-card h3 {
+      margin: 0 0 5px;
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .dashboard-card span {
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .account-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .account-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 9px;
+      border: 1px solid #333842;
+      background: #17191e;
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .account-btn:hover {
+      background: #20232a;
+    }
+
+    .account-btn.primary {
+      background: #fff;
+      color: #111;
+      border-color: #fff;
+    }
+
+    .account-btn.primary:hover {
+      background: #e5e7eb;
+    }
+
+    .not-logged-in {
+      display: none;
+      text-align: center;
+      padding: 80px 20px;
+      border: 1px dashed #30343d;
+      border-radius: 18px;
+      background: #0e1014;
+    }
+
+    .not-logged-in-icon {
+      font-size: 45px;
+      margin-bottom: 15px;
+    }
+
+    .not-logged-in h2 {
+      margin: 0 0 10px;
+      color: #fff;
+    }
+
+    .not-logged-in p {
+      margin: 0 auto 25px;
+      max-width: 500px;
+      color: #94a3b8;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 850px) {
+      .account-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .account-sidebar {
+        height: auto;
+      }
+
+      .account-menu {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .account-page {
+        padding: 50px 0 70px;
+      }
+
+      .account-header h1 {
+        font-size: 30px;
+      }
+
+      .account-content-card {
+        padding: 20px;
+      }
+
+      .profile-info-grid,
+      .dashboard-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .account-menu {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <header class="site-header">
+
+    <div class="container header-inner">
+
+      <a href="index.html" class="logo">
+        Alamin Shop
+      </a>
+
+      <form class="search-box" id="globalSearchForm">
+
+        <input
+          type="search"
+          id="globalSearchInput"
+          placeholder="Search products..."
+        >
+
+        <button type="submit">
+          🔍
+        </button>
+
+      </form>
+
+      <div class="header-actions">
+
+        <a
+          href="wishlist.html"
+          class="header-icon-link"
+        >
+          ❤️
+          <span id="wishlistHeaderCount">0</span>
+        </a>
+
+        <a
+          href="cart.html"
+          class="header-icon-link"
+        >
+          🛒
+          <span id="cartCount">0</span>
+        </a>
+
+        <a
+          href="account.html"
+          class="header-login"
+        >
+          Account
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <nav class="main-nav">
+
+      <div class="container nav-inner">
+
+        <a href="index.html">Home</a>
+
+        <a href="products.html">
+          Products
+        </a>
+
+        <a href="products.html?category=electronics">
+          Electronics
+        </a>
+
+        <a href="products.html?category=fashion">
+          Fashion
+        </a>
+
+        <a href="products.html?category=home">
+          Home & Living
+        </a>
+
+        <a href="products.html?category=beauty">
+          Beauty
+        </a>
+
+        <a href="products.html?category=offers">
+          Offers
+        </a>
+
+      </div>
+
+    </nav>
+
+  </header>
+
+
+  <!-- ACCOUNT PAGE -->
+
+  <main class="account-page">
+
+    <div class="container">
+
+      <div class="account-header">
+
+        <h1>
+          My Account
+        </h1>
+
+        <p>
+          Manage your profile, orders and shopping activity.
+        </p>
+
+      </div>
+
+
+      <!-- NOT LOGGED IN -->
+
+      <div
+        class="not-logged-in"
+        id="notLoggedIn"
+      >
+
+        <div class="not-logged-in-icon">
+          🔐
+        </div>
+
+        <h2>
+          Please Login
+        </h2>
+
+        <p>
+          You need to login to access your account,
+          orders and personal information.
+        </p>
+
+        <a
+          href="login.html?redirect=account.html"
+          class="account-btn primary"
+        >
+          Login Now
+        </a>
+
+        <a
+          href="register.html"
+          class="account-btn"
+        >
+          Create Account
+        </a>
+
+      </div>
+
+
+      <!-- ACCOUNT -->
+
+      <div
+        class="account-layout"
+        id="accountLayout"
+      >
+
+
+        <!-- SIDEBAR -->
+
+        <aside class="account-sidebar">
+
+          <div class="profile-box">
+
+            <div
+              class="profile-avatar"
+              id="profileAvatar"
+            >
+              A
+            </div>
+
+            <h3 id="sidebarName">
+              Customer
+            </h3>
+
+            <p id="sidebarEmail">
+              -
+            </p>
+
+          </div>
+
+
+          <nav class="account-menu">
+
+            <a
+              href="account.html"
+              class="active"
+            >
+              👤 My Account
+            </a>
+
+            <a href="orders.html">
+              📦 My Orders
+            </a>
+
+            <a href="wishlist.html">
+              ❤️ Wishlist
+            </a>
+
+            <a href="cart.html">
+              🛒 Shopping Cart
+            </a>
+
+            <a href="contact.html">
+              💬 Contact Support
+            </a>
+
+            <button
+              type="button"
+              class="logout-menu"
+              id="logoutBtn"
+            >
+              🚪 Logout
+            </button>
+
+          </nav>
+
+        </aside>
+
+
+        <!-- CONTENT -->
+
+        <section class="account-content">
+
+
+          <!-- PROFILE -->
+
+          <div class="account-content-card">
+
+            <h2>
+              Profile Information
+            </h2>
+
+            <p>
+              Your current account information.
+            </p>
+
+
+            <div class="profile-info-grid">
+
+              <div class="info-box">
+
+                <span class="info-label">
+                  Full Name
+                </span>
+
+                <span
+                  class="info-value"
+                  id="accountName"
+                >
+                  -
+                </span>
+
+              </div>
+
+
+              <div class="info-box">
+
+                <span class="info-label">
+                  Email
+                </span>
+
+                <span
+                  class="info-value"
+                  id="accountEmail"
+                >
+                  -
+                </span>
+
+              </div>
+
+
+              <div class="info-box">
+
+                <span class="info-label">
+                  Phone
+                </span>
+
+                <span
+                  class="info-value"
+                  id="accountPhone"
+                >
+                  -
+                </span>
+
+              </div>
+
+
+              <div class="info-box">
+
+                <span class="info-label">
+                  Account Status
+                </span>
+
+                <span
+                  class="info-value"
+                  id="accountStatus"
+                >
+                  Active
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- DASHBOARD -->
+
+          <div class="account-content-card">
+
+            <h2>
+              Quick Access
+            </h2>
+
+            <p>
+              Quickly access your shopping activities.
+            </p>
+
+
+            <div class="dashboard-cards">
+
+              <a
+                href="orders.html"
+                class="dashboard-card"
+              >
+
+                <div class="dashboard-card-icon">
+                  📦
+                </div>
+
+                <h3>
+                  My Orders
+                </h3>
+
+                <span>
+                  View and track your orders
+                </span>
+
+              </a>
+
+
+              <a
+                href="wishlist.html"
+                class="dashboard-card"
+              >
+
+                <div class="dashboard-card-icon">
+                  ❤️
+                </div>
+
+                <h3>
+                  Wishlist
+                </h3>
+
+                <span id="wishlistQuickText">
+                  Your saved products
+                </span>
+
+              </a>
+
+
+              <a
+                href="cart.html"
+                class="dashboard-card"
+              >
+
+                <div class="dashboard-card-icon">
+                  🛒
+                </div>
+
+                <h3>
+                  Shopping Cart
+                </h3>
+
+                <span id="cartQuickText">
+                  Your cart items
+                </span>
+
+              </a>
+
+            </div>
+
+          </div>
+
+
+          <!-- ACTIONS -->
+
+          <div class="account-content-card">
+
+            <h2>
+              Account Actions
+            </h2>
+
+            <p>
+              Manage your account and continue shopping.
+            </p>
+
+            <div class="account-actions">
+
+              <a
+                href="products.html"
+                class="account-btn primary"
+              >
+                Continue Shopping
+              </a>
+
+              <a
+                href="orders.html"
+                class="account-btn"
+              >
+                View Orders
+              </a>
+
+              <button
+                type="button"
+                class="account-btn"
+                id="logoutBtnBottom"
+              >
+                Logout
+              </button>
+
+            </div>
+
+          </div>
+
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- FOOTER -->
+
+  <footer class="site-footer">
+
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <div>
+
+          <h3>
+            Alamin Shop
+          </h3>
+
+          <p>
+            Your trusted online shop for quality products
+            at the best prices.
+          </p>
+
+        </div>
+
+
+        <div>
+
+          <h4>
+            Quick Links
+          </h4>
+
+          <a href="index.html">
+            Home
+          </a>
+
+          <a href="products.html">
+            Products
+          </a>
+
+          <a href="wishlist.html">
+            Wishlist
+          </a>
+
+          <a href="cart.html">
+            Cart
+          </a>
+
+        </div>
+
+
+        <div>
+
+          <h4>
+            Customer
+          </h4>
+
+          <a href="login.html">
+            Login
+          </a>
+
+          <a href="register.html">
+            Register
+          </a>
+
+          <a href="orders.html">
+            My Orders
+          </a>
+
+          <a href="contact.html">
+            Contact
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <div class="footer-bottom">
+
+        <p>
+          © 2026 Alamin Shop. All rights reserved.
+        </p>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <script src="script.js"></script>
+
+
+  <script>
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function () {
+
+
+        /* ===============================
+           GET USER
+        =============================== */
+
+        const loggedInUser =
+          localStorage.getItem(
+            "shopnest_logged_in_user"
+          );
+
+
+        const accountLayout =
+          document.getElementById(
+            "accountLayout"
+          );
+
+
+        const notLoggedIn =
+          document.getElementById(
+            "notLoggedIn"
+          );
+
+
+        /*
+          If user is not logged in,
+          show login message.
+        */
+
+        if (!loggedInUser) {
+
+          accountLayout.style.display =
+            "none";
+
+          notLoggedIn.style.display =
+            "block";
+
+          return;
+
+        }
+
+
+        /* ===============================
+           PARSE USER
+        =============================== */
+
+        let user;
+
+        try {
+
+          user =
+            JSON.parse(loggedInUser);
+
+        } catch (error) {
+
+          console.error(
+            "User data error:",
+            error
+          );
+
+          localStorage.removeItem(
+            "shopnest_logged_in_user"
+          );
+
+          accountLayout.style.display =
+            "none";
+
+          notLoggedIn.style.display =
+            "block";
+
+          return;
+
+        }
+
+
+        /* ===============================
+           USER DATA
+        =============================== */
+
+        const name =
+          user.name ||
+          user.fullName ||
+          "Customer";
+
+
+        const email =
+          user.email ||
+          "-";
+
+
+        const phone =
+          user.phone ||
+          "-";
+
+
+        /* ===============================
+           PROFILE
+        =============================== */
+
+        document.getElementById(
+          "sidebarName"
+        ).textContent = name;
+
+
+        document.getElementById(
+          "sidebarEmail"
+        ).textContent = email;
+
+
+        document.getElementById(
+          "accountName"
+        ).textContent = name;
+
+
+        document.getElementById(
+          "accountEmail"
+        ).textContent = email;
+
+
+        document.getElementById(
+          "accountPhone"
+        ).textContent = phone;
+
+
+        document.getElementById(
+          "accountStatus"
+        ).textContent = "Active";
+
+
+        /* ===============================
+           AVATAR
+        =============================== */
+
+        const firstLetter =
+          name
+            .trim()
+            .charAt(0)
+            .toUpperCase();
+
+
+        document.getElementById(
+          "profileAvatar"
+        ).textContent =
+          firstLetter || "A";
+
+
+        /* ===============================
+           CART COUNT
+        =============================== */
+
+        let cart = [];
+
+        try {
+
+          cart =
+            JSON.parse(
+              localStorage.getItem(
+                "shopnest_cart"
+              )
+            ) || [];
+
+        } catch (error) {
+
+          cart = [];
+
+        }
+
+
+        const totalCartItems =
+          cart.reduce(
+            function (total, item) {
+
+              return total +
+                Number(item.quantity || 1);
+
+            },
+            0
+          );
+
+
+        document.getElementById(
+          "cartQuickText"
+        ).textContent =
+          totalCartItems +
+          (totalCartItems === 1
+            ? " item in your cart"
+            : " items in your cart");
+
+
+        /* ===============================
+           WISHLIST COUNT
+        =============================== */
+
+        let wishlist = [];
+
+        try {
+
+          wishlist =
+            JSON.parse(
+              localStorage.getItem(
+                "shopnest_wishlist"
+              )
+            ) || [];
+
+        } catch (error) {
+
+          wishlist = [];
+
+        }
+
+
+        document.getElementById(
+          "wishlistQuickText"
+        ).textContent =
+          wishlist.length +
+          (wishlist.length === 1
+            ? " saved product"
+            : " saved products");
+
+
+        /* ===============================
+           HEADER COUNTS
+        =============================== */
+
+        const wishlistHeaderCount =
+          document.getElementById(
+            "wishlistHeaderCount"
+          );
+
+
+        if (wishlistHeaderCount) {
+
+          wishlistHeaderCount.textContent =
+            wishlist.length;
+
+        }
+
+
+        if (
+          typeof updateCartCount ===
+          "function"
+        ) {
+
+          updateCartCount();
+
+        }
+
+
+        /* ===============================
+           LOGOUT
+        =============================== */
+
+        function logout() {
+
+          const confirmed =
+            confirm(
+              "Are you sure you want to logout?"
+            );
+
+
+          if (!confirmed) {
+            return;
+          }
+
+
+          localStorage.removeItem(
+            "shopnest_logged_in_user"
+          );
+
+
+          /*
+            Remembered email is kept,
+            so the login form can still
+            show it if the user selected
+            Remember Me.
+          */
+
+
+          window.location.href =
+            "login.html";
+
+        }
+
+
+        document.getElementById(
+          "logoutBtn"
+        ).addEventListener(
+          "click",
+          logout
+        );
+
+
+        document.getElementById(
+          "logoutBtnBottom"
+        ).addEventListener(
+          "click",
+          logout
+        );
+
+
+        /* ===============================
+           SEARCH
+        =============================== */
+
+        const searchForm =
+          document.getElementById(
+            "globalSearchForm"
+          );
+
+
+        const searchInput =
+          document.getElementById(
+            "globalSearchInput"
+          );
+
+
+        if (searchForm) {
+
+          searchForm.addEventListener(
+            "submit",
+            function (event) {
+
+              event.preventDefault();
+
+
+              const query =
+                searchInput.value.trim();
+
+
+              if (!query) {
+                return;
+              }
+
+
+              window.location.href =
+                "products.html?search=" +
+                encodeURIComponent(query);
+
+            }
+          );
+
+        }
+
+      });
+
+  </script>
+
+</body>
+</html>

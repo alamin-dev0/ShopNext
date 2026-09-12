@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FAQ - Alamin Shop</title>
+
+    <meta
+        name="description"
+        content="Find answers to frequently asked questions about Alamin Shop, orders, payments, delivery, returns and accounts."
+    >
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* =========================================
+           FAQ PAGE
+        ========================================= */
+
+        .faq-page {
+            padding: 70px 0 90px;
+            min-height: 70vh;
+        }
+
+        .faq-hero {
+            text-align: center;
+            max-width: 760px;
+            margin: 0 auto 55px;
+        }
+
+        .faq-hero .page-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border: 1px solid #2b3038;
+            border-radius: 999px;
+            background: #111318;
+            color: #aeb6c3;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .faq-hero h1 {
+            font-size: clamp(34px, 5vw, 58px);
+            line-height: 1.05;
+            margin: 0 0 18px;
+            color: #fff;
+            letter-spacing: -1.5px;
+        }
+
+        .faq-hero p {
+            color: #9da5b1;
+            font-size: 16px;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        /* Search */
+
+        .faq-search-wrapper {
+            max-width: 650px;
+            margin: 0 auto 45px;
+            position: relative;
+        }
+
+        .faq-search-wrapper input {
+            width: 100%;
+            height: 58px;
+            padding: 0 55px 0 20px;
+            border: 1px solid #292e37;
+            border-radius: 14px;
+            outline: none;
+            background: #111318;
+            color: #fff;
+            font-size: 15px;
+            transition: 0.25s ease;
+        }
+
+        .faq-search-wrapper input::placeholder {
+            color: #707784;
+        }
+
+        .faq-search-wrapper input:focus {
+            border-color: #555d69;
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.03);
+        }
+
+        .faq-search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8d95a2;
+            font-size: 20px;
+            pointer-events: none;
+        }
+
+        /* Category */
+
+        .faq-categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .faq-category-btn {
+            border: 1px solid #2b3038;
+            background: #111318;
+            color: #aeb6c3;
+            padding: 10px 17px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.25s ease;
+        }
+
+        .faq-category-btn:hover,
+        .faq-category-btn.active {
+            background: #fff;
+            color: #08090b;
+            border-color: #fff;
+        }
+
+        /* FAQ List */
+
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-section {
+            margin-bottom: 38px;
+        }
+
+        .faq-section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .faq-section-title h2 {
+            font-size: 22px;
+            color: #fff;
+            margin: 0;
+        }
+
+        .faq-section-title span {
+            color: #7e8794;
+            font-size: 13px;
+        }
+
+        .faq-item {
+            border: 1px solid #292e37;
+            border-radius: 15px;
+            background: #101216;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: 0.25s ease;
+        }
+
+        .faq-item:hover {
+            border-color: #3a414c;
+        }
+
+        .faq-question {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            color: #f5f7fa;
+            padding: 20px 22px;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .faq-question-text {
+            line-height: 1.5;
+        }
+
+        .faq-plus {
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            border-radius: 50%;
+            border: 1px solid #353b45;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aeb6c3;
+            font-size: 20px;
+            transition: 0.25s ease;
+        }
+
+        .faq-item.active .faq-plus {
+            transform: rotate(45deg);
+            background: #fff;
+            color: #08090b;
+            border-color: #fff;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-answer-inner {
+            padding: 0 22px 22px;
+            color: #9da5b1;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        /* No result */
+
+        .faq-no-result {
+            display: none;
+            text-align: center;
+            padding: 50px 20px;
+            border: 1px dashed #343a44;
+            border-radius: 16px;
+            background: #101216;
+        }
+
+        .faq-no-result.show {
+            display: block;
+        }
+
+        .faq-no-result h3 {
+            color: #fff;
+            margin: 0 0 8px;
+        }
+
+        .faq-no-result p {
+            color: #858e9b;
+            margin: 0;
+        }
+
+        /* Bottom CTA */
+
+        .faq-contact-box {
+            max-width: 900px;
+            margin: 65px auto 0;
+            padding: 32px;
+            border: 1px solid #292e37;
+            border-radius: 20px;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(255,255,255,0.06),
+                    transparent 35%
+                ),
+                #101216;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .faq-contact-box h3 {
+            color: #fff;
+            font-size: 20px;
+            margin: 0 0 8px;
+        }
+
+        .faq-contact-box p {
+            color: #8f98a5;
+            margin: 0;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .faq-contact-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            text-decoration: none;
+            background: #fff;
+            color: #08090b;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.25s ease;
+        }
+
+        .faq-contact-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 700px) {
+            .faq-page {
+                padding: 45px 0 60px;
+            }
+
+            .faq-hero {
+                margin-bottom: 35px;
+            }
+
+            .faq-hero h1 {
+                font-size: 38px;
+            }
+
+            .faq-question {
+                padding: 17px;
+                font-size: 14px;
+            }
+
+            .faq-answer-inner {
+                padding: 0 17px 18px;
+                font-size: 13px;
+            }
+
+            .faq-contact-box {
+                padding: 24px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .faq-contact-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================
+         HEADER
+    ========================================= -->
+
+    <header class="site-header">
+
+        <div class="container header-inner">
+
+            <a href="index.html" class="logo">
+                Alamin<span>Shop</span>
+            </a>
+
+            <div class="header-search">
+                <form id="faqHeaderSearch">
+                    <input
+                        type="search"
+                        id="headerSearchInput"
+                        placeholder="Search products..."
+                        autocomplete="off"
+                    >
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="header-actions">
+
+                <a href="wishlist.html" class="header-action">
+                    Wishlist
+                    <span id="wishlistCount">0</span>
+                </a>
+
+                <a href="cart.html" class="header-action">
+                    Cart
+                    <span id="cartCount">0</span>
+                </a>
+
+                <a href="account.html" class="header-action">
+                    Account
+                </a>
+
+            </div>
+
+        </div>
+
+        <nav class="main-nav">
+
+            <div class="container nav-inner">
+
+                <a href="index.html">Home</a>
+
+                <a href="products.html">Products</a>
+
+                <a href="products.html?category=electronics">
+                    Electronics
+                </a>
+
+                <a href="products.html?category=fashion">
+                    Fashion
+                </a>
+
+                <a href="products.html?category=home">
+                    Home & Living
+                </a>
+
+                <a href="products.html?category=beauty">
+                    Beauty
+                </a>
+
+                <a href="products.html?category=offers">
+                    Offers
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =========================================
+         FAQ CONTENT
+    ========================================= -->
+
+    <main class="faq-page">
+
+        <div class="container">
+
+            <section class="faq-hero">
+
+                <div class="page-badge">
+                    ❓ Alamin Shop Support
+                </div>
+
+                <h1>
+                    Frequently Asked Questions
+                </h1>
+
+                <p>
+                    Everything you need to know about products,
+                    orders, payments, delivery, returns and your
+                    Alamin Shop account.
+                </p>
+
+            </section>
+
+
+            <!-- FAQ SEARCH -->
+
+            <div class="faq-search-wrapper">
+
+                <input
+                    type="search"
+                    id="faqSearch"
+                    placeholder="Search your question..."
+                    autocomplete="off"
+                >
+
+                <span class="faq-search-icon">
+                    🔍
+                </span>
+
+            </div>
+
+
+            <!-- FAQ CATEGORIES -->
+
+            <div class="faq-categories">
+
+                <button
+                    class="faq-category-btn active"
+                    data-category="all"
+                >
+                    All
+                </button>
+
+                <button
+                    class="faq-category-btn"
+                    data-category="orders"
+                >
+                    Orders
+                </button>
+
+                <button
+                    class="faq-category-btn"
+                    data-category="payment"
+                >
+                    Payment
+                </button>
+
+                <button
+                    class="faq-category-btn"
+                    data-category="delivery"
+                >
+                    Delivery
+                </button>
+
+                <button
+                    class="faq-category-btn"
+                    data-category="returns"
+                >
+                    Returns
+                </button>
+
+                <button
+                    class="faq-category-btn"
+                    data-category="account"
+                >
+                    Account
+                </button>
+
+            </div>
+
+
+            <!-- =========================================
+                 FAQ LIST
+            ========================================= -->
+
+            <div class="faq-container">
+
+
+                <!-- ORDERS -->
+
+                <section
+                    class="faq-section"
+                    data-section="orders"
+                >
+
+                    <div class="faq-section-title">
+                        <h2>Orders</h2>
+                        <span>Order related questions</span>
+                    </div>
+
+
+                    <div
+                        class="faq-item"
+                        data-category="orders"
+                        data-question="how can i place an order"
+                    >
+
+                        <button class="faq-question">
+
+                            <span class="faq-question-text">
+                                How can I place an order?
+                            </span>
+
+                            <span class="faq-plus">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                Browse products from the Products page,
+                                open the product you want, select the
+                                quantity and click <strong>Add to Cart</strong>.
+                                Then open your cart and continue to checkout.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="faq-item"
+                        data-category="orders"
+                        data-question="where can i see my order"
+                    >
+
+                        <button class="faq-question">
+
+                            <span class="faq-question-text">
+                                Where can I see my order?
+                            </span>
+
+                            <span class="faq-plus">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                After placing an order, you can visit
+                                <strong>My Orders</strong> from your account.
+                                Your order ID, products, total amount,
+                                payment method and order status will be shown there.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="faq-item"
+                        data-category="orders"
+                        data-question="can i cancel my order"
+                    >
+
+                        <button class="faq-question">
+
+                            <span class="faq-question-text">
+                                Can I cancel my order?
+                            </span>
+
+                            <span class="faq-plus">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                Orders can normally be cancelled while
+                                they are still in the early stages such as
+                                <strong>New</strong> or <strong>Confirmed</strong>.
+                                Once an order has already been shipped,
+                                cancellation may no longer be available.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- PAYMENT -->
+
+                <section
+                    class="faq-section"
+                    data-section="payment"
+                >
+
+                    <div class="faq-section-title">
+                        <h2>Payment</h2>
+                        <span>Payment related questions</span>
+                    </div>
+
+
+                    <div
+                        class="faq-item"
+                        data-category="payment"
+                        data-question="what payment methods are available"
+                    >
+
+                        <button class="faq-question">
+
+                            <span class="faq-question-text">
+                                What payment methods are available?
+                            </span>
+
+                            <span class="faq-plus">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                Alamin Shop can support
+                                <strong>Cash on Delivery, bKash, Nagad,
+                                SSLCommerz and card/mobile banking payments</strong>.
+                                Actual online payment gateways will be connected
+                                during the backend/payment integration phase.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="faq-item"
+                        data-category="payment"
+                        data-question="is cash on delivery available"
+                    >
+
+                        <button class="faq-question">
+
+                            <span class="faq-question-text">
+                                Is Cash on Delivery available?
+                            </span>
+
+                            <span class="faq-plus">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                Yes. Cash on Delivery can be selected during
+                                checkout where the service is available for
+                                your delivery location.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- DELIVERY -->
+
+                <section
+                    class="faq-section"
+                    data-section="delivery"
+                >
+
+                    <div class="faq-section-title">
+                        <h2>Delivery</h2>
+                        <span>Shipping related questions</span>
+                    </div>
+
+
+                    <div
+                        class="faq-item"
+                        data-category="delivery"
+                        data-question="how much is delivery charge"
+                    >
+
+                        <button class="faq-question">
+
+                            <span class="faq-question-text">
+                                How much is the delivery charge?
+                            </span>
+
+                            <span class="faq-plus">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                Delivery charges depend on the delivery zone
+                                and order value. The applicable delivery charge
+                                will be calculated and shown during checkout
+                                before you place the order.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="faq-item"
+                        data-category="delivery"
+                        data-question="how can i track my order"
+                    >
+
+                        <button class="faq-question">
+
+                            <span class="faq-question-text">
+                                How can I track my order?
+                            </span>
+
+                            <span class="faq-plus">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                Open your order details from
+                                <strong>My Orders</strong>.
+                                Once courier tracking is connected,
+                                the order page will also show the tracking
+                                number and shipment progress.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- RETURNS -->
+
+                <section
+                    class="faq-section"
+                    data-section="returns"
+                >
+
+                    <div class="faq-section-title">
+                        <h2>Returns & Refunds</h2>
+                        <span>Return related questions</span>
+                    </div>
+
+
+                    <div
+                        class="faq-item"
+                        data-category="returns"
+                        data-question="can i return a product"
+                    >
+
+                        <button class="faq-question">
+
+                            <span class="faq-question-text">
+                                Can I return a product?
+                            </span>
+
+                            <span class="faq-plus">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                Return eligibility depends on the product
+                                and the return policy. For eligible delivered
+                                orders, you can request a return from the
+                                order details page.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="faq-item"
+                        data-category="returns"
+                        data-question="when will i receive my refund"
+                    >
+
+                        <button class="faq-question">
+
+                            <span class="faq-question-text">
+                                When will I receive my refund?
+                            </span>
+
+                            <span class="faq-plus">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                Refund timing depends on the payment method
+                                and the return/refund process. Once the refund
+                                is approved, the applicable payment provider's
+                                processing time will apply.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ACCOUNT -->
+
+                <section
+                    class="faq-section"
+                    data-section="account"
+                >
+
+                    <div class="faq-section-title">
+                        <h2>Account</h2>
+                        <span>Account related questions</span>
+                    </div>
+
+
+                    <div
+                        class="faq-item"
+                        data-category="account"
+                        data-question="how can i create an account"
+                    >
+
+                        <button class="faq-question">
+
+                            <span class="faq-question-text">
+                                How can I create an account?
+                            </span>
+
+                            <span class="faq-plus">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                Click the <strong>Account</strong> or
+                                <strong>Register</strong> option and complete
+                                your name, email, phone number and password.
+                                In the final backend version, your email will
+                                also need to be verified using an OTP.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="faq-item"
+                        data-category="account"
+                        data-question="why do i need email verification"
+                    >
+
+                        <button class="faq-question">
+
+                            <span class="faq-question-text">
+                                Why do I need email verification?
+                            </span>
+
+                            <span class="faq-plus">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                Email verification helps confirm that the
+                                email address belongs to you. In the final
+                                system, registration will send a verification
+                                OTP to your email before your account becomes
+                                fully active.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="faq-item"
+                        data-category="account"
+                        data-question="what if i forget my password"
+                    >
+
+                        <button class="faq-question">
+
+                            <span class="faq-question-text">
+                                What if I forget my password?
+                            </span>
+
+                            <span class="faq-plus">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                Use the <strong>Forgot Password</strong>
+                                option on the login page. The final backend
+                                system will send a secure password-reset link
+                                or OTP to your verified email address.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- NO RESULT -->
+
+                <div
+                    class="faq-no-result"
+                    id="faqNoResult"
+                >
+
+                    <h3>
+                        No matching question found
+                    </h3>
+
+                    <p>
+                        Try another search or contact our support team.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- CONTACT CTA -->
+
+            <div class="faq-contact-box">
+
+                <div>
+
+                    <h3>
+                        Still need help?
+                    </h3>
+
+                    <p>
+                        Can't find the answer you're looking for?
+                        Send us a message and our support team can help.
+                    </p>
+
+                </div>
+
+                <a
+                    href="contact.html"
+                    class="faq-contact-btn"
+                >
+                    Contact Support
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================= -->
+
+    <footer class="site-footer">
+
+        <div class="container footer-inner">
+
+            <div class="footer-brand">
+
+                <a href="index.html" class="logo">
+                    Alamin<span>Shop</span>
+                </a>
+
+                <p>
+                    Simple, reliable and modern online shopping.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="products.html">
+                    Products
+                </a>
+
+                <a href="orders.html">
+                    My Orders
+                </a>
+
+                <a href="wishlist.html">
+                    Wishlist
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+                <a href="faq.html">
+                    FAQ
+                </a>
+
+                <a href="privacy.html">
+                    Privacy
+                </a>
+
+                <a href="terms.html">
+                    Terms
+                </a>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================
+         FAQ JAVASCRIPT
+    ========================================= -->
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            /* -----------------------------------------
+               CART / WISHLIST COUNTS
+            ----------------------------------------- */
+
+            try {
+
+                const cart =
+                    JSON.parse(localStorage.getItem("shopnest_cart")) || [];
+
+                const wishlist =
+                    JSON.parse(localStorage.getItem("shopnest_wishlist")) || [];
+
+                const cartCount =
+                    document.getElementById("cartCount");
+
+                const wishlistCount =
+                    document.getElementById("wishlistCount");
+
+                if (cartCount) {
+                    cartCount.textContent = cart.reduce(
+                        (total, item) =>
+                            total + (Number(item.quantity) || 1),
+                        0
+                    );
+                }
+
+                if (wishlistCount) {
+                    wishlistCount.textContent = wishlist.length;
+                }
+
+            } catch (error) {
+
+                console.log("Storage error:", error);
+
+            }
+
+
+            /* -----------------------------------------
+               FAQ ACCORDION
+            ----------------------------------------- */
+
+            const questions =
+                document.querySelectorAll(".faq-question");
+
+            questions.forEach(function (question) {
+
+                question.addEventListener("click", function () {
+
+                    const item =
+                        question.closest(".faq-item");
+
+                    const answer =
+                        item.querySelector(".faq-answer");
+
+                    const isActive =
+                        item.classList.contains("active");
+
+
+                    /*
+                     * Close all other FAQ items
+                     */
+
+                    document
+                        .querySelectorAll(".faq-item.active")
+                        .forEach(function (activeItem) {
+
+                            if (activeItem !== item) {
+
+                                activeItem.classList.remove("active");
+
+                                const activeAnswer =
+                                    activeItem.querySelector(".faq-answer");
+
+                                activeAnswer.style.maxHeight = null;
+
+                            }
+
+                        });
+
+
+                    /*
+                     * Toggle current item
+                     */
+
+                    if (isActive) {
+
+                        item.classList.remove("active");
+
+                        answer.style.maxHeight = null;
+
+                    } else {
+
+                        item.classList.add("active");
+
+                        answer.style.maxHeight =
+                            answer.scrollHeight + "px";
+
+                    }
+
+                });
+
+            });
+
+
+            /* -----------------------------------------
+               FAQ SEARCH
+            ----------------------------------------- */
+
+            const faqSearch =
+                document.getElementById("faqSearch");
+
+            const faqItems =
+                document.querySelectorAll(".faq-item");
+
+            const faqSections =
+                document.querySelectorAll(".faq-section");
+
+            const noResult =
+                document.getElementById("faqNoResult");
+
+
+            function filterFAQ() {
+
+                const searchText =
+                    faqSearch.value
+                        .trim()
+                        .toLowerCase();
+
+                const activeCategory =
+                    document
+                        .querySelector(".faq-category-btn.active")
+                        ?.dataset.category || "all";
+
+                let visibleCount = 0;
+
+
+                faqItems.forEach(function (item) {
+
+                    const questionText =
+                        (
+                            item.dataset.question ||
+                            item.innerText
+                        ).toLowerCase();
+
+                    const itemCategory =
+                        item.dataset.category;
+
+
+                    const matchesSearch =
+                        !searchText ||
+                        questionText.includes(searchText);
+
+                    const matchesCategory =
+                        activeCategory === "all" ||
+                        itemCategory === activeCategory;
+
+
+                    if (
+                        matchesSearch &&
+                        matchesCategory
+                    ) {
+
+                        item.style.display = "";
+
+                        visibleCount++;
+
+                    } else {
+
+                        item.style.display = "none";
+
+                    }
+
+                });
+
+
+                /*
+                 * Hide empty sections
+                 */
+
+                faqSections.forEach(function (section) {
+
+                    const visibleItems =
+                        section.querySelectorAll(
+                            ".faq-item:not([style*='display: none'])"
+                        );
+
+                    if (visibleItems.length === 0) {
+
+                        section.style.display = "none";
+
+                    } else {
+
+                        section.style.display = "";
+
+                    }
+
+                });
+
+
+                if (visibleCount === 0) {
+
+                    noResult.classList.add("show");
+
+                } else {
+
+                    noResult.classList.remove("show");
+
+                }
+
+            }
+
+
+            if (faqSearch) {
+
+                faqSearch.addEventListener(
+                    "input",
+                    filterFAQ
+                );
+
+            }
+
+
+            /* -----------------------------------------
+               FAQ CATEGORY FILTER
+            ----------------------------------------- */
+
+            const categoryButtons =
+                document.querySelectorAll(
+                    ".faq-category-btn"
+                );
+
+
+            categoryButtons.forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        categoryButtons.forEach(
+                            function (btn) {
+
+                                btn.classList.remove("active");
+
+                            }
+                        );
+
+
+                        button.classList.add("active");
+
+                        filterFAQ();
+
+                    }
+                );
+
+            });
+
+
+            /* -----------------------------------------
+               HEADER SEARCH
+            ----------------------------------------- */
+
+            const headerSearch =
+                document.getElementById(
+                    "faqHeaderSearch"
+                );
+
+            const headerSearchInput =
+                document.getElementById(
+                    "headerSearchInput"
+                );
+
+
+            if (headerSearch) {
+
+                headerSearch.addEventListener(
+                    "submit",
+                    function (event) {
+
+                        event.preventDefault();
+
+                        const search =
+                            headerSearchInput.value.trim();
+
+                        if (!search) {
+
+                            window.location.href =
+                                "products.html";
+
+                            return;
+
+                        }
+
+                        window.location.href =
+                            "products.html?search=" +
+                            encodeURIComponent(search);
+
+                    }
+                );
+
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Logs - Alamin Shop Admin</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    :root {
+      --bg: #08090b;
+      --card: #111318;
+      --border: #272b33;
+      --text: #f8fafc;
+      --muted: #9299a8;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+      --blue: #3b82f6;
+      --purple: #a855f7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .admin-layout {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* SIDEBAR */
+
+    .admin-sidebar {
+      width: 250px;
+      min-height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      background: #0d0f13;
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .admin-logo {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--border);
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .admin-logo span {
+      color: #8b93a3;
+      margin-left: 5px;
+    }
+
+    .admin-nav {
+      padding: 18px 12px;
+    }
+
+    .admin-nav-title {
+      color: #656d7b;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+      margin-top: 8px;
+    }
+
+    .admin-nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 13px;
+      margin-bottom: 4px;
+      border-radius: 10px;
+      color: #aab1bf;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    .admin-nav a:hover,
+    .admin-nav a.active {
+      background: #191c23;
+      color: #fff;
+    }
+
+    .admin-nav-icon {
+      width: 20px;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    /* MAIN */
+
+    .admin-main {
+      width: calc(100% - 250px);
+      margin-left: 250px;
+      min-height: 100vh;
+    }
+
+    .admin-topbar {
+      height: 72px;
+      padding: 0 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8, 9, 11, .95);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+    }
+
+    .admin-topbar-title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .admin-topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .store-link {
+      color: #aab1bf;
+      font-size: 13px;
+    }
+
+    .admin-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #20242c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .admin-content {
+      padding: 30px;
+    }
+
+    /* STATS */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .stat-small {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 7px;
+    }
+
+    /* TOOLBAR */
+
+    .toolbar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 230px;
+    }
+
+    .search-box input,
+    .toolbar select {
+      width: 100%;
+      height: 44px;
+      padding: 0 13px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      outline: none;
+      background: #0c0e12;
+      color: #fff;
+    }
+
+    .search-box input:focus,
+    .toolbar select:focus {
+      border-color: #555d6b;
+    }
+
+    .filter-select {
+      min-width: 155px;
+    }
+
+    .btn {
+      min-height: 44px;
+      padding: 0 17px;
+      border: 0;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .btn-primary {
+      background: #fff;
+      color: #08090b;
+    }
+
+    .btn-primary:hover {
+      opacity: .88;
+    }
+
+    .btn-secondary {
+      background: #20242c;
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      background: #292e38;
+    }
+
+    .btn-danger {
+      background: #3a171b;
+      color: #ff8c94;
+    }
+
+    .btn-danger:hover {
+      background: #4a1b20;
+    }
+
+    .btn-small {
+      min-height: 34px;
+      padding: 0 11px;
+      font-size: 12px;
+    }
+
+    /* TABLE */
+
+    .table-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .table-title {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .table-muted {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1050px;
+    }
+
+    th,
+    td {
+      padding: 15px 16px;
+      text-align: left;
+      border-bottom: 1px solid #20242b;
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #0d0f13;
+      color: #858d9d;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .actor {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .actor-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #20242c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .actor-name {
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .actor-email {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .action-badge {
+      display: inline-flex;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .action-create {
+      background: rgba(34, 197, 94, .12);
+      color: #64e28b;
+    }
+
+    .action-update {
+      background: rgba(59, 130, 246, .12);
+      color: #76a9fa;
+    }
+
+    .action-delete {
+      background: rgba(239, 68, 68, .12);
+      color: #ff7b83;
+    }
+
+    .action-login {
+      background: rgba(168, 85, 247, .12);
+      color: #c18bf7;
+    }
+
+    .action-status {
+      background: rgba(245, 158, 11, .12);
+      color: #f3bd5d;
+    }
+
+    .action-other {
+      background: rgba(148, 163, 184, .12);
+      color: #b4bdca;
+    }
+
+    .module-badge {
+      display: inline-flex;
+      padding: 5px 9px;
+      border-radius: 7px;
+      background: #1b1f26;
+      color: #c5cad4;
+      font-size: 11px;
+    }
+
+    .ip-address {
+      font-family: monospace;
+      color: #aeb6c4;
+      font-size: 11px;
+    }
+
+    .empty-state {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    /* PAGINATION */
+
+    .pagination {
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      gap: 15px;
+    }
+
+    .pagination-info {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .pagination-buttons {
+      display: flex;
+      gap: 6px;
+    }
+
+    /* MODAL */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      padding: 20px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, .72);
+      z-index: 500;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(680px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #111318;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 30px 100px rgba(0,0,0,.5);
+    }
+
+    .modal-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      width: 35px;
+      height: 35px;
+      border: 0;
+      border-radius: 8px;
+      background: #20242c;
+      color: #fff;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .log-detail {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .detail-item {
+      padding: 13px;
+      background: #0c0e12;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .detail-item.full {
+      grid-column: 1 / -1;
+    }
+
+    .detail-label {
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 6px;
+    }
+
+    .detail-value {
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      word-break: break-word;
+    }
+
+    .description-box {
+      line-height: 1.7;
+      font-weight: 400;
+      color: #cbd1db;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 1100px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 800px) {
+
+      .admin-sidebar {
+        width: 70px;
+      }
+
+      .admin-logo {
+        justify-content: center;
+        padding: 0;
+      }
+
+      .admin-logo-text,
+      .admin-logo span,
+      .admin-nav-title,
+      .admin-nav a span:not(.admin-nav-icon) {
+        display: none;
+      }
+
+      .admin-nav a {
+        justify-content: center;
+        padding: 13px 5px;
+      }
+
+      .admin-main {
+        width: calc(100% - 70px);
+        margin-left: 70px;
+      }
+
+      .admin-topbar {
+        padding: 0 18px;
+      }
+
+      .admin-content {
+        padding: 20px 15px;
+      }
+
+      .log-detail {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-item.full {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 560px) {
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar {
+        flex-direction: column;
+      }
+
+      .search-box,
+      .filter-select {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .toolbar .btn {
+        width: 100%;
+      }
+
+      .pagination {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .pagination-buttons {
+        justify-content: center;
+      }
+
+      .store-link {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+  <!-- SIDEBAR -->
+
+  <aside class="admin-sidebar">
+
+    <div class="admin-logo">
+      <div class="admin-logo-text">
+        Alamin<span>Shop</span>
+      </div>
+    </div>
+
+    <nav class="admin-nav">
+
+      <div class="admin-nav-title">Main</div>
+
+      <a href="index.html">
+        <span class="admin-nav-icon">⌂</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="orders.html">
+        <span class="admin-nav-icon">▤</span>
+        <span>Orders</span>
+      </a>
+
+      <a href="products.html">
+        <span class="admin-nav-icon">□</span>
+        <span>Products</span>
+      </a>
+
+      <a href="inventory.html">
+        <span class="admin-nav-icon">▥</span>
+        <span>Inventory</span>
+      </a>
+
+      <a href="categories.html">
+        <span class="admin-nav-icon">▦</span>
+        <span>Categories</span>
+      </a>
+
+      <a href="banners.html">
+        <span class="admin-nav-icon">▣</span>
+        <span>Banners</span>
+      </a>
+
+      <div class="admin-nav-title">Sales</div>
+
+      <a href="customers.html">
+        <span class="admin-nav-icon">♙</span>
+        <span>Customers</span>
+      </a>
+
+      <a href="coupons.html">
+        <span class="admin-nav-icon">%</span>
+        <span>Coupons</span>
+      </a>
+
+      <a href="returns.html">
+        <span class="admin-nav-icon">↩</span>
+        <span>Returns</span>
+      </a>
+
+      <a href="reviews.html">
+        <span class="admin-nav-icon">★</span>
+        <span>Reviews</span>
+      </a>
+
+      <div class="admin-nav-title">Management</div>
+
+      <a href="media.html">
+        <span class="admin-nav-icon">▧</span>
+        <span>Media</span>
+      </a>
+
+      <a href="reports.html">
+        <span class="admin-nav-icon">◫</span>
+        <span>Reports</span>
+      </a>
+
+      <a href="notifications.html">
+        <span class="admin-nav-icon">♢</span>
+        <span>Notifications</span>
+      </a>
+
+      <a href="delivery-zones.html">
+        <span class="admin-nav-icon">⌖</span>
+        <span>Delivery Zones</span>
+      </a>
+
+      <a href="payments.html">
+        <span class="admin-nav-icon">৳</span>
+        <span>Payments</span>
+      </a>
+
+      <div class="admin-nav-title">System</div>
+
+      <a href="staff.html">
+        <span class="admin-nav-icon">♟</span>
+        <span>Staff</span>
+      </a>
+
+      <a href="audit-logs.html" class="active">
+        <span class="admin-nav-icon">◉</span>
+        <span>Audit Logs</span>
+      </a>
+
+      <a href="settings.html">
+        <span class="admin-nav-icon">⚙</span>
+        <span>Settings</span>
+      </a>
+
+      <a href="../index.html">
+        <span class="admin-nav-icon">↗</span>
+        <span>View Store</span>
+      </a>
+
+    </nav>
+
+  </aside>
+
+
+  <!-- MAIN -->
+
+  <main class="admin-main">
+
+    <header class="admin-topbar">
+
+      <div class="admin-topbar-title">
+        Audit Logs
+      </div>
+
+      <div class="admin-topbar-right">
+
+        <a
+          href="../index.html"
+          class="store-link"
+        >
+          View Store ↗
+        </a>
+
+        <div class="admin-avatar">
+          A
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <section class="admin-content">
+
+      <!-- STATS -->
+
+      <div class="stats-grid">
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Total Activities
+          </div>
+
+          <div
+            class="stat-value"
+            id="totalLogs"
+          >
+            0
+          </div>
+
+          <div class="stat-small">
+            Recorded activities
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Today
+          </div>
+
+          <div
+            class="stat-value"
+            id="todayLogs"
+          >
+            0
+          </div>
+
+          <div class="stat-small">
+            Activities today
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Updates
+          </div>
+
+          <div
+            class="stat-value"
+            id="updateLogs"
+          >
+            0
+          </div>
+
+          <div class="stat-small">
+            Update activities
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Deletes
+          </div>
+
+          <div
+            class="stat-value"
+            id="deleteLogs"
+          >
+            0
+          </div>
+
+          <div class="stat-small">
+            Delete activities
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- TOOLBAR -->
+
+      <div class="toolbar">
+
+        <div class="search-box">
+
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search actor, action, module or description..."
+          >
+
+        </div>
+
+
+        <div class="filter-select">
+
+          <select id="actionFilter">
+
+            <option value="all">
+              All Actions
+            </option>
+
+            <option value="create">
+              Create
+            </option>
+
+            <option value="update">
+              Update
+            </option>
+
+            <option value="delete">
+              Delete
+            </option>
+
+            <option value="login">
+              Login
+            </option>
+
+            <option value="status">
+              Status Change
+            </option>
+
+            <option value="other">
+              Other
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="filter-select">
+
+          <select id="moduleFilter">
+
+            <option value="all">
+              All Modules
+            </option>
+
+            <option value="Orders">
+              Orders
+            </option>
+
+            <option value="Products">
+              Products
+            </option>
+
+            <option value="Customers">
+              Customers
+            </option>
+
+            <option value="Inventory">
+              Inventory
+            </option>
+
+            <option value="Coupons">
+              Coupons
+            </option>
+
+            <option value="Staff">
+              Staff
+            </option>
+
+            <option value="Settings">
+              Settings
+            </option>
+
+            <option value="Payments">
+              Payments
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <button
+          class="btn btn-secondary"
+          id="resetBtn"
+        >
+          Reset
+        </button>
+
+
+        <button
+          class="btn btn-secondary"
+          id="exportBtn"
+        >
+          Export CSV
+        </button>
+
+
+        <button
+          class="btn btn-danger"
+          id="clearBtn"
+        >
+          Clear Logs
+        </button>
+
+      </div>
+
+
+      <!-- TABLE -->
+
+      <div class="table-card">
+
+        <div class="table-header">
+
+          <div>
+
+            <div class="table-title">
+              Activity History
+            </div>
+
+            <div
+              class="table-muted"
+              id="resultText"
+            >
+              0 activities
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Actor
+                </th>
+
+                <th>
+                  Action
+                </th>
+
+                <th>
+                  Module
+                </th>
+
+                <th>
+                  Description
+                </th>
+
+                <th>
+                  Date & Time
+                </th>
+
+                <th>
+                  IP
+                </th>
+
+                <th>
+                  Action
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody id="logsBody"></tbody>
+
+          </table>
+
+        </div>
+
+
+        <div class="pagination">
+
+          <div
+            class="pagination-info"
+            id="paginationInfo"
+          >
+            Showing 0 of 0
+          </div>
+
+          <div class="pagination-buttons">
+
+            <button
+              class="btn btn-secondary btn-small"
+              id="prevBtn"
+            >
+              Previous
+            </button>
+
+            <button
+              class="btn btn-secondary btn-small"
+              id="nextBtn"
+            >
+              Next
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<!-- VIEW MODAL -->
+
+<div
+  class="modal-overlay"
+  id="viewModal"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div class="modal-title">
+        Activity Details
+      </div>
+
+      <button
+        class="modal-close"
+        id="closeModalBtn"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="log-detail">
+
+        <div class="detail-item">
+
+          <div class="detail-label">
+            Actor
+          </div>
+
+          <div
+            class="detail-value"
+            id="detailActor"
+          >
+            -
+          </div>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <div class="detail-label">
+            Action
+          </div>
+
+          <div
+            class="detail-value"
+            id="detailAction"
+          >
+            -
+          </div>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <div class="detail-label">
+            Module
+          </div>
+
+          <div
+            class="detail-value"
+            id="detailModule"
+          >
+            -
+          </div>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <div class="detail-label">
+            Date & Time
+          </div>
+
+          <div
+            class="detail-value"
+            id="detailDate"
+          >
+            -
+          </div>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <div class="detail-label">
+            IP Address
+          </div>
+
+          <div
+            class="detail-value"
+            id="detailIP"
+          >
+            -
+          </div>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <div class="detail-label">
+            User Agent
+          </div>
+
+          <div
+            class="detail-value"
+            id="detailUserAgent"
+          >
+            -
+          </div>
+
+        </div>
+
+
+        <div class="detail-item full">
+
+          <div class="detail-label">
+            Description
+          </div>
+
+          <div
+            class="detail-value description-box"
+            id="detailDescription"
+          >
+            -
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script src="../script.js"></script>
+
+<script>
+
+  const STORAGE_KEY = "shopnest_audit_logs";
+
+  let logs = [];
+
+  let currentPage = 1;
+
+  const perPage = 10;
+
+
+  /* =========================
+     DEMO LOGS
+  ========================= */
+
+  const defaultLogs = [
+
+    {
+      id: "LOG1001",
+      actor: "Store Administrator",
+      email: "admin@alaminshop.com",
+      action: "login",
+      module: "System",
+      description: "Administrator logged into the admin dashboard.",
+      createdAt: "2026-09-12T18:30:00",
+      ip: "192.168.1.10",
+      userAgent: "Chrome / Windows"
+    },
+
+    {
+      id: "LOG1002",
+      actor: "Store Administrator",
+      email: "admin@alaminshop.com",
+      action: "update",
+      module: "Products",
+      description: "Updated product stock and product information.",
+      createdAt: "2026-09-12T17:45:00",
+      ip: "192.168.1.10",
+      userAgent: "Chrome / Windows"
+    },
+
+    {
+      id: "LOG1003",
+      actor: "Shop Manager",
+      email: "manager@alaminshop.com",
+      action: "status",
+      module: "Orders",
+      description: "Order SN100001 status changed from Processing to Packed.",
+      createdAt: "2026-09-12T16:20:00",
+      ip: "192.168.1.15",
+      userAgent: "Chrome / Windows"
+    },
+
+    {
+      id: "LOG1004",
+      actor: "Customer Support",
+      email: "support@alaminshop.com",
+      action: "update",
+      module: "Customers",
+      description: "Updated customer account information.",
+      createdAt: "2026-09-12T14:10:00",
+      ip: "192.168.1.20",
+      userAgent: "Chrome / Windows"
+    },
+
+    {
+      id: "LOG1005",
+      actor: "Shop Manager",
+      email: "manager@alaminshop.com",
+      action: "create",
+      module: "Coupons",
+      description: "Created a new discount coupon.",
+      createdAt: "2026-09-11T12:35:00",
+      ip: "192.168.1.15",
+      userAgent: "Chrome / Windows"
+    },
+
+    {
+      id: "LOG1006",
+      actor: "Store Administrator",
+      email: "admin@alaminshop.com",
+      action: "update",
+      module: "Settings",
+      description: "Updated store delivery settings.",
+      createdAt: "2026-09-11T11:15:00",
+      ip: "192.168.1.10",
+      userAgent: "Chrome / Windows"
+    },
+
+    {
+      id: "LOG1007",
+      actor: "Store Administrator",
+      email: "admin@alaminshop.com",
+      action: "create",
+      module: "Staff",
+      description: "Added a new staff member.",
+      createdAt: "2026-09-10T15:30:00",
+      ip: "192.168.1.10",
+      userAgent: "Chrome / Windows"
+    },
+
+    {
+      id: "LOG1008",
+      actor: "Shop Manager",
+      email: "manager@alaminshop.com",
+      action: "delete",
+      module: "Products",
+      description: "Deleted an archived product.",
+      createdAt: "2026-09-10T13:20:00",
+      ip: "192.168.1.15",
+      userAgent: "Chrome / Windows"
+    },
+
+    {
+      id: "LOG1009",
+      actor: "Customer Support",
+      email: "support@alaminshop.com",
+      action: "status",
+      module: "Returns",
+      description: "Return request status changed to Approved.",
+      createdAt: "2026-09-09T17:00:00",
+      ip: "192.168.1.20",
+      userAgent: "Chrome / Windows"
+    },
+
+    {
+      id: "LOG1010",
+      actor: "Store Administrator",
+      email: "admin@alaminshop.com",
+      action: "update",
+      module: "Payments",
+      description: "Updated payment method settings.",
+      createdAt: "2026-09-09T10:40:00",
+      ip: "192.168.1.10",
+      userAgent: "Chrome / Windows"
+    }
+
+  ];
+
+
+  /* =========================
+     LOAD
+  ========================= */
+
+  function loadLogs() {
+
+    const saved =
+      localStorage.getItem(STORAGE_KEY);
+
+
+    if (saved) {
+
+      try {
+
+        logs = JSON.parse(saved);
+
+      } catch (error) {
+
+        logs = [...defaultLogs];
+
+        saveLogs();
+
+      }
+
+    } else {
+
+      logs = [...defaultLogs];
+
+      saveLogs();
+
+    }
+
+  }
+
+
+  function saveLogs() {
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(logs)
+    );
+
+  }
+
+
+  /* =========================
+     HELPERS
+  ========================= */
+
+  function escapeHTML(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  function getInitials(name) {
+
+    return String(name || "Admin")
+      .split(" ")
+      .filter(Boolean)
+      .slice(0, 2)
+      .map(word =>
+        word.charAt(0).toUpperCase()
+      )
+      .join("");
+
+  }
+
+
+  function formatDateTime(date) {
+
+    const d = new Date(date);
+
+    if (Number.isNaN(d.getTime())) {
+      return "-";
+    }
+
+    return d.toLocaleString("en-BD", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+  }
+
+
+  function getActionClass(action) {
+
+    const classes = {
+      create: "action-create",
+      update: "action-update",
+      delete: "action-delete",
+      login: "action-login",
+      status: "action-status",
+      other: "action-other"
+    };
+
+    return classes[action] || "action-other";
+
+  }
+
+
+  function getActionName(action) {
+
+    const names = {
+      create: "Create",
+      update: "Update",
+      delete: "Delete",
+      login: "Login",
+      status: "Status Change",
+      other: "Other"
+    };
+
+    return names[action] || "Other";
+
+  }
+
+
+  /* =========================
+     FILTER
+  ========================= */
+
+  function getFilteredLogs() {
+
+    const search =
+      document
+        .getElementById("searchInput")
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    const action =
+      document.getElementById("actionFilter").value;
+
+
+    const module =
+      document.getElementById("moduleFilter").value;
+
+
+    return logs.filter(log => {
+
+      const searchable = [
+
+        log.actor,
+        log.email,
+        log.action,
+        log.module,
+        log.description,
+        log.ip
+
+      ]
+        .join(" ")
+        .toLowerCase();
+
+
+      const matchesSearch =
+        !search ||
+        searchable.includes(search);
+
+
+      const matchesAction =
+        action === "all" ||
+        log.action === action;
+
+
+      const matchesModule =
+        module === "all" ||
+        log.module === module;
+
+
+      return (
+        matchesSearch &&
+        matchesAction &&
+        matchesModule
+      );
+
+    });
+
+  }
+
+
+  /* =========================
+     STATS
+  ========================= */
+
+  function updateStats() {
+
+    const today =
+      new Date().toDateString();
+
+
+    const todayCount =
+      logs.filter(log => {
+
+        return new Date(log.createdAt)
+          .toDateString() === today;
+
+      }).length;
+
+
+    const updates =
+      logs.filter(
+        log => log.action === "update"
+      ).length;
+
+
+    const deletes =
+      logs.filter(
+        log => log.action === "delete"
+      ).length;
+
+
+    document.getElementById("totalLogs").textContent =
+      logs.length;
+
+
+    document.getElementById("todayLogs").textContent =
+      todayCount;
+
+
+    document.getElementById("updateLogs").textContent =
+      updates;
+
+
+    document.getElementById("deleteLogs").textContent =
+      deletes;
+
+  }
+
+
+  /* =========================
+     RENDER
+  ========================= */
+
+  function renderLogs() {
+
+    const tbody =
+      document.getElementById("logsBody");
+
+
+    const filtered =
+      getFilteredLogs();
+
+
+    const totalPages =
+      Math.max(
+        1,
+        Math.ceil(filtered.length / perPage)
+      );
+
+
+    if (currentPage > totalPages) {
+      currentPage = totalPages;
+    }
+
+
+    const start =
+      (currentPage - 1) * perPage;
+
+
+    const end =
+      start + perPage;
+
+
+    const pageLogs =
+      filtered.slice(start, end);
+
+
+    document.getElementById("resultText").textContent =
+      `${filtered.length} activit${filtered.length === 1 ? "y" : "ies"}`;
+
+
+    if (!pageLogs.length) {
+
+      tbody.innerHTML = `
+
+        <tr>
+
+          <td colspan="7">
+
+            <div class="empty-state">
+
+              No audit logs found.
+
+            </div>
+
+          </td>
+
+        </tr>
+
+      `;
+
+    } else {
+
+      tbody.innerHTML =
+        pageLogs.map(log => {
+
+          return `
+
+            <tr>
+
+              <td>
+
+                <div class="actor">
+
+                  <div class="actor-avatar">
+                    ${escapeHTML(
+                      getInitials(log.actor)
+                    )}
+                  </div>
+
+                  <div>
+
+                    <div class="actor-name">
+                      ${escapeHTML(log.actor)}
+                    </div>
+
+                    <div class="actor-email">
+                      ${escapeHTML(log.email || "-")}
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+              <td>
+
+                <span
+                  class="action-badge ${getActionClass(log.action)}"
+                >
+                  ${escapeHTML(
+                    getActionName(log.action)
+                  )}
+                </span>
+
+              </td>
+
+
+              <td>
+
+                <span class="module-badge">
+                  ${escapeHTML(log.module)}
+                </span>
+
+              </td>
+
+
+              <td>
+                ${escapeHTML(log.description)}
+              </td>
+
+
+              <td>
+                ${escapeHTML(
+                  formatDateTime(log.createdAt)
+                )}
+              </td>
+
+
+              <td>
+
+                <span class="ip-address">
+                  ${escapeHTML(log.ip || "-")}
+                </span>
+
+              </td>
+
+
+              <td>
+
+                <button
+                  class="btn btn-secondary btn-small"
+                  onclick="viewLog('${log.id}')"
+                >
+                  View
+                </button>
+
+              </td>
+
+            </tr>
+
+          `;
+
+        }).join("");
+
+    }
+
+
+    const showingFrom =
+      filtered.length
+        ? start + 1
+        : 0;
+
+
+    const showingTo =
+      Math.min(
+        end,
+        filtered.length
+      );
+
+
+    document.getElementById("paginationInfo").textContent =
+      `Showing ${showingFrom}-${showingTo} of ${filtered.length}`;
+
+
+    document.getElementById("prevBtn").disabled =
+      currentPage <= 1;
+
+
+    document.getElementById("nextBtn").disabled =
+      currentPage >= totalPages;
+
+  }
+
+
+  /* =========================
+     VIEW LOG
+  ========================= */
+
+  function viewLog(id) {
+
+    const log =
+      logs.find(item => item.id === id);
+
+
+    if (!log) return;
+
+
+    document.getElementById("detailActor").textContent =
+      `${log.actor} (${log.email || "-"})`;
+
+
+    document.getElementById("detailAction").textContent =
+      getActionName(log.action);
+
+
+    document.getElementById("detailModule").textContent =
+      log.module || "-";
+
+
+    document.getElementById("detailDate").textContent =
+      formatDateTime(log.createdAt);
+
+
+    document.getElementById("detailIP").textContent =
+      log.ip || "-";
+
+
+    document.getElementById("detailUserAgent").textContent =
+      log.userAgent || "-";
+
+
+    document.getElementById("detailDescription").textContent =
+      log.description || "-";
+
+
+    document
+      .getElementById("viewModal")
+      .classList.add("show");
+
+  }
+
+
+  function closeModal() {
+
+    document
+      .getElementById("viewModal")
+      .classList.remove("show");
+
+  }
+
+
+  /* =========================
+     EXPORT CSV
+  ========================= */
+
+  function exportCSV() {
+
+    const filtered =
+      getFilteredLogs();
+
+
+    if (!filtered.length) {
+
+      alert(
+        "There are no logs to export."
+      );
+
+      return;
+
+    }
+
+
+    const headers = [
+
+      "ID",
+      "Actor",
+      "Email",
+      "Action",
+      "Module",
+      "Description",
+      "Created At",
+      "IP",
+      "User Agent"
+
+    ];
+
+
+    const rows =
+      filtered.map(log => [
+
+        log.id,
+        log.actor,
+        log.email,
+        log.action,
+        log.module,
+        log.description,
+        log.createdAt,
+        log.ip,
+        log.userAgent
+
+      ]);
+
+
+    const csv = [
+
+      headers,
+
+      ...rows
+
+    ]
+      .map(row =>
+        row
+          .map(value =>
+            `"${String(value ?? "")
+              .replace(/"/g, '""')}"`
+          )
+          .join(",")
+      )
+      .join("\n");
+
+
+    const blob =
+      new Blob(
+        ["\ufeff" + csv],
+        {
+          type: "text/csv;charset=utf-8;"
+        }
+      );
+
+
+    const url =
+      URL.createObjectURL(blob);
+
+
+    const link =
+      document.createElement("a");
+
+
+    link.href = url;
+
+    link.download =
+      `alamin-shop-audit-logs-${Date.now()}.csv`;
+
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+    URL.revokeObjectURL(url);
+
+  }
+
+
+  /* =========================
+     EVENTS
+  ========================= */
+
+  document
+    .getElementById("searchInput")
+    .addEventListener(
+      "input",
+      function() {
+
+        currentPage = 1;
+
+        renderLogs();
+
+      }
+    );
+
+
+  document
+    .getElementById("actionFilter")
+    .addEventListener(
+      "change",
+      function() {
+
+        currentPage = 1;
+
+        renderLogs();
+
+      }
+    );
+
+
+  document
+    .getElementById("moduleFilter")
+    .addEventListener(
+      "change",
+      function() {
+
+        currentPage = 1;
+
+        renderLogs();
+
+      }
+    );
+
+
+  document
+    .getElementById("resetBtn")
+    .addEventListener(
+      "click",
+      function() {
+
+        document.getElementById("searchInput").value =
+          "";
+
+        document.getElementById("actionFilter").value =
+          "all";
+
+        document.getElementById("moduleFilter").value =
+          "all";
+
+        currentPage = 1;
+
+        renderLogs();
+
+      }
+    );
+
+
+  document
+    .getElementById("exportBtn")
+    .addEventListener(
+      "click",
+      exportCSV
+    );
+
+
+  document
+    .getElementById("clearBtn")
+    .addEventListener(
+      "click",
+      function() {
+
+        const confirmed =
+          confirm(
+            "Are you sure you want to clear all audit logs?"
+          );
+
+
+        if (!confirmed) return;
+
+
+        logs = [];
+
+        saveLogs();
+
+        updateStats();
+
+        currentPage = 1;
+
+        renderLogs();
+
+
+        if (
+          typeof showNotification === "function"
+        ) {
+
+          showNotification(
+            "Audit logs cleared."
+          );
+
+        }
+
+      }
+    );
+
+
+  document
+    .getElementById("prevBtn")
+    .addEventListener(
+      "click",
+      function() {
+
+        if (currentPage > 1) {
+
+          currentPage--;
+
+          renderLogs();
+
+        }
+
+      }
+    );
+
+
+  document
+    .getElementById("nextBtn")
+    .addEventListener(
+      "click",
+      function() {
+
+        const filtered =
+          getFilteredLogs();
+
+
+        const totalPages =
+          Math.max(
+            1,
+            Math.ceil(
+              filtered.length / perPage
+            )
+          );
+
+
+        if (currentPage < totalPages) {
+
+          currentPage++;
+
+          renderLogs();
+
+        }
+
+      }
+    );
+
+
+  document
+    .getElementById("closeModalBtn")
+    .addEventListener(
+      "click",
+      closeModal
+    );
+
+
+  document
+    .getElementById("viewModal")
+    .addEventListener(
+      "click",
+      function(event) {
+
+        if (event.target === this) {
+
+          closeModal();
+
+        }
+
+      }
+    );
+
+
+  /* =========================
+     INIT
+  ========================= */
+
+  loadLogs();
+
+  updateStats();
+
+  renderLogs();
+
+</script>
+
+</body>
+</html>

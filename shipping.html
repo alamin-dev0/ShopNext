@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shipping & Delivery - Alamin Shop</title>
+
+    <meta
+        name="description"
+        content="Learn about Alamin Shop shipping, delivery charges, delivery times and order tracking."
+    >
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* =========================================
+           SHIPPING PAGE
+        ========================================= */
+
+        .shipping-page {
+            min-height: 70vh;
+            padding: 70px 0 90px;
+        }
+
+        .shipping-hero {
+            max-width: 760px;
+            margin: 0 auto 55px;
+            text-align: center;
+        }
+
+        .shipping-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border: 1px solid #2b3038;
+            border-radius: 999px;
+            background: #111318;
+            color: #aeb6c3;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .shipping-hero h1 {
+            margin: 0 0 18px;
+            color: #fff;
+            font-size: clamp(36px, 5vw, 58px);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+        }
+
+        .shipping-hero p {
+            margin: 0;
+            color: #9da5b1;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        /* =========================================
+           INFO CARDS
+        ========================================= */
+
+        .shipping-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            max-width: 1000px;
+            margin: 0 auto 55px;
+        }
+
+        .shipping-card {
+            padding: 25px;
+            border: 1px solid #292e37;
+            border-radius: 18px;
+            background: #101216;
+            transition: 0.25s ease;
+        }
+
+        .shipping-card:hover {
+            transform: translateY(-4px);
+            border-color: #3b424d;
+        }
+
+        .shipping-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 13px;
+            background: #191c22;
+            border: 1px solid #2b3038;
+            font-size: 22px;
+            margin-bottom: 18px;
+        }
+
+        .shipping-card h3 {
+            color: #fff;
+            margin: 0 0 9px;
+            font-size: 17px;
+        }
+
+        .shipping-card p {
+            color: #8f98a5;
+            margin: 0;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        /* =========================================
+           CONTENT
+        ========================================= */
+
+        .shipping-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .shipping-section {
+            padding: 28px;
+            margin-bottom: 18px;
+            border: 1px solid #292e37;
+            border-radius: 18px;
+            background: #101216;
+        }
+
+        .shipping-section h2 {
+            color: #fff;
+            margin: 0 0 15px;
+            font-size: 22px;
+        }
+
+        .shipping-section p {
+            color: #9da5b1;
+            line-height: 1.8;
+            font-size: 14px;
+            margin: 0 0 12px;
+        }
+
+        .shipping-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        .shipping-section ul {
+            margin: 15px 0 0;
+            padding-left: 20px;
+        }
+
+        .shipping-section li {
+            color: #9da5b1;
+            line-height: 1.8;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        /* =========================================
+           DELIVERY TABLE
+        ========================================= */
+
+        .shipping-table-wrapper {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .shipping-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 550px;
+        }
+
+        .shipping-table th,
+        .shipping-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #292e37;
+        }
+
+        .shipping-table th {
+            color: #fff;
+            background: #171a20;
+            font-size: 13px;
+        }
+
+        .shipping-table td {
+            color: #9da5b1;
+            font-size: 14px;
+        }
+
+        .shipping-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* =========================================
+           TRACKING BOX
+        ========================================= */
+
+        .tracking-box {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px dashed #353b45;
+            border-radius: 14px;
+            background: #0d0f12;
+        }
+
+        .tracking-box strong {
+            color: #fff;
+        }
+
+        .tracking-box span {
+            color: #8f98a5;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        /* =========================================
+           CTA
+        ========================================= */
+
+        .shipping-cta {
+            max-width: 900px;
+            margin: 45px auto 0;
+            padding: 32px;
+            border: 1px solid #292e37;
+            border-radius: 20px;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(255,255,255,0.06),
+                    transparent 35%
+                ),
+                #101216;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .shipping-cta h3 {
+            color: #fff;
+            margin: 0 0 8px;
+            font-size: 20px;
+        }
+
+        .shipping-cta p {
+            color: #8f98a5;
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .shipping-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            border-radius: 10px;
+            background: #fff;
+            color: #08090b;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: 0.25s ease;
+        }
+
+        .shipping-cta-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 800px) {
+
+            .shipping-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .shipping-page {
+                padding: 45px 0 60px;
+            }
+
+            .shipping-section {
+                padding: 22px;
+            }
+
+            .shipping-cta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .shipping-cta-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================
+         HEADER
+    ========================================= -->
+
+    <header class="site-header">
+
+        <div class="container header-inner">
+
+            <a href="index.html" class="logo">
+                Alamin<span>Shop</span>
+            </a>
+
+            <div class="header-search">
+
+                <form id="shippingSearchForm">
+
+                    <input
+                        type="search"
+                        id="shippingSearchInput"
+                        placeholder="Search products..."
+                        autocomplete="off"
+                    >
+
+                    <button type="submit">
+                        Search
+                    </button>
+
+                </form>
+
+            </div>
+
+            <div class="header-actions">
+
+                <a href="wishlist.html" class="header-action">
+                    Wishlist
+                    <span id="wishlistCount">0</span>
+                </a>
+
+                <a href="cart.html" class="header-action">
+                    Cart
+                    <span id="cartCount">0</span>
+                </a>
+
+                <a href="account.html" class="header-action">
+                    Account
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <nav class="main-nav">
+
+            <div class="container nav-inner">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="products.html">
+                    Products
+                </a>
+
+                <a href="products.html?category=electronics">
+                    Electronics
+                </a>
+
+                <a href="products.html?category=fashion">
+                    Fashion
+                </a>
+
+                <a href="products.html?category=home">
+                    Home & Living
+                </a>
+
+                <a href="products.html?category=beauty">
+                    Beauty
+                </a>
+
+                <a href="products.html?category=offers">
+                    Offers
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =========================================
+         MAIN
+    ========================================= -->
+
+    <main class="shipping-page">
+
+        <div class="container">
+
+            <!-- HERO -->
+
+            <section class="shipping-hero">
+
+                <div class="shipping-badge">
+                    🚚 Alamin Shop Delivery
+                </div>
+
+                <h1>
+                    Shipping & Delivery
+                </h1>
+
+                <p>
+                    Everything you need to know about delivery charges,
+                    delivery areas, estimated delivery time and order tracking.
+                </p>
+
+            </section>
+
+
+            <!-- QUICK INFO -->
+
+            <section class="shipping-grid">
+
+                <div class="shipping-card">
+
+                    <div class="shipping-icon">
+                        🚚
+                    </div>
+
+                    <h3>
+                        Reliable Delivery
+                    </h3>
+
+                    <p>
+                        Your order will be prepared and handed over
+                        to our available delivery partner.
+                    </p>
+
+                </div>
+
+
+                <div class="shipping-card">
+
+                    <div class="shipping-icon">
+                        📦
+                    </div>
+
+                    <h3>
+                        Secure Packaging
+                    </h3>
+
+                    <p>
+                        Products are packed carefully before being
+                        dispatched for delivery.
+                    </p>
+
+                </div>
+
+
+                <div class="shipping-card">
+
+                    <div class="shipping-icon">
+                        📍
+                    </div>
+
+                    <h3>
+                        Order Tracking
+                    </h3>
+
+                    <p>
+                        Once tracking is available, you can see your
+                        shipment information from your order details.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- CONTENT -->
+
+            <div class="shipping-content">
+
+
+                <!-- DELIVERY CHARGES -->
+
+                <section class="shipping-section">
+
+                    <h2>
+                        Delivery Charges
+                    </h2>
+
+                    <p>
+                        Delivery charges are calculated during checkout
+                        based on your delivery area and order value.
+                    </p>
+
+
+                    <div class="shipping-table-wrapper">
+
+                        <table class="shipping-table">
+
+                            <thead>
+
+                                <tr>
+                                    <th>
+                                        Delivery Zone
+                                    </th>
+
+                                    <th>
+                                        Delivery Charge
+                                    </th>
+
+                                    <th>
+                                        Estimated Time
+                                    </th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                <tr>
+
+                                    <td>
+                                        Inside Dhaka
+                                    </td>
+
+                                    <td>
+                                        ৳80
+                                    </td>
+
+                                    <td>
+                                        1–3 business days
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>
+                                        Outside Dhaka
+                                    </td>
+
+                                    <td>
+                                        ৳130
+                                    </td>
+
+                                    <td>
+                                        2–5 business days
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>
+                                        Orders ৳5,000+
+                                    </td>
+
+                                    <td>
+                                        Free
+                                    </td>
+
+                                    <td>
+                                        Based on delivery area
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <p style="margin-top: 15px;">
+                        Delivery charges shown above are the current demo
+                        values used by this frontend version. These will
+                        eventually be controlled from the Admin Dashboard.
+                    </p>
+
+                </section>
+
+
+                <!-- DELIVERY TIME -->
+
+                <section class="shipping-section">
+
+                    <h2>
+                        Delivery Time
+                    </h2>
+
+                    <p>
+                        Delivery time may vary depending on your location,
+                        product availability, courier capacity and other
+                        circumstances.
+                    </p>
+
+                    <ul>
+
+                        <li>
+                            Inside Dhaka: usually 1–3 business days.
+                        </li>
+
+                        <li>
+                            Outside Dhaka: usually 2–5 business days.
+                        </li>
+
+                        <li>
+                            Remote areas may require additional time.
+                        </li>
+
+                        <li>
+                            Orders placed during holidays may take longer.
+                        </li>
+
+                    </ul>
+
+                </section>
+
+
+                <!-- ORDER PROCESS -->
+
+                <section class="shipping-section">
+
+                    <h2>
+                        How Your Order Is Delivered
+                    </h2>
+
+                    <p>
+                        After you place an order, the order goes through
+                        several stages before reaching you.
+                    </p>
+
+                    <ul>
+
+                        <li>
+                            <strong>New:</strong>
+                            Your order has been received.
+                        </li>
+
+                        <li>
+                            <strong>Confirmed:</strong>
+                            The order has been checked and confirmed.
+                        </li>
+
+                        <li>
+                            <strong>Processing:</strong>
+                            Products are being prepared.
+                        </li>
+
+                        <li>
+                            <strong>Packed:</strong>
+                            Your order has been packed.
+                        </li>
+
+                        <li>
+                            <strong>Shipped:</strong>
+                            The courier has received the shipment.
+                        </li>
+
+                        <li>
+                            <strong>Delivered:</strong>
+                            The order has reached you.
+                        </li>
+
+                    </ul>
+
+                </section>
+
+
+                <!-- TRACKING -->
+
+                <section class="shipping-section">
+
+                    <h2>
+                        Order Tracking
+                    </h2>
+
+                    <p>
+                        You can check your order status from the
+                        <strong>My Orders</strong> section of your account.
+                    </p>
+
+                    <div class="tracking-box">
+
+                        <strong>
+                            📦 Tracking information
+                        </strong>
+
+                        <br>
+
+                        <span>
+                            Courier tracking number and live shipment
+                            tracking will become available after the
+                            courier integration is connected.
+                        </span>
+
+                    </div>
+
+                </section>
+
+
+                <!-- DELIVERY ADDRESS -->
+
+                <section class="shipping-section">
+
+                    <h2>
+                        Delivery Address
+                    </h2>
+
+                    <p>
+                        Please provide a complete and accurate delivery
+                        address during checkout.
+                    </p>
+
+                    <ul>
+
+                        <li>
+                            Full name
+                        </li>
+
+                        <li>
+                            Active phone number
+                        </li>
+
+                        <li>
+                            City / area
+                        </li>
+
+                        <li>
+                            House / road / building information
+                        </li>
+
+                        <li>
+                            Additional delivery instructions if required
+                        </li>
+
+                    </ul>
+
+                    <p style="margin-top: 15px;">
+                        An incorrect or incomplete address may cause
+                        delivery delays.
+                    </p>
+
+                </section>
+
+
+                <!-- FAILED DELIVERY -->
+
+                <section class="shipping-section">
+
+                    <h2>
+                        Failed Delivery
+                    </h2>
+
+                    <p>
+                        If the delivery cannot be completed because the
+                        customer is unavailable, the phone number is
+                        unreachable or the address is incorrect, the
+                        courier may attempt delivery again according to
+                        their policy.
+                    </p>
+
+                    <p>
+                        Please keep your phone available around the
+                        expected delivery time.
+                    </p>
+
+                </section>
+
+
+                <!-- IMPORTANT -->
+
+                <section class="shipping-section">
+
+                    <h2>
+                        Important Information
+                    </h2>
+
+                    <ul>
+
+                        <li>
+                            Delivery time is an estimate and is not always guaranteed.
+                        </li>
+
+                        <li>
+                            Product availability may affect dispatch time.
+                        </li>
+
+                        <li>
+                            Some products may have different delivery conditions.
+                        </li>
+
+                        <li>
+                            Courier delays may occur because of weather,
+                            holidays or unexpected situations.
+                        </li>
+
+                        <li>
+                            Always check your order details for the latest
+                            available status.
+                        </li>
+
+                    </ul>
+
+                </section>
+
+            </div>
+
+
+            <!-- CTA -->
+
+            <div class="shipping-cta">
+
+                <div>
+
+                    <h3>
+                        Need help with your delivery?
+                    </h3>
+
+                    <p>
+                        If you have a question about an existing order,
+                        contact our support team.
+                    </p>
+
+                </div>
+
+                <a
+                    href="contact.html"
+                    class="shipping-cta-btn"
+                >
+                    Contact Support
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================= -->
+
+    <footer class="site-footer">
+
+        <div class="container footer-inner">
+
+            <div class="footer-brand">
+
+                <a href="index.html" class="logo">
+                    Alamin<span>Shop</span>
+                </a>
+
+                <p>
+                    Simple, reliable and modern online shopping.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="products.html">
+                    Products
+                </a>
+
+                <a href="orders.html">
+                    My Orders
+                </a>
+
+                <a href="wishlist.html">
+                    Wishlist
+                </a>
+
+                <a href="faq.html">
+                    FAQ
+                </a>
+
+                <a href="shipping.html">
+                    Shipping
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+                <a href="privacy.html">
+                    Privacy
+                </a>
+
+                <a href="terms.html">
+                    Terms
+                </a>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================= -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                /* -----------------------------------------
+                   CART & WISHLIST COUNT
+                ----------------------------------------- */
+
+                try {
+
+                    const cart =
+                        JSON.parse(
+                            localStorage.getItem(
+                                "shopnest_cart"
+                            )
+                        ) || [];
+
+                    const wishlist =
+                        JSON.parse(
+                            localStorage.getItem(
+                                "shopnest_wishlist"
+                            )
+                        ) || [];
+
+
+                    const cartCount =
+                        document.getElementById(
+                            "cartCount"
+                        );
+
+                    const wishlistCount =
+                        document.getElementById(
+                            "wishlistCount"
+                        );
+
+
+                    if (cartCount) {
+
+                        const totalItems =
+                            cart.reduce(
+                                function (total, item) {
+
+                                    return total +
+                                        (Number(item.quantity) || 1);
+
+                                },
+                                0
+                            );
+
+                        cartCount.textContent =
+                            totalItems;
+
+                    }
+
+
+                    if (wishlistCount) {
+
+                        wishlistCount.textContent =
+                            wishlist.length;
+
+                    }
+
+                } catch (error) {
+
+                    console.log(
+                        "Storage error:",
+                        error
+                    );
+
+                }
+
+
+                /* -----------------------------------------
+                   HEADER SEARCH
+                ----------------------------------------- */
+
+                const searchForm =
+                    document.getElementById(
+                        "shippingSearchForm"
+                    );
+
+                const searchInput =
+                    document.getElementById(
+                        "shippingSearchInput"
+                    );
+
+
+                if (searchForm) {
+
+                    searchForm.addEventListener(
+                        "submit",
+                        function (event) {
+
+                            event.preventDefault();
+
+
+                            const search =
+                                searchInput.value.trim();
+
+
+                            if (!search) {
+
+                                window.location.href =
+                                    "products.html";
+
+                                return;
+
+                            }
+
+
+                            window.location.href =
+                                "products.html?search=" +
+                                encodeURIComponent(search);
+
+                        }
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>

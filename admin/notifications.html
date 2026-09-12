@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Notifications - Alamin Shop Admin</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        :root {
+            --bg: #080a0d;
+            --card: #111419;
+            --card2: #15191f;
+            --border: #252a32;
+            --text: #f5f7fa;
+            --muted: #8f98a7;
+            --blue: #3b82f6;
+            --green: #22c55e;
+            --yellow: #f59e0b;
+            --red: #ef4444;
+            --purple: #8b5cf6;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        .admin-layout {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* SIDEBAR */
+
+        .admin-sidebar {
+            width: 250px;
+            min-height: 100vh;
+            background: #0d1014;
+            border-right: 1px solid var(--border);
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .admin-logo {
+            padding: 25px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .admin-logo h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .admin-logo span {
+            display: block;
+            color: #8d96a5;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .admin-nav {
+            padding: 18px 12px;
+        }
+
+        .nav-title {
+            color: #687281;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 10px 12px;
+        }
+
+        .admin-nav a {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 11px 13px;
+            border-radius: 9px;
+            color: #aeb6c3;
+            font-size: 14px;
+            margin-bottom: 4px;
+            transition: .2s;
+        }
+
+        .admin-nav a:hover {
+            background: #171b21;
+            color: #fff;
+        }
+
+        .admin-nav a.active {
+            background: #1b2028;
+            color: #fff;
+            border: 1px solid #2c333d;
+        }
+
+        .nav-icon {
+            width: 22px;
+            text-align: center;
+        }
+
+        /* MAIN */
+
+        .admin-main {
+            width: calc(100% - 250px);
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .admin-topbar {
+            height: 72px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(8, 10, 13, .96);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar-title h1 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .topbar-title p {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #20252d;
+            border: 1px solid #303640;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .admin-content {
+            padding: 28px;
+        }
+
+        /* TOP ACTIONS */
+
+        .notification-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .toolbar-left {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .admin-btn {
+            height: 40px;
+            padding: 0 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: #171b21;
+            color: #fff;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .admin-btn:hover {
+            background: #222831;
+        }
+
+        .admin-btn.primary {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        .admin-btn.danger {
+            border-color: #4a2225;
+            color: #fca5a5;
+        }
+
+        .notification-search {
+            height: 40px;
+            width: 260px;
+            background: #111419;
+            border: 1px solid var(--border);
+            color: #fff;
+            border-radius: 8px;
+            padding: 0 13px;
+            outline: none;
+        }
+
+        .notification-search:focus {
+            border-color: #4b5563;
+        }
+
+        /* STATS */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 19px;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 27px;
+            font-weight: 700;
+        }
+
+        .stat-description {
+            margin-top: 6px;
+            color: #687281;
+            font-size: 11px;
+        }
+
+        /* FILTER */
+
+        .filter-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 18px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            border: 1px solid var(--border);
+            background: #0d1014;
+            color: #9ca5b3;
+            border-radius: 8px;
+            padding: 9px 14px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .filter-btn.active {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        /* NOTIFICATION LIST */
+
+        .notifications-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .notifications-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notifications-header h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .notifications-header span {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .notification-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .notification-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 18px 20px;
+            border-bottom: 1px solid #1c2026;
+            transition: .2s;
+            position: relative;
+        }
+
+        .notification-item:last-child {
+            border-bottom: 0;
+        }
+
+        .notification-item:hover {
+            background: #14181e;
+        }
+
+        .notification-item.unread {
+            background: #12171d;
+        }
+
+        .notification-item.unread::before {
+            content: "";
+            width: 3px;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--blue);
+        }
+
+        .notification-icon {
+            width: 42px;
+            height: 42px;
+            flex: 0 0 42px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1c222a;
+            font-size: 18px;
+        }
+
+        .notification-icon.order {
+            background: rgba(59, 130, 246, .12);
+        }
+
+        .notification-icon.stock {
+            background: rgba(245, 158, 11, .12);
+        }
+
+        .notification-icon.message {
+            background: rgba(139, 92, 246, .12);
+        }
+
+        .notification-icon.system {
+            background: rgba(34, 197, 94, .12);
+        }
+
+        .notification-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .notification-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .notification-text {
+            color: #9099a7;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .notification-time {
+            color: #687281;
+            font-size: 11px;
+            margin-top: 7px;
+        }
+
+        .notification-actions {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .icon-btn {
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--border);
+            background: #0d1014;
+            color: #aeb6c3;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .icon-btn:hover {
+            color: #fff;
+            background: #20252c;
+        }
+
+        .unread-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--blue);
+            margin-top: 7px;
+        }
+
+        /* EMPTY */
+
+        .empty-state {
+            text-align: center;
+            padding: 55px 20px;
+            color: var(--muted);
+        }
+
+        .empty-state-icon {
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        .empty-state h3 {
+            color: #dce1e8;
+            margin: 0 0 6px;
+            font-size: 16px;
+        }
+
+        .empty-state p {
+            margin: 0;
+            font-size: 13px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1100px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+            .admin-sidebar {
+                width: 210px;
+            }
+
+            .admin-main {
+                width: calc(100% - 210px);
+                margin-left: 210px;
+            }
+
+            .admin-content {
+                padding: 18px;
+            }
+
+            .admin-topbar {
+                padding: 0 18px;
+            }
+
+            .notification-search {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .admin-layout {
+                display: block;
+            }
+
+            .admin-sidebar {
+                position: static;
+                width: 100%;
+                min-height: auto;
+            }
+
+            .admin-sidebar .admin-nav {
+                display: none;
+            }
+
+            .admin-main {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .admin-topbar {
+                position: static;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .notification-toolbar {
+                align-items: stretch;
+            }
+
+            .toolbar-left {
+                width: 100%;
+            }
+
+            .toolbar-left .admin-btn {
+                flex: 1;
+            }
+
+            .notification-item {
+                padding: 15px;
+            }
+
+            .notification-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="admin-sidebar">
+
+        <div class="admin-logo">
+            <h2>Alamin Shop</h2>
+            <span>Admin Dashboard</span>
+        </div>
+
+        <nav class="admin-nav">
+
+            <div class="nav-title">Main</div>
+
+            <a href="index.html">
+                <span class="nav-icon">▣</span>
+                Dashboard
+            </a>
+
+            <a href="orders.html">
+                <span class="nav-icon">🛒</span>
+                Orders
+            </a>
+
+            <a href="products.html">
+                <span class="nav-icon">📦</span>
+                Products
+            </a>
+
+            <a href="inventory.html">
+                <span class="nav-icon">▤</span>
+                Inventory
+            </a>
+
+            <a href="categories.html">
+                <span class="nav-icon">▦</span>
+                Categories
+            </a>
+
+            <a href="customers.html">
+                <span class="nav-icon">👥</span>
+                Customers
+            </a>
+
+            <div class="nav-title">Marketing</div>
+
+            <a href="coupons.html">
+                <span class="nav-icon">🏷</span>
+                Coupons
+            </a>
+
+            <a href="reports.html">
+                <span class="nav-icon">📊</span>
+                Reports
+            </a>
+
+            <a href="notifications.html" class="active">
+                <span class="nav-icon">🔔</span>
+                Notifications
+            </a>
+
+            <div class="nav-title">Store</div>
+
+            <a href="../index.html">
+                <span class="nav-icon">↗</span>
+                View Store
+            </a>
+
+            <a href="../account.html">
+                <span class="nav-icon">👤</span>
+                My Account
+            </a>
+
+            <a href="../login.html">
+                <span class="nav-icon">⇥</span>
+                Logout
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="admin-main">
+
+        <header class="admin-topbar">
+
+            <div class="topbar-title">
+                <h1>Notifications</h1>
+                <p>Stay updated with your store activity</p>
+            </div>
+
+            <div class="admin-user">
+
+                <strong>Admin</strong>
+
+                <div class="admin-avatar">
+                    A
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <section class="admin-content">
+
+            <!-- ACTIONS -->
+
+            <div class="notification-toolbar">
+
+                <div class="toolbar-left">
+
+                    <button
+                        class="admin-btn primary"
+                        id="markAllRead"
+                    >
+                        Mark All Read
+                    </button>
+
+                    <button
+                        class="admin-btn danger"
+                        id="clearAll"
+                    >
+                        Clear All
+                    </button>
+
+                </div>
+
+                <input
+                    type="search"
+                    id="notificationSearch"
+                    class="notification-search"
+                    placeholder="Search notifications..."
+                >
+
+            </div>
+
+
+            <!-- STATS -->
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Total Notifications
+                    </div>
+
+                    <div
+                        class="stat-value"
+                        id="totalNotifications"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-description">
+                        All store notifications
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Unread
+                    </div>
+
+                    <div
+                        class="stat-value"
+                        id="unreadNotifications"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-description">
+                        Need your attention
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Orders
+                    </div>
+
+                    <div
+                        class="stat-value"
+                        id="orderNotifications"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-description">
+                        Order related
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Alerts
+                    </div>
+
+                    <div
+                        class="stat-value"
+                        id="alertNotifications"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-description">
+                        Stock and messages
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FILTER -->
+
+            <div class="filter-card">
+
+                <div class="filter-row">
+
+                    <button
+                        class="filter-btn active"
+                        data-filter="all"
+                    >
+                        All
+                    </button>
+
+                    <button
+                        class="filter-btn"
+                        data-filter="unread"
+                    >
+                        Unread
+                    </button>
+
+                    <button
+                        class="filter-btn"
+                        data-filter="order"
+                    >
+                        Orders
+                    </button>
+
+                    <button
+                        class="filter-btn"
+                        data-filter="stock"
+                    >
+                        Stock
+                    </button>
+
+                    <button
+                        class="filter-btn"
+                        data-filter="message"
+                    >
+                        Messages
+                    </button>
+
+                    <button
+                        class="filter-btn"
+                        data-filter="system"
+                    >
+                        System
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- LIST -->
+
+            <div class="notifications-card">
+
+                <div class="notifications-header">
+
+                    <h3>
+                        Notification Center
+                    </h3>
+
+                    <span id="notificationCount">
+                        0 notifications
+                    </span>
+
+                </div>
+
+                <div
+                    class="notification-list"
+                    id="notificationList"
+                ></div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="../script.js"></script>
+
+<script>
+
+    /* =========================================
+       ALAMIN SHOP NOTIFICATIONS
+    ========================================== */
+
+    let notifications = [];
+
+    let activeFilter = "all";
+
+
+    /* =========================================
+       HELPERS
+    ========================================== */
+
+    function escapeHtml(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    function readJSON(key, fallback) {
+
+        try {
+
+            return JSON.parse(
+                localStorage.getItem(key) || JSON.stringify(fallback)
+            );
+
+        } catch (error) {
+
+            return fallback;
+
+        }
+
+    }
+
+
+    function saveNotifications() {
+
+        localStorage.setItem(
+            "shopnest_admin_notifications",
+            JSON.stringify(notifications)
+        );
+
+    }
+
+
+    function formatTime(dateValue) {
+
+        const date = new Date(dateValue);
+
+        if (Number.isNaN(date.getTime())) {
+            return "Unknown time";
+        }
+
+
+        const now = new Date();
+
+        const difference =
+            now.getTime() - date.getTime();
+
+
+        const minutes =
+            Math.floor(
+                difference / 60000
+            );
+
+
+        if (minutes < 1) {
+            return "Just now";
+        }
+
+
+        if (minutes < 60) {
+            return `${minutes} minute(s) ago`;
+        }
+
+
+        const hours =
+            Math.floor(minutes / 60);
+
+
+        if (hours < 24) {
+            return `${hours} hour(s) ago`;
+        }
+
+
+        const days =
+            Math.floor(hours / 24);
+
+
+        if (days < 7) {
+            return `${days} day(s) ago`;
+        }
+
+
+        return date.toLocaleDateString(
+            "en-BD",
+            {
+                day: "numeric",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       GENERATE NOTIFICATIONS
+    ========================================== */
+
+    function generateNotifications() {
+
+        const stored =
+            readJSON(
+                "shopnest_admin_notifications",
+                null
+            );
+
+
+        /*
+         * If notifications already exist,
+         * use them.
+         */
+
+        if (Array.isArray(stored)) {
+
+            notifications = stored;
+
+            return;
+
+        }
+
+
+        const generated = [];
+
+
+        /* ORDERS */
+
+        const orders =
+            readJSON(
+                "shopnest_orders",
+                []
+            );
+
+
+        orders.forEach(order => {
+
+            const customer =
+                order.customer?.name ||
+                order.customerName ||
+                order.name ||
+                "Customer";
+
+
+            const status =
+                order.status ||
+                "New";
+
+
+            generated.push({
+
+                id:
+                    "order-" +
+                    (order.id || Date.now()),
+
+                type: "order",
+
+                title:
+                    `Order ${order.id || ""} ${status}`,
+
+                text:
+                    `${customer} placed an order. Order status is ${status}.`,
+
+                createdAt:
+                    order.createdAt ||
+                    new Date().toISOString(),
+
+                read:
+                    false,
+
+                link:
+                    `../order-details.html?id=${encodeURIComponent(
+                        order.id || ""
+                    )}`
+
+            });
+
+        });
+
+
+        /* CONTACT MESSAGES */
+
+        const messages =
+            readJSON(
+                "shopnest_contact_messages",
+                []
+            );
+
+
+        messages.forEach(message => {
+
+            generated.push({
+
+                id:
+                    "message-" +
+                    (message.id || Date.now()),
+
+                type: "message",
+
+                title:
+                    "New customer message",
+
+                text:
+                    `${message.name || "Customer"} sent a message: ${
+                        message.subject || "General enquiry"
+                    }`,
+
+                createdAt:
+                    message.createdAt ||
+                    new Date().toISOString(),
+
+                read:
+                    message.status === "Read",
+
+                link:
+                    "../contact.html"
+
+            });
+
+        });
+
+
+        /* INVENTORY */
+
+        const inventory =
+            readJSON(
+                "shopnest_inventory",
+                {}
+            );
+
+
+        if (
+            typeof products !== "undefined" &&
+            Array.isArray(products)
+        ) {
+
+            products.forEach(product => {
+
+                const stock =
+                    inventory[product.id] !== undefined
+                        ? Number(inventory[product.id])
+                        : Number(product.stock || 0);
+
+
+                if (stock === 0) {
+
+                    generated.push({
+
+                        id:
+                            "out-stock-" +
+                            product.id,
+
+                        type: "stock",
+
+                        title:
+                            "Product is out of stock",
+
+                        text:
+                            `${product.name} currently has 0 items in stock.`,
+
+                        createdAt:
+                            new Date().toISOString(),
+
+                        read: false,
+
+                        link:
+                            "inventory.html"
+
+                    });
+
+                } else if (stock <= 5) {
+
+                    generated.push({
+
+                        id:
+                            "low-stock-" +
+                            product.id,
+
+                        type: "stock",
+
+                        title:
+                            "Low stock alert",
+
+                        text:
+                            `${product.name} has only ${stock} item(s) left.`,
+
+                        createdAt:
+                            new Date().toISOString(),
+
+                        read: false,
+
+                        link:
+                            "inventory.html"
+
+                    });
+
+                }
+
+            });
+
+        }
+
+
+        /* SYSTEM */
+
+        generated.push({
+
+            id: "system-welcome",
+
+            type: "system",
+
+            title: "Admin notification center is ready",
+
+            text:
+                "Your store notifications will appear here automatically.",
+
+            createdAt:
+                new Date().toISOString(),
+
+            read: true,
+
+            link:
+                "index.html"
+
+        });
+
+
+        notifications =
+            generated.sort(
+                (a, b) =>
+                    new Date(b.createdAt) -
+                    new Date(a.createdAt)
+            );
+
+
+        saveNotifications();
+
+    }
+
+
+    /* =========================================
+       FILTER
+    ========================================== */
+
+    function getVisibleNotifications() {
+
+        const search =
+            document.getElementById(
+                "notificationSearch"
+            ).value
+                .trim()
+                .toLowerCase();
+
+
+        return notifications.filter(notification => {
+
+            if (
+                activeFilter === "unread" &&
+                notification.read
+            ) {
+                return false;
+            }
+
+
+            if (
+                activeFilter !== "all" &&
+                activeFilter !== "unread" &&
+                notification.type !== activeFilter
+            ) {
+                return false;
+            }
+
+
+            if (search) {
+
+                const searchable =
+                    (
+                        notification.title +
+                        " " +
+                        notification.text
+                    ).toLowerCase();
+
+
+                if (
+                    !searchable.includes(search)
+                ) {
+                    return false;
+                }
+
+            }
+
+
+            return true;
+
+        });
+
+    }
+
+
+    /* =========================================
+       ICON
+    ========================================== */
+
+    function getIcon(type) {
+
+        if (type === "order") {
+            return "🛒";
+        }
+
+        if (type === "stock") {
+            return "📦";
+        }
+
+        if (type === "message") {
+            return "💬";
+        }
+
+        return "⚙";
+
+    }
+
+
+    /* =========================================
+       RENDER
+    ========================================== */
+
+    function renderNotifications() {
+
+        const list =
+            document.getElementById(
+                "notificationList"
+            );
+
+
+        const visible =
+            getVisibleNotifications();
+
+
+        document.getElementById(
+            "notificationCount"
+        ).textContent =
+            `${visible.length} notification(s)`;
+
+
+        if (!visible.length) {
+
+            list.innerHTML = `
+
+                <div class="empty-state">
+
+                    <div class="empty-state-icon">
+                        🔔
+                    </div>
+
+                    <h3>
+                        No notifications found
+                    </h3>
+
+                    <p>
+                        You're all caught up.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        list.innerHTML =
+            visible.map(notification => {
+
+                return `
+
+                    <div
+                        class="notification-item ${
+                            notification.read
+                                ? ""
+                                : "unread"
+                        }"
+                    >
+
+                        <div
+                            class="notification-icon ${
+                                escapeHtml(
+                                    notification.type
+                                )
+                            }"
+                        >
+                            ${getIcon(
+                                notification.type
+                            )}
+                        </div>
+
+
+                        <div class="notification-content">
+
+                            <div class="notification-title">
+                                ${escapeHtml(
+                                    notification.title
+                                )}
+                            </div>
+
+                            <div class="notification-text">
+                                ${escapeHtml(
+                                    notification.text
+                                )}
+                            </div>
+
+                            <div class="notification-time">
+                                ${formatTime(
+                                    notification.createdAt
+                                )}
+                            </div>
+
+                        </div>
+
+
+                        ${
+                            notification.read
+                                ? ""
+                                : `<div class="unread-dot"></div>`
+                        }
+
+
+                        <div class="notification-actions">
+
+                            ${
+                                notification.link
+                                    ? `
+                                        <button
+                                            class="icon-btn"
+                                            title="Open"
+                                            onclick="openNotification('${escapeHtml(
+                                                notification.id
+                                            )}')"
+                                        >
+                                            ↗
+                                        </button>
+                                    `
+                                    : ""
+                            }
+
+
+                            <button
+                                class="icon-btn"
+                                title="${
+                                    notification.read
+                                        ? "Mark unread"
+                                        : "Mark read"
+                                }"
+                                onclick="toggleRead('${escapeHtml(
+                                    notification.id
+                                )}')"
+                            >
+                                ${
+                                    notification.read
+                                        ? "○"
+                                        : "✓"
+                                }
+                            </button>
+
+
+                            <button
+                                class="icon-btn"
+                                title="Delete"
+                                onclick="deleteNotification('${escapeHtml(
+                                    notification.id
+                                )}')"
+                            >
+                                ×
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+    }
+
+
+    /* =========================================
+       STATS
+    ========================================== */
+
+    function renderStats() {
+
+        const total =
+            notifications.length;
+
+
+        const unread =
+            notifications.filter(
+                notification =>
+                    !notification.read
+            ).length;
+
+
+        const orders =
+            notifications.filter(
+                notification =>
+                    notification.type === "order"
+            ).length;
+
+
+        const alerts =
+            notifications.filter(
+                notification =>
+                    notification.type === "stock" ||
+                    notification.type === "message"
+            ).length;
+
+
+        document.getElementById(
+            "totalNotifications"
+        ).textContent = total;
+
+
+        document.getElementById(
+            "unreadNotifications"
+        ).textContent = unread;
+
+
+        document.getElementById(
+            "orderNotifications"
+        ).textContent = orders;
+
+
+        document.getElementById(
+            "alertNotifications"
+        ).textContent = alerts;
+
+    }
+
+
+    /* =========================================
+       MARK READ
+    ========================================== */
+
+    function toggleRead(id) {
+
+        const notification =
+            notifications.find(
+                item =>
+                    item.id === id
+            );
+
+
+        if (!notification) {
+            return;
+        }
+
+
+        notification.read =
+            !notification.read;
+
+
+        saveNotifications();
+
+        renderStats();
+
+        renderNotifications();
+
+    }
+
+
+    function markAllRead() {
+
+        notifications.forEach(
+            notification => {
+                notification.read = true;
+            }
+        );
+
+
+        saveNotifications();
+
+        renderStats();
+
+        renderNotifications();
+
+    }
+
+
+    /* =========================================
+       DELETE
+    ========================================== */
+
+    function deleteNotification(id) {
+
+        notifications =
+            notifications.filter(
+                notification =>
+                    notification.id !== id
+            );
+
+
+        saveNotifications();
+
+        renderStats();
+
+        renderNotifications();
+
+    }
+
+
+    /* =========================================
+       CLEAR
+    ========================================== */
+
+    function clearAll() {
+
+        if (!notifications.length) {
+            return;
+        }
+
+
+        const confirmed =
+            confirm(
+                "Are you sure you want to clear all notifications?"
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        notifications = [];
+
+        saveNotifications();
+
+        renderStats();
+
+        renderNotifications();
+
+    }
+
+
+    /* =========================================
+       OPEN
+    ========================================== */
+
+    function openNotification(id) {
+
+        const notification =
+            notifications.find(
+                item =>
+                    item.id === id
+            );
+
+
+        if (!notification) {
+            return;
+        }
+
+
+        notification.read = true;
+
+        saveNotifications();
+
+        renderStats();
+
+
+        if (notification.link) {
+
+            window.location.href =
+                notification.link;
+
+            return;
+
+        }
+
+
+        renderNotifications();
+
+    }
+
+
+    /* =========================================
+       FILTER BUTTONS
+    ========================================== */
+
+    document.querySelectorAll(
+        ".filter-btn"
+    ).forEach(button => {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                document.querySelectorAll(
+                    ".filter-btn"
+                ).forEach(item => {
+
+                    item.classList.remove(
+                        "active"
+                    );
+
+                });
+
+
+                this.classList.add("active");
+
+
+                activeFilter =
+                    this.dataset.filter;
+
+
+                renderNotifications();
+
+            }
+        );
+
+    });
+
+
+    /* =========================================
+       SEARCH
+    ========================================== */
+
+    document.getElementById(
+        "notificationSearch"
+    ).addEventListener(
+        "input",
+        renderNotifications
+    );
+
+
+    /* =========================================
+       ACTION BUTTONS
+    ========================================== */
+
+    document.getElementById(
+        "markAllRead"
+    ).addEventListener(
+        "click",
+        markAllRead
+    );
+
+
+    document.getElementById(
+        "clearAll"
+    ).addEventListener(
+        "click",
+        clearAll
+    );
+
+
+    /* =========================================
+       INIT
+    ========================================== */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            generateNotifications();
+
+            renderStats();
+
+            renderNotifications();
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

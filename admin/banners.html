@@ -1,0 +1,2057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banners - Alamin Shop Admin</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    :root {
+      --admin-bg: #08090b;
+      --admin-card: #111318;
+      --admin-card-2: #161920;
+      --admin-border: #272b33;
+      --admin-text: #f8fafc;
+      --admin-muted: #9299a8;
+      --admin-primary: #ffffff;
+      --admin-danger: #ef4444;
+      --admin-success: #22c55e;
+      --admin-warning: #f59e0b;
+      --admin-info: #3b82f6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--admin-bg);
+      color: var(--admin-text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .admin-layout {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* SIDEBAR */
+    .admin-sidebar {
+      width: 250px;
+      min-height: 100vh;
+      background: #0d0f13;
+      border-right: 1px solid var(--admin-border);
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .admin-logo {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--admin-border);
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .admin-logo span {
+      color: #8b93a3;
+      margin-left: 5px;
+    }
+
+    .admin-nav {
+      padding: 18px 12px;
+    }
+
+    .admin-nav-title {
+      color: #656d7b;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+      margin-top: 8px;
+    }
+
+    .admin-nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 13px;
+      margin-bottom: 4px;
+      border-radius: 10px;
+      color: #aab1bf;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    .admin-nav a:hover,
+    .admin-nav a.active {
+      background: #191c23;
+      color: #fff;
+    }
+
+    .admin-nav-icon {
+      width: 20px;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    /* MAIN */
+    .admin-main {
+      width: calc(100% - 250px);
+      margin-left: 250px;
+      min-height: 100vh;
+    }
+
+    .admin-topbar {
+      height: 72px;
+      border-bottom: 1px solid var(--admin-border);
+      background: rgba(8, 9, 11, .95);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+    }
+
+    .admin-topbar-title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .admin-topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .store-link {
+      color: #aab1bf;
+      font-size: 13px;
+    }
+
+    .admin-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #20242c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .admin-content {
+      padding: 30px;
+    }
+
+    /* STATS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card {
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .stat-label {
+      color: var(--admin-muted);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .stat-small {
+      margin-top: 7px;
+      color: var(--admin-muted);
+      font-size: 12px;
+    }
+
+    /* TOOLBAR */
+    .toolbar {
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 230px;
+    }
+
+    .search-box input,
+    .toolbar select {
+      width: 100%;
+      height: 44px;
+      border-radius: 9px;
+      border: 1px solid var(--admin-border);
+      background: #0c0e12;
+      color: #fff;
+      padding: 0 13px;
+      outline: none;
+    }
+
+    .search-box input:focus,
+    .toolbar select:focus {
+      border-color: #555d6b;
+    }
+
+    .filter-select {
+      min-width: 160px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 0 17px;
+      min-height: 44px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .btn-primary {
+      background: #fff;
+      color: #08090b;
+    }
+
+    .btn-primary:hover {
+      opacity: .88;
+    }
+
+    .btn-secondary {
+      background: #20242c;
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      background: #292e38;
+    }
+
+    .btn-danger {
+      background: #3a171b;
+      color: #ff8c94;
+    }
+
+    .btn-danger:hover {
+      background: #4a1b20;
+    }
+
+    .btn-small {
+      min-height: 34px;
+      padding: 0 11px;
+      font-size: 12px;
+    }
+
+    /* TABLE */
+    .table-card {
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--admin-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .table-title {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .table-muted {
+      color: var(--admin-muted);
+      font-size: 12px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1000px;
+    }
+
+    th,
+    td {
+      padding: 15px 16px;
+      text-align: left;
+      border-bottom: 1px solid #20242b;
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    th {
+      color: #858d9d;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      background: #0d0f13;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .banner-thumb {
+      width: 115px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--admin-border);
+      background: #0b0d10;
+    }
+
+    .banner-name {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .banner-url {
+      color: var(--admin-muted);
+      font-size: 11px;
+      max-width: 250px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .badge-active {
+      background: rgba(34, 197, 94, .12);
+      color: #62df8b;
+    }
+
+    .badge-inactive {
+      background: rgba(148, 163, 184, .12);
+      color: #aeb6c5;
+    }
+
+    .badge-home {
+      background: rgba(59, 130, 246, .12);
+      color: #78aaf8;
+    }
+
+    .badge-offer {
+      background: rgba(245, 158, 11, .12);
+      color: #f6bd58;
+    }
+
+    .actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--admin-muted);
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 500;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(680px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #111318;
+      border: 1px solid var(--admin-border);
+      border-radius: 18px;
+      box-shadow: 0 30px 100px rgba(0,0,0,.5);
+    }
+
+    .modal-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--admin-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      width: 35px;
+      height: 35px;
+      border: 0;
+      border-radius: 8px;
+      background: #20242c;
+      color: #fff;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      display: block;
+      color: #aeb5c3;
+      font-size: 12px;
+      margin-bottom: 7px;
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      border: 1px solid var(--admin-border);
+      background: #0c0e12;
+      color: #fff;
+      border-radius: 9px;
+      padding: 11px 12px;
+      outline: none;
+    }
+
+    .form-group input,
+    .form-group select {
+      height: 44px;
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: #555d6b;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 4px;
+    }
+
+    .checkbox-row input {
+      width: 17px;
+      height: 17px;
+    }
+
+    .checkbox-row label {
+      margin: 0;
+      color: #c5cad4;
+      font-size: 13px;
+    }
+
+    .image-preview {
+      margin-top: 10px;
+      display: none;
+    }
+
+    .image-preview img {
+      width: 100%;
+      max-height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid var(--admin-border);
+    }
+
+    .modal-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--admin-border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* PREVIEW */
+    .preview-modal {
+      width: min(900px, 100%);
+    }
+
+    .preview-image {
+      width: 100%;
+      max-height: 430px;
+      object-fit: cover;
+      border-radius: 12px;
+      background: #090a0c;
+      border: 1px solid var(--admin-border);
+    }
+
+    .preview-info {
+      margin-top: 18px;
+    }
+
+    .preview-info h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .preview-info p {
+      margin: 5px 0;
+      color: var(--admin-muted);
+      font-size: 13px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1100px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 800px) {
+      .admin-sidebar {
+        width: 70px;
+      }
+
+      .admin-logo {
+        justify-content: center;
+        padding: 0;
+      }
+
+      .admin-logo span,
+      .admin-logo-text,
+      .admin-nav-title,
+      .admin-nav a span:not(.admin-nav-icon) {
+        display: none;
+      }
+
+      .admin-nav a {
+        justify-content: center;
+        padding: 13px 5px;
+      }
+
+      .admin-main {
+        width: calc(100% - 70px);
+        margin-left: 70px;
+      }
+
+      .admin-topbar {
+        padding: 0 18px;
+      }
+
+      .admin-content {
+        padding: 20px 15px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-topbar-title {
+        font-size: 16px;
+      }
+
+      .store-link {
+        display: none;
+      }
+
+      .toolbar {
+        flex-direction: column;
+      }
+
+      .search-box,
+      .filter-select {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .toolbar .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+
+    <div class="admin-logo">
+      <div class="admin-logo-text">Alamin<span>Shop</span></div>
+    </div>
+
+    <nav class="admin-nav">
+
+      <div class="admin-nav-title">Main</div>
+
+      <a href="index.html">
+        <span class="admin-nav-icon">⌂</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="orders.html">
+        <span class="admin-nav-icon">▤</span>
+        <span>Orders</span>
+      </a>
+
+      <a href="products.html">
+        <span class="admin-nav-icon">□</span>
+        <span>Products</span>
+      </a>
+
+      <a href="inventory.html">
+        <span class="admin-nav-icon">▥</span>
+        <span>Inventory</span>
+      </a>
+
+      <a href="categories.html">
+        <span class="admin-nav-icon">▦</span>
+        <span>Categories</span>
+      </a>
+
+      <a href="banners.html" class="active">
+        <span class="admin-nav-icon">▣</span>
+        <span>Banners</span>
+      </a>
+
+      <div class="admin-nav-title">Sales</div>
+
+      <a href="customers.html">
+        <span class="admin-nav-icon">♙</span>
+        <span>Customers</span>
+      </a>
+
+      <a href="coupons.html">
+        <span class="admin-nav-icon">%</span>
+        <span>Coupons</span>
+      </a>
+
+      <a href="returns.html">
+        <span class="admin-nav-icon">↩</span>
+        <span>Returns</span>
+      </a>
+
+      <a href="reviews.html">
+        <span class="admin-nav-icon">★</span>
+        <span>Reviews</span>
+      </a>
+
+      <div class="admin-nav-title">Management</div>
+
+      <a href="media.html">
+        <span class="admin-nav-icon">▧</span>
+        <span>Media</span>
+      </a>
+
+      <a href="reports.html">
+        <span class="admin-nav-icon">◫</span>
+        <span>Reports</span>
+      </a>
+
+      <a href="notifications.html">
+        <span class="admin-nav-icon">♢</span>
+        <span>Notifications</span>
+      </a>
+
+      <a href="delivery-zones.html">
+        <span class="admin-nav-icon">⌖</span>
+        <span>Delivery Zones</span>
+      </a>
+
+      <a href="payments.html">
+        <span class="admin-nav-icon">৳</span>
+        <span>Payments</span>
+      </a>
+
+      <div class="admin-nav-title">System</div>
+
+      <a href="settings.html">
+        <span class="admin-nav-icon">⚙</span>
+        <span>Settings</span>
+      </a>
+
+      <a href="../index.html">
+        <span class="admin-nav-icon">↗</span>
+        <span>View Store</span>
+      </a>
+
+    </nav>
+  </aside>
+
+
+  <!-- MAIN -->
+  <main class="admin-main">
+
+    <header class="admin-topbar">
+
+      <div class="admin-topbar-title">
+        Banners
+      </div>
+
+      <div class="admin-topbar-right">
+        <a href="../index.html" class="store-link">
+          View Store ↗
+        </a>
+
+        <div class="admin-avatar">
+          A
+        </div>
+      </div>
+
+    </header>
+
+
+    <section class="admin-content">
+
+      <!-- STATS -->
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-label">Total Banners</div>
+          <div class="stat-value" id="totalBanners">0</div>
+          <div class="stat-small">All homepage banners</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Active</div>
+          <div class="stat-value" id="activeBanners">0</div>
+          <div class="stat-small">Currently visible</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Inactive</div>
+          <div class="stat-value" id="inactiveBanners">0</div>
+          <div class="stat-small">Hidden banners</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Homepage</div>
+          <div class="stat-value" id="homepageBanners">0</div>
+          <div class="stat-small">Assigned to homepage</div>
+        </div>
+
+      </div>
+
+
+      <!-- TOOLBAR -->
+      <div class="toolbar">
+
+        <div class="search-box">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search banner title..."
+          >
+        </div>
+
+        <div class="filter-select">
+          <select id="statusFilter">
+            <option value="all">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+
+        <div class="filter-select">
+          <select id="positionFilter">
+            <option value="all">All Positions</option>
+            <option value="homepage">Homepage</option>
+            <option value="offer">Offers</option>
+            <option value="category">Category</option>
+          </select>
+        </div>
+
+        <button class="btn btn-secondary" id="resetBtn">
+          Reset
+        </button>
+
+        <button class="btn btn-primary" id="addBannerBtn">
+          + Add Banner
+        </button>
+
+      </div>
+
+
+      <!-- TABLE -->
+      <div class="table-card">
+
+        <div class="table-header">
+
+          <div>
+            <div class="table-title">
+              Banner Library
+            </div>
+
+            <div class="table-muted" id="resultText">
+              0 banners
+            </div>
+          </div>
+
+        </div>
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Banner</th>
+                <th>Title</th>
+                <th>Position</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody id="bannerTableBody"></tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<!-- ADD / EDIT MODAL -->
+<div class="modal-overlay" id="bannerModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div class="modal-title" id="modalTitle">
+        Add Banner
+      </div>
+
+      <button class="modal-close" id="closeModalBtn">
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="bannerForm">
+
+      <div class="modal-body">
+
+        <input type="hidden" id="bannerId">
+
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label for="bannerTitle">
+              Banner Title *
+            </label>
+
+            <input
+              type="text"
+              id="bannerTitle"
+              placeholder="Example: Summer Sale"
+              required
+            >
+          </div>
+
+
+          <div class="form-group">
+            <label for="bannerSubtitle">
+              Subtitle
+            </label>
+
+            <input
+              type="text"
+              id="bannerSubtitle"
+              placeholder="Example: Up to 50% off"
+            >
+          </div>
+
+
+          <div class="form-group full">
+            <label for="bannerImage">
+              Image URL *
+            </label>
+
+            <input
+              type="url"
+              id="bannerImage"
+              placeholder="https://example.com/banner.jpg"
+              required
+            >
+
+            <div class="image-preview" id="imagePreview">
+              <img id="previewImg" src="" alt="Preview">
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label for="bannerPosition">
+              Position
+            </label>
+
+            <select id="bannerPosition">
+              <option value="homepage">Homepage</option>
+              <option value="offer">Offers</option>
+              <option value="category">Category</option>
+            </select>
+          </div>
+
+
+          <div class="form-group">
+            <label for="bannerPriority">
+              Priority
+            </label>
+
+            <input
+              type="number"
+              id="bannerPriority"
+              value="1"
+              min="1"
+              max="999"
+            >
+          </div>
+
+
+          <div class="form-group">
+            <label for="bannerButtonText">
+              Button Text
+            </label>
+
+            <input
+              type="text"
+              id="bannerButtonText"
+              placeholder="Shop Now"
+            >
+          </div>
+
+
+          <div class="form-group">
+            <label for="bannerButtonLink">
+              Button Link
+            </label>
+
+            <input
+              type="text"
+              id="bannerButtonLink"
+              placeholder="products.html"
+            >
+          </div>
+
+
+          <div class="form-group full">
+
+            <label for="bannerDescription">
+              Description
+            </label>
+
+            <textarea
+              id="bannerDescription"
+              placeholder="Short banner description..."
+            ></textarea>
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <div class="checkbox-row">
+
+              <input
+                type="checkbox"
+                id="bannerActive"
+                checked
+              >
+
+              <label for="bannerActive">
+                Make this banner active
+              </label>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="btn btn-secondary"
+          id="cancelModalBtn"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          Save Banner
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- PREVIEW MODAL -->
+<div class="modal-overlay" id="previewModal">
+
+  <div class="modal preview-modal">
+
+    <div class="modal-header">
+
+      <div class="modal-title">
+        Banner Preview
+      </div>
+
+      <button class="modal-close" id="closePreviewBtn">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <img
+        src=""
+        id="previewLargeImage"
+        class="preview-image"
+        alt="Banner preview"
+      >
+
+      <div class="preview-info">
+
+        <h3 id="previewTitle">
+          Banner
+        </h3>
+
+        <p id="previewSubtitle"></p>
+
+        <p id="previewDescription"></p>
+
+        <p>
+          Position:
+          <strong id="previewPosition"></strong>
+        </p>
+
+        <p>
+          Priority:
+          <strong id="previewPriority"></strong>
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script src="../script.js"></script>
+
+<script>
+
+  const STORAGE_KEY = "shopnest_banners";
+
+  let banners = [];
+  let editingId = null;
+
+
+  /* =========================
+     DEFAULT DEMO BANNERS
+  ========================= */
+
+  const defaultBanners = [
+
+    {
+      id: "BNR1001",
+      title: "Summer Sale",
+      subtitle: "Big savings are here",
+      image: "https://images.unsplash.com/photo-1607082349566-187342175e2f?auto=format&fit=crop&w=1400&q=80",
+      position: "homepage",
+      priority: 1,
+      buttonText: "Shop Now",
+      buttonLink: "products.html?category=offers",
+      description: "Enjoy amazing discounts on selected products.",
+      active: true,
+      createdAt: "2026-09-01T10:00:00"
+    },
+
+    {
+      id: "BNR1002",
+      title: "New Arrivals",
+      subtitle: "Fresh products just landed",
+      image: "https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1400&q=80",
+      position: "homepage",
+      priority: 2,
+      buttonText: "Explore",
+      buttonLink: "products.html",
+      description: "Discover our latest products and collections.",
+      active: true,
+      createdAt: "2026-09-02T10:00:00"
+    },
+
+    {
+      id: "BNR1003",
+      title: "Electronics Deals",
+      subtitle: "Upgrade your everyday tech",
+      image: "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=1400&q=80",
+      position: "offer",
+      priority: 3,
+      buttonText: "View Deals",
+      buttonLink: "products.html?category=electronics",
+      description: "Great deals on electronics and smart devices.",
+      active: true,
+      createdAt: "2026-09-03T10:00:00"
+    }
+
+  ];
+
+
+  /* =========================
+     LOAD DATA
+  ========================= */
+
+  function loadBanners() {
+
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if (saved) {
+
+      try {
+        banners = JSON.parse(saved);
+      } catch (error) {
+        banners = [...defaultBanners];
+        saveBanners();
+      }
+
+    } else {
+
+      banners = [...defaultBanners];
+      saveBanners();
+
+    }
+
+  }
+
+
+  function saveBanners() {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(banners)
+    );
+  }
+
+
+  /* =========================
+     HELPERS
+  ========================= */
+
+  function escapeHTML(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  function formatDate(date) {
+
+    if (!date) return "-";
+
+    const d = new Date(date);
+
+    if (Number.isNaN(d.getTime())) {
+      return "-";
+    }
+
+    return d.toLocaleDateString("en-BD", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    });
+
+  }
+
+
+  function generateId() {
+
+    return "BNR" + Date.now();
+
+  }
+
+
+  /* =========================
+     STATS
+  ========================= */
+
+  function updateStats() {
+
+    const total = banners.length;
+
+    const active = banners.filter(
+      banner => banner.active
+    ).length;
+
+    const inactive = total - active;
+
+    const homepage = banners.filter(
+      banner =>
+        banner.position === "homepage" &&
+        banner.active
+    ).length;
+
+    document.getElementById("totalBanners").textContent = total;
+    document.getElementById("activeBanners").textContent = active;
+    document.getElementById("inactiveBanners").textContent = inactive;
+    document.getElementById("homepageBanners").textContent = homepage;
+
+  }
+
+
+  /* =========================
+     FILTER + RENDER
+  ========================= */
+
+  function getFilteredBanners() {
+
+    const search =
+      document
+        .getElementById("searchInput")
+        .value
+        .trim()
+        .toLowerCase();
+
+    const status =
+      document.getElementById("statusFilter").value;
+
+    const position =
+      document.getElementById("positionFilter").value;
+
+
+    return banners
+      .filter(banner => {
+
+        const matchesSearch =
+          !search ||
+          banner.title.toLowerCase().includes(search) ||
+          (banner.subtitle || "").toLowerCase().includes(search);
+
+        const matchesStatus =
+          status === "all" ||
+          (status === "active" && banner.active) ||
+          (status === "inactive" && !banner.active);
+
+        const matchesPosition =
+          position === "all" ||
+          banner.position === position;
+
+        return (
+          matchesSearch &&
+          matchesStatus &&
+          matchesPosition
+        );
+
+      })
+      .sort(
+        (a, b) =>
+          Number(a.priority || 999) -
+          Number(b.priority || 999)
+      );
+
+  }
+
+
+  function renderBanners() {
+
+    const tbody =
+      document.getElementById("bannerTableBody");
+
+    const filtered =
+      getFilteredBanners();
+
+
+    document.getElementById("resultText").textContent =
+      `${filtered.length} banner${filtered.length !== 1 ? "s" : ""}`;
+
+
+    if (!filtered.length) {
+
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7">
+            <div class="empty-state">
+              No banners found.
+            </div>
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+
+    tbody.innerHTML = filtered.map(banner => {
+
+      const positionClass =
+        banner.position === "homepage"
+          ? "badge-home"
+          : banner.position === "offer"
+            ? "badge-offer"
+            : "badge-inactive";
+
+
+      const positionText =
+        banner.position.charAt(0).toUpperCase() +
+        banner.position.slice(1);
+
+
+      return `
+
+        <tr>
+
+          <td>
+
+            <img
+              class="banner-thumb"
+              src="${escapeHTML(banner.image)}"
+              alt="${escapeHTML(banner.title)}"
+              onerror="this.src='https://via.placeholder.com/300x150?text=Banner'"
+            >
+
+          </td>
+
+
+          <td>
+
+            <div class="banner-name">
+              ${escapeHTML(banner.title)}
+            </div>
+
+            <div class="banner-url">
+              ${escapeHTML(banner.image)}
+            </div>
+
+          </td>
+
+
+          <td>
+
+            <span class="badge ${positionClass}">
+              ${positionText}
+            </span>
+
+          </td>
+
+
+          <td>
+            #${escapeHTML(banner.priority)}
+          </td>
+
+
+          <td>
+
+            ${
+              banner.active
+                ? `<span class="badge badge-active">Active</span>`
+                : `<span class="badge badge-inactive">Inactive</span>`
+            }
+
+          </td>
+
+
+          <td>
+            ${formatDate(banner.createdAt)}
+          </td>
+
+
+          <td>
+
+            <div class="actions">
+
+              <button
+                class="btn btn-secondary btn-small"
+                onclick="previewBanner('${banner.id}')"
+              >
+                Preview
+              </button>
+
+              <button
+                class="btn btn-secondary btn-small"
+                onclick="editBanner('${banner.id}')"
+              >
+                Edit
+              </button>
+
+              <button
+                class="btn btn-secondary btn-small"
+                onclick="toggleBanner('${banner.id}')"
+              >
+                ${banner.active ? "Disable" : "Activate"}
+              </button>
+
+              <button
+                class="btn btn-danger btn-small"
+                onclick="deleteBanner('${banner.id}')"
+              >
+                Delete
+              </button>
+
+            </div>
+
+          </td>
+
+        </tr>
+
+      `;
+
+    }).join("");
+
+  }
+
+
+  /* =========================
+     MODAL
+  ========================= */
+
+  function openAddModal() {
+
+    editingId = null;
+
+    document.getElementById("modalTitle").textContent =
+      "Add Banner";
+
+    document.getElementById("bannerForm").reset();
+
+    document.getElementById("bannerId").value = "";
+
+    document.getElementById("bannerPriority").value = "1";
+
+    document.getElementById("bannerActive").checked = true;
+
+    hideImagePreview();
+
+    document
+      .getElementById("bannerModal")
+      .classList.add("show");
+
+  }
+
+
+  function closeModal() {
+
+    document
+      .getElementById("bannerModal")
+      .classList.remove("show");
+
+    editingId = null;
+
+  }
+
+
+  function editBanner(id) {
+
+    const banner =
+      banners.find(item => item.id === id);
+
+    if (!banner) return;
+
+    editingId = id;
+
+    document.getElementById("modalTitle").textContent =
+      "Edit Banner";
+
+    document.getElementById("bannerId").value =
+      banner.id;
+
+    document.getElementById("bannerTitle").value =
+      banner.title || "";
+
+    document.getElementById("bannerSubtitle").value =
+      banner.subtitle || "";
+
+    document.getElementById("bannerImage").value =
+      banner.image || "";
+
+    document.getElementById("bannerPosition").value =
+      banner.position || "homepage";
+
+    document.getElementById("bannerPriority").value =
+      banner.priority || 1;
+
+    document.getElementById("bannerButtonText").value =
+      banner.buttonText || "";
+
+    document.getElementById("bannerButtonLink").value =
+      banner.buttonLink || "";
+
+    document.getElementById("bannerDescription").value =
+      banner.description || "";
+
+    document.getElementById("bannerActive").checked =
+      Boolean(banner.active);
+
+    updateImagePreview();
+
+    document
+      .getElementById("bannerModal")
+      .classList.add("show");
+
+  }
+
+
+  /* =========================
+     SAVE BANNER
+  ========================= */
+
+  document
+    .getElementById("bannerForm")
+    .addEventListener("submit", function(event) {
+
+      event.preventDefault();
+
+
+      const title =
+        document.getElementById("bannerTitle")
+          .value
+          .trim();
+
+      const subtitle =
+        document.getElementById("bannerSubtitle")
+          .value
+          .trim();
+
+      const image =
+        document.getElementById("bannerImage")
+          .value
+          .trim();
+
+      const position =
+        document.getElementById("bannerPosition")
+          .value;
+
+      const priority =
+        Number(
+          document.getElementById("bannerPriority").value
+        ) || 1;
+
+      const buttonText =
+        document.getElementById("bannerButtonText")
+          .value
+          .trim();
+
+      const buttonLink =
+        document.getElementById("bannerButtonLink")
+          .value
+          .trim();
+
+      const description =
+        document.getElementById("bannerDescription")
+          .value
+          .trim();
+
+      const active =
+        document.getElementById("bannerActive")
+          .checked;
+
+
+      if (!title || !image) {
+
+        alert(
+          "Banner title and image URL are required."
+        );
+
+        return;
+
+      }
+
+
+      if (editingId) {
+
+        const index =
+          banners.findIndex(
+            item => item.id === editingId
+          );
+
+
+        if (index !== -1) {
+
+          banners[index] = {
+
+            ...banners[index],
+
+            title,
+            subtitle,
+            image,
+            position,
+            priority,
+            buttonText,
+            buttonLink,
+            description,
+            active
+
+          };
+
+        }
+
+      } else {
+
+        banners.push({
+
+          id: generateId(),
+
+          title,
+          subtitle,
+          image,
+          position,
+          priority,
+          buttonText,
+          buttonLink,
+          description,
+          active,
+
+          createdAt:
+            new Date().toISOString()
+
+        });
+
+      }
+
+
+      saveBanners();
+
+      renderBanners();
+
+      updateStats();
+
+      closeModal();
+
+
+      if (typeof showNotification === "function") {
+
+        showNotification(
+          editingId
+            ? "Banner updated successfully."
+            : "Banner added successfully."
+        );
+
+      } else {
+
+        alert(
+          editingId
+            ? "Banner updated successfully."
+            : "Banner added successfully."
+        );
+
+      }
+
+    });
+
+
+  /* =========================
+     DELETE
+  ========================= */
+
+  function deleteBanner(id) {
+
+    const banner =
+      banners.find(item => item.id === id);
+
+    if (!banner) return;
+
+
+    const confirmed =
+      confirm(
+        `Delete "${banner.title}"?`
+      );
+
+
+    if (!confirmed) return;
+
+
+    banners =
+      banners.filter(
+        item => item.id !== id
+      );
+
+
+    saveBanners();
+
+    renderBanners();
+
+    updateStats();
+
+  }
+
+
+  /* =========================
+     TOGGLE STATUS
+  ========================= */
+
+  function toggleBanner(id) {
+
+    const banner =
+      banners.find(item => item.id === id);
+
+    if (!banner) return;
+
+
+    banner.active = !banner.active;
+
+    saveBanners();
+
+    renderBanners();
+
+    updateStats();
+
+  }
+
+
+  /* =========================
+     PREVIEW
+  ========================= */
+
+  function previewBanner(id) {
+
+    const banner =
+      banners.find(item => item.id === id);
+
+    if (!banner) return;
+
+
+    document.getElementById("previewLargeImage").src =
+      banner.image;
+
+    document.getElementById("previewLargeImage").onerror =
+      function() {
+        this.src =
+          "https://via.placeholder.com/1200x500?text=Banner+Preview";
+      };
+
+
+    document.getElementById("previewTitle").textContent =
+      banner.title || "Banner";
+
+
+    document.getElementById("previewSubtitle").textContent =
+      banner.subtitle || "";
+
+
+    document.getElementById("previewDescription").textContent =
+      banner.description || "";
+
+
+    document.getElementById("previewPosition").textContent =
+      banner.position || "-";
+
+
+    document.getElementById("previewPriority").textContent =
+      banner.priority || "-";
+
+
+    document
+      .getElementById("previewModal")
+      .classList.add("show");
+
+  }
+
+
+  function closePreview() {
+
+    document
+      .getElementById("previewModal")
+      .classList.remove("show");
+
+  }
+
+
+  /* =========================
+     IMAGE PREVIEW
+  ========================= */
+
+  function updateImagePreview() {
+
+    const url =
+      document.getElementById("bannerImage")
+        .value
+        .trim();
+
+    const wrapper =
+      document.getElementById("imagePreview");
+
+    const img =
+      document.getElementById("previewImg");
+
+
+    if (!url) {
+
+      hideImagePreview();
+
+      return;
+
+    }
+
+
+    img.src = url;
+
+    img.onerror = function() {
+
+      wrapper.style.display = "none";
+
+    };
+
+    img.onload = function() {
+
+      wrapper.style.display = "block";
+
+    };
+
+  }
+
+
+  function hideImagePreview() {
+
+    document
+      .getElementById("imagePreview")
+      .style.display = "none";
+
+  }
+
+
+  /* =========================
+     EVENTS
+  ========================= */
+
+  document
+    .getElementById("addBannerBtn")
+    .addEventListener(
+      "click",
+      openAddModal
+    );
+
+
+  document
+    .getElementById("closeModalBtn")
+    .addEventListener(
+      "click",
+      closeModal
+    );
+
+
+  document
+    .getElementById("cancelModalBtn")
+    .addEventListener(
+      "click",
+      closeModal
+    );
+
+
+  document
+    .getElementById("closePreviewBtn")
+    .addEventListener(
+      "click",
+      closePreview
+    );
+
+
+  document
+    .getElementById("bannerImage")
+    .addEventListener(
+      "input",
+      updateImagePreview
+    );
+
+
+  document
+    .getElementById("searchInput")
+    .addEventListener(
+      "input",
+      renderBanners
+    );
+
+
+  document
+    .getElementById("statusFilter")
+    .addEventListener(
+      "change",
+      renderBanners
+    );
+
+
+  document
+    .getElementById("positionFilter")
+    .addEventListener(
+      "change",
+      renderBanners
+    );
+
+
+  document
+    .getElementById("resetBtn")
+    .addEventListener(
+      "click",
+      function() {
+
+        document.getElementById("searchInput").value = "";
+
+        document.getElementById("statusFilter").value = "all";
+
+        document.getElementById("positionFilter").value = "all";
+
+        renderBanners();
+
+      }
+    );
+
+
+  /* CLOSE MODAL BY OUTSIDE CLICK */
+
+  document
+    .getElementById("bannerModal")
+    .addEventListener(
+      "click",
+      function(event) {
+
+        if (event.target === this) {
+          closeModal();
+        }
+
+      }
+    );
+
+
+  document
+    .getElementById("previewModal")
+    .addEventListener(
+      "click",
+      function(event) {
+
+        if (event.target === this) {
+          closePreview();
+        }
+
+      }
+    );
+
+
+  /* =========================
+     INIT
+  ========================= */
+
+  loadBanners();
+
+  updateStats();
+
+  renderBanners();
+
+</script>
+
+</body>
+</html>

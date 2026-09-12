@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Settings - Alamin Shop Admin</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    /* ================================
+       ADMIN SETTINGS
+    ================================= */
+
+    body {
+      margin: 0;
+      background: #08090b;
+      color: #f8fafc;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .admin-layout {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* Sidebar */
+    .admin-sidebar {
+      width: 250px;
+      background: #101216;
+      border-right: 1px solid #272b33;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    .admin-brand {
+      padding: 24px 20px;
+      border-bottom: 1px solid #272b33;
+    }
+
+    .admin-brand h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .admin-brand span {
+      color: #8b5cf6;
+    }
+
+    .admin-brand small {
+      display: block;
+      margin-top: 5px;
+      color: #8b929d;
+      font-size: 12px;
+    }
+
+    .admin-nav {
+      padding: 18px 12px;
+    }
+
+    .admin-nav-title {
+      color: #666d78;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+      margin-top: 8px;
+    }
+
+    .admin-nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      margin-bottom: 4px;
+      color: #aeb4be;
+      text-decoration: none;
+      border-radius: 9px;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    .admin-nav a:hover,
+    .admin-nav a.active {
+      background: #191c23;
+      color: #fff;
+    }
+
+    .admin-nav a.active {
+      border-left: 3px solid #8b5cf6;
+    }
+
+    .nav-icon {
+      width: 22px;
+      text-align: center;
+    }
+
+    /* Main */
+    .admin-main {
+      width: calc(100% - 250px);
+      margin-left: 250px;
+      min-height: 100vh;
+    }
+
+    .admin-topbar {
+      height: 70px;
+      background: #101216;
+      border-bottom: 1px solid #272b33;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      box-sizing: border-box;
+    }
+
+    .admin-topbar h1 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .admin-topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .store-link {
+      color: #aeb4be;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .admin-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #8b5cf6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    /* Content */
+    .admin-content {
+      padding: 30px;
+    }
+
+    .page-heading {
+      margin-bottom: 25px;
+    }
+
+    .page-heading h2 {
+      margin: 0 0 7px;
+      font-size: 28px;
+    }
+
+    .page-heading p {
+      margin: 0;
+      color: #858c97;
+      font-size: 14px;
+    }
+
+    /* Settings Layout */
+    .settings-layout {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .settings-menu {
+      background: #101216;
+      border: 1px solid #272b33;
+      border-radius: 14px;
+      padding: 10px;
+    }
+
+    .settings-menu button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: #aeb4be;
+      text-align: left;
+      padding: 12px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .settings-menu button:hover,
+    .settings-menu button.active {
+      background: #1b1e26;
+      color: #fff;
+    }
+
+    .settings-menu button.active {
+      color: #a78bfa;
+    }
+
+    .settings-section {
+      display: none;
+    }
+
+    .settings-section.active {
+      display: block;
+    }
+
+    .settings-card {
+      background: #101216;
+      border: 1px solid #272b33;
+      border-radius: 14px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .settings-card-header {
+      padding: 20px;
+      border-bottom: 1px solid #272b33;
+    }
+
+    .settings-card-header h3 {
+      margin: 0 0 5px;
+      font-size: 17px;
+    }
+
+    .settings-card-header p {
+      margin: 0;
+      color: #7e8692;
+      font-size: 13px;
+    }
+
+    .settings-card-body {
+      padding: 20px;
+    }
+
+    /* Forms */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .form-group {
+      margin-bottom: 2px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      color: #c7ccd4;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      box-sizing: border-box;
+      background: #08090b;
+      color: #fff;
+      border: 1px solid #30343d;
+      border-radius: 9px;
+      padding: 11px 12px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #8b5cf6;
+    }
+
+    .form-help {
+      color: #6f7681;
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    /* Toggle */
+    .setting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 0;
+      border-bottom: 1px solid #22252c;
+    }
+
+    .setting-row:first-child {
+      padding-top: 0;
+    }
+
+    .setting-row:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .setting-info strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .setting-info span {
+      display: block;
+      color: #777f8a;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .switch {
+      position: relative;
+      width: 46px;
+      height: 25px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: #30343d;
+      border-radius: 30px;
+      transition: .2s;
+    }
+
+    .slider:before {
+      content: "";
+      position: absolute;
+      width: 19px;
+      height: 19px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: .2s;
+    }
+
+    .switch input:checked + .slider {
+      background: #8b5cf6;
+    }
+
+    .switch input:checked + .slider:before {
+      transform: translateX(21px);
+    }
+
+    /* Save */
+    .save-area {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding-top: 5px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 11px 18px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .btn-primary {
+      background: #8b5cf6;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #7c3aed;
+    }
+
+    .btn-secondary {
+      background: #1b1e24;
+      color: #c7ccd4;
+      border: 1px solid #30343d;
+    }
+
+    .btn-danger {
+      background: #2b1518;
+      color: #ff858f;
+      border: 1px solid #572126;
+    }
+
+    /* Danger */
+    .danger-box {
+      border: 1px solid #572126;
+      background: #1c1012;
+      padding: 16px;
+      border-radius: 10px;
+      margin-top: 18px;
+    }
+
+    .danger-box strong {
+      color: #ff858f;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .danger-box p {
+      margin: 0;
+      color: #b77d82;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* Notification */
+    .settings-notification {
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      background: #171a20;
+      border: 1px solid #343943;
+      color: #fff;
+      padding: 13px 17px;
+      border-radius: 10px;
+      box-shadow: 0 15px 40px rgba(0,0,0,.4);
+      transform: translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s;
+      z-index: 5000;
+      font-size: 13px;
+    }
+
+    .settings-notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Responsive */
+    @media (max-width: 950px) {
+      .settings-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .settings-menu {
+        display: flex;
+        overflow-x: auto;
+        gap: 5px;
+      }
+
+      .settings-menu button {
+        width: auto;
+        white-space: nowrap;
+        margin: 0;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .admin-sidebar {
+        width: 70px;
+      }
+
+      .admin-brand {
+        padding: 20px 10px;
+        text-align: center;
+      }
+
+      .admin-brand h2 {
+        font-size: 0;
+      }
+
+      .admin-brand h2::after {
+        content: "AS";
+        font-size: 18px;
+      }
+
+      .admin-brand small,
+      .admin-nav-title {
+        display: none;
+      }
+
+      .admin-nav {
+        padding: 12px 8px;
+      }
+
+      .admin-nav a {
+        justify-content: center;
+        padding: 12px 5px;
+      }
+
+      .admin-nav a span:not(.nav-icon) {
+        display: none;
+      }
+
+      .admin-main {
+        width: calc(100% - 70px);
+        margin-left: 70px;
+      }
+
+      .admin-content {
+        padding: 20px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .admin-topbar {
+        padding: 0 15px;
+      }
+
+      .admin-topbar h1 {
+        font-size: 17px;
+      }
+
+      .store-link {
+        display: none;
+      }
+
+      .admin-content {
+        padding: 15px;
+      }
+
+      .settings-card-body,
+      .settings-card-header {
+        padding: 16px;
+      }
+
+      .setting-row {
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="admin-layout">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="admin-sidebar">
+
+      <div class="admin-brand">
+        <h2>Alamin <span>Shop</span></h2>
+        <small>Admin Dashboard</small>
+      </div>
+
+      <nav class="admin-nav">
+
+        <div class="admin-nav-title">Main</div>
+
+        <a href="index.html">
+          <span class="nav-icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="orders.html">
+          <span class="nav-icon">🛒</span>
+          <span>Orders</span>
+        </a>
+
+        <a href="products.html">
+          <span class="nav-icon">📦</span>
+          <span>Products</span>
+        </a>
+
+        <a href="inventory.html">
+          <span class="nav-icon">🏷️</span>
+          <span>Inventory</span>
+        </a>
+
+        <a href="categories.html">
+          <span class="nav-icon">🗂️</span>
+          <span>Categories</span>
+        </a>
+
+        <div class="admin-nav-title">Management</div>
+
+        <a href="customers.html">
+          <span class="nav-icon">👥</span>
+          <span>Customers</span>
+        </a>
+
+        <a href="coupons.html">
+          <span class="nav-icon">🎟️</span>
+          <span>Coupons</span>
+        </a>
+
+        <a href="reports.html">
+          <span class="nav-icon">📈</span>
+          <span>Reports</span>
+        </a>
+
+        <a href="notifications.html">
+          <span class="nav-icon">🔔</span>
+          <span>Notifications</span>
+        </a>
+
+        <div class="admin-nav-title">System</div>
+
+        <a href="settings.html" class="active">
+          <span class="nav-icon">⚙️</span>
+          <span>Settings</span>
+        </a>
+
+        <a href="../index.html">
+          <span class="nav-icon">🌐</span>
+          <span>View Store</span>
+        </a>
+
+        <a href="../account.html">
+          <span class="nav-icon">👤</span>
+          <span>My Account</span>
+        </a>
+
+        <a href="../login.html">
+          <span class="nav-icon">🚪</span>
+          <span>Logout</span>
+        </a>
+
+      </nav>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+    <main class="admin-main">
+
+      <header class="admin-topbar">
+
+        <h1>Settings</h1>
+
+        <div class="admin-topbar-right">
+          <a href="../index.html" class="store-link">
+            View Store →
+          </a>
+
+          <div class="admin-avatar">
+            A
+          </div>
+        </div>
+
+      </header>
+
+
+      <section class="admin-content">
+
+        <div class="page-heading">
+          <h2>Store Settings</h2>
+          <p>Manage your store information, checkout, delivery and system preferences.</p>
+        </div>
+
+
+        <div class="settings-layout">
+
+          <!-- ================= SETTINGS MENU ================= -->
+
+          <div class="settings-menu">
+
+            <button class="settings-tab active" data-target="store">
+              🏪 Store
+            </button>
+
+            <button class="settings-tab" data-target="checkout">
+              🛒 Checkout
+            </button>
+
+            <button class="settings-tab" data-target="delivery">
+              🚚 Delivery
+            </button>
+
+            <button class="settings-tab" data-target="notifications">
+              🔔 Notifications
+            </button>
+
+            <button class="settings-tab" data-target="system">
+              ⚙️ System
+            </button>
+
+            <button class="settings-tab" data-target="danger">
+              ⚠️ Advanced
+            </button>
+
+          </div>
+
+
+          <!-- ================= SETTINGS CONTENT ================= -->
+
+          <div>
+
+
+            <!-- STORE SETTINGS -->
+            <section class="settings-section active" id="store">
+
+              <div class="settings-card">
+
+                <div class="settings-card-header">
+                  <h3>Store Information</h3>
+                  <p>Basic information about your online store.</p>
+                </div>
+
+                <div class="settings-card-body">
+
+                  <div class="form-grid">
+
+                    <div class="form-group">
+                      <label>Store Name</label>
+                      <input
+                        type="text"
+                        id="storeName"
+                        placeholder="Alamin Shop"
+                      >
+                    </div>
+
+                    <div class="form-group">
+                      <label>Store Email</label>
+                      <input
+                        type="email"
+                        id="storeEmail"
+                        placeholder="support@alaminshop.com"
+                      >
+                    </div>
+
+                    <div class="form-group">
+                      <label>Phone Number</label>
+                      <input
+                        type="text"
+                        id="storePhone"
+                        placeholder="01700000000"
+                      >
+                    </div>
+
+                    <div class="form-group">
+                      <label>Currency</label>
+                      <select id="currency">
+                        <option value="BDT">BDT - Bangladeshi Taka</option>
+                        <option value="USD">USD - US Dollar</option>
+                        <option value="EUR">EUR - Euro</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group full">
+                      <label>Store Address</label>
+                      <textarea
+                        id="storeAddress"
+                        placeholder="Enter store address"
+                      ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Timezone</label>
+                      <select id="timezone">
+                        <option value="Asia/Dhaka">Asia/Dhaka</option>
+                        <option value="Asia/Kolkata">Asia/Kolkata</option>
+                        <option value="UTC">UTC</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Language</label>
+                      <select id="language">
+                        <option value="en">English</option>
+                        <option value="bn">বাংলা</option>
+                      </select>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="settings-card">
+
+                <div class="settings-card-header">
+                  <h3>Store Status</h3>
+                  <p>Control whether customers can access your store.</p>
+                </div>
+
+                <div class="settings-card-body">
+
+                  <div class="setting-row">
+
+                    <div class="setting-info">
+                      <strong>Store is active</strong>
+                      <span>
+                        Customers can browse products and place orders.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" id="storeActive" checked>
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                  <div class="setting-row">
+
+                    <div class="setting-info">
+                      <strong>Allow customer registration</strong>
+                      <span>
+                        Allow new customers to create accounts.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" id="allowRegistration" checked>
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </section>
+
+
+            <!-- CHECKOUT SETTINGS -->
+            <section class="settings-section" id="checkout">
+
+              <div class="settings-card">
+
+                <div class="settings-card-header">
+                  <h3>Checkout Settings</h3>
+                  <p>Configure customer checkout behavior.</p>
+                </div>
+
+                <div class="settings-card-body">
+
+                  <div class="setting-row">
+
+                    <div class="setting-info">
+                      <strong>Guest Checkout</strong>
+                      <span>
+                        Customers can place orders without creating an account.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" id="guestCheckout" checked>
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                  <div class="setting-row">
+
+                    <div class="setting-info">
+                      <strong>Require phone number</strong>
+                      <span>
+                        Customer phone number will be required during checkout.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" id="requirePhone" checked>
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                  <div class="setting-row">
+
+                    <div class="setting-info">
+                      <strong>Require email</strong>
+                      <span>
+                        Customer email will be required during checkout.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" id="requireEmail">
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                  <div class="setting-row">
+
+                    <div class="setting-info">
+                      <strong>Allow order notes</strong>
+                      <span>
+                        Customers can add a note to their order.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" id="allowOrderNotes" checked>
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="settings-card">
+
+                <div class="settings-card-header">
+                  <h3>Order Settings</h3>
+                  <p>Default behavior for new orders.</p>
+                </div>
+
+                <div class="settings-card-body">
+
+                  <div class="form-grid">
+
+                    <div class="form-group">
+                      <label>Default Order Status</label>
+
+                      <select id="defaultOrderStatus">
+                        <option value="New">New</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Processing">Processing</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Minimum Order Amount</label>
+
+                      <input
+                        type="number"
+                        id="minimumOrder"
+                        min="0"
+                        value="0"
+                      >
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </section>
+
+
+            <!-- DELIVERY SETTINGS -->
+            <section class="settings-section" id="delivery">
+
+              <div class="settings-card">
+
+                <div class="settings-card-header">
+                  <h3>Delivery Charges</h3>
+                  <p>Configure default Bangladesh delivery charges.</p>
+                </div>
+
+                <div class="settings-card-body">
+
+                  <div class="form-grid">
+
+                    <div class="form-group">
+                      <label>Inside Dhaka</label>
+
+                      <input
+                        type="number"
+                        id="insideDhaka"
+                        min="0"
+                        value="80"
+                      >
+
+                      <div class="form-help">
+                        Current demo value: ৳80
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Outside Dhaka</label>
+
+                      <input
+                        type="number"
+                        id="outsideDhaka"
+                        min="0"
+                        value="130"
+                      >
+
+                      <div class="form-help">
+                        Current demo value: ৳130
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Free Delivery Minimum</label>
+
+                      <input
+                        type="number"
+                        id="freeDeliveryMinimum"
+                        min="0"
+                        value="5000"
+                      >
+
+                      <div class="form-help">
+                        Orders equal to or above this amount get free delivery.
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="settings-card">
+
+                <div class="settings-card-header">
+                  <h3>Delivery Options</h3>
+                  <p>Control available delivery behavior.</p>
+                </div>
+
+                <div class="settings-card-body">
+
+                  <div class="setting-row">
+
+                    <div class="setting-info">
+                      <strong>Enable Inside Dhaka Delivery</strong>
+                      <span>
+                        Customers can choose Inside Dhaka delivery.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" id="enableInsideDhaka" checked>
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                  <div class="setting-row">
+
+                    <div class="setting-info">
+                      <strong>Enable Outside Dhaka Delivery</strong>
+                      <span>
+                        Customers can choose Outside Dhaka delivery.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" id="enableOutsideDhaka" checked>
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                  <div class="setting-row">
+
+                    <div class="setting-info">
+                      <strong>Free Delivery</strong>
+                      <span>
+                        Enable free delivery when minimum order amount is reached.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" id="enableFreeDelivery" checked>
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </section>
+
+
+            <!-- NOTIFICATION SETTINGS -->
+            <section class="settings-section" id="notifications">
+
+              <div class="settings-card">
+
+                <div class="settings-card-header">
+                  <h3>Notification Settings</h3>
+                  <p>Choose which events should create notifications.</p>
+                </div>
+
+                <div class="settings-card-body">
+
+                  <div class="setting-row">
+
+                    <div class="setting-info">
+                      <strong>New Order Notifications</strong>
+                      <span>
+                        Notify admin when a new order is placed.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" id="newOrderNotification" checked>
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                  <div class="setting-row">
+
+                    <div class="setting-info">
+                      <strong>Low Stock Notifications</strong>
+                      <span>
+                        Notify admin when product stock becomes low.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" id="lowStockNotification" checked>
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                  <div class="setting-row">
+
+                    <div class="setting-info">
+                      <strong>Customer Message Notifications</strong>
+                      <span>
+                        Notify admin when a customer sends a contact message.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" id="messageNotification" checked>
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                  <div class="setting-row">
+
+                    <div class="setting-info">
+                      <strong>Order Status Updates</strong>
+                      <span>
+                        Enable notifications when an order status changes.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" id="orderStatusNotification" checked>
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </section>
+
+
+            <!-- SYSTEM SETTINGS -->
+            <section class="settings-section" id="system">
+
+              <div class="settings-card">
+
+                <div class="settings-card-header">
+                  <h3>System Settings</h3>
+                  <p>General system behavior.</p>
+                </div>
+
+                <div class="settings-card-body">
+
+                  <div class="setting-row">
+
+                    <div class="setting-info">
+                      <strong>Maintenance Mode</strong>
+                      <span>
+                        Temporarily disable customer access while working on the store.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" id="maintenanceMode">
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                  <div class="setting-row">
+
+                    <div class="setting-info">
+                      <strong>Enable Store Analytics</strong>
+                      <span>
+                        Allow sales and order analytics to be calculated.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" id="analyticsEnabled" checked>
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                  <div class="setting-row">
+
+                    <div class="setting-info">
+                      <strong>Automatic Inventory Tracking</strong>
+                      <span>
+                        Reduce product stock when an order is placed.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" id="inventoryTracking" checked>
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="settings-card">
+
+                <div class="settings-card-header">
+                  <h3>System Information</h3>
+                  <p>Current frontend demo environment information.</p>
+                </div>
+
+                <div class="settings-card-body">
+
+                  <div class="form-grid">
+
+                    <div class="form-group">
+                      <label>Platform</label>
+                      <input type="text" value="Alamin Shop" readonly>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Environment</label>
+                      <input type="text" value="Frontend Demo" readonly>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Storage</label>
+                      <input type="text" value="Browser LocalStorage" readonly>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Version</label>
+                      <input type="text" value="1.0.0" readonly>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </section>
+
+
+            <!-- ADVANCED -->
+            <section class="settings-section" id="danger">
+
+              <div class="settings-card">
+
+                <div class="settings-card-header">
+                  <h3>Advanced Settings</h3>
+                  <p>Use these options carefully.</p>
+                </div>
+
+                <div class="settings-card-body">
+
+                  <div class="setting-row">
+
+                    <div class="setting-info">
+                      <strong>Enable Demo Mode</strong>
+                      <span>
+                        Keep sample data available for testing.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" id="demoMode" checked>
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                  <div class="danger-box">
+
+                    <strong>⚠️ Clear Store Demo Data</strong>
+
+                    <p>
+                      This will remove demo orders, customers, coupons,
+                      inventory overrides, notifications and contact messages
+                      stored in this browser.
+                    </p>
+
+                    <button
+                      class="btn btn-danger"
+                      id="clearDemoData"
+                      style="margin-top:12px;"
+                    >
+                      Clear Demo Data
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </section>
+
+
+            <!-- SAVE BUTTON -->
+            <div class="save-area">
+
+              <button
+                class="btn btn-secondary"
+                id="resetSettings"
+              >
+                Reset
+              </button>
+
+              <button
+                class="btn btn-primary"
+                id="saveSettings"
+              >
+                Save Settings
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <div
+    class="settings-notification"
+    id="settingsNotification"
+  ></div>
+
+
+  <script src="../script.js"></script>
+
+  <script>
+    /* =====================================
+       ALAMIN SHOP SETTINGS
+    ====================================== */
+
+    const SETTINGS_KEY = "shopnest_settings";
+
+    const defaultSettings = {
+
+      storeName: "Alamin Shop",
+      storeEmail: "support@alaminshop.com",
+      storePhone: "01700000000",
+      currency: "BDT",
+      storeAddress: "",
+      timezone: "Asia/Dhaka",
+      language: "en",
+
+      storeActive: true,
+      allowRegistration: true,
+
+      guestCheckout: true,
+      requirePhone: true,
+      requireEmail: false,
+      allowOrderNotes: true,
+
+      defaultOrderStatus: "New",
+      minimumOrder: 0,
+
+      insideDhaka: 80,
+      outsideDhaka: 130,
+      freeDeliveryMinimum: 5000,
+
+      enableInsideDhaka: true,
+      enableOutsideDhaka: true,
+      enableFreeDelivery: true,
+
+      newOrderNotification: true,
+      lowStockNotification: true,
+      messageNotification: true,
+      orderStatusNotification: true,
+
+      maintenanceMode: false,
+      analyticsEnabled: true,
+      inventoryTracking: true,
+
+      demoMode: true
+    };
+
+
+    let settings = loadSettings();
+
+
+    function loadSettings() {
+
+      try {
+
+        const saved = JSON.parse(
+          localStorage.getItem(SETTINGS_KEY)
+        );
+
+        return {
+          ...defaultSettings,
+          ...(saved || {})
+        };
+
+      } catch (error) {
+
+        return {
+          ...defaultSettings
+        };
+
+      }
+
+    }
+
+
+    function saveSettingsToStorage() {
+
+      localStorage.setItem(
+        SETTINGS_KEY,
+        JSON.stringify(settings)
+      );
+
+    }
+
+
+    function setValue(id, value) {
+
+      const element = document.getElementById(id);
+
+      if (!element) return;
+
+      if (element.type === "checkbox") {
+
+        element.checked = Boolean(value);
+
+      } else {
+
+        element.value = value ?? "";
+
+      }
+
+    }
+
+
+    function getValue(id) {
+
+      const element = document.getElementById(id);
+
+      if (!element) return "";
+
+      if (element.type === "checkbox") {
+
+        return element.checked;
+
+      }
+
+      return element.value;
+
+    }
+
+
+    function loadForm() {
+
+      Object.keys(defaultSettings).forEach(key => {
+
+        setValue(key, settings[key]);
+
+      });
+
+    }
+
+
+    function collectForm() {
+
+      Object.keys(defaultSettings).forEach(key => {
+
+        settings[key] = getValue(key);
+
+      });
+
+      settings.minimumOrder =
+        Number(settings.minimumOrder) || 0;
+
+      settings.insideDhaka =
+        Number(settings.insideDhaka) || 0;
+
+      settings.outsideDhaka =
+        Number(settings.outsideDhaka) || 0;
+
+      settings.freeDeliveryMinimum =
+        Number(settings.freeDeliveryMinimum) || 0;
+
+    }
+
+
+    function showSettingsNotification(message) {
+
+      const box = document.getElementById(
+        "settingsNotification"
+      );
+
+      box.textContent = message;
+
+      box.classList.add("show");
+
+      setTimeout(() => {
+
+        box.classList.remove("show");
+
+      }, 2500);
+
+    }
+
+
+    /* ================================
+       TABS
+    ================================= */
+
+    const tabs =
+      document.querySelectorAll(".settings-tab");
+
+    const sections =
+      document.querySelectorAll(".settings-section");
+
+
+    tabs.forEach(tab => {
+
+      tab.addEventListener("click", () => {
+
+        const target = tab.dataset.target;
+
+        tabs.forEach(item => {
+          item.classList.remove("active");
+        });
+
+        sections.forEach(section => {
+          section.classList.remove("active");
+        });
+
+        tab.classList.add("active");
+
+        const targetSection =
+          document.getElementById(target);
+
+        if (targetSection) {
+          targetSection.classList.add("active");
+        }
+
+      });
+
+    });
+
+
+    /* ================================
+       SAVE
+    ================================= */
+
+    document
+      .getElementById("saveSettings")
+      .addEventListener("click", () => {
+
+        collectForm();
+
+        saveSettingsToStorage();
+
+        showSettingsNotification(
+          "Settings saved successfully."
+        );
+
+      });
+
+
+    /* ================================
+       RESET FORM
+    ================================= */
+
+    document
+      .getElementById("resetSettings")
+      .addEventListener("click", () => {
+
+        const confirmReset = confirm(
+          "Reset all settings to default values?"
+        );
+
+        if (!confirmReset) return;
+
+        settings = {
+          ...defaultSettings
+        };
+
+        saveSettingsToStorage();
+
+        loadForm();
+
+        showSettingsNotification(
+          "Settings reset successfully."
+        );
+
+      });
+
+
+    /* ================================
+       CLEAR DEMO DATA
+    ================================= */
+
+    document
+      .getElementById("clearDemoData")
+      .addEventListener("click", () => {
+
+        const confirmed = confirm(
+          "Are you sure you want to clear demo data? This cannot be undone."
+        );
+
+        if (!confirmed) return;
+
+        const keysToRemove = [
+
+          "shopnest_orders",
+          "shopnest_users",
+          "shopnest_coupons",
+          "shopnest_inventory",
+          "shopnest_admin_notifications",
+          "shopnest_contact_messages",
+
+          "shopnest_cart",
+          "shopnest_wishlist",
+
+          "shopnest_pending_verification_email",
+          "shopnest_verified_email",
+
+          "shopnest_password_reset",
+          "shopnest_reset_identifier"
+
+        ];
+
+        keysToRemove.forEach(key => {
+
+          localStorage.removeItem(key);
+
+        });
+
+        showSettingsNotification(
+          "Demo data cleared."
+        );
+
+      });
+
+
+    /* ================================
+       INITIAL LOAD
+    ================================= */
+
+    loadForm();
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,3210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Order Details - Alamin Shop Admin</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    :root {
+      --bg: #08090b;
+      --sidebar: #0d0f12;
+      --card: #111317;
+      --card-soft: #15181d;
+      --border: #272b33;
+      --text: #f5f7fa;
+      --muted: #9299a6;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --blue: #60a5fa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    /* =========================
+       LAYOUT
+    ========================= */
+
+    .admin-layout {
+      min-height: 100vh;
+    }
+
+    .admin-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 260px;
+      background: var(--sidebar);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .admin-brand {
+      padding: 24px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .admin-brand h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .admin-brand span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .admin-nav {
+      padding: 18px 12px;
+    }
+
+    .nav-section-title {
+      padding: 10px;
+      color: #626975;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .admin-nav a {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 11px 12px;
+      margin-bottom: 3px;
+      border-radius: 9px;
+      color: #aeb4bf;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    .admin-nav a:hover {
+      background: #171a1f;
+      color: #fff;
+    }
+
+    .admin-nav a.active {
+      background: #fff;
+      color: #08090b;
+      font-weight: 700;
+    }
+
+    .nav-icon {
+      width: 20px;
+      text-align: center;
+    }
+
+    .admin-main {
+      width: calc(100% - 260px);
+      margin-left: 260px;
+      min-height: 100vh;
+    }
+
+    /* =========================
+       TOPBAR
+    ========================= */
+
+    .admin-topbar {
+      height: 72px;
+      padding: 0 28px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8, 9, 11, .94);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back-btn {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--border);
+      background: #15181d;
+      color: #fff;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 17px;
+    }
+
+    .topbar-title h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .topbar-title p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .admin-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .admin-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #fff;
+      color: #08090b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
+
+    .admin-user-info strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .admin-user-info span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .admin-content {
+      max-width: 1450px;
+      margin: auto;
+      padding: 28px;
+    }
+
+    /* =========================
+       ORDER HEADER
+    ========================= */
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .order-id-box h2 {
+      margin: 0;
+      font-size: 25px;
+    }
+
+    .order-id-box p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .order-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* =========================
+       BUTTONS
+    ========================= */
+
+    .btn {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: #171a1f;
+      color: #fff;
+      cursor: pointer;
+      font-size: 12px;
+      transition: .2s;
+    }
+
+    .btn:hover {
+      background: #22262d;
+    }
+
+    .btn-primary {
+      background: #fff;
+      border-color: #fff;
+      color: #08090b;
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      background: #ddd;
+    }
+
+    .btn-danger {
+      color: #ff9191;
+    }
+
+    .btn-success {
+      color: #7ee7a0;
+    }
+
+    /* =========================
+       STATUS
+    ========================= */
+
+    .status {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 7px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .status-new {
+      background: #171f2a;
+      color: #7db9ff;
+    }
+
+    .status-processing {
+      background: #292315;
+      color: #ffc66d;
+    }
+
+    .status-shipped {
+      background: #18222b;
+      color: #7dc6ff;
+    }
+
+    .status-delivered {
+      background: #17251c;
+      color: #7ee7a0;
+    }
+
+    .status-cancelled,
+    .status-refunded {
+      background: #28191a;
+      color: #ff9696;
+    }
+
+    .status-returned {
+      background: #241b29;
+      color: #d9a4ff;
+    }
+
+    /* =========================
+       GRID
+    ========================= */
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      padding: 19px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-header h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .card-header p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    /* =========================
+       PRODUCTS
+    ========================= */
+
+    .product-row {
+      display: grid;
+      grid-template-columns: 62px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid #202329;
+    }
+
+    .product-row:last-child {
+      border-bottom: 0;
+    }
+
+    .product-image {
+      width: 62px;
+      height: 62px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #0c0e11;
+      border: 1px solid var(--border);
+    }
+
+    .product-name {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .product-meta {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .product-price {
+      text-align: right;
+    }
+
+    .product-price strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .product-price span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    /* =========================
+       INFO GRID
+    ========================= */
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .info-box {
+      padding: 14px;
+      background: #0d0f12;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .info-label {
+      color: var(--muted);
+      font-size: 10px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .info-value {
+      font-size: 13px;
+      line-height: 1.55;
+      word-break: break-word;
+    }
+
+    /* =========================
+       SUMMARY
+    ========================= */
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 9px 0;
+      font-size: 12px;
+    }
+
+    .summary-row span:first-child {
+      color: var(--muted);
+    }
+
+    .summary-total {
+      margin-top: 8px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border);
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    /* =========================
+       TIMELINE
+    ========================= */
+
+    .timeline {
+      position: relative;
+    }
+
+    .timeline-item {
+      position: relative;
+      display: flex;
+      gap: 13px;
+      padding-bottom: 22px;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-item:not(:last-child)::before {
+      content: "";
+      position: absolute;
+      top: 23px;
+      left: 8px;
+      width: 1px;
+      height: calc(100% - 10px);
+      background: var(--border);
+    }
+
+    .timeline-dot {
+      width: 17px;
+      height: 17px;
+      flex: 0 0 17px;
+      margin-top: 2px;
+      border-radius: 50%;
+      background: #252932;
+      border: 3px solid #0d0f12;
+      box-shadow: 0 0 0 1px var(--border);
+      z-index: 2;
+    }
+
+    .timeline-item.active .timeline-dot {
+      background: var(--success);
+      box-shadow: 0 0 0 1px var(--success);
+    }
+
+    .timeline-item.active .timeline-title {
+      color: #fff;
+    }
+
+    .timeline-title {
+      color: #a8aeb8;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .timeline-date {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    /* =========================
+       COURIER
+    ========================= */
+
+    .tracking-box {
+      padding: 15px;
+      background: #0c0e11;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+    }
+
+    .tracking-number {
+      margin-top: 5px;
+      font-size: 15px;
+      font-weight: 800;
+      word-break: break-all;
+    }
+
+    .tracking-empty {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* =========================
+       NOTE
+    ========================= */
+
+    .order-note {
+      padding: 14px;
+      background: #15181d;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: #c7ccd4;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    /* =========================
+       EMPTY / NOT FOUND
+    ========================= */
+
+    .not-found {
+      max-width: 650px;
+      margin: 80px auto;
+      padding: 45px;
+      text-align: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+
+    .not-found-icon {
+      font-size: 45px;
+      margin-bottom: 15px;
+    }
+
+    .not-found h2 {
+      margin: 0 0 8px;
+    }
+
+    .not-found p {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 999;
+      backdrop-filter: blur(7px);
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 560px;
+      background: #111317;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 19px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .modal-close {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--border);
+      background: #171a1f;
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 11px 12px;
+      background: #0b0d10;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: #fff;
+      outline: none;
+    }
+
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .modal-footer {
+      padding: 15px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast {
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      z-index: 9999;
+      padding: 13px 18px;
+      border-radius: 10px;
+      background: #fff;
+      color: #08090b;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 15px 50px rgba(0,0,0,.4);
+      transform: translateY(120px);
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 1050px) {
+
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+    @media (max-width: 800px) {
+
+      .admin-sidebar {
+        width: 72px;
+      }
+
+      .admin-brand {
+        text-align: center;
+        padding: 20px 8px;
+      }
+
+      .admin-brand h2 {
+        font-size: 0;
+      }
+
+      .admin-brand h2::after {
+        content: "AS";
+        font-size: 18px;
+      }
+
+      .admin-brand span {
+        display: none;
+      }
+
+      .admin-nav a {
+        justify-content: center;
+        padding: 12px;
+      }
+
+      .admin-nav a span:not(.nav-icon) {
+        display: none;
+      }
+
+      .nav-section-title {
+        display: none;
+      }
+
+      .admin-main {
+        width: calc(100% - 72px);
+        margin-left: 72px;
+      }
+
+      .admin-content {
+        padding: 18px;
+      }
+
+      .order-header {
+        flex-direction: column;
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
+      .admin-topbar {
+        padding: 0 15px;
+      }
+
+      .admin-user-info {
+        display: none;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .product-row {
+        grid-template-columns: 52px 1fr;
+      }
+
+      .product-image {
+        width: 52px;
+        height: 52px;
+      }
+
+      .product-price {
+        grid-column: 2;
+        text-align: left;
+      }
+
+      .order-actions {
+        width: 100%;
+      }
+
+      .order-actions .btn {
+        flex: 1;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+  <!-- =========================
+       SIDEBAR
+  ========================= -->
+
+  <aside class="admin-sidebar">
+
+    <div class="admin-brand">
+      <h2>Alamin Shop</h2>
+      <span>Admin Dashboard</span>
+    </div>
+
+    <nav class="admin-nav">
+
+      <div class="nav-section-title">
+        Overview
+      </div>
+
+      <a href="index.html">
+        <span class="nav-icon">⌂</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="orders.html" class="active">
+        <span class="nav-icon">▣</span>
+        <span>Orders</span>
+      </a>
+
+      <a href="products.html">
+        <span class="nav-icon">◫</span>
+        <span>Products</span>
+      </a>
+
+
+      <div class="nav-section-title">
+        Store
+      </div>
+
+      <a href="categories.html">
+        <span class="nav-icon">◈</span>
+        <span>Categories</span>
+      </a>
+
+      <a href="inventory.html">
+        <span class="nav-icon">▤</span>
+        <span>Inventory</span>
+      </a>
+
+      <a href="coupons.html">
+        <span class="nav-icon">%</span>
+        <span>Coupons</span>
+      </a>
+
+      <a href="banners.html">
+        <span class="nav-icon">▧</span>
+        <span>Banners</span>
+      </a>
+
+      <a href="media.html">
+        <span class="nav-icon">▦</span>
+        <span>Media</span>
+      </a>
+
+
+      <div class="nav-section-title">
+        Customers
+      </div>
+
+      <a href="customers.html">
+        <span class="nav-icon">♙</span>
+        <span>Customers</span>
+      </a>
+
+      <a href="reviews.html">
+        <span class="nav-icon">★</span>
+        <span>Reviews</span>
+      </a>
+
+      <a href="returns.html">
+        <span class="nav-icon">↩</span>
+        <span>Returns</span>
+      </a>
+
+
+      <div class="nav-section-title">
+        Reports
+      </div>
+
+      <a href="reports.html">
+        <span class="nav-icon">▥</span>
+        <span>Reports</span>
+      </a>
+
+      <a href="notifications.html">
+        <span class="nav-icon">♢</span>
+        <span>Notifications</span>
+      </a>
+
+      <a href="audit-logs.html">
+        <span class="nav-icon">◉</span>
+        <span>Audit Logs</span>
+      </a>
+
+
+      <div class="nav-section-title">
+        Configuration
+      </div>
+
+      <a href="payments.html">
+        <span class="nav-icon">৳</span>
+        <span>Payments</span>
+      </a>
+
+      <a href="delivery-zones.html">
+        <span class="nav-icon">⌁</span>
+        <span>Delivery Zones</span>
+      </a>
+
+      <a href="shipping.html">
+        <span class="nav-icon">🚚</span>
+        <span>Shipping</span>
+      </a>
+
+      <a href="couriers.html">
+        <span class="nav-icon">▰</span>
+        <span>Couriers</span>
+      </a>
+
+      <a href="seo.html">
+        <span class="nav-icon">⌕</span>
+        <span>SEO</span>
+      </a>
+
+      <a href="settings.html">
+        <span class="nav-icon">⚙</span>
+        <span>Settings</span>
+      </a>
+
+      <a href="staff.html">
+        <span class="nav-icon">♟</span>
+        <span>Staff</span>
+      </a>
+
+
+      <div class="nav-section-title">
+        Storefront
+      </div>
+
+      <a href="../index.html">
+        <span class="nav-icon">↗</span>
+        <span>View Store</span>
+      </a>
+
+    </nav>
+
+  </aside>
+
+
+  <!-- =========================
+       MAIN
+  ========================= -->
+
+  <main class="admin-main">
+
+    <header class="admin-topbar">
+
+      <div class="topbar-left">
+
+        <button
+          class="back-btn"
+          id="backButton"
+          title="Back"
+        >
+          ←
+        </button>
+
+        <div class="topbar-title">
+
+          <h1>
+            Order Details
+          </h1>
+
+          <p>
+            View and manage complete order information
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="admin-user">
+
+        <div class="admin-avatar">
+          A
+        </div>
+
+        <div class="admin-user-info">
+
+          <strong>
+            Store Administrator
+          </strong>
+
+          <span>
+            Administrator
+          </span>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <div
+      class="admin-content"
+      id="pageContent"
+    >
+
+      <!-- CONTENT GENERATED BY JS -->
+
+    </div>
+
+  </main>
+
+</div>
+
+
+<!-- =========================
+     STATUS MODAL
+========================= -->
+
+<div
+  class="modal-overlay"
+  id="statusModal"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>
+        Update Order Status
+      </h3>
+
+      <button
+        class="modal-close"
+        id="closeStatusModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="form-group">
+
+        <label for="newStatus">
+          Order Status
+        </label>
+
+        <select
+          id="newStatus"
+          class="form-control"
+        >
+
+          <option value="New">
+            New
+          </option>
+
+          <option value="Confirmed">
+            Confirmed
+          </option>
+
+          <option value="Processing">
+            Processing
+          </option>
+
+          <option value="Packed">
+            Packed
+          </option>
+
+          <option value="Shipped">
+            Shipped
+          </option>
+
+          <option value="Delivered">
+            Delivered
+          </option>
+
+          <option value="Cancelled">
+            Cancelled
+          </option>
+
+          <option value="Returned">
+            Returned
+          </option>
+
+          <option value="Refunded">
+            Refunded
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="statusNote">
+          Internal Note
+        </label>
+
+        <textarea
+          id="statusNote"
+          class="form-control"
+          placeholder="Optional note..."
+        ></textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-footer">
+
+      <button
+        class="btn"
+        id="cancelStatus"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="btn btn-primary"
+        id="saveStatus"
+      >
+        Update Status
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     TOAST
+========================= -->
+
+<div
+  class="toast"
+  id="toast"
+>
+  Saved successfully
+</div>
+
+
+<script src="../script.js"></script>
+
+<script>
+
+  /* =========================================================
+     ALAMIN SHOP ADMIN
+     ORDER DETAILS
+  ========================================================= */
+
+  const ORDERS_KEY =
+    "shopnest_orders";
+
+  const AUDIT_KEY =
+    "shopnest_audit_logs";
+
+
+  let orders = [];
+
+  let currentOrder = null;
+
+
+  /* =========================================================
+     GET ORDER ID
+  ========================================================= */
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const orderId =
+    params.get("id");
+
+
+  /* =========================================================
+     DOM
+  ========================================================= */
+
+  const pageContent =
+    document.getElementById(
+      "pageContent"
+    );
+
+
+  /* =========================================================
+     LOAD ORDERS
+  ========================================================= */
+
+  function loadOrders() {
+
+    try {
+
+      const saved =
+        localStorage.getItem(
+          ORDERS_KEY
+        );
+
+
+      if (saved) {
+
+        const parsed =
+          JSON.parse(saved);
+
+
+        orders =
+          Array.isArray(parsed)
+            ? parsed
+            : [];
+
+      } else {
+
+        orders = [];
+
+      }
+
+    } catch (error) {
+
+      console.error(error);
+
+      orders = [];
+
+    }
+
+  }
+
+
+  /* =========================================================
+     FIND ORDER
+  ========================================================= */
+
+  function findOrder() {
+
+    if (!orderId) {
+
+      return null;
+
+    }
+
+
+    return orders.find(
+      order =>
+        String(order.id) ===
+        String(orderId)
+    ) || null;
+
+  }
+
+
+  /* =========================================================
+     RENDER
+  ========================================================= */
+
+  function renderPage() {
+
+    currentOrder =
+      findOrder();
+
+
+    if (!currentOrder) {
+
+      renderNotFound();
+
+      return;
+
+    }
+
+
+    pageContent.innerHTML =
+      createOrderPage(
+        currentOrder
+      );
+
+
+    bindEvents();
+
+  }
+
+
+  /* =========================================================
+     NOT FOUND
+  ========================================================= */
+
+  function renderNotFound() {
+
+    pageContent.innerHTML = `
+
+      <div class="not-found">
+
+        <div class="not-found-icon">
+          📦
+        </div>
+
+        <h2>
+          Order not found
+        </h2>
+
+        <p>
+          The order you are looking for does not exist
+          or may have been removed.
+        </p>
+
+        <a
+          href="orders.html"
+          class="btn btn-primary"
+        >
+          Back to Orders
+        </a>
+
+      </div>
+
+    `;
+
+  }
+
+
+  /* =========================================================
+     CREATE ORDER PAGE
+  ========================================================= */
+
+  function createOrderPage(order) {
+
+    const customer =
+      order.customer || {};
+
+
+    const customerName =
+      customer.name ||
+      order.customerName ||
+      "Guest Customer";
+
+
+    const customerEmail =
+      customer.email ||
+      order.email ||
+      "Not provided";
+
+
+    const customerPhone =
+      customer.phone ||
+      order.phone ||
+      "Not provided";
+
+
+    const address =
+      customer.address ||
+      order.address ||
+      "Not provided";
+
+
+    const city =
+      customer.city ||
+      order.city ||
+      "";
+
+
+    const area =
+      customer.area ||
+      order.area ||
+      "";
+
+
+    const payment =
+      order.paymentMethod ||
+      "Cash on Delivery";
+
+
+    const status =
+      order.status ||
+      "New";
+
+
+    const items =
+      Array.isArray(order.items)
+        ? order.items
+        : [];
+
+
+    const subtotal =
+      Number(
+        order.subtotal || 0
+      );
+
+
+    const discount =
+      Number(
+        order.discount || 0
+      );
+
+
+    const delivery =
+      Number(
+        order.delivery || 0
+      );
+
+
+    const total =
+      Number(
+        order.total ||
+        subtotal -
+        discount +
+        delivery
+      );
+
+
+    const courier =
+      order.courier ||
+      order.shipmentCourier ||
+      "";
+
+
+    const tracking =
+      order.trackingNumber ||
+      order.tracking ||
+      "";
+
+
+    const shipmentStatus =
+      order.shipmentStatus ||
+      "";
+
+
+    return `
+
+      <div class="order-header">
+
+        <div class="order-id-box">
+
+          <h2>
+            ${escapeHtml(
+              order.id
+            )}
+          </h2>
+
+          <p>
+            Placed on
+            ${formatDate(
+              order.createdAt
+            )}
+          </p>
+
+        </div>
+
+
+        <div class="order-actions">
+
+          <span
+            class="status ${getStatusClass(status)}"
+          >
+            ${escapeHtml(status)}
+          </span>
+
+
+          <button
+            class="btn btn-primary"
+            id="updateStatusButton"
+          >
+            Update Status
+          </button>
+
+
+          <button
+            class="btn"
+            id="printOrderButton"
+          >
+            Print
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="main-grid">
+
+
+        <!-- =========================
+             LEFT
+        ========================= -->
+
+        <div>
+
+
+          <!-- PRODUCTS -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <h3>
+                Ordered Products
+              </h3>
+
+              <p>
+                ${items.length}
+                ${items.length === 1
+                  ? "item"
+                  : "items"}
+              </p>
+
+            </div>
+
+
+            <div class="card-body">
+
+              ${
+                items.length
+                  ? items
+                      .map(
+                        item =>
+                          createProductRow(
+                            item
+                          )
+                      )
+                      .join("")
+                  : `
+                    <div class="not-found"
+                      style="
+                        margin:0;
+                        padding:30px;
+                        border:0;
+                      "
+                    >
+                      No products found
+                    </div>
+                  `
+              }
+
+            </div>
+
+          </section>
+
+
+          <!-- CUSTOMER -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <h3>
+                Customer Information
+              </h3>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="info-grid">
+
+                <div class="info-box">
+
+                  <div class="info-label">
+                    Name
+                  </div>
+
+                  <div class="info-value">
+                    ${escapeHtml(
+                      customerName
+                    )}
+                  </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                  <div class="info-label">
+                    Phone
+                  </div>
+
+                  <div class="info-value">
+                    ${escapeHtml(
+                      customerPhone
+                    )}
+                  </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                  <div class="info-label">
+                    Email
+                  </div>
+
+                  <div class="info-value">
+                    ${escapeHtml(
+                      customerEmail
+                    )}
+                  </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                  <div class="info-label">
+                    Customer ID
+                  </div>
+
+                  <div class="info-value">
+                    ${escapeHtml(
+                      customer.id ||
+                      order.customerId ||
+                      "Guest"
+                    )}
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- SHIPPING -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <h3>
+                Shipping Information
+              </h3>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="info-grid">
+
+                <div class="info-box">
+
+                  <div class="info-label">
+                    City
+                  </div>
+
+                  <div class="info-value">
+                    ${escapeHtml(
+                      city ||
+                      "Not provided"
+                    )}
+                  </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                  <div class="info-label">
+                    Area
+                  </div>
+
+                  <div class="info-value">
+                    ${escapeHtml(
+                      area ||
+                      "Not provided"
+                    )}
+                  </div>
+
+                </div>
+
+
+                <div
+                  class="info-box"
+                  style="grid-column:1/-1;"
+                >
+
+                  <div class="info-label">
+                    Delivery Address
+                  </div>
+
+                  <div class="info-value">
+                    ${escapeHtml(
+                      address
+                    )}
+                  </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                  <div class="info-label">
+                    Courier
+                  </div>
+
+                  <div class="info-value">
+
+                    ${
+                      courier
+                        ? escapeHtml(
+                            typeof courier ===
+                            "object"
+                              ? courier.name ||
+                                "Assigned"
+                              : courier
+                          )
+                        : "Not assigned"
+                    }
+
+                  </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                  <div class="info-label">
+                    Tracking Number
+                  </div>
+
+                  <div class="info-value">
+
+                    ${
+                      tracking
+                        ? escapeHtml(
+                            tracking
+                          )
+                        : "Not available"
+                    }
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- ORDER NOTE -->
+
+          ${
+            order.note
+              ? `
+
+                <section class="card">
+
+                  <div class="card-header">
+
+                    <h3>
+                      Customer Note
+                    </h3>
+
+                  </div>
+
+                  <div class="card-body">
+
+                    <div class="order-note">
+
+                      ${escapeHtml(
+                        order.note
+                      )}
+
+                    </div>
+
+                  </div>
+
+                </section>
+
+              `
+              : ""
+          }
+
+
+          <!-- SHIPMENT -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <h3>
+                Shipment Tracking
+              </h3>
+
+              <p>
+                Current courier fulfillment status
+              </p>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="tracking-box">
+
+                ${
+                  tracking
+                    ? `
+
+                      <div
+                        style="
+                          color:var(--muted);
+                          font-size:10px;
+                          text-transform:uppercase;
+                        "
+                      >
+                        Tracking Number
+                      </div>
+
+                      <div class="tracking-number">
+                        ${escapeHtml(
+                          tracking
+                        )}
+                      </div>
+
+                      <div
+                        style="
+                          margin-top:10px;
+                          color:var(--muted);
+                          font-size:11px;
+                        "
+                      >
+                        ${
+                          courier
+                            ? "Courier: " +
+                              escapeHtml(
+                                typeof courier ===
+                                "object"
+                                  ? courier.name ||
+                                    "Assigned"
+                                  : courier
+                              )
+                            : "Courier not assigned"
+                        }
+                      </div>
+
+                      ${
+                        shipmentStatus
+                          ? `
+                            <div
+                              style="
+                                margin-top:10px;
+                              "
+                            >
+
+                              <span
+                                class="status status-shipped"
+                              >
+                                ${escapeHtml(
+                                  shipmentStatus
+                                )}
+                              </span>
+
+                            </div>
+                          `
+                          : ""
+                      }
+
+                    `
+                    : `
+
+                      <div class="tracking-empty">
+                        No tracking information has been added yet.
+                      </div>
+
+                    `
+                }
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- TIMELINE -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <h3>
+                Order Timeline
+              </h3>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="timeline">
+
+                ${createTimeline(
+                  order
+                )}
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+        </div>
+
+
+        <!-- =========================
+             RIGHT
+        ========================= -->
+
+        <aside>
+
+
+          <!-- SUMMARY -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <h3>
+                Order Summary
+              </h3>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="summary-row">
+
+                <span>
+                  Subtotal
+                </span>
+
+                <strong>
+                  ${formatMoney(
+                    subtotal
+                  )}
+                </strong>
+
+              </div>
+
+
+              <div class="summary-row">
+
+                <span>
+                  Discount
+                </span>
+
+                <strong>
+                  - ${formatMoney(
+                    discount
+                  )}
+                </strong>
+
+              </div>
+
+
+              <div class="summary-row">
+
+                <span>
+                  Delivery
+                </span>
+
+                <strong>
+                  ${delivery === 0
+                    ? "Free"
+                    : formatMoney(
+                        delivery
+                      )}
+                </strong>
+
+              </div>
+
+
+              <div class="summary-row summary-total">
+
+                <span>
+                  Total
+                </span>
+
+                <strong>
+                  ${formatMoney(
+                    total
+                  )}
+                </strong>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- PAYMENT -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <h3>
+                Payment
+              </h3>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="info-box">
+
+                <div class="info-label">
+                  Payment Method
+                </div>
+
+                <div class="info-value">
+                  ${escapeHtml(
+                    payment
+                  )}
+                </div>
+
+              </div>
+
+
+              <div
+                class="info-box"
+                style="margin-top:10px;"
+              >
+
+                <div class="info-label">
+                  Payment Status
+                </div>
+
+                <div class="info-value">
+
+                  ${
+                    order.paymentStatus ||
+                    getPaymentStatus(
+                      payment,
+                      status
+                    )
+                  }
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- ACTIONS -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <h3>
+                Quick Actions
+              </h3>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <button
+                class="btn"
+                id="printOrderButton2"
+                style="width:100%;margin-bottom:8px;"
+              >
+                🖨 Print Order
+              </button>
+
+
+              <button
+                class="btn"
+                id="updateStatusButton2"
+                style="width:100%;margin-bottom:8px;"
+              >
+                ↻ Update Status
+              </button>
+
+
+              ${
+                ![
+                  "Cancelled",
+                  "Delivered",
+                  "Returned",
+                  "Refunded"
+                ].includes(status)
+                  ? `
+
+                    <button
+                      class="btn btn-danger"
+                      id="cancelOrderButton"
+                      style="width:100%;"
+                    >
+                      Cancel Order
+                    </button>
+
+                  `
+                  : ""
+              }
+
+            </div>
+
+          </section>
+
+
+        </aside>
+
+      </div>
+
+    `;
+
+  }
+
+
+  /* =========================================================
+     PRODUCT ROW
+  ========================================================= */
+
+  function createProductRow(item) {
+
+    const product =
+      getProductById(
+        item.productId ||
+        item.id
+      );
+
+
+    const name =
+      item.name ||
+      item.title ||
+      product?.name ||
+      "Product";
+
+
+    const image =
+      item.image ||
+      product?.image ||
+      "https://via.placeholder.com/100";
+
+
+    const category =
+      item.category ||
+      product?.category ||
+      "Product";
+
+
+    const price =
+      Number(
+        item.price ||
+        product?.price ||
+        0
+      );
+
+
+    const quantity =
+      Number(
+        item.quantity ||
+        item.qty ||
+        1
+      );
+
+
+    const itemTotal =
+      price *
+      quantity;
+
+
+    return `
+
+      <div class="product-row">
+
+        <img
+          src="${escapeHtml(image)}"
+          alt="${escapeHtml(name)}"
+          class="product-image"
+          onerror="this.src='https://via.placeholder.com/100'"
+        >
+
+
+        <div>
+
+          <div class="product-name">
+            ${escapeHtml(name)}
+          </div>
+
+          <div class="product-meta">
+            ${escapeHtml(category)}
+            ·
+            Qty: ${quantity}
+          </div>
+
+          ${
+            item.variant
+              ? `
+                <div
+                  class="product-meta"
+                  style="margin-top:3px;"
+                >
+                  Variant:
+                  ${escapeHtml(
+                    typeof item.variant ===
+                    "object"
+                      ? JSON.stringify(
+                          item.variant
+                        )
+                      : item.variant
+                  )}
+                </div>
+              `
+              : ""
+          }
+
+        </div>
+
+
+        <div class="product-price">
+
+          <strong>
+            ${formatMoney(
+              itemTotal
+            )}
+          </strong>
+
+          <span>
+            ${formatMoney(
+              price
+            )}
+            ×
+            ${quantity}
+          </span>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  /* =========================================================
+     TIMELINE
+  ========================================================= */
+
+  function createTimeline(order) {
+
+    const statuses = [
+
+      "New",
+      "Confirmed",
+      "Processing",
+      "Packed",
+      "Shipped",
+      "Delivered"
+
+    ];
+
+
+    const currentStatus =
+      order.status ||
+      "New";
+
+
+    const cancelled =
+      currentStatus ===
+      "Cancelled";
+
+
+    const returned =
+      currentStatus ===
+      "Returned";
+
+
+    const refunded =
+      currentStatus ===
+      "Refunded";
+
+
+    let currentIndex =
+      statuses.indexOf(
+        currentStatus
+      );
+
+
+    if (currentIndex < 0) {
+
+      currentIndex = 0;
+
+    }
+
+
+    let html =
+      statuses.map(
+        (
+          status,
+          index
+        ) => {
+
+          const active =
+            index <=
+            currentIndex &&
+            !cancelled &&
+            !returned &&
+            !refunded;
+
+
+          const date =
+            getTimelineDate(
+              order,
+              status
+            );
+
+
+          return `
+
+            <div
+              class="
+                timeline-item
+                ${active ? "active" : ""}
+              "
+            >
+
+              <div
+                class="timeline-dot"
+              ></div>
+
+              <div>
+
+                <div class="timeline-title">
+                  ${status}
+                </div>
+
+                <div class="timeline-date">
+                  ${
+                    active
+                      ? date
+                      : "Pending"
+                  }
+                </div>
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      ).join("");
+
+
+    if (
+      cancelled ||
+      returned ||
+      refunded
+    ) {
+
+      const special =
+        cancelled
+          ? "Cancelled"
+          : returned
+          ? "Returned"
+          : "Refunded";
+
+
+      html += `
+
+        <div
+          class="timeline-item active"
+        >
+
+          <div class="timeline-dot"></div>
+
+          <div>
+
+            <div class="timeline-title">
+              ${special}
+            </div>
+
+            <div class="timeline-date">
+              Current order state
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
+
+
+    return html;
+
+  }
+
+
+  /* =========================================================
+     GET TIMELINE DATE
+  ========================================================= */
+
+  function getTimelineDate(
+    order,
+    status
+  ) {
+
+    if (
+      status ===
+      (order.status || "New")
+    ) {
+
+      return formatDate(
+        order.createdAt
+      );
+
+    }
+
+
+    return "Completed";
+
+  }
+
+
+  /* =========================================================
+     GET PRODUCT
+  ========================================================= */
+
+  function getProductById(id) {
+
+    if (
+      typeof products ===
+      "undefined"
+    ) {
+
+      return null;
+
+    }
+
+
+    return products.find(
+      product =>
+        String(product.id) ===
+        String(id)
+    ) || null;
+
+  }
+
+
+  /* =========================================================
+     STATUS CLASS
+  ========================================================= */
+
+  function getStatusClass(status) {
+
+    switch (status) {
+
+      case "New":
+      case "Confirmed":
+        return "status-new";
+
+      case "Processing":
+      case "Packed":
+        return "status-processing";
+
+      case "Shipped":
+        return "status-shipped";
+
+      case "Delivered":
+        return "status-delivered";
+
+      case "Cancelled":
+      case "Refunded":
+        return "status-cancelled";
+
+      case "Returned":
+        return "status-returned";
+
+      default:
+        return "status-new";
+
+    }
+
+  }
+
+
+  /* =========================================================
+     PAYMENT STATUS
+  ========================================================= */
+
+  function getPaymentStatus(
+    payment,
+    status
+  ) {
+
+    if (
+      payment ===
+      "Cash on Delivery"
+    ) {
+
+      return status ===
+        "Delivered"
+        ? "Collected"
+        : "Pending";
+
+    }
+
+
+    if (
+      [
+        "Cancelled",
+        "Refunded"
+      ].includes(status)
+    ) {
+
+      return "Refunded";
+
+    }
+
+
+    return "Paid";
+
+  }
+
+
+  /* =========================================================
+     UPDATE STATUS MODAL
+  ========================================================= */
+
+  function openStatusModal() {
+
+    if (!currentOrder) return;
+
+
+    document.getElementById(
+      "newStatus"
+    ).value =
+      currentOrder.status ||
+      "New";
+
+
+    document.getElementById(
+      "statusNote"
+    ).value = "";
+
+
+    document.getElementById(
+      "statusModal"
+    ).classList.add(
+      "show"
+    );
+
+  }
+
+
+  function closeStatusModal() {
+
+    document.getElementById(
+      "statusModal"
+    ).classList.remove(
+      "show"
+    );
+
+  }
+
+
+  /* =========================================================
+     SAVE STATUS
+  ========================================================= */
+
+  function saveStatus() {
+
+    if (!currentOrder) return;
+
+
+    const oldStatus =
+      currentOrder.status ||
+      "New";
+
+
+    const newStatus =
+      document.getElementById(
+        "newStatus"
+      ).value;
+
+
+    const note =
+      document.getElementById(
+        "statusNote"
+      ).value.trim();
+
+
+    currentOrder.status =
+      newStatus;
+
+
+    if (note) {
+
+      currentOrder.adminNote =
+        note;
+
+    }
+
+
+    /*
+      Sync shipment status
+    */
+
+    if (
+      newStatus ===
+      "Delivered"
+    ) {
+
+      currentOrder.shipmentStatus =
+        "Delivered";
+
+    }
+
+
+    if (
+      newStatus ===
+      "Shipped"
+    ) {
+
+      if (
+        !currentOrder.shipmentStatus
+      ) {
+
+        currentOrder.shipmentStatus =
+          "In Transit";
+
+      }
+
+    }
+
+
+    localStorage.setItem(
+      ORDERS_KEY,
+      JSON.stringify(
+        orders
+      )
+    );
+
+
+    addAuditLog(
+      "UPDATE",
+      "Orders",
+      `Order ${currentOrder.id} status changed from ${oldStatus} to ${newStatus}`
+    );
+
+
+    closeStatusModal();
+
+    renderPage();
+
+
+    showToast(
+      "Order status updated"
+    );
+
+  }
+
+
+  /* =========================================================
+     CANCEL ORDER
+  ========================================================= */
+
+  function cancelOrder() {
+
+    if (!currentOrder) return;
+
+
+    const status =
+      currentOrder.status ||
+      "New";
+
+
+    if (
+      [
+        "Delivered",
+        "Cancelled",
+        "Returned",
+        "Refunded"
+      ].includes(status)
+    ) {
+
+      showToast(
+        "This order cannot be cancelled"
+      );
+
+      return;
+
+    }
+
+
+    const confirmed =
+      confirm(
+        `Cancel order ${currentOrder.id}?`
+      );
+
+
+    if (!confirmed) return;
+
+
+    currentOrder.status =
+      "Cancelled";
+
+
+    currentOrder.cancelledAt =
+      new Date().toISOString();
+
+
+    localStorage.setItem(
+      ORDERS_KEY,
+      JSON.stringify(
+        orders
+      )
+    );
+
+
+    addAuditLog(
+      "UPDATE",
+      "Orders",
+      `Order ${currentOrder.id} was cancelled`
+    );
+
+
+    renderPage();
+
+
+    showToast(
+      "Order cancelled"
+    );
+
+  }
+
+
+  /* =========================================================
+     PRINT
+  ========================================================= */
+
+  function printOrder() {
+
+    window.print();
+
+  }
+
+
+  /* =========================================================
+     EVENTS
+  ========================================================= */
+
+  function bindEvents() {
+
+    const updateButton =
+      document.getElementById(
+        "updateStatusButton"
+      );
+
+
+    const updateButton2 =
+      document.getElementById(
+        "updateStatusButton2"
+      );
+
+
+    const printButton =
+      document.getElementById(
+        "printOrderButton"
+      );
+
+
+    const printButton2 =
+      document.getElementById(
+        "printOrderButton2"
+      );
+
+
+    const cancelButton =
+      document.getElementById(
+        "cancelOrderButton"
+      );
+
+
+    if (updateButton) {
+
+      updateButton.addEventListener(
+        "click",
+        openStatusModal
+      );
+
+    }
+
+
+    if (updateButton2) {
+
+      updateButton2.addEventListener(
+        "click",
+        openStatusModal
+      );
+
+    }
+
+
+    if (printButton) {
+
+      printButton.addEventListener(
+        "click",
+        printOrder
+      );
+
+    }
+
+
+    if (printButton2) {
+
+      printButton2.addEventListener(
+        "click",
+        printOrder
+      );
+
+    }
+
+
+    if (cancelButton) {
+
+      cancelButton.addEventListener(
+        "click",
+        cancelOrder
+      );
+
+    }
+
+  }
+
+
+  /* =========================================================
+     MODAL EVENTS
+  ========================================================= */
+
+  document.getElementById(
+    "closeStatusModal"
+  ).addEventListener(
+    "click",
+    closeStatusModal
+  );
+
+
+  document.getElementById(
+    "cancelStatus"
+  ).addEventListener(
+    "click",
+    closeStatusModal
+  );
+
+
+  document.getElementById(
+    "saveStatus"
+  ).addEventListener(
+    "click",
+    saveStatus
+  );
+
+
+  document.getElementById(
+    "statusModal"
+  ).addEventListener(
+    "click",
+    function(event) {
+
+      if (
+        event.target ===
+        this
+      ) {
+
+        closeStatusModal();
+
+      }
+
+    }
+  );
+
+
+  /* =========================================================
+     BACK
+  ========================================================= */
+
+  document.getElementById(
+    "backButton"
+  ).addEventListener(
+    "click",
+    function() {
+
+      if (
+        document.referrer &&
+        document.referrer.includes(
+          "orders.html"
+        )
+      ) {
+
+        history.back();
+
+      } else {
+
+        window.location.href =
+          "orders.html";
+
+      }
+
+    }
+  );
+
+
+  /* =========================================================
+     HELPERS
+  ========================================================= */
+
+  function formatMoney(value) {
+
+    return `৳${(
+      Number(value) || 0
+    ).toLocaleString(
+      "en-BD"
+    )}`;
+
+  }
+
+
+  function formatDate(value) {
+
+    if (!value) {
+
+      return "Unknown date";
+
+    }
+
+
+    const date =
+      new Date(value);
+
+
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
+    ) {
+
+      return String(value);
+
+    }
+
+
+    return date.toLocaleString(
+      "en-BD",
+      {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      }
+    );
+
+  }
+
+
+  function escapeHtml(value) {
+
+    return String(
+      value ?? ""
+    )
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+      .replace(
+        /</g,
+        "&lt;"
+      )
+      .replace(
+        />/g,
+        "&gt;"
+      )
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+      .replace(
+        /'/g,
+        "&#039;"
+      );
+
+  }
+
+
+  function showToast(message) {
+
+    const toast =
+      document.getElementById(
+        "toast"
+      );
+
+
+    toast.textContent =
+      message;
+
+
+    toast.classList.add(
+      "show"
+    );
+
+
+    setTimeout(
+      function() {
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
+      2500
+    );
+
+  }
+
+
+  /* =========================================================
+     AUDIT LOG
+  ========================================================= */
+
+  function addAuditLog(
+    action,
+    module,
+    description
+  ) {
+
+    try {
+
+      const saved =
+        localStorage.getItem(
+          AUDIT_KEY
+        );
+
+
+      const logs =
+        saved
+          ? JSON.parse(saved)
+          : [];
+
+
+      logs.unshift({
+
+        id:
+          "LOG" +
+          Date.now(),
+
+        actor:
+          "Store Administrator",
+
+        action,
+
+        module,
+
+        description,
+
+        createdAt:
+          new Date().toISOString(),
+
+        ip:
+          "Local Demo"
+
+      });
+
+
+      localStorage.setItem(
+        AUDIT_KEY,
+        JSON.stringify(
+          logs
+        )
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+
+  }
+
+
+  /* =========================================================
+     INIT
+  ========================================================= */
+
+  loadOrders();
+
+  renderPage();
+
+</script>
+
+
+<style>
+
+  /* Print only order content */
+
+  @media print {
+
+    body {
+      background: #fff !important;
+      color: #000 !important;
+    }
+
+    .admin-sidebar,
+    .admin-topbar,
+    .order-actions,
+    .back-btn,
+    .modal-overlay,
+    .toast {
+      display: none !important;
+    }
+
+    .admin-main {
+      width: 100% !important;
+      margin: 0 !important;
+    }
+
+    .admin-content {
+      padding: 0 !important;
+      max-width: none !important;
+    }
+
+    .card {
+      background: #fff !important;
+      border: 1px solid #ddd !important;
+      color: #000 !important;
+      break-inside: avoid;
+    }
+
+    .card-header,
+    .card-body {
+      color: #000 !important;
+    }
+
+    .info-box,
+    .tracking-box,
+    .order-note {
+      background: #fff !important;
+      border-color: #ddd !important;
+      color: #000 !important;
+    }
+
+    .muted,
+    .info-label,
+    .product-meta,
+    .product-price span,
+    .summary-row span:first-child {
+      color: #555 !important;
+    }
+
+  }
+
+</style>
+
+</body>
+</html>

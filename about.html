@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About Us | Alamin Shop</title>
+
+    <meta
+        name="description"
+        content="Learn more about Alamin Shop, our mission, values and commitment to providing quality products and a better shopping experience."
+    >
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* =========================================
+           ABOUT PAGE
+        ========================================= */
+
+        .about-page {
+            padding: 70px 0 90px;
+        }
+
+        .about-hero {
+            min-height: 420px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            padding: 70px 20px;
+            margin-bottom: 60px;
+            border: 1px solid #252a33;
+            border-radius: 24px;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(255,255,255,.06), transparent 35%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,.04), transparent 35%),
+                #101217;
+            overflow: hidden;
+        }
+
+        .about-hero-content {
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .about-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border: 1px solid #303640;
+            border-radius: 999px;
+            color: #cbd5e1;
+            background: #171a20;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .about-hero h1 {
+            margin: 0 0 18px;
+            font-size: clamp(38px, 6vw, 68px);
+            line-height: 1.05;
+            letter-spacing: -2px;
+        }
+
+        .about-hero h1 span {
+            color: #ffffff;
+        }
+
+        .about-hero p {
+            max-width: 700px;
+            margin: auto;
+            color: #aeb6c2;
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        .about-section {
+            margin-bottom: 70px;
+        }
+
+        .about-section-header {
+            max-width: 720px;
+            margin-bottom: 35px;
+        }
+
+        .about-section-header .eyebrow {
+            display: block;
+            color: #9ca3af;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .about-section-header h2 {
+            margin: 0 0 12px;
+            font-size: clamp(28px, 4vw, 42px);
+        }
+
+        .about-section-header p {
+            margin: 0;
+            color: #9ca3af;
+            line-height: 1.8;
+        }
+
+        .about-story {
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 25px;
+        }
+
+        .about-story-card {
+            padding: 35px;
+            border: 1px solid #252a33;
+            border-radius: 20px;
+            background: #101217;
+        }
+
+        .about-story-card h3 {
+            margin: 0 0 15px;
+            font-size: 24px;
+        }
+
+        .about-story-card p {
+            color: #9ca3af;
+            line-height: 1.8;
+            margin: 0 0 15px;
+        }
+
+        .about-story-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .about-values {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .value-card {
+            padding: 30px 25px;
+            border: 1px solid #252a33;
+            border-radius: 18px;
+            background: #101217;
+            transition: transform .25s ease, border-color .25s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+            border-color: #414854;
+        }
+
+        .value-icon {
+            width: 52px;
+            height: 52px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            background: #1a1e25;
+            border: 1px solid #2c323c;
+            font-size: 23px;
+            margin-bottom: 20px;
+        }
+
+        .value-card h3 {
+            margin: 0 0 10px;
+            font-size: 20px;
+        }
+
+        .value-card p {
+            margin: 0;
+            color: #969faa;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .stat-card {
+            padding: 28px 20px;
+            text-align: center;
+            border: 1px solid #252a33;
+            border-radius: 18px;
+            background: #101217;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 7px;
+        }
+
+        .stat-label {
+            color: #8f98a5;
+            font-size: 14px;
+        }
+
+        .about-cta {
+            text-align: center;
+            padding: 55px 25px;
+            border: 1px solid #292f38;
+            border-radius: 22px;
+            background:
+                radial-gradient(circle at center, rgba(255,255,255,.06), transparent 60%),
+                #101217;
+        }
+
+        .about-cta h2 {
+            margin: 0 0 12px;
+            font-size: clamp(28px, 4vw, 42px);
+        }
+
+        .about-cta p {
+            max-width: 650px;
+            margin: 0 auto 25px;
+            color: #9ca3af;
+            line-height: 1.7;
+        }
+
+        .about-cta-actions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .about-outline-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 0 20px;
+            border: 1px solid #353b46;
+            border-radius: 10px;
+            color: #e5e7eb;
+            text-decoration: none;
+            background: #171a20;
+            transition: .25s ease;
+        }
+
+        .about-outline-btn:hover {
+            border-color: #596170;
+            background: #1d2129;
+        }
+
+        @media (max-width: 900px) {
+            .about-story {
+                grid-template-columns: 1fr;
+            }
+
+            .about-values {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .about-page {
+                padding: 40px 0 60px;
+            }
+
+            .about-hero {
+                min-height: auto;
+                padding: 55px 18px;
+                border-radius: 18px;
+                margin-bottom: 45px;
+            }
+
+            .about-hero h1 {
+                letter-spacing: -1px;
+            }
+
+            .about-hero p {
+                font-size: 15px;
+            }
+
+            .about-story-card {
+                padding: 25px;
+            }
+
+            .about-values {
+                grid-template-columns: 1fr;
+            }
+
+            .about-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .about-cta {
+                padding: 40px 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header class="site-header">
+        <div class="container">
+
+            <div class="header-main">
+
+                <a href="index.html" class="logo">
+                    Alamin<span>Shop</span>
+                </a>
+
+                <div class="header-search">
+                    <form id="globalSearchForm">
+                        <input
+                            type="search"
+                            id="globalSearchInput"
+                            placeholder="Search products..."
+                            autocomplete="off"
+                        >
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+
+                <div class="header-actions">
+
+                    <a href="wishlist.html" class="header-action">
+                        <span>♡</span>
+                        <small>Wishlist</small>
+                        <b id="headerWishlistCount">0</b>
+                    </a>
+
+                    <a href="cart.html" class="header-action">
+                        <span>🛒</span>
+                        <small>Cart</small>
+                        <b id="cartCount">0</b>
+                    </a>
+
+                    <a href="account.html" class="header-action">
+                        <span>👤</span>
+                        <small>Account</small>
+                    </a>
+
+                </div>
+
+            </div>
+
+            <nav class="main-nav">
+
+                <a href="index.html">Home</a>
+                <a href="products.html">Shop</a>
+                <a href="products.html?category=electronics">Electronics</a>
+                <a href="products.html?category=fashion">Fashion</a>
+                <a href="products.html?category=home">Home & Living</a>
+                <a href="products.html?category=beauty">Beauty</a>
+                <a href="about.html" class="active">About</a>
+                <a href="contact.html">Contact</a>
+
+            </nav>
+
+        </div>
+    </header>
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main class="about-page">
+
+        <div class="container">
+
+            <!-- HERO -->
+
+            <section class="about-hero">
+
+                <div class="about-hero-content">
+
+                    <div class="about-badge">
+                        ✦ Welcome to Alamin Shop
+                    </div>
+
+                    <h1>
+                        Shopping made
+                        <span>simple.</span>
+                    </h1>
+
+                    <p>
+                        Alamin Shop is an online shopping platform focused on
+                        making everyday shopping easier, faster and more
+                        enjoyable with quality products and a smooth customer
+                        experience.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- OUR STORY -->
+
+            <section class="about-section">
+
+                <div class="about-section-header">
+
+                    <span class="eyebrow">Our Story</span>
+
+                    <h2>
+                        Built for a better shopping experience
+                    </h2>
+
+                    <p>
+                        We believe online shopping should be simple. Customers
+                        should be able to discover products, compare prices,
+                        place orders and track their purchases without
+                        unnecessary complexity.
+                    </p>
+
+                </div>
+
+
+                <div class="about-story">
+
+                    <div class="about-story-card">
+
+                        <h3>Who We Are</h3>
+
+                        <p>
+                            Alamin Shop is a modern e-commerce platform created
+                            to connect customers with useful, quality products
+                            through an easy-to-use online store.
+                        </p>
+
+                        <p>
+                            From product discovery to checkout and order
+                            tracking, our goal is to make every step clear and
+                            convenient.
+                        </p>
+
+                    </div>
+
+
+                    <div class="about-story-card">
+
+                        <h3>Our Mission</h3>
+
+                        <p>
+                            Our mission is to provide a reliable shopping
+                            experience where customers can find products they
+                            need, understand what they are buying and receive
+                            helpful support when they need it.
+                        </p>
+
+                        <p>
+                            Customer satisfaction, transparency and simplicity
+                            are at the heart of our approach.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- VALUES -->
+
+            <section class="about-section">
+
+                <div class="about-section-header">
+
+                    <span class="eyebrow">What Matters To Us</span>
+
+                    <h2>Our core values</h2>
+
+                    <p>
+                        These principles guide how we build our store and serve
+                        our customers.
+                    </p>
+
+                </div>
+
+
+                <div class="about-values">
+
+                    <div class="value-card">
+
+                        <div class="value-icon">✓</div>
+
+                        <h3>Quality First</h3>
+
+                        <p>
+                            We aim to offer useful products with clear
+                            information so customers can shop with confidence.
+                        </p>
+
+                    </div>
+
+
+                    <div class="value-card">
+
+                        <div class="value-icon">⚡</div>
+
+                        <h3>Fast Experience</h3>
+
+                        <p>
+                            From browsing to checkout, we focus on keeping the
+                            shopping experience quick, simple and easy to use.
+                        </p>
+
+                    </div>
+
+
+                    <div class="value-card">
+
+                        <div class="value-icon">♡</div>
+
+                        <h3>Customer Focus</h3>
+
+                        <p>
+                            We care about customer satisfaction and aim to make
+                            support and communication straightforward.
+                        </p>
+
+                    </div>
+
+
+                    <div class="value-card">
+
+                        <div class="value-icon">🔒</div>
+
+                        <h3>Trust & Security</h3>
+
+                        <p>
+                            We take privacy, secure payments and responsible
+                            handling of customer information seriously.
+                        </p>
+
+                    </div>
+
+
+                    <div class="value-card">
+
+                        <div class="value-icon">📦</div>
+
+                        <h3>Reliable Delivery</h3>
+
+                        <p>
+                            We work toward a clear order and delivery process
+                            so customers know what is happening with their
+                            purchase.
+                        </p>
+
+                    </div>
+
+
+                    <div class="value-card">
+
+                        <div class="value-icon">💬</div>
+
+                        <h3>Helpful Support</h3>
+
+                        <p>
+                            When customers have questions, we want them to have
+                            an easy way to reach us and get assistance.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- STATS -->
+
+            <section class="about-section">
+
+                <div class="about-stats">
+
+                    <div class="stat-card">
+                        <span class="stat-number">100+</span>
+                        <span class="stat-label">Products</span>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Online Shopping</span>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Customer Focus</span>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-number">Fast</span>
+                        <span class="stat-label">Order Processing</span>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- CTA -->
+
+            <section class="about-cta">
+
+                <h2>
+                    Ready to explore?
+                </h2>
+
+                <p>
+                    Browse our products and find something that fits your
+                    needs. If you have any questions, our support team is
+                    always ready to help.
+                </p>
+
+                <div class="about-cta-actions">
+
+                    <a href="products.html" class="btn btn-primary">
+                        Shop Now
+                    </a>
+
+                    <a href="contact.html" class="about-outline-btn">
+                        Contact Us
+                    </a>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer class="site-footer">
+
+        <div class="container">
+
+            <div class="footer-grid">
+
+                <div class="footer-column">
+
+                    <a href="index.html" class="logo">
+                        Alamin<span>Shop</span>
+                    </a>
+
+                    <p>
+                        Simple, reliable and convenient online shopping.
+                    </p>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h4>Shop</h4>
+
+                    <a href="products.html">All Products</a>
+                    <a href="products.html?category=electronics">Electronics</a>
+                    <a href="products.html?category=fashion">Fashion</a>
+                    <a href="products.html?category=home">Home & Living</a>
+                    <a href="products.html?category=beauty">Beauty</a>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h4>Customer</h4>
+
+                    <a href="account.html">My Account</a>
+                    <a href="orders.html">My Orders</a>
+                    <a href="wishlist.html">Wishlist</a>
+                    <a href="shipping.html">Shipping</a>
+                    <a href="returns.html">Returns</a>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h4>Company</h4>
+
+                    <a href="about.html">About Us</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="faq.html">FAQ</a>
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms & Conditions</a>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <p>
+                    © 2026 Alamin Shop. All rights reserved.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- EXISTING JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+
+    <!-- ABOUT PAGE JAVASCRIPT -->
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            /*
+             * Keep header counts synchronized
+             * with the existing LocalStorage system.
+             */
+
+            if (typeof updateCartCount === "function") {
+                updateCartCount();
+            }
+
+
+            /*
+             * Wishlist count
+             */
+
+            const wishlistCount =
+                document.getElementById("headerWishlistCount");
+
+            if (wishlistCount) {
+
+                const wishlist =
+                    JSON.parse(
+                        localStorage.getItem("shopnest_wishlist") || "[]"
+                    );
+
+                wishlistCount.textContent = wishlist.length;
+
+            }
+
+
+            /*
+             * Global search
+             */
+
+            const searchForm =
+                document.getElementById("globalSearchForm");
+
+            const searchInput =
+                document.getElementById("globalSearchInput");
+
+
+            if (searchForm && searchInput) {
+
+                searchForm.addEventListener("submit", function (event) {
+
+                    event.preventDefault();
+
+                    const searchValue =
+                        searchInput.value.trim();
+
+                    if (!searchValue) {
+                        return;
+                    }
+
+                    window.location.href =
+                        "products.html?search=" +
+                        encodeURIComponent(searchValue);
+
+                });
+
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>

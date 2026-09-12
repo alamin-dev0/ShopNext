@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Privacy Policy | Alamin Shop</title>
+  <meta
+    name="description"
+    content="Read the Privacy Policy of Alamin Shop and learn how customer information is collected, used, stored and protected."
+  />
+
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    .policy-page {
+      padding: 70px 0 90px;
+    }
+
+    .policy-hero {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 55px;
+    }
+
+    .policy-hero h1 {
+      font-size: clamp(34px, 5vw, 58px);
+      margin-bottom: 16px;
+    }
+
+    .policy-hero p {
+      color: #a7adb7;
+      line-height: 1.8;
+      font-size: 16px;
+    }
+
+    .policy-updated {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+      padding: 9px 14px;
+      border: 1px solid #292e38;
+      border-radius: 999px;
+      color: #cbd0d8;
+      background: #111318;
+      font-size: 13px;
+    }
+
+    .policy-layout {
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr);
+      gap: 30px;
+      align-items: start;
+    }
+
+    .policy-sidebar {
+      position: sticky;
+      top: 100px;
+      background: #101216;
+      border: 1px solid #272b33;
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .policy-sidebar h3 {
+      font-size: 15px;
+      margin-bottom: 15px;
+    }
+
+    .policy-sidebar a {
+      display: block;
+      color: #9da4af;
+      text-decoration: none;
+      font-size: 14px;
+      padding: 9px 10px;
+      border-radius: 9px;
+      margin-bottom: 4px;
+      transition: 0.2s ease;
+    }
+
+    .policy-sidebar a:hover {
+      color: #fff;
+      background: #191d24;
+    }
+
+    .policy-content {
+      background: #101216;
+      border: 1px solid #272b33;
+      border-radius: 20px;
+      padding: 35px;
+    }
+
+    .policy-section {
+      scroll-margin-top: 100px;
+      padding-bottom: 35px;
+      margin-bottom: 35px;
+      border-bottom: 1px solid #242832;
+    }
+
+    .policy-section:last-child {
+      border-bottom: 0;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .policy-section h2 {
+      font-size: 25px;
+      margin-bottom: 15px;
+    }
+
+    .policy-section h3 {
+      font-size: 17px;
+      margin: 22px 0 10px;
+    }
+
+    .policy-section p {
+      color: #aeb4be;
+      line-height: 1.85;
+      margin-bottom: 12px;
+    }
+
+    .policy-section ul {
+      padding-left: 22px;
+      margin: 12px 0;
+    }
+
+    .policy-section li {
+      color: #aeb4be;
+      line-height: 1.8;
+      margin-bottom: 7px;
+    }
+
+    .policy-highlight {
+      background: #151920;
+      border: 1px solid #2a303a;
+      border-radius: 14px;
+      padding: 18px;
+      margin: 18px 0;
+    }
+
+    .policy-highlight strong {
+      color: #fff;
+    }
+
+    .policy-contact {
+      margin-top: 25px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .policy-contact a {
+      text-decoration: none;
+    }
+
+    @media (max-width: 850px) {
+      .policy-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .policy-sidebar {
+        position: static;
+      }
+
+      .policy-content {
+        padding: 25px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .policy-page {
+        padding: 45px 0 65px;
+      }
+
+      .policy-content {
+        padding: 20px;
+        border-radius: 16px;
+      }
+
+      .policy-section h2 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= HEADER ================= -->
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <a href="index.html" class="logo">
+        <span class="logo-mark">A</span>
+        <span>Alamin Shop</span>
+      </a>
+
+      <div class="header-search">
+        <form id="privacySearchForm">
+          <input
+            type="search"
+            id="privacySearchInput"
+            placeholder="Search products..."
+            autocomplete="off"
+          />
+          <button type="submit">Search</button>
+        </form>
+      </div>
+
+      <div class="header-actions">
+
+        <a href="wishlist.html" class="header-action">
+          <span>♡</span>
+          <small>Wishlist</small>
+          <b id="wishlistCount">0</b>
+        </a>
+
+        <a href="cart.html" class="header-action">
+          <span>🛒</span>
+          <small>Cart</small>
+          <b id="cartCount">0</b>
+        </a>
+
+        <a href="account.html" class="header-action">
+          <span>👤</span>
+          <small>Account</small>
+        </a>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= NAVIGATION ================= -->
+  <nav class="main-nav">
+    <div class="container nav-inner">
+
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="products.html?category=electronics">Electronics</a>
+      <a href="products.html?category=fashion">Fashion</a>
+      <a href="products.html?category=home">Home & Living</a>
+      <a href="products.html?category=beauty">Beauty</a>
+      <a href="products.html?category=offers">Offers</a>
+
+    </div>
+  </nav>
+
+  <!-- ================= MAIN ================= -->
+  <main class="policy-page">
+
+    <div class="container">
+
+      <div class="policy-hero">
+
+        <h1>Privacy Policy</h1>
+
+        <p>
+          Your privacy matters to us. This policy explains what information
+          Alamin Shop may collect, how we use it, and how we work to protect
+          your information when you use our website and services.
+        </p>
+
+        <div class="policy-updated">
+          🛡️ Last updated: September 2026
+        </div>
+
+      </div>
+
+
+      <div class="policy-layout">
+
+        <!-- ================= SIDEBAR ================= -->
+        <aside class="policy-sidebar">
+
+          <h3>On this page</h3>
+
+          <a href="#information">Information We Collect</a>
+          <a href="#use">How We Use Information</a>
+          <a href="#orders">Orders & Payments</a>
+          <a href="#cookies">Cookies</a>
+          <a href="#sharing">Information Sharing</a>
+          <a href="#security">Data Security</a>
+          <a href="#rights">Your Rights</a>
+          <a href="#children">Children's Privacy</a>
+          <a href="#changes">Policy Changes</a>
+          <a href="#contact">Contact Us</a>
+
+        </aside>
+
+
+        <!-- ================= CONTENT ================= -->
+        <article class="policy-content">
+
+          <!-- Information -->
+          <section class="policy-section" id="information">
+
+            <h2>1. Information We Collect</h2>
+
+            <p>
+              When you use Alamin Shop, we may collect information that is
+              necessary to provide our shopping and customer support services.
+            </p>
+
+            <h3>Account Information</h3>
+
+            <ul>
+              <li>Full name</li>
+              <li>Email address</li>
+              <li>Phone number</li>
+              <li>Account login information</li>
+            </ul>
+
+            <h3>Order Information</h3>
+
+            <ul>
+              <li>Products you order</li>
+              <li>Delivery address</li>
+              <li>Billing information</li>
+              <li>Order notes</li>
+              <li>Order and delivery details</li>
+            </ul>
+
+            <h3>Communication Information</h3>
+
+            <p>
+              If you contact us through our contact form, email, phone,
+              SMS or another supported communication method, we may keep
+              the information necessary to respond to your request.
+            </p>
+
+          </section>
+
+
+          <!-- Use -->
+          <section class="policy-section" id="use">
+
+            <h2>2. How We Use Your Information</h2>
+
+            <p>
+              We use collected information only for legitimate business and
+              service purposes, including:
+            </p>
+
+            <ul>
+              <li>Creating and managing customer accounts</li>
+              <li>Processing orders</li>
+              <li>Delivering products</li>
+              <li>Providing order updates</li>
+              <li>Responding to customer support requests</li>
+              <li>Managing returns and refunds</li>
+              <li>Improving our website and services</li>
+              <li>Preventing fraud and unauthorized activity</li>
+            </ul>
+
+            <div class="policy-highlight">
+              <strong>We do not need your information for unrelated purposes.</strong>
+              Our goal is to collect and use only information that is
+              reasonably necessary to operate the store.
+            </div>
+
+          </section>
+
+
+          <!-- Orders -->
+          <section class="policy-section" id="orders">
+
+            <h2>3. Orders & Payments</h2>
+
+            <p>
+              When you place an order, information such as your name, phone
+              number, address, ordered products and payment method may be
+              required to complete the order.
+            </p>
+
+            <h3>Payment Information</h3>
+
+            <p>
+              Depending on the payment method selected, payment processing
+              may be handled by a third-party payment provider.
+            </p>
+
+            <p>
+              Alamin Shop should not directly store sensitive payment
+              credentials such as card PINs, CVVs or online banking passwords.
+              Such information should be handled by the appropriate payment
+              provider.
+            </p>
+
+          </section>
+
+
+          <!-- Cookies -->
+          <section class="policy-section" id="cookies">
+
+            <h2>4. Cookies & Local Storage</h2>
+
+            <p>
+              Our website may use cookies, browser storage or similar
+              technologies to provide useful shopping features.
+            </p>
+
+            <p>
+              These technologies may be used for things such as remembering
+              cart items, wishlist items, login state, preferences and other
+              website functionality.
+            </p>
+
+            <div class="policy-highlight">
+              <strong>Important:</strong>
+              During the current demo/frontend phase, some shopping data may
+              be stored in the browser using LocalStorage. In the final
+              production version, sensitive account information should be
+              handled securely by the server and database.
+            </div>
+
+          </section>
+
+
+          <!-- Sharing -->
+          <section class="policy-section" id="sharing">
+
+            <h2>5. Information Sharing</h2>
+
+            <p>
+              We may share necessary information with trusted service
+              providers when required to operate the store.
+            </p>
+
+            <p>Examples may include:</p>
+
+            <ul>
+              <li>Payment providers</li>
+              <li>Courier and delivery companies</li>
+              <li>Email service providers</li>
+              <li>SMS notification providers</li>
+              <li>Hosting and infrastructure providers</li>
+            </ul>
+
+            <p>
+              Only information reasonably necessary for the relevant service
+              should be shared.
+            </p>
+
+          </section>
+
+
+          <!-- Security -->
+          <section class="policy-section" id="security">
+
+            <h2>6. Data Security</h2>
+
+            <p>
+              We take reasonable technical and organizational measures to
+              protect customer information from unauthorized access, misuse,
+              alteration or disclosure.
+            </p>
+
+            <p>
+              In the production version of Alamin Shop, security measures
+              should include secure passwords, server-side authentication,
+              HTTPS, secure sessions, database access controls and appropriate
+              protection against common web attacks.
+            </p>
+
+            <div class="policy-highlight">
+              <strong>Security note:</strong>
+              Never share your account password, OTP, card PIN or other
+              sensitive authentication information with anyone.
+            </div>
+
+          </section>
+
+
+          <!-- Rights -->
+          <section class="policy-section" id="rights">
+
+            <h2>7. Your Rights</h2>
+
+            <p>
+              Depending on applicable laws and circumstances, customers may
+              have rights regarding their personal information.
+            </p>
+
+            <ul>
+              <li>Request access to certain personal information</li>
+              <li>Request correction of inaccurate information</li>
+              <li>Request deletion where applicable</li>
+              <li>Ask questions about how information is used</li>
+              <li>Contact us regarding privacy concerns</li>
+            </ul>
+
+            <p>
+              Some information may need to be retained when required for
+              legal, accounting, fraud-prevention or legitimate business
+              purposes.
+            </p>
+
+          </section>
+
+
+          <!-- Children -->
+          <section class="policy-section" id="children">
+
+            <h2>8. Children's Privacy</h2>
+
+            <p>
+              Our services are intended for users who are legally able to
+              make purchases and enter into applicable agreements.
+            </p>
+
+            <p>
+              We do not intentionally request unnecessary personal
+              information from children.
+            </p>
+
+          </section>
+
+
+          <!-- Changes -->
+          <section class="policy-section" id="changes">
+
+            <h2>9. Changes to This Policy</h2>
+
+            <p>
+              We may update this Privacy Policy when our services, technology,
+              business practices or legal requirements change.
+            </p>
+
+            <p>
+              When changes are made, the updated version will be published on
+              this page along with the latest update date.
+            </p>
+
+          </section>
+
+
+          <!-- Contact -->
+          <section class="policy-section" id="contact">
+
+            <h2>10. Contact Us</h2>
+
+            <p>
+              If you have any questions about this Privacy Policy or how your
+              information is handled, you can contact our support team.
+            </p>
+
+            <div class="policy-contact">
+
+              <a href="contact.html" class="btn btn-primary">
+                Contact Support
+              </a>
+
+              <a href="faq.html" class="btn btn-secondary">
+                Read FAQ
+              </a>
+
+            </div>
+
+          </section>
+
+        </article>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="site-footer">
+
+    <div class="container footer-grid">
+
+      <div class="footer-brand">
+
+        <a href="index.html" class="logo">
+          <span class="logo-mark">A</span>
+          <span>Alamin Shop</span>
+        </a>
+
+        <p>
+          A modern online shopping experience built for simple,
+          secure and convenient shopping.
+        </p>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h4>Shop</h4>
+
+        <a href="products.html">All Products</a>
+        <a href="products.html?category=electronics">Electronics</a>
+        <a href="products.html?category=fashion">Fashion</a>
+        <a href="products.html?category=home">Home & Living</a>
+        <a href="products.html?category=beauty">Beauty</a>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h4>Customer Care</h4>
+
+        <a href="contact.html">Contact Us</a>
+        <a href="faq.html">FAQ</a>
+        <a href="shipping.html">Shipping</a>
+        <a href="returns.html">Returns</a>
+        <a href="orders.html">Track Order</a>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h4>Legal</h4>
+
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms & Conditions</a>
+
+      </div>
+
+    </div>
+
+
+    <div class="container footer-bottom">
+
+      <p>
+        © 2026 Alamin Shop. All rights reserved.
+      </p>
+
+    </div>
+
+  </footer>
+
+
+  <!-- ================= SCRIPT ================= -->
+  <script src="script.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+      // Update cart count
+      if (typeof updateCartCount === "function") {
+        updateCartCount();
+      }
+
+      // Wishlist count
+      const wishlistCount = document.getElementById("wishlistCount");
+
+      try {
+        const wishlist =
+          JSON.parse(localStorage.getItem("shopnest_wishlist")) || [];
+
+        if (wishlistCount) {
+          wishlistCount.textContent = wishlist.length;
+        }
+      } catch (error) {
+        if (wishlistCount) {
+          wishlistCount.textContent = "0";
+        }
+      }
+
+
+      // Search
+      const searchForm =
+        document.getElementById("privacySearchForm");
+
+      const searchInput =
+        document.getElementById("privacySearchInput");
+
+      if (searchForm && searchInput) {
+
+        searchForm.addEventListener("submit", function (event) {
+
+          event.preventDefault();
+
+          const query = searchInput.value.trim();
+
+          if (!query) {
+            window.location.href = "products.html";
+            return;
+          }
+
+          window.location.href =
+            "products.html?search=" +
+            encodeURIComponent(query);
+
+        });
+
+      }
+
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,6154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Orders - Alamin Shop Admin</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+
+            --bg: #08090b;
+            --sidebar: #0d0f12;
+            --card: #111318;
+            --card2: #15181e;
+
+            --border: #242830;
+
+            --text: #f5f7fa;
+            --muted: #8b93a1;
+
+            --primary: #7c5cff;
+
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+
+        }
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: var(--bg);
+
+            color: var(--text);
+
+            min-height: 100vh;
+
+        }
+
+        button,
+        input,
+        select {
+
+            font: inherit;
+
+        }
+
+        button {
+
+            cursor: pointer;
+
+        }
+
+        a {
+
+            text-decoration: none;
+
+            color: inherit;
+
+        }
+
+        /* =================================
+           LAYOUT
+        ================================= */
+
+        .admin-layout {
+
+            min-height: 100vh;
+
+            display: flex;
+
+        }
+
+
+        /* =================================
+           SIDEBAR
+        ================================= */
+
+        .sidebar {
+
+            width: 250px;
+
+            min-height: 100vh;
+
+            background: var(--sidebar);
+
+            border-right:
+                1px solid
+                var(--border);
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            padding: 22px 14px;
+
+            z-index: 100;
+
+            overflow-y: auto;
+
+            transition: .25s;
+
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            padding:
+                4px 10px 28px;
+
+        }
+
+
+        .brand-logo {
+
+            width: 40px;
+            height: 40px;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c5cff,
+                    #4f46e5
+                );
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+
+            font-weight: 800;
+
+        }
+
+
+        .brand-text h2 {
+
+            font-size: 17px;
+
+        }
+
+
+        .brand-text span {
+
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            margin-top: 2px;
+
+        }
+
+
+        .menu-title {
+
+            color: #596170;
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.5px;
+
+            padding: 12px;
+
+        }
+
+
+        .nav-menu {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 4px;
+
+        }
+
+
+        .nav-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding:
+                11px 12px;
+
+            border-radius: 10px;
+
+            color: #aeb5c1;
+
+            font-size: 13px;
+
+            transition: .2s;
+
+        }
+
+
+        .nav-item:hover {
+
+            background: #171a20;
+
+            color: white;
+
+        }
+
+
+        .nav-item.active {
+
+            background:
+                rgba(
+                    124,
+                    92,
+                    255,
+                    .14
+                );
+
+            color: #b8a9ff;
+
+            border:
+                1px solid
+                rgba(
+                    124,
+                    92,
+                    255,
+                    .18
+                );
+
+        }
+
+
+        .nav-icon {
+
+            width: 22px;
+
+            text-align: center;
+
+            font-size: 15px;
+
+        }
+
+
+        .sidebar-bottom {
+
+            margin-top: 25px;
+
+            border-top:
+                1px solid
+                var(--border);
+
+            padding-top: 15px;
+
+        }
+
+
+        /* =================================
+           MAIN
+        ================================= */
+
+        .main {
+
+            width:
+                calc(
+                    100% - 250px
+                );
+
+            margin-left: 250px;
+
+            min-height: 100vh;
+
+        }
+
+
+        /* =================================
+           TOPBAR
+        ================================= */
+
+        .topbar {
+
+            height: 70px;
+
+            background:
+                rgba(
+                    8,
+                    9,
+                    11,
+                    .94
+                );
+
+            backdrop-filter:
+                blur(12px);
+
+            border-bottom:
+                1px solid
+                var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding:
+                0 28px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 50;
+
+        }
+
+
+        .topbar-left {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .page-title {
+
+            font-size: 19px;
+
+            font-weight: 700;
+
+        }
+
+
+        .breadcrumb {
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            margin-top: 3px;
+
+        }
+
+
+        .topbar-right {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .icon-btn {
+
+            width: 38px;
+            height: 38px;
+
+            border-radius: 10px;
+
+            background: var(--card);
+
+            border:
+                1px solid
+                var(--border);
+
+            color: #cbd1db;
+
+        }
+
+
+        .icon-btn:hover {
+
+            background: #171a20;
+
+            color: white;
+
+        }
+
+
+        .admin-profile {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+        }
+
+
+        .admin-avatar {
+
+            width: 36px;
+            height: 36px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c5cff,
+                    #22c55e
+                );
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 700;
+
+        }
+
+
+        .admin-info strong {
+
+            display: block;
+
+            font-size: 12px;
+
+        }
+
+
+        .admin-info span {
+
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            margin-top: 2px;
+
+        }
+
+
+        .mobile-menu-btn {
+
+            display: none;
+
+            width: 38px;
+            height: 38px;
+
+            background: var(--card);
+
+            color: white;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 9px;
+
+        }
+
+
+        /* =================================
+           CONTENT
+        ================================= */
+
+        .content {
+
+            padding: 28px;
+
+        }
+
+
+        .page-heading {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-end;
+
+            gap: 15px;
+
+            margin-bottom: 22px;
+
+        }
+
+
+        .page-heading h1 {
+
+            font-size: 27px;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .page-heading p {
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+        }
+
+
+        /* =================================
+           SUMMARY
+        ================================= */
+
+        .summary-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .summary-card {
+
+            background: var(--card);
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 13px;
+
+            padding: 16px;
+
+        }
+
+
+        .summary-label {
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            margin-bottom: 9px;
+
+        }
+
+
+        .summary-number {
+
+            font-size: 23px;
+
+            font-weight: 700;
+
+        }
+
+
+        /* =================================
+           TOOLBAR
+        ================================= */
+
+        .toolbar {
+
+            background: var(--card);
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 14px;
+
+            padding: 14px;
+
+            margin-bottom: 15px;
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .search-box {
+
+            flex: 1;
+
+            min-width: 220px;
+
+            position: relative;
+
+        }
+
+
+        .search-box input {
+
+            width: 100%;
+
+            height: 42px;
+
+            background: #0b0d10;
+
+            color: white;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 9px;
+
+            padding:
+                0 13px 0 39px;
+
+            outline: none;
+
+            font-size: 12px;
+
+        }
+
+
+        .search-box input:focus {
+
+            border-color:
+                rgba(
+                    124,
+                    92,
+                    255,
+                    .6
+                );
+
+        }
+
+
+        .search-icon {
+
+            position: absolute;
+
+            left: 14px;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+        }
+
+
+        .filter-select {
+
+            height: 42px;
+
+            min-width: 145px;
+
+            background: #0b0d10;
+
+            color: #cbd1db;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 9px;
+
+            padding: 0 11px;
+
+            outline: none;
+
+            font-size: 11px;
+
+        }
+
+
+        .filter-select:focus {
+
+            border-color:
+                rgba(
+                    124,
+                    92,
+                    255,
+                    .6
+                );
+
+        }
+
+
+        .clear-btn {
+
+            height: 42px;
+
+            padding:
+                0 14px;
+
+            background: #171a20;
+
+            color: #cbd1db;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 9px;
+
+            font-size: 11px;
+
+        }
+
+
+        .clear-btn:hover {
+
+            color: white;
+
+            background: #20242b;
+
+        }
+
+
+        /* =================================
+           TABLE CARD
+        ================================= */
+
+        .table-card {
+
+            background: var(--card);
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 14px;
+
+            overflow: hidden;
+
+        }
+
+
+        .table-top {
+
+            padding:
+                15px 17px;
+
+            border-bottom:
+                1px solid
+                var(--border);
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+        }
+
+
+        .table-top h2 {
+
+            font-size: 13px;
+
+        }
+
+
+        .result-count {
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+        }
+
+
+        .table-wrap {
+
+            width: 100%;
+
+            overflow-x: auto;
+
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse:
+                collapse;
+
+            min-width: 900px;
+
+        }
+
+
+        th {
+
+            text-align: left;
+
+            padding:
+                13px 15px;
+
+            color: #69717e;
+
+            background: #0e1014;
+
+            border-bottom:
+                1px solid
+                var(--border);
+
+            font-size: 9px;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing: .7px;
+
+            white-space: nowrap;
+
+        }
+
+
+        td {
+
+            padding:
+                13px 15px;
+
+            border-bottom:
+                1px solid
+                #1c1f25;
+
+            font-size: 11px;
+
+            vertical-align: middle;
+
+        }
+
+
+        tbody tr {
+
+            transition: .2s;
+
+        }
+
+
+        tbody tr:hover {
+
+            background: #15181d;
+
+        }
+
+
+        tbody tr:last-child td {
+
+            border-bottom: none;
+
+        }
+
+
+        .order-id {
+
+            color: #b8a9ff;
+
+            font-weight: 700;
+
+            font-size: 11px;
+
+        }
+
+
+        .customer {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+        }
+
+
+        .customer-avatar {
+
+            width: 33px;
+            height: 33px;
+
+            border-radius: 9px;
+
+            background: #1d2027;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: #b8a9ff;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .customer-name {
+
+            font-weight: 600;
+
+            margin-bottom: 3px;
+
+        }
+
+
+        .customer-phone {
+
+            color: var(--muted);
+
+            font-size: 9px;
+
+        }
+
+
+        .items-count {
+
+            color: #aeb5c1;
+
+        }
+
+
+        .total {
+
+            font-weight: 700;
+
+        }
+
+
+        .payment {
+
+            color: #aeb5c1;
+
+            font-size: 10px;
+
+        }
+
+
+        .date {
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            line-height: 1.5;
+
+        }
+
+
+        /* =================================
+           STATUS
+        ================================= */
+
+        .status-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            padding:
+                5px 8px;
+
+            border-radius: 20px;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+
+        }
+
+
+        .status-dot {
+
+            width: 5px;
+            height: 5px;
+
+            border-radius: 50%;
+
+            background: currentColor;
+
+        }
+
+
+        .status-new {
+
+            color: #b8a9ff;
+
+            background:
+                rgba(
+                    124,
+                    92,
+                    255,
+                    .12
+                );
+
+        }
+
+
+        .status-confirmed {
+
+            color: #c4b5fd;
+
+            background:
+                rgba(
+                    139,
+                    92,
+                    246,
+                    .12
+                );
+
+        }
+
+
+        .status-processing {
+
+            color: #60a5fa;
+
+            background:
+                rgba(
+                    59,
+                    130,
+                    246,
+                    .12
+                );
+
+        }
+
+
+        .status-packed {
+
+            color: #38bdf8;
+
+            background:
+                rgba(
+                    14,
+                    165,
+                    233,
+                    .12
+                );
+
+        }
+
+
+        .status-shipped {
+
+            color: #fbbf24;
+
+            background:
+                rgba(
+                    245,
+                    158,
+                    11,
+                    .12
+                );
+
+        }
+
+
+        .status-delivered {
+
+            color: #4ade80;
+
+            background:
+                rgba(
+                    34,
+                    197,
+                    94,
+                    .12
+                );
+
+        }
+
+
+        .status-cancelled {
+
+            color: #f87171;
+
+            background:
+                rgba(
+                    239,
+                    68,
+                    68,
+                    .12
+                );
+
+        }
+
+
+        .status-returned {
+
+            color: #fb923c;
+
+            background:
+                rgba(
+                    249,
+                    115,
+                    22,
+                    .12
+                );
+
+        }
+
+
+        .status-refunded {
+
+            color: #94a3b8;
+
+            background:
+                rgba(
+                    148,
+                    163,
+                    184,
+                    .12
+                );
+
+        }
+
+
+        /* =================================
+           ACTIONS
+        ================================= */
+
+        .actions {
+
+            display: flex;
+
+            gap: 6px;
+
+        }
+
+
+        .action-btn {
+
+            width: 31px;
+            height: 31px;
+
+            border-radius: 8px;
+
+            background: #181b21;
+
+            border:
+                1px solid
+                #292e37;
+
+            color: #aeb5c1;
+
+            font-size: 11px;
+
+        }
+
+
+        .action-btn:hover {
+
+            color: white;
+
+            background: #22262d;
+
+        }
+
+
+        .action-btn.primary:hover {
+
+            color: #b8a9ff;
+
+        }
+
+
+        /* =================================
+           EMPTY
+        ================================= */
+
+        .empty {
+
+            padding: 60px 20px;
+
+            text-align: center;
+
+            color: var(--muted);
+
+        }
+
+
+        .empty-icon {
+
+            width: 55px;
+            height: 55px;
+
+            margin:
+                0 auto 14px;
+
+            border-radius: 15px;
+
+            background: #181b21;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+
+        }
+
+
+        .empty strong {
+
+            display: block;
+
+            color: white;
+
+            font-size: 14px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .empty p {
+
+            font-size: 10px;
+
+        }
+
+
+        /* =================================
+           PAGINATION
+        ================================= */
+
+        .pagination {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding:
+                13px 17px;
+
+            border-top:
+                1px solid
+                var(--border);
+
+        }
+
+
+        .pagination-info {
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+        }
+
+
+        .pagination-buttons {
+
+            display: flex;
+
+            gap: 5px;
+
+        }
+
+
+        .page-btn {
+
+            width: 31px;
+            height: 31px;
+
+            background: #181b21;
+
+            color: #aeb5c1;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 7px;
+
+            font-size: 10px;
+
+        }
+
+
+        .page-btn.active {
+
+            background:
+                rgba(
+                    124,
+                    92,
+                    255,
+                    .18
+                );
+
+            color: #b8a9ff;
+
+            border-color:
+                rgba(
+                    124,
+                    92,
+                    255,
+                    .35
+                );
+
+        }
+
+
+        .page-btn:disabled {
+
+            opacity: .35;
+
+            cursor: not-allowed;
+
+        }
+
+
+        /* =================================
+           MODAL
+        ================================= */
+
+        .modal {
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .72
+                );
+
+            backdrop-filter:
+                blur(7px);
+
+            z-index: 500;
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+        }
+
+
+        .modal.show {
+
+            display: flex;
+
+        }
+
+
+        .modal-box {
+
+            width: 100%;
+
+            max-width: 900px;
+
+            max-height: 92vh;
+
+            overflow-y: auto;
+
+            background: #101216;
+
+            border:
+                1px solid
+                #2a2e37;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 30px 100px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    .55
+                );
+
+        }
+
+
+        .modal-header {
+
+            padding:
+                17px 20px;
+
+            border-bottom:
+                1px solid
+                var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+        }
+
+
+        .modal-header h2 {
+
+            font-size: 15px;
+
+        }
+
+
+        .modal-header p {
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            margin-top: 4px;
+
+        }
+
+
+        .close-modal {
+
+            width: 34px;
+            height: 34px;
+
+            border-radius: 9px;
+
+            background: #181b21;
+
+            color: #adb4bf;
+
+            border:
+                1px solid
+                var(--border);
+
+            font-size: 16px;
+
+        }
+
+
+        .modal-body {
+
+            padding: 20px;
+
+        }
+
+
+        /* =================================
+           ORDER DETAIL TOP
+        ================================= */
+
+        .order-detail-top {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                1fr
+                1fr;
+
+            gap: 12px;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .detail-box {
+
+            background: #0c0e12;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 11px;
+
+            padding: 13px;
+
+        }
+
+
+        .detail-label {
+
+            color: #69717e;
+
+            font-size: 9px;
+
+            text-transform:
+                uppercase;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .detail-value {
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+        }
+
+
+        .detail-small {
+
+            color: var(--muted);
+
+            font-size: 9px;
+
+            margin-top: 4px;
+
+        }
+
+
+        /* =================================
+           STATUS FLOW
+        ================================= */
+
+        .status-flow {
+
+            display: flex;
+
+            align-items: center;
+
+            overflow-x: auto;
+
+            padding:
+                4px 0 20px;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .flow-step {
+
+            min-width: 95px;
+
+            text-align: center;
+
+            position: relative;
+
+        }
+
+
+        .flow-step:not(:last-child)::after {
+
+            content: "";
+
+            position: absolute;
+
+            height: 2px;
+
+            width: 100%;
+
+            background: #292e37;
+
+            top: 13px;
+
+            left: 50%;
+
+            z-index: 0;
+
+        }
+
+
+        .flow-circle {
+
+            width: 27px;
+            height: 27px;
+
+            margin:
+                0 auto 7px;
+
+            border-radius: 50%;
+
+            background: #1a1d23;
+
+            border:
+                1px solid
+                #30353e;
+
+            color: #69717e;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 9px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        .flow-step.active
+        .flow-circle {
+
+            background:
+                rgba(
+                    124,
+                    92,
+                    255,
+                    .2
+                );
+
+            color: #b8a9ff;
+
+            border-color:
+                rgba(
+                    124,
+                    92,
+                    255,
+                    .5
+                );
+
+        }
+
+
+        .flow-step.done
+        .flow-circle {
+
+            background:
+                rgba(
+                    34,
+                    197,
+                    94,
+                    .18
+                );
+
+            color: #4ade80;
+
+            border-color:
+                rgba(
+                    34,
+                    197,
+                    94,
+                    .4
+                );
+
+        }
+
+
+        .flow-step span {
+
+            color: #69717e;
+
+            font-size: 8px;
+
+            white-space: nowrap;
+
+        }
+
+
+        .flow-step.active span,
+        .flow-step.done span {
+
+            color: #cbd1db;
+
+        }
+
+
+        /* =================================
+           MODAL SECTION
+        ================================= */
+
+        .detail-section {
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .section-title {
+
+            font-size: 12px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .items-table {
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+        }
+
+
+        .item-row {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                80px
+                80px
+                90px;
+
+            gap: 10px;
+
+            align-items: center;
+
+            padding:
+                11px 13px;
+
+            border-bottom:
+                1px solid
+                #1c1f25;
+
+        }
+
+
+        .item-row:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+        .item-product {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+        }
+
+
+        .item-image {
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 8px;
+
+            object-fit: cover;
+
+            background: #181b21;
+
+        }
+
+
+        .item-name {
+
+            font-size: 10px;
+
+            font-weight: 600;
+
+        }
+
+
+        .item-meta {
+
+            color: var(--muted);
+
+            font-size: 8px;
+
+            margin-top: 3px;
+
+        }
+
+
+        .item-price,
+        .item-qty,
+        .item-total {
+
+            font-size: 10px;
+
+        }
+
+
+        .item-total {
+
+            text-align: right;
+
+            font-weight: 700;
+
+        }
+
+
+        /* =================================
+           CUSTOMER INFO
+        ================================= */
+
+        .info-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            gap: 12px;
+
+        }
+
+
+        .info-card {
+
+            background: #0c0e12;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 10px;
+
+            padding: 13px;
+
+        }
+
+
+        .info-card h3 {
+
+            font-size: 10px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .info-line {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .info-line:last-child {
+
+            margin-bottom: 0;
+
+        }
+
+
+        .info-line span:first-child {
+
+            color: var(--muted);
+
+            font-size: 9px;
+
+        }
+
+
+        .info-line span:last-child {
+
+            font-size: 9px;
+
+            text-align: right;
+
+        }
+
+
+        /* =================================
+           ORDER SUMMARY
+        ================================= */
+
+        .summary-box {
+
+            max-width: 350px;
+
+            margin-left: auto;
+
+            background: #0c0e12;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 10px;
+
+            padding: 14px;
+
+        }
+
+
+        .summary-line {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 9px;
+
+            font-size: 10px;
+
+        }
+
+
+        .summary-line span:first-child {
+
+            color: var(--muted);
+
+        }
+
+
+        .summary-total {
+
+            border-top:
+                1px solid
+                var(--border);
+
+            padding-top: 11px;
+
+            margin-top: 11px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+        }
+
+
+        /* =================================
+           MODAL ACTIONS
+        ================================= */
+
+        .modal-actions {
+
+            display: flex;
+
+            gap: 8px;
+
+            flex-wrap: wrap;
+
+            margin-top: 18px;
+
+            padding-top: 16px;
+
+            border-top:
+                1px solid
+                var(--border);
+
+        }
+
+
+        .btn {
+
+            border: none;
+
+            border-radius: 9px;
+
+            padding:
+                10px 13px;
+
+            font-size: 10px;
+
+            font-weight: 600;
+
+        }
+
+
+        .btn-primary {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c5cff,
+                    #6246e8
+                );
+
+            color: white;
+
+        }
+
+
+        .btn-secondary {
+
+            background: #1a1d23;
+
+            color: #cbd1db;
+
+            border:
+                1px solid
+                var(--border);
+
+        }
+
+
+        .btn-danger {
+
+            background:
+                rgba(
+                    239,
+                    68,
+                    68,
+                    .12
+                );
+
+            color: #f87171;
+
+            border:
+                1px solid
+                rgba(
+                    239,
+                    68,
+                    68,
+                    .2
+                );
+
+        }
+
+
+        .btn:hover {
+
+            transform: translateY(-1px);
+
+        }
+
+
+        /* =================================
+           RESPONSIVE
+        ================================= */
+
+        @media (max-width: 1100px) {
+
+            .summary-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 850px) {
+
+            .sidebar {
+
+                transform:
+                    translateX(-100%);
+
+            }
+
+
+            .sidebar.open {
+
+                transform:
+                    translateX(0);
+
+            }
+
+
+            .main {
+
+                width: 100%;
+
+                margin-left: 0;
+
+            }
+
+
+            .mobile-menu-btn {
+
+                display: block;
+
+            }
+
+
+            .topbar {
+
+                padding:
+                    0 16px;
+
+            }
+
+
+            .content {
+
+                padding: 18px;
+
+            }
+
+
+            .admin-info {
+
+                display: none;
+
+            }
+
+
+            .order-detail-top {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .summary-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .page-heading {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+
+            }
+
+
+            .toolbar {
+
+                flex-direction: column;
+
+            }
+
+
+            .search-box {
+
+                min-width: 100%;
+
+            }
+
+
+            .filter-select,
+            .clear-btn {
+
+                width: 100%;
+
+            }
+
+
+            .order-detail-top {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .info-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .modal-body {
+
+                padding: 14px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="admin-layout">
+
+
+    <!-- =====================================
+         SIDEBAR
+    ====================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                A
+            </div>
+
+            <div class="brand-text">
+
+                <h2>
+                    Alamin Shop
+                </h2>
+
+                <span>
+                    Admin Panel
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            Main
+        </div>
+
+
+        <nav class="nav-menu">
+
+            <a
+                href="index.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ▦
+                </span>
+
+                Dashboard
+            </a>
+
+
+            <a
+                href="products.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ▣
+                </span>
+
+                Products
+            </a>
+
+
+            <a
+                href="orders.html"
+                class="nav-item active"
+            >
+                <span class="nav-icon">
+                    ⌑
+                </span>
+
+                Orders
+            </a>
+
+
+            <a
+                href="customers.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ♙
+                </span>
+
+                Customers
+            </a>
+
+
+            <a
+                href="categories.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ▤
+                </span>
+
+                Categories
+            </a>
+
+
+            <a
+                href="coupons.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    %
+                </span>
+
+                Coupons
+            </a>
+
+        </nav>
+
+
+        <div class="menu-title">
+            Management
+        </div>
+
+
+        <nav class="nav-menu">
+
+            <a
+                href="inventory.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ◫
+                </span>
+
+                Inventory
+            </a>
+
+
+            <a
+                href="reports.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ◒
+                </span>
+
+                Reports
+            </a>
+
+
+            <a
+                href="messages.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ✉
+                </span>
+
+                Messages
+            </a>
+
+
+            <a
+                href="settings.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ⚙
+                </span>
+
+                Settings
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="../index.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ↗
+                </span>
+
+                View Store
+            </a>
+
+
+            <a
+                href="../login.html"
+                class="nav-item"
+                id="logoutBtn"
+            >
+                <span class="nav-icon">
+                    ⇥
+                </span>
+
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================
+         MAIN
+    ====================================== -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    class="mobile-menu-btn"
+                    id="mobileMenuBtn"
+                >
+                    ☰
+                </button>
+
+
+                <div>
+
+                    <div class="page-title">
+                        Orders
+                    </div>
+
+                    <div class="breadcrumb">
+                        Admin / Orders
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <button
+                    class="icon-btn"
+                    title="Notifications"
+                >
+                    ♧
+                </button>
+
+
+                <div class="admin-profile">
+
+                    <div class="admin-avatar">
+                        A
+                    </div>
+
+                    <div class="admin-info">
+
+                        <strong>
+                            Admin
+                        </strong>
+
+                        <span>
+                            Administrator
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- CONTENT -->
+
+        <section class="content">
+
+
+            <!-- PAGE HEADING -->
+
+            <div class="page-heading">
+
+                <div>
+
+                    <h1>
+                        Orders
+                    </h1>
+
+                    <p>
+                        Manage customer orders and fulfillment.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SUMMARY -->
+
+            <div class="summary-grid">
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Total Orders
+                    </div>
+
+                    <div
+                        class="summary-number"
+                        id="totalOrders"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        New Orders
+                    </div>
+
+                    <div
+                        class="summary-number"
+                        id="newOrders"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Processing
+                    </div>
+
+                    <div
+                        class="summary-number"
+                        id="processingOrders"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Delivered
+                    </div>
+
+                    <div
+                        class="summary-number"
+                        id="deliveredOrders"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TOOLBAR -->
+
+            <div class="toolbar">
+
+
+                <div class="search-box">
+
+                    <span class="search-icon">
+                        ⌕
+                    </span>
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search order ID, customer name or phone..."
+                    >
+
+                </div>
+
+
+                <select
+                    class="filter-select"
+                    id="statusFilter"
+                >
+
+                    <option value="all">
+                        All Status
+                    </option>
+
+                    <option value="New">
+                        New
+                    </option>
+
+                    <option value="Confirmed">
+                        Confirmed
+                    </option>
+
+                    <option value="Processing">
+                        Processing
+                    </option>
+
+                    <option value="Packed">
+                        Packed
+                    </option>
+
+                    <option value="Shipped">
+                        Shipped
+                    </option>
+
+                    <option value="Delivered">
+                        Delivered
+                    </option>
+
+                    <option value="Cancelled">
+                        Cancelled
+                    </option>
+
+                    <option value="Returned">
+                        Returned
+                    </option>
+
+                    <option value="Refunded">
+                        Refunded
+                    </option>
+
+                </select>
+
+
+                <select
+                    class="filter-select"
+                    id="paymentFilter"
+                >
+
+                    <option value="all">
+                        All Payment
+                    </option>
+
+                    <option value="Cash on Delivery">
+                        Cash on Delivery
+                    </option>
+
+                    <option value="bKash">
+                        bKash
+                    </option>
+
+                    <option value="Nagad">
+                        Nagad
+                    </option>
+
+                    <option value="Online Payment">
+                        Online Payment
+                    </option>
+
+                </select>
+
+
+                <button
+                    class="clear-btn"
+                    id="clearFilters"
+                >
+                    Clear Filters
+                </button>
+
+            </div>
+
+
+
+            <!-- TABLE -->
+
+            <div class="table-card">
+
+
+                <div class="table-top">
+
+                    <h2>
+                        Customer Orders
+                    </h2>
+
+                    <span
+                        class="result-count"
+                        id="resultCount"
+                    >
+                        0 orders
+                    </span>
+
+                </div>
+
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Order
+                                </th>
+
+                                <th>
+                                    Customer
+                                </th>
+
+                                <th>
+                                    Items
+                                </th>
+
+                                <th>
+                                    Total
+                                </th>
+
+                                <th>
+                                    Payment
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody
+                            id="ordersTable"
+                        >
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div
+                    class="pagination"
+                    id="pagination"
+                >
+                </div>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<!-- =====================================
+     ORDER DETAILS MODAL
+====================================== -->
+
+<div
+    class="modal"
+    id="orderModal"
+>
+
+    <div class="modal-box">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2 id="modalTitle">
+                    Order Details
+                </h2>
+
+                <p id="modalSubtitle">
+                    Order information
+                </p>
+
+            </div>
+
+
+            <button
+                class="close-modal"
+                id="closeModal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            class="modal-body"
+            id="modalBody"
+        >
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+    /* =====================================
+       STORAGE
+    ====================================== */
+
+    const ORDERS_KEY =
+        "shopnest_orders";
+
+
+    const PRODUCTS_KEY =
+        "shopnest_admin_products";
+
+
+    /* =====================================
+       DEFAULT PRODUCTS
+    ====================================== */
+
+    const defaultProducts = [
+
+        {
+            id: 1,
+            name: "Wireless Headphones",
+            sku: "ALM-ELE-001",
+            category: "Electronics",
+            price: 2490,
+            stock: 25,
+            status: "Active",
+            image:
+                "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=200&q=80"
+        },
+
+        {
+            id: 2,
+            name: "Smart Watch Pro",
+            sku: "ALM-ELE-002",
+            category: "Electronics",
+            price: 3590,
+            stock: 18,
+            status: "Active",
+            image:
+                "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=200&q=80"
+        },
+
+        {
+            id: 3,
+            name: "Premium Sneakers",
+            sku: "ALM-FAS-001",
+            category: "Fashion",
+            price: 2890,
+            stock: 32,
+            status: "Active",
+            image:
+                "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&q=80"
+        },
+
+        {
+            id: 4,
+            name: "Minimal Backpack",
+            sku: "ALM-FAS-002",
+            category: "Fashion",
+            price: 1890,
+            stock: 15,
+            status: "Active",
+            image:
+                "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=200&q=80"
+        },
+
+        {
+            id: 5,
+            name: "Classic Sunglasses",
+            sku: "ALM-FAS-003",
+            category: "Fashion",
+            price: 1290,
+            stock: 20,
+            status: "Draft",
+            image:
+                "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=200&q=80"
+        },
+
+        {
+            id: 6,
+            name: "Modern Desk Lamp",
+            sku: "ALM-HOM-001",
+            category: "Home",
+            price: 1590,
+            stock: 4,
+            status: "Active",
+            image:
+                "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=200&q=80"
+        },
+
+        {
+            id: 7,
+            name: "Premium Skin Care Set",
+            sku: "ALM-BEA-001",
+            category: "Beauty",
+            price: 2190,
+            stock: 0,
+            status: "Out of Stock",
+            image:
+                "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&w=200&q=80"
+        },
+
+        {
+            id: 8,
+            name: "Portable Bluetooth Speaker",
+            sku: "ALM-ELE-003",
+            category: "Electronics",
+            price: 1990,
+            stock: 21,
+            status: "Active",
+            image:
+                "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=200&q=80"
+        }
+
+    ];
+
+
+    /* =====================================
+       DATA
+    ====================================== */
+
+    function loadOrders() {
+
+        const data =
+            localStorage.getItem(
+                ORDERS_KEY
+            );
+
+
+        if (!data) {
+
+            return [];
+
+        }
+
+
+        try {
+
+            return JSON.parse(data);
+
+        } catch {
+
+            return [];
+
+        }
+
+    }
+
+
+    function loadProducts() {
+
+        const data =
+            localStorage.getItem(
+                PRODUCTS_KEY
+            );
+
+
+        if (!data) {
+
+            localStorage.setItem(
+                PRODUCTS_KEY,
+                JSON.stringify(
+                    defaultProducts
+                )
+            );
+
+            return [
+                ...defaultProducts
+            ];
+
+        }
+
+
+        try {
+
+            return JSON.parse(data);
+
+        } catch {
+
+            return [
+                ...defaultProducts
+            ];
+
+        }
+
+    }
+
+
+    let orders =
+        loadOrders();
+
+
+    let products =
+        loadProducts();
+
+
+    /* =====================================
+       STATE
+    ====================================== */
+
+    let filteredOrders = [];
+
+    let currentPage = 1;
+
+    const pageSize = 8;
+
+    let currentOrderId = null;
+
+
+    /* =====================================
+       PRICE
+    ====================================== */
+
+    function formatPrice(
+        value
+    ) {
+
+        return "৳" +
+            Number(
+                value || 0
+            ).toLocaleString(
+                "en-BD"
+            );
+
+    }
+
+
+    /* =====================================
+       ESCAPE
+    ====================================== */
+
+    function escapeHtml(
+        value
+    ) {
+
+        return String(
+            value ?? ""
+        )
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+    }
+
+
+    /* =====================================
+       DATE
+    ====================================== */
+
+    function formatDate(
+        value
+    ) {
+
+        if (!value) {
+
+            return "—";
+
+        }
+
+
+        const date =
+            new Date(value);
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return "—";
+
+        }
+
+
+        return date.toLocaleDateString(
+            "en-BD",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
+    }
+
+
+    function formatDateTime(
+        value
+    ) {
+
+        if (!value) {
+
+            return "—";
+
+        }
+
+
+        const date =
+            new Date(value);
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return "—";
+
+        }
+
+
+        return date.toLocaleString(
+            "en-BD",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+    }
+
+
+    /* =====================================
+       CUSTOMER
+    ====================================== */
+
+    function getCustomer(
+        order
+    ) {
+
+        return (
+            order.customer ||
+            {}
+        );
+
+    }
+
+
+    /* =====================================
+       STATUS CLASS
+    ====================================== */
+
+    function getStatusClass(
+        status
+    ) {
+
+        const value =
+            String(
+                status || "New"
+            ).toLowerCase();
+
+
+        return (
+            "status-" +
+            value.replace(
+                /\s+/g,
+                "-"
+            )
+        );
+
+    }
+
+
+    /* =====================================
+       UPDATE SUMMARY
+    ====================================== */
+
+    function renderSummary() {
+
+        document.getElementById(
+            "totalOrders"
+        ).textContent =
+            orders.length;
+
+
+        document.getElementById(
+            "newOrders"
+        ).textContent =
+            orders.filter(
+                order =>
+                    order.status === "New"
+            ).length;
+
+
+        document.getElementById(
+            "processingOrders"
+        ).textContent =
+            orders.filter(
+                order =>
+                    [
+                        "Confirmed",
+                        "Processing",
+                        "Packed"
+                    ].includes(
+                        order.status
+                    )
+            ).length;
+
+
+        document.getElementById(
+            "deliveredOrders"
+        ).textContent =
+            orders.filter(
+                order =>
+                    order.status ===
+                    "Delivered"
+            ).length;
+
+    }
+
+
+    /* =====================================
+       FILTER
+    ====================================== */
+
+    function applyFilters() {
+
+        const search =
+            document.getElementById(
+                "searchInput"
+            ).value
+                .trim()
+                .toLowerCase();
+
+
+        const status =
+            document.getElementById(
+                "statusFilter"
+            ).value;
+
+
+        const payment =
+            document.getElementById(
+                "paymentFilter"
+            ).value;
+
+
+        filteredOrders =
+            orders.filter(
+                order => {
+
+                    const customer =
+                        getCustomer(
+                            order
+                        );
+
+
+                    const searchText =
+                        [
+
+                            order.id,
+
+                            customer.name,
+
+                            customer.phone,
+
+                            customer.email
+
+                        ]
+                            .join(" ")
+                            .toLowerCase();
+
+
+                    const matchSearch =
+                        !search ||
+                        searchText.includes(
+                            search
+                        );
+
+
+                    const matchStatus =
+                        status === "all" ||
+                        order.status ===
+                            status;
+
+
+                    const matchPayment =
+                        payment === "all" ||
+                        order.paymentMethod ===
+                            payment;
+
+
+                    return (
+                        matchSearch &&
+                        matchStatus &&
+                        matchPayment
+                    );
+
+                }
+            );
+
+
+        filteredOrders.sort(
+            (
+                a,
+                b
+            ) => {
+
+                return new Date(
+                    b.createdAt || 0
+                ) -
+                new Date(
+                    a.createdAt || 0
+                );
+
+            }
+        );
+
+
+        currentPage = 1;
+
+
+        renderTable();
+
+    }
+
+
+    /* =====================================
+       RENDER TABLE
+    ====================================== */
+
+    function renderTable() {
+
+        const tbody =
+            document.getElementById(
+                "ordersTable"
+            );
+
+
+        tbody.innerHTML = "";
+
+
+        const start =
+            (
+                currentPage - 1
+            ) *
+            pageSize;
+
+
+        const end =
+            start +
+            pageSize;
+
+
+        const pageOrders =
+            filteredOrders.slice(
+                start,
+                end
+            );
+
+
+        document.getElementById(
+            "resultCount"
+        ).textContent =
+            `${filteredOrders.length} order${
+                filteredOrders.length === 1
+                    ? ""
+                    : "s"
+            }`;
+
+
+        if (!pageOrders.length) {
+
+            tbody.innerHTML = `
+
+                <tr>
+
+                    <td colspan="8">
+
+                        <div class="empty">
+
+                            <div class="empty-icon">
+                                🛒
+                            </div>
+
+                            <strong>
+                                No orders found
+                            </strong>
+
+                            <p>
+                                Try changing your search or filters.
+                            </p>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            renderPagination();
+
+            return;
+
+        }
+
+
+        pageOrders.forEach(
+            order => {
+
+                const customer =
+                    getCustomer(
+                        order
+                    );
+
+
+                const name =
+                    customer.name ||
+                    "Guest Customer";
+
+
+                const phone =
+                    customer.phone ||
+                    "No phone";
+
+
+                const initials =
+                    getInitials(
+                        name
+                    );
+
+
+                const itemCount =
+                    Array.isArray(
+                        order.items
+                    )
+                        ? order.items.reduce(
+                            (
+                                sum,
+                                item
+                            ) =>
+                                sum +
+                                Number(
+                                    item.quantity ||
+                                    1
+                                ),
+                            0
+                        )
+                        : 0;
+
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                row.innerHTML = `
+
+                    <td>
+
+                        <div class="order-id">
+                            #${escapeHtml(
+                                order.id
+                            )}
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="customer">
+
+                            <div
+                                class="customer-avatar"
+                            >
+                                ${escapeHtml(
+                                    initials
+                                )}
+                            </div>
+
+                            <div>
+
+                                <div class="customer-name">
+                                    ${escapeHtml(
+                                        name
+                                    )}
+                                </div>
+
+                                <div class="customer-phone">
+                                    ${escapeHtml(
+                                        phone
+                                    )}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="items-count">
+                            ${itemCount}
+                            item${itemCount === 1 ? "" : "s"}
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="total">
+                            ${formatPrice(
+                                order.total
+                            )}
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="payment">
+                            ${escapeHtml(
+                                order.paymentMethod ||
+                                "Cash on Delivery"
+                            )}
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="date">
+
+                            ${formatDate(
+                                order.createdAt
+                            )}
+
+                            <br>
+
+                            ${formatTime(
+                                order.createdAt
+                            )}
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="
+                                status-badge
+                                ${getStatusClass(
+                                    order.status
+                                )}
+                            "
+                        >
+
+                            <span
+                                class="status-dot"
+                            ></span>
+
+                            ${escapeHtml(
+                                order.status ||
+                                "New"
+                            )}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="actions">
+
+                            <button
+                                class="
+                                    action-btn
+                                    primary
+                                "
+                                title="View Order"
+                                onclick="
+                                    openOrderModal(
+                                        '${escapeJs(
+                                            order.id
+                                        )}'
+                                    )
+                                "
+                            >
+                                👁
+                            </button>
+
+
+                            <button
+                                class="action-btn"
+                                title="Print Packing Slip"
+                                onclick="
+                                    printPackingSlip(
+                                        '${escapeJs(
+                                            order.id
+                                        )}'
+                                    )
+                                "
+                            >
+                                🖨
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                `;
+
+
+                tbody.appendChild(row);
+
+            }
+        );
+
+
+        renderPagination();
+
+    }
+
+
+    /* =====================================
+       TIME
+    ====================================== */
+
+    function formatTime(
+        value
+    ) {
+
+        if (!value) {
+
+            return "";
+
+        }
+
+
+        const date =
+            new Date(value);
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return "";
+
+        }
+
+
+        return date.toLocaleTimeString(
+            "en-BD",
+            {
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+    }
+
+
+    /* =====================================
+       INITIALS
+    ====================================== */
+
+    function getInitials(
+        name
+    ) {
+
+        return String(
+            name || "C"
+        )
+            .split(" ")
+            .filter(Boolean)
+            .slice(0, 2)
+            .map(
+                word =>
+                    word.charAt(0)
+            )
+            .join("")
+            .toUpperCase();
+
+    }
+
+
+    /* =====================================
+       JS ESCAPE
+    ====================================== */
+
+    function escapeJs(
+        value
+    ) {
+
+        return String(
+            value ?? ""
+        )
+            .replace(
+                /\\/g,
+                "\\\\"
+            )
+            .replace(
+                /'/g,
+                "\\'"
+            );
+
+    }
+
+
+    /* =====================================
+       PAGINATION
+    ====================================== */
+
+    function renderPagination() {
+
+        const container =
+            document.getElementById(
+                "pagination"
+            );
+
+
+        const totalPages =
+            Math.max(
+                1,
+                Math.ceil(
+                    filteredOrders.length /
+                    pageSize
+                )
+            );
+
+
+        container.innerHTML = `
+
+            <div class="pagination-info">
+
+                Showing
+                ${
+                    filteredOrders.length
+                        ? (
+                            (
+                                currentPage - 1
+                            ) *
+                            pageSize
+                        ) + 1
+                        : 0
+                }
+                -
+                ${
+                    Math.min(
+                        currentPage *
+                        pageSize,
+                        filteredOrders.length
+                    )
+                }
+                of
+                ${filteredOrders.length}
+
+            </div>
+
+
+            <div class="pagination-buttons">
+
+                <button
+                    class="page-btn"
+                    ${
+                        currentPage <= 1
+                            ? "disabled"
+                            : ""
+                    }
+                    onclick="
+                        changePage(
+                            ${currentPage - 1}
+                        )
+                    "
+                >
+                    ‹
+                </button>
+
+
+                ${createPageButtons(
+                    totalPages
+                )}
+
+
+                <button
+                    class="page-btn"
+                    ${
+                        currentPage >= totalPages
+                            ? "disabled"
+                            : ""
+                    }
+                    onclick="
+                        changePage(
+                            ${currentPage + 1}
+                        )
+                    "
+                >
+                    ›
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+
+    function createPageButtons(
+        totalPages
+    ) {
+
+        let html = "";
+
+
+        const maxPages =
+            Math.min(
+                totalPages,
+                5
+            );
+
+
+        for (
+            let i = 1;
+            i <= maxPages;
+            i++
+        ) {
+
+            html += `
+
+                <button
+                    class="
+                        page-btn
+                        ${
+                            i === currentPage
+                                ? "active"
+                                : ""
+                        }
+                    "
+                    onclick="
+                        changePage(${i})
+                    "
+                >
+                    ${i}
+                </button>
+
+            `;
+
+        }
+
+
+        return html;
+
+    }
+
+
+    function changePage(
+        page
+    ) {
+
+        const totalPages =
+            Math.max(
+                1,
+                Math.ceil(
+                    filteredOrders.length /
+                    pageSize
+                )
+            );
+
+
+        if (
+            page < 1 ||
+            page > totalPages
+        ) {
+
+            return;
+
+        }
+
+
+        currentPage = page;
+
+
+        renderTable();
+
+    }
+
+
+    /* =====================================
+       FIND ORDER
+    ====================================== */
+
+    function findOrder(
+        id
+    ) {
+
+        return orders.find(
+            order =>
+                String(
+                    order.id
+                ) ===
+                String(id)
+        );
+
+    }
+
+
+    /* =====================================
+       OPEN ORDER MODAL
+    ====================================== */
+
+    function openOrderModal(
+        id
+    ) {
+
+        const order =
+            findOrder(id);
+
+
+        if (!order) {
+
+            alert(
+                "Order not found."
+            );
+
+            return;
+
+        }
+
+
+        currentOrderId =
+            order.id;
+
+
+        const customer =
+            getCustomer(
+                order
+            );
+
+
+        document.getElementById(
+            "modalTitle"
+        ).textContent =
+            `Order #${order.id}`;
+
+
+        document.getElementById(
+            "modalSubtitle"
+        ).textContent =
+            formatDateTime(
+                order.createdAt
+            );
+
+
+        document.getElementById(
+            "modalBody"
+        ).innerHTML =
+            createOrderDetails(
+                order,
+                customer
+            );
+
+
+        document.getElementById(
+            "orderModal"
+        ).classList.add(
+            "show"
+        );
+
+    }
+
+
+    /* =====================================
+       ORDER DETAILS HTML
+    ====================================== */
+
+    function createOrderDetails(
+        order,
+        customer
+    ) {
+
+        const statuses = [
+
+            "New",
+
+            "Confirmed",
+
+            "Processing",
+
+            "Packed",
+
+            "Shipped",
+
+            "Delivered"
+
+        ];
+
+
+        const currentStatus =
+            order.status || "New";
+
+
+        const currentIndex =
+            statuses.indexOf(
+                currentStatus
+            );
+
+
+        const flow =
+            statuses.map(
+                (
+                    status,
+                    index
+                ) => {
+
+                    let className = "";
+
+
+                    if (
+                        currentStatus ===
+                        "Cancelled" ||
+                        currentStatus ===
+                        "Returned" ||
+                        currentStatus ===
+                        "Refunded"
+                    ) {
+
+                        if (
+                            index === 0
+                        ) {
+
+                            className =
+                                "done";
+
+                        }
+
+                    } else if (
+                        index <
+                        currentIndex
+                    ) {
+
+                        className =
+                            "done";
+
+                    } else if (
+                        index ===
+                        currentIndex
+                    ) {
+
+                        className =
+                            "active";
+
+                    }
+
+
+                    return `
+
+                        <div
+                            class="
+                                flow-step
+                                ${className}
+                            "
+                        >
+
+                            <div
+                                class="flow-circle"
+                            >
+
+                                ${
+                                    index <
+                                    currentIndex
+                                        ? "✓"
+                                        : index + 1
+                                }
+
+                            </div>
+
+                            <span>
+                                ${status}
+                            </span>
+
+                        </div>
+
+                    `;
+
+                }
+            ).join("");
+
+
+        const items =
+            Array.isArray(
+                order.items
+            )
+                ? order.items
+                : [];
+
+
+        const itemsHtml =
+            items.length
+
+                ? items.map(
+                    item => {
+
+                        const product =
+                            products.find(
+                                product =>
+                                    String(
+                                        product.id
+                                    ) ===
+                                    String(
+                                        item.id
+                                    )
+                            );
+
+
+                        const image =
+                            item.image ||
+                            product?.image ||
+                            "";
+
+
+                        const name =
+                            item.name ||
+                            product?.name ||
+                            "Product";
+
+
+                        const price =
+                            Number(
+                                item.price ||
+                                product?.price ||
+                                0
+                            );
+
+
+                        const quantity =
+                            Number(
+                                item.quantity ||
+                                1
+                            );
+
+
+                        return `
+
+                            <div
+                                class="item-row"
+                            >
+
+                                <div
+                                    class="item-product"
+                                >
+
+                                    <img
+                                        class="item-image"
+                                        src="${escapeHtml(
+                                            image
+                                        )}"
+                                        alt="${escapeHtml(
+                                            name
+                                        )}"
+                                    >
+
+                                    <div>
+
+                                        <div
+                                            class="item-name"
+                                        >
+                                            ${escapeHtml(
+                                                name
+                                            )}
+                                        </div>
+
+                                        <div
+                                            class="item-meta"
+                                        >
+                                            SKU:
+                                            ${
+                                                escapeHtml(
+                                                    product?.sku ||
+                                                    item.sku ||
+                                                    "N/A"
+                                                )
+                                            }
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div
+                                    class="item-price"
+                                >
+                                    ${formatPrice(
+                                        price
+                                    )}
+                                </div>
+
+
+                                <div
+                                    class="item-qty"
+                                >
+                                    × ${quantity}
+                                </div>
+
+
+                                <div
+                                    class="item-total"
+                                >
+                                    ${formatPrice(
+                                        price *
+                                        quantity
+                                    )}
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }
+                ).join("")
+
+                : `
+
+                    <div
+                        class="empty"
+                    >
+                        No product information found.
+                    </div>
+
+                `;
+
+
+        const subtotal =
+            Number(
+                order.subtotal || 0
+            );
+
+
+        const discount =
+            Number(
+                order.discount || 0
+            );
+
+
+        const delivery =
+            Number(
+                order.delivery || 0
+            );
+
+
+        const total =
+            Number(
+                order.total || 0
+            );
+
+
+        const statusButtons =
+            createStatusButtons(
+                order
+            );
+
+
+        return `
+
+            <!-- ORDER TOP -->
+
+            <div class="order-detail-top">
+
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        Order Status
+                    </div>
+
+                    <div>
+                        <span
+                            class="
+                                status-badge
+                                ${getStatusClass(
+                                    order.status
+                                )}
+                            "
+                        >
+
+                            <span
+                                class="status-dot"
+                            ></span>
+
+                            ${escapeHtml(
+                                order.status ||
+                                "New"
+                            )}
+
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        Payment
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHtml(
+                            order.paymentMethod ||
+                            "Cash on Delivery"
+                        )}
+                    </div>
+
+                    <div class="detail-small">
+                        Payment status:
+                        ${
+                            order.paymentStatus ||
+                            (
+                                order.paymentMethod ===
+                                "Cash on Delivery"
+                                    ? "Pending"
+                                    : "Paid"
+                            )
+                        }
+                    </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        Order Date
+                    </div>
+
+                    <div class="detail-value">
+                        ${formatDate(
+                            order.createdAt
+                        )}
+                    </div>
+
+                    <div class="detail-small">
+                        ${formatTime(
+                            order.createdAt
+                        )}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- STATUS FLOW -->
+
+            <div class="detail-section">
+
+                <div class="section-title">
+                    Fulfillment Timeline
+                </div>
+
+                <div class="status-flow">
+
+                    ${flow}
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ITEMS -->
+
+            <div class="detail-section">
+
+                <div class="section-title">
+                    Ordered Products
+                </div>
+
+                <div class="items-table">
+
+                    <div class="item-row">
+
+                        <div
+                            class="item-meta"
+                        >
+                            PRODUCT
+                        </div>
+
+                        <div
+                            class="item-meta"
+                        >
+                            PRICE
+                        </div>
+
+                        <div
+                            class="item-meta"
+                        >
+                            QTY
+                        </div>
+
+                        <div
+                            class="item-meta"
+                            style="text-align:right"
+                        >
+                            TOTAL
+                        </div>
+
+                    </div>
+
+                    ${itemsHtml}
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CUSTOMER -->
+
+            <div class="detail-section">
+
+                <div class="section-title">
+                    Customer & Shipping
+                </div>
+
+
+                <div class="info-grid">
+
+
+                    <div class="info-card">
+
+                        <h3>
+                            Customer Information
+                        </h3>
+
+
+                        <div class="info-line">
+
+                            <span>
+                                Name
+                            </span>
+
+                            <span>
+                                ${escapeHtml(
+                                    customer.name ||
+                                    "—"
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="info-line">
+
+                            <span>
+                                Phone
+                            </span>
+
+                            <span>
+                                ${escapeHtml(
+                                    customer.phone ||
+                                    "—"
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="info-line">
+
+                            <span>
+                                Email
+                            </span>
+
+                            <span>
+                                ${escapeHtml(
+                                    customer.email ||
+                                    "—"
+                                )}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <h3>
+                            Delivery Information
+                        </h3>
+
+
+                        <div class="info-line">
+
+                            <span>
+                                City
+                            </span>
+
+                            <span>
+                                ${escapeHtml(
+                                    customer.city ||
+                                    "—"
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="info-line">
+
+                            <span>
+                                Area
+                            </span>
+
+                            <span>
+                                ${escapeHtml(
+                                    customer.area ||
+                                    "—"
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="info-line">
+
+                            <span>
+                                Address
+                            </span>
+
+                            <span>
+                                ${escapeHtml(
+                                    customer.address ||
+                                    order.address ||
+                                    "—"
+                                )}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            ${
+                order.note
+                    ? `
+
+                        <div class="detail-section">
+
+                            <div class="section-title">
+                                Customer Note
+                            </div>
+
+                            <div class="info-card">
+
+                                <div
+                                    style="
+                                        color:#cbd1db;
+                                        font-size:10px;
+                                        line-height:1.7;
+                                    "
+                                >
+                                    ${escapeHtml(
+                                        order.note
+                                    )}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    `
+                    : ""
+            }
+
+
+
+            <!-- SUMMARY -->
+
+            <div class="detail-section">
+
+                <div class="section-title">
+                    Order Summary
+                </div>
+
+
+                <div class="summary-box">
+
+                    <div class="summary-line">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <span>
+                            ${formatPrice(
+                                subtotal
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <div class="summary-line">
+
+                        <span>
+                            Discount
+                        </span>
+
+                        <span>
+                            - ${formatPrice(
+                                discount
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <div class="summary-line">
+
+                        <span>
+                            Delivery
+                        </span>
+
+                        <span>
+                            ${formatPrice(
+                                delivery
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <div class="summary-total">
+
+                        <span>
+                            Grand Total
+                        </span>
+
+                        <span>
+                            ${formatPrice(
+                                total
+                            )}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ACTIONS -->
+
+            <div class="modal-actions">
+
+                ${statusButtons}
+
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="
+                        printPackingSlip(
+                            '${escapeJs(
+                                order.id
+                            )}'
+                        )
+                    "
+                >
+                    🖨 Print Packing Slip
+                </button>
+
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="
+                        printInvoice(
+                            '${escapeJs(
+                                order.id
+                            )}'
+                        )
+                    "
+                >
+                    🧾 Print Invoice
+                </button>
+
+
+                ${
+                    [
+                        "New",
+                        "Confirmed"
+                    ].includes(
+                        order.status
+                    )
+
+                    ? `
+
+                        <button
+                            class="btn btn-danger"
+                            onclick="
+                                updateOrderStatus(
+                                    '${escapeJs(
+                                        order.id
+                                    )}',
+                                    'Cancelled'
+                                )
+                            "
+                        >
+                            Cancel Order
+                        </button>
+
+                    `
+
+                    : ""
+                }
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =====================================
+       STATUS BUTTONS
+    ====================================== */
+
+    function createStatusButtons(
+        order
+    ) {
+
+        const current =
+            order.status || "New";
+
+
+        const flow = [
+
+            "New",
+
+            "Confirmed",
+
+            "Processing",
+
+            "Packed",
+
+            "Shipped",
+
+            "Delivered"
+
+        ];
+
+
+        const index =
+            flow.indexOf(
+                current
+            );
+
+
+        if (
+            current ===
+            "Delivered"
+        ) {
+
+            return "";
+
+        }
+
+
+        if (
+            [
+                "Cancelled",
+                "Returned",
+                "Refunded"
+            ].includes(
+                current
+            )
+        ) {
+
+            return "";
+
+        }
+
+
+        const nextStatus =
+            flow[
+                index + 1
+            ];
+
+
+        if (!nextStatus) {
+
+            return "";
+
+        }
+
+
+        return `
+
+            <button
+                class="btn btn-primary"
+                onclick="
+                    updateOrderStatus(
+                        '${escapeJs(
+                            order.id
+                        )}',
+                        '${escapeJs(
+                            nextStatus
+                        )}'
+                    )
+                "
+            >
+                ${
+                    nextStatus ===
+                    "Confirmed"
+                        ? "✓ Confirm Order"
+                        : nextStatus ===
+                          "Processing"
+                            ? "⚙ Start Processing"
+                            : nextStatus ===
+                              "Packed"
+                                ? "📦 Mark Packed"
+                                : nextStatus ===
+                                  "Shipped"
+                                    ? "🚚 Mark Shipped"
+                                    : "✓ Mark Delivered"
+                }
+            </button>
+
+        `;
+
+    }
+
+
+    /* =====================================
+       UPDATE STATUS
+    ====================================== */
+
+    function updateOrderStatus(
+        id,
+        newStatus
+    ) {
+
+        const index =
+            orders.findIndex(
+                order =>
+                    String(
+                        order.id
+                    ) ===
+                    String(id)
+            );
+
+
+        if (index === -1) {
+
+            return;
+
+        }
+
+
+        orders[index].status =
+            newStatus;
+
+
+        orders[index].updatedAt =
+            new Date().toISOString();
+
+
+        /*
+            Fulfillment timeline
+        */
+
+        if (
+            !Array.isArray(
+                orders[index].timeline
+            )
+        ) {
+
+            orders[index].timeline = [];
+
+        }
+
+
+        orders[index].timeline.push({
+
+            status:
+                newStatus,
+
+            createdAt:
+                new Date().toISOString()
+
+        });
+
+
+        /*
+            Payment status
+        */
+
+        if (
+            newStatus ===
+            "Delivered" &&
+            orders[index].paymentMethod ===
+            "Cash on Delivery"
+        ) {
+
+            orders[index].paymentStatus =
+                "Paid";
+
+        }
+
+
+        localStorage.setItem(
+            ORDERS_KEY,
+            JSON.stringify(
+                orders
+            )
+        );
+
+
+        renderSummary();
+
+        applyFilters();
+
+
+        if (
+            currentOrderId
+        ) {
+
+            const updatedOrder =
+                findOrder(
+                    currentOrderId
+                );
+
+
+            if (updatedOrder) {
+
+                document.getElementById(
+                    "modalBody"
+                ).innerHTML =
+                    createOrderDetails(
+                        updatedOrder,
+                        getCustomer(
+                            updatedOrder
+                        )
+                    );
+
+            }
+
+        }
+
+    }
+
+
+    /* =====================================
+       PRINT PACKING SLIP
+    ====================================== */
+
+    function printPackingSlip(
+        id
+    ) {
+
+        const order =
+            findOrder(id);
+
+
+        if (!order) {
+
+            return;
+
+        }
+
+
+        const customer =
+            getCustomer(
+                order
+            );
+
+
+        const items =
+            Array.isArray(
+                order.items
+            )
+                ? order.items
+                : [];
+
+
+        const itemsHtml =
+            items.map(
+                item => `
+
+                    <tr>
+
+                        <td>
+                            ${escapeHtml(
+                                item.name ||
+                                "Product"
+                            )}
+                        </td>
+
+                        <td>
+                            ${Number(
+                                item.quantity ||
+                                1
+                            )}
+                        </td>
+
+                    </tr>
+
+                `
+            ).join("");
+
+
+        const popup =
+            window.open(
+                "",
+                "_blank",
+                "width=800,height=900"
+            );
+
+
+        if (!popup) {
+
+            alert(
+                "Please allow popups to print."
+            );
+
+            return;
+
+        }
+
+
+        popup.document.write(`
+
+            <!DOCTYPE html>
+
+            <html>
+
+            <head>
+
+                <title>
+                    Packing Slip - ${escapeHtml(
+                        order.id
+                    )}
+                </title>
+
+                <style>
+
+                    body {
+
+                        font-family:
+                            Arial,
+                            sans-serif;
+
+                        padding: 35px;
+
+                        color: #111;
+
+                    }
+
+                    .header {
+
+                        display:flex;
+
+                        justify-content:
+                            space-between;
+
+                        border-bottom:
+                            2px solid #111;
+
+                        padding-bottom:
+                            18px;
+
+                        margin-bottom:
+                            25px;
+
+                    }
+
+                    h1 {
+
+                        margin:0;
+
+                        font-size:26px;
+
+                    }
+
+                    p {
+
+                        font-size:12px;
+
+                        margin:5px 0;
+
+                    }
+
+                    .grid {
+
+                        display:grid;
+
+                        grid-template-columns:
+                            1fr 1fr;
+
+                        gap:30px;
+
+                        margin-bottom:25px;
+
+                    }
+
+                    .box {
+
+                        border:
+                            1px solid #ddd;
+
+                        padding:15px;
+
+                    }
+
+                    .box h3 {
+
+                        margin:
+                            0 0 10px;
+
+                        font-size:13px;
+
+                    }
+
+                    table {
+
+                        width:100%;
+
+                        border-collapse:
+                            collapse;
+
+                        margin-top:20px;
+
+                    }
+
+                    th,
+                    td {
+
+                        border:
+                            1px solid #ddd;
+
+                        padding:10px;
+
+                        text-align:left;
+
+                        font-size:12px;
+
+                    }
+
+                    th {
+
+                        background:#f4f4f4;
+
+                    }
+
+                    .footer {
+
+                        margin-top:35px;
+
+                        border-top:
+                            1px solid #ddd;
+
+                        padding-top:15px;
+
+                        font-size:11px;
+
+                    }
+
+                </style>
+
+            </head>
+
+            <body>
+
+
+                <div class="header">
+
+                    <div>
+
+                        <h1>
+                            Alamin Shop
+                        </h1>
+
+                        <p>
+                            Packing Slip
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <p>
+                            <strong>
+                                Order:
+                            </strong>
+
+                            #${escapeHtml(
+                                order.id
+                            )}
+                        </p>
+
+                        <p>
+                            ${formatDate(
+                                order.createdAt
+                            )}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="grid">
+
+
+                    <div class="box">
+
+                        <h3>
+                            Customer
+                        </h3>
+
+                        <p>
+                            ${escapeHtml(
+                                customer.name ||
+                                "Customer"
+                            )}
+                        </p>
+
+                        <p>
+                            ${escapeHtml(
+                                customer.phone ||
+                                ""
+                            )}
+                        </p>
+
+                        <p>
+                            ${escapeHtml(
+                                customer.email ||
+                                ""
+                            )}
+                        </p>
+
+                    </div>
+
+
+                    <div class="box">
+
+                        <h3>
+                            Shipping Address
+                        </h3>
+
+                        <p>
+                            ${escapeHtml(
+                                customer.city ||
+                                ""
+                            )}
+                        </p>
+
+                        <p>
+                            ${escapeHtml(
+                                customer.area ||
+                                ""
+                            )}
+                        </p>
+
+                        <p>
+                            ${escapeHtml(
+                                customer.address ||
+                                order.address ||
+                                ""
+                            )}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Product
+                            </th>
+
+                            <th>
+                                Quantity
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        ${itemsHtml}
+
+                    </tbody>
+
+                </table>
+
+
+                <div class="footer">
+
+                    <p>
+                        Payment:
+                        ${escapeHtml(
+                            order.paymentMethod ||
+                            "Cash on Delivery"
+                        )}
+                    </p>
+
+                    <p>
+                        Total:
+                        ${formatPrice(
+                            order.total
+                        )}
+                    </p>
+
+                    <p>
+                        Thank you for shopping with Alamin Shop.
+                    </p>
+
+                </div>
+
+
+                <script>
+
+                    window.onload =
+                        function() {
+
+                            window.print();
+
+                        };
+
+                <\/script>
+
+            </body>
+
+            </html>
+
+        `);
+
+
+        popup.document.close();
+
+    }
+
+
+    /* =====================================
+       PRINT INVOICE
+    ====================================== */
+
+    function printInvoice(
+        id
+    ) {
+
+        const order =
+            findOrder(id);
+
+
+        if (!order) {
+
+            return;
+
+        }
+
+
+        const customer =
+            getCustomer(
+                order
+            );
+
+
+        const items =
+            Array.isArray(
+                order.items
+            )
+                ? order.items
+                : [];
+
+
+        const itemsHtml =
+            items.map(
+                item => {
+
+                    const price =
+                        Number(
+                            item.price ||
+                            0
+                        );
+
+
+                    const qty =
+                        Number(
+                            item.quantity ||
+                            1
+                        );
+
+
+                    return `
+
+                        <tr>
+
+                            <td>
+                                ${escapeHtml(
+                                    item.name ||
+                                    "Product"
+                                )}
+                            </td>
+
+                            <td>
+                                ${qty}
+                            </td>
+
+                            <td>
+                                ${formatPrice(
+                                    price
+                                )}
+                            </td>
+
+                            <td>
+                                ${formatPrice(
+                                    price * qty
+                                )}
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            ).join("");
+
+
+        const popup =
+            window.open(
+                "",
+                "_blank",
+                "width=800,height=900"
+            );
+
+
+        if (!popup) {
+
+            alert(
+                "Please allow popups to print."
+            );
+
+            return;
+
+        }
+
+
+        popup.document.write(`
+
+            <!DOCTYPE html>
+
+            <html>
+
+            <head>
+
+                <title>
+                    Invoice - ${escapeHtml(
+                        order.id
+                    )}
+                </title>
+
+                <style>
+
+                    body {
+
+                        font-family:
+                            Arial,
+                            sans-serif;
+
+                        padding:40px;
+
+                        color:#111;
+
+                    }
+
+                    .header {
+
+                        display:flex;
+
+                        justify-content:
+                            space-between;
+
+                        border-bottom:
+                            2px solid #111;
+
+                        padding-bottom:20px;
+
+                    }
+
+                    h1 {
+
+                        margin:0;
+
+                    }
+
+                    .info {
+
+                        display:grid;
+
+                        grid-template-columns:
+                            1fr 1fr;
+
+                        gap:20px;
+
+                        margin-top:25px;
+
+                    }
+
+                    .box {
+
+                        border:
+                            1px solid #ddd;
+
+                        padding:15px;
+
+                    }
+
+                    .box h3 {
+
+                        margin:
+                            0 0 10px;
+
+                        font-size:13px;
+
+                    }
+
+                    p {
+
+                        font-size:12px;
+
+                        margin:5px 0;
+
+                    }
+
+                    table {
+
+                        width:100%;
+
+                        border-collapse:
+                            collapse;
+
+                        margin-top:25px;
+
+                    }
+
+                    th,
+                    td {
+
+                        border:
+                            1px solid #ddd;
+
+                        padding:10px;
+
+                        font-size:12px;
+
+                        text-align:left;
+
+                    }
+
+                    th {
+
+                        background:#f4f4f4;
+
+                    }
+
+                    .totals {
+
+                        margin-top:20px;
+
+                        margin-left:auto;
+
+                        width:300px;
+
+                    }
+
+                    .line {
+
+                        display:flex;
+
+                        justify-content:
+                            space-between;
+
+                        padding:7px 0;
+
+                        font-size:12px;
+
+                    }
+
+                    .grand {
+
+                        border-top:
+                            2px solid #111;
+
+                        margin-top:7px;
+
+                        padding-top:10px;
+
+                        font-size:15px;
+
+                        font-weight:bold;
+
+                    }
+
+                </style>
+
+            </head>
+
+            <body>
+
+
+                <div class="header">
+
+                    <div>
+
+                        <h1>
+                            Alamin Shop
+                        </h1>
+
+                        <p>
+                            Invoice
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <p>
+                            <strong>
+                                Order:
+                            </strong>
+
+                            #${escapeHtml(
+                                order.id
+                            )}
+                        </p>
+
+                        <p>
+                            ${formatDate(
+                                order.createdAt
+                            )}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="info">
+
+
+                    <div class="box">
+
+                        <h3>
+                            Bill To
+                        </h3>
+
+                        <p>
+                            ${escapeHtml(
+                                customer.name ||
+                                ""
+                            )}
+                        </p>
+
+                        <p>
+                            ${escapeHtml(
+                                customer.phone ||
+                                ""
+                            )}
+                        </p>
+
+                        <p>
+                            ${escapeHtml(
+                                customer.email ||
+                                ""
+                            )}
+                        </p>
+
+                    </div>
+
+
+                    <div class="box">
+
+                        <h3>
+                            Ship To
+                        </h3>
+
+                        <p>
+                            ${escapeHtml(
+                                customer.city ||
+                                ""
+                            )}
+                        </p>
+
+                        <p>
+                            ${escapeHtml(
+                                customer.area ||
+                                ""
+                            )}
+                        </p>
+
+                        <p>
+                            ${escapeHtml(
+                                customer.address ||
+                                order.address ||
+                                ""
+                            )}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Product
+                            </th>
+
+                            <th>
+                                Qty
+                            </th>
+
+                            <th>
+                                Price
+                            </th>
+
+                            <th>
+                                Total
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        ${itemsHtml}
+
+                    </tbody>
+
+                </table>
+
+
+                <div class="totals">
+
+                    <div class="line">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <span>
+                            ${formatPrice(
+                                order.subtotal
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <div class="line">
+
+                        <span>
+                            Discount
+                        </span>
+
+                        <span>
+                            - ${formatPrice(
+                                order.discount
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <div class="line">
+
+                        <span>
+                            Delivery
+                        </span>
+
+                        <span>
+                            ${formatPrice(
+                                order.delivery
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <div class="line grand">
+
+                        <span>
+                            Grand Total
+                        </span>
+
+                        <span>
+                            ${formatPrice(
+                                order.total
+                            )}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <p
+                    style="
+                        margin-top:35px;
+                        text-align:center;
+                    "
+                >
+                    Thank you for shopping with Alamin Shop.
+                </p>
+
+
+                <script>
+
+                    window.onload =
+                        function() {
+
+                            window.print();
+
+                        };
+
+                <\/script>
+
+            </body>
+
+            </html>
+
+        `);
+
+
+        popup.document.close();
+
+    }
+
+
+    /* =====================================
+       CLOSE MODAL
+    ====================================== */
+
+    document.getElementById(
+        "closeModal"
+    ).addEventListener(
+        "click",
+        closeModal
+    );
+
+
+    document.getElementById(
+        "orderModal"
+    ).addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.id ===
+                "orderModal"
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+    function closeModal() {
+
+        document.getElementById(
+            "orderModal"
+        ).classList.remove(
+            "show"
+        );
+
+        currentOrderId = null;
+
+    }
+
+
+    /* =====================================
+       FILTER EVENTS
+    ====================================== */
+
+    document.getElementById(
+        "searchInput"
+    ).addEventListener(
+        "input",
+        applyFilters
+    );
+
+
+    document.getElementById(
+        "statusFilter"
+    ).addEventListener(
+        "change",
+        applyFilters
+    );
+
+
+    document.getElementById(
+        "paymentFilter"
+    ).addEventListener(
+        "change",
+        applyFilters
+    );
+
+
+    document.getElementById(
+        "clearFilters"
+    ).addEventListener(
+        "click",
+        () => {
+
+            document.getElementById(
+                "searchInput"
+            ).value = "";
+
+
+            document.getElementById(
+                "statusFilter"
+            ).value =
+                "all";
+
+
+            document.getElementById(
+                "paymentFilter"
+            ).value =
+                "all";
+
+
+            applyFilters();
+
+        }
+    );
+
+
+    /* =====================================
+       MOBILE MENU
+    ====================================== */
+
+    document.getElementById(
+        "mobileMenuBtn"
+    ).addEventListener(
+        "click",
+        () => {
+
+            document
+                .getElementById(
+                    "sidebar"
+                )
+                .classList.toggle(
+                    "open"
+                );
+
+        }
+    );
+
+
+    /* =====================================
+       LOGOUT
+    ====================================== */
+
+    document.getElementById(
+        "logoutBtn"
+    ).addEventListener(
+        "click",
+        event => {
+
+            event.preventDefault();
+
+
+            localStorage.removeItem(
+                "shopnest_logged_in_user"
+            );
+
+
+            window.location.href =
+                "../login.html";
+
+        }
+    );
+
+
+    /* =====================================
+       ESC KEY
+    ====================================== */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key ===
+                "Escape"
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================
+       INITIALIZE
+    ====================================== */
+
+    function init() {
+
+        orders =
+            loadOrders();
+
+
+        products =
+            loadProducts();
+
+
+        renderSummary();
+
+        applyFilters();
+
+    }
+
+
+    init();
+
+</script>
+
+
+</body>
+</html>

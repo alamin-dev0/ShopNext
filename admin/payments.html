@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Payments - Alamin Shop Admin</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #08090b;
+      color: #f8fafc;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .admin-layout {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ================= SIDEBAR ================= */
+
+    .admin-sidebar {
+      width: 250px;
+      background: #101216;
+      border-right: 1px solid #272b33;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    .admin-brand {
+      padding: 24px 20px;
+      border-bottom: 1px solid #272b33;
+    }
+
+    .admin-brand h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .admin-brand h2 span {
+      color: #8b5cf6;
+    }
+
+    .admin-brand small {
+      display: block;
+      margin-top: 5px;
+      color: #8b929d;
+      font-size: 12px;
+    }
+
+    .admin-nav {
+      padding: 18px 12px;
+    }
+
+    .admin-nav-title {
+      color: #666d78;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+      margin-top: 8px;
+    }
+
+    .admin-nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      margin-bottom: 4px;
+      color: #aeb4be;
+      text-decoration: none;
+      border-radius: 9px;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    .admin-nav a:hover,
+    .admin-nav a.active {
+      background: #191c23;
+      color: #fff;
+    }
+
+    .admin-nav a.active {
+      border-left: 3px solid #8b5cf6;
+    }
+
+    .nav-icon {
+      width: 22px;
+      text-align: center;
+    }
+
+    /* ================= MAIN ================= */
+
+    .admin-main {
+      width: calc(100% - 250px);
+      margin-left: 250px;
+      min-height: 100vh;
+    }
+
+    .admin-topbar {
+      height: 70px;
+      background: #101216;
+      border-bottom: 1px solid #272b33;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+    }
+
+    .admin-topbar h1 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .admin-topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .store-link {
+      color: #aeb4be;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .admin-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #8b5cf6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    /* ================= CONTENT ================= */
+
+    .admin-content {
+      padding: 30px;
+    }
+
+    .page-heading {
+      margin-bottom: 25px;
+    }
+
+    .page-heading h2 {
+      margin: 0 0 7px;
+      font-size: 28px;
+    }
+
+    .page-heading p {
+      margin: 0;
+      color: #858c97;
+      font-size: 14px;
+    }
+
+    /* ================= STATS ================= */
+
+    .payment-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card {
+      background: #101216;
+      border: 1px solid #272b33;
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .stat-label {
+      color: #7e8692;
+      font-size: 12px;
+      margin-bottom: 9px;
+    }
+
+    .stat-value {
+      font-size: 25px;
+      font-weight: 700;
+    }
+
+    /* ================= PAYMENT CARDS ================= */
+
+    .payment-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .payment-card {
+      background: #101216;
+      border: 1px solid #272b33;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .payment-header {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid #272b33;
+    }
+
+    .payment-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .payment-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: #1c1f26;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .payment-title h3 {
+      margin: 0 0 5px;
+      font-size: 17px;
+    }
+
+    .payment-title p {
+      margin: 0;
+      color: #7e8692;
+      font-size: 12px;
+    }
+
+    .payment-body {
+      padding: 20px;
+    }
+
+    /* ================= STATUS ================= */
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 30px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .status-active {
+      background: #10251a;
+      color: #65d391;
+      border: 1px solid #214b32;
+    }
+
+    .status-inactive {
+      background: #25262a;
+      color: #9298a2;
+      border: 1px solid #383b42;
+    }
+
+    /* ================= FORM ================= */
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 17px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      display: block;
+      color: #c8ccd4;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: #08090b;
+      border: 1px solid #30343d;
+      color: #fff;
+      border-radius: 9px;
+      padding: 11px 12px;
+      outline: none;
+      font-size: 13px;
+    }
+
+    .form-group textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #8b5cf6;
+    }
+
+    .help-text {
+      color: #666e79;
+      font-size: 11px;
+      margin-top: 5px;
+      line-height: 1.5;
+    }
+
+    /* ================= TOGGLE ================= */
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 25px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: #30343d;
+      border-radius: 30px;
+      transition: .2s;
+    }
+
+    .slider:before {
+      content: "";
+      position: absolute;
+      width: 19px;
+      height: 19px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: .2s;
+    }
+
+    .switch input:checked + .slider {
+      background: #8b5cf6;
+    }
+
+    .switch input:checked + .slider:before {
+      transform: translateX(21px);
+    }
+
+    /* ================= SETTINGS ROW ================= */
+
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 15px 0;
+      border-bottom: 1px solid #22252c;
+    }
+
+    .setting-row:last-child {
+      border-bottom: 0;
+    }
+
+    .setting-info strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .setting-info span {
+      color: #727a85;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    /* ================= BUTTONS ================= */
+
+    .payment-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 10px 17px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      background: #8b5cf6;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #7c3aed;
+    }
+
+    .btn-secondary {
+      background: #1b1e24;
+      color: #c8ccd4;
+      border: 1px solid #30343d;
+    }
+
+    /* ================= NOTE ================= */
+
+    .info-box {
+      background: #111925;
+      border: 1px solid #263b59;
+      color: #8eadd2;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    /* ================= NOTIFICATION ================= */
+
+    .payment-notification {
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      background: #171a20;
+      border: 1px solid #343943;
+      color: #fff;
+      padding: 13px 17px;
+      border-radius: 10px;
+      box-shadow: 0 15px 40px rgba(0,0,0,.4);
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: .25s;
+      z-index: 5000;
+      font-size: 13px;
+    }
+
+    .payment-notification.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media (max-width: 1100px) {
+      .payment-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 800px) {
+
+      .admin-sidebar {
+        width: 70px;
+      }
+
+      .admin-brand {
+        padding: 20px 10px;
+        text-align: center;
+      }
+
+      .admin-brand h2 {
+        font-size: 0;
+      }
+
+      .admin-brand h2::after {
+        content: "AS";
+        font-size: 18px;
+      }
+
+      .admin-brand small,
+      .admin-nav-title {
+        display: none;
+      }
+
+      .admin-nav {
+        padding: 12px 8px;
+      }
+
+      .admin-nav a {
+        justify-content: center;
+        padding: 12px 5px;
+      }
+
+      .admin-nav a span:not(.nav-icon) {
+        display: none;
+      }
+
+      .admin-main {
+        width: calc(100% - 70px);
+        margin-left: 70px;
+      }
+
+      .admin-content {
+        padding: 20px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 600px) {
+
+      .admin-topbar {
+        padding: 0 15px;
+      }
+
+      .admin-topbar h1 {
+        font-size: 17px;
+      }
+
+      .store-link {
+        display: none;
+      }
+
+      .admin-content {
+        padding: 15px;
+      }
+
+      .payment-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .payment-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .payment-actions {
+        flex-direction: column;
+      }
+
+      .payment-actions button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="admin-layout">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="admin-sidebar">
+
+      <div class="admin-brand">
+        <h2>Alamin <span>Shop</span></h2>
+        <small>Admin Dashboard</small>
+      </div>
+
+      <nav class="admin-nav">
+
+        <div class="admin-nav-title">Main</div>
+
+        <a href="index.html">
+          <span class="nav-icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="orders.html">
+          <span class="nav-icon">🛒</span>
+          <span>Orders</span>
+        </a>
+
+        <a href="products.html">
+          <span class="nav-icon">📦</span>
+          <span>Products</span>
+        </a>
+
+        <a href="inventory.html">
+          <span class="nav-icon">🏷️</span>
+          <span>Inventory</span>
+        </a>
+
+        <a href="categories.html">
+          <span class="nav-icon">🗂️</span>
+          <span>Categories</span>
+        </a>
+
+        <div class="admin-nav-title">Management</div>
+
+        <a href="customers.html">
+          <span class="nav-icon">👥</span>
+          <span>Customers</span>
+        </a>
+
+        <a href="coupons.html">
+          <span class="nav-icon">🎟️</span>
+          <span>Coupons</span>
+        </a>
+
+        <a href="reports.html">
+          <span class="nav-icon">📈</span>
+          <span>Reports</span>
+        </a>
+
+        <a href="notifications.html">
+          <span class="nav-icon">🔔</span>
+          <span>Notifications</span>
+        </a>
+
+        <div class="admin-nav-title">System</div>
+
+        <a href="settings.html">
+          <span class="nav-icon">⚙️</span>
+          <span>Settings</span>
+        </a>
+
+        <a href="payments.html" class="active">
+          <span class="nav-icon">💳</span>
+          <span>Payments</span>
+        </a>
+
+        <a href="../index.html">
+          <span class="nav-icon">🌐</span>
+          <span>View Store</span>
+        </a>
+
+        <a href="../account.html">
+          <span class="nav-icon">👤</span>
+          <span>My Account</span>
+        </a>
+
+        <a href="../login.html">
+          <span class="nav-icon">🚪</span>
+          <span>Logout</span>
+        </a>
+
+      </nav>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="admin-main">
+
+      <header class="admin-topbar">
+
+        <h1>Payment Methods</h1>
+
+        <div class="admin-topbar-right">
+
+          <a href="../index.html" class="store-link">
+            View Store →
+          </a>
+
+          <div class="admin-avatar">
+            A
+          </div>
+
+        </div>
+
+      </header>
+
+
+      <section class="admin-content">
+
+        <div class="page-heading">
+          <h2>Payment Settings</h2>
+          <p>
+            Manage the payment methods available during checkout.
+          </p>
+        </div>
+
+
+        <!-- ================= STATS ================= -->
+
+        <div class="payment-stats">
+
+          <div class="stat-card">
+            <div class="stat-label">Total Methods</div>
+            <div class="stat-value" id="totalMethods">0</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Active Methods</div>
+            <div class="stat-value" id="activeMethods">0</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Orders Paid</div>
+            <div class="stat-value" id="paidOrders">0</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Payment Revenue</div>
+            <div class="stat-value" id="paymentRevenue">৳0</div>
+          </div>
+
+        </div>
+
+
+        <div class="info-box">
+          <strong>Demo payment system:</strong>
+          Payment gateway credentials are not connected yet.
+          bKash, Nagad, SSLCommerz and card payments will become
+          fully functional after the PHP + MySQL backend and gateway
+          integration are added.
+        </div>
+
+
+        <!-- ================= PAYMENT LIST ================= -->
+
+        <div class="payment-list">
+
+
+          <!-- COD -->
+
+          <div class="payment-card">
+
+            <div class="payment-header">
+
+              <div class="payment-title">
+
+                <div class="payment-icon">
+                  💵
+                </div>
+
+                <div>
+                  <h3>Cash on Delivery</h3>
+                  <p>Collect payment when the customer receives the order.</p>
+                </div>
+
+              </div>
+
+              <span
+                class="status-badge status-active"
+                id="codStatus"
+              >
+                ● Active
+              </span>
+
+            </div>
+
+
+            <div class="payment-body">
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <strong>Enable Cash on Delivery</strong>
+                  <span>
+                    Customers can choose COD during checkout.
+                  </span>
+                </div>
+
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="codEnabled"
+                    checked
+                  >
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+
+              <div class="form-grid" style="margin-top:20px;">
+
+                <div class="form-group">
+
+                  <label>COD Extra Charge</label>
+
+                  <input
+                    type="number"
+                    id="codCharge"
+                    min="0"
+                    value="0"
+                  >
+
+                  <div class="help-text">
+                    Set 0 if there is no additional COD fee.
+                  </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label>Maximum COD Order</label>
+
+                  <input
+                    type="number"
+                    id="codMaximum"
+                    min="0"
+                    value="0"
+                  >
+
+                  <div class="help-text">
+                    Set 0 for unlimited COD orders.
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- bKASH -->
+
+          <div class="payment-card">
+
+            <div class="payment-header">
+
+              <div class="payment-title">
+
+                <div class="payment-icon">
+                  📱
+                </div>
+
+                <div>
+                  <h3>bKash</h3>
+                  <p>Mobile financial service payment.</p>
+                </div>
+
+              </div>
+
+              <span
+                class="status-badge status-inactive"
+                id="bkashStatus"
+              >
+                ● Inactive
+              </span>
+
+            </div>
+
+
+            <div class="payment-body">
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <strong>Enable bKash</strong>
+                  <span>
+                    Allow customers to pay using bKash.
+                  </span>
+                </div>
+
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="bkashEnabled"
+                  >
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+
+              <div class="form-grid" style="margin-top:20px;">
+
+                <div class="form-group">
+
+                  <label>bKash Merchant Number</label>
+
+                  <input
+                    type="text"
+                    id="bkashNumber"
+                    placeholder="01XXXXXXXXX"
+                  >
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label>Payment Mode</label>
+
+                  <select id="bkashMode">
+
+                    <option value="manual">
+                      Manual Payment
+                    </option>
+
+                    <option value="api">
+                      bKash API
+                    </option>
+
+                  </select>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- NAGAD -->
+
+          <div class="payment-card">
+
+            <div class="payment-header">
+
+              <div class="payment-title">
+
+                <div class="payment-icon">
+                  📲
+                </div>
+
+                <div>
+                  <h3>Nagad</h3>
+                  <p>Mobile financial service payment.</p>
+                </div>
+
+              </div>
+
+              <span
+                class="status-badge status-inactive"
+                id="nagadStatus"
+              >
+                ● Inactive
+              </span>
+
+            </div>
+
+
+            <div class="payment-body">
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <strong>Enable Nagad</strong>
+                  <span>
+                    Allow customers to pay using Nagad.
+                  </span>
+                </div>
+
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="nagadEnabled"
+                  >
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+
+              <div class="form-grid" style="margin-top:20px;">
+
+                <div class="form-group">
+
+                  <label>Nagad Merchant Number</label>
+
+                  <input
+                    type="text"
+                    id="nagadNumber"
+                    placeholder="01XXXXXXXXX"
+                  >
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label>Payment Mode</label>
+
+                  <select id="nagadMode">
+
+                    <option value="manual">
+                      Manual Payment
+                    </option>
+
+                    <option value="api">
+                      Nagad API
+                    </option>
+
+                  </select>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- SSLCOMMERZ -->
+
+          <div class="payment-card">
+
+            <div class="payment-header">
+
+              <div class="payment-title">
+
+                <div class="payment-icon">
+                  💳
+                </div>
+
+                <div>
+                  <h3>SSLCommerz</h3>
+                  <p>Cards and online mobile banking gateway.</p>
+                </div>
+
+              </div>
+
+              <span
+                class="status-badge status-inactive"
+                id="sslStatus"
+              >
+                ● Inactive
+              </span>
+
+            </div>
+
+
+            <div class="payment-body">
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <strong>Enable SSLCommerz</strong>
+                  <span>
+                    Allow online payment through SSLCommerz.
+                  </span>
+                </div>
+
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="sslEnabled"
+                  >
+                  <span class="slider"></span>
+                </label>
+
+              </div>
+
+
+              <div class="form-grid" style="margin-top:20px;">
+
+                <div class="form-group">
+
+                  <label>Store ID</label>
+
+                  <input
+                    type="text"
+                    id="sslStoreId"
+                    placeholder="Your Store ID"
+                  >
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label>Store Password</label>
+
+                  <input
+                    type="password"
+                    id="sslStorePassword"
+                    placeholder="Your Store Password"
+                  >
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label>Environment</label>
+
+                  <select id="sslEnvironment">
+
+                    <option value="sandbox">
+                      Sandbox
+                    </option>
+
+                    <option value="live">
+                      Live
+                    </option>
+
+                  </select>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- CARD -->
+
+          <div class="payment-card">
+
+            <div class="payment-header">
+
+              <div class="payment-title">
+
+                <div class="payment-icon">
+                  💳
+                </div>
+
+                <div>
+                  <h3>Card Payment</h3>
+                  <p>Credit and debit card payment option.</p>
+                </div>
+
+              </div>
+
+              <span
+                class="status-badge status-inactive"
+                id="cardStatus"
+              >
+                ● Inactive
+              </span>
+
+            </div>
+
+
+            <div class="payment-body">
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <strong>Enable Card Payment</strong>
+                  <span>
+                    Enable card payment through the configured gateway.
+                  </span>
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    type="checkbox"
+                    id="cardEnabled"
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- PAYMENT OPTIONS -->
+
+          <div class="payment-card">
+
+            <div class="payment-header">
+
+              <div class="payment-title">
+
+                <div class="payment-icon">
+                  ⚙️
+                </div>
+
+                <div>
+                  <h3>General Payment Options</h3>
+                  <p>Control general payment behavior.</p>
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="payment-body">
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <strong>Auto Confirm Online Payments</strong>
+                  <span>
+                    Automatically confirm orders after successful gateway payment.
+                  </span>
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    type="checkbox"
+                    id="autoConfirmPayment"
+                    checked
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+                  <strong>Show Payment Instructions</strong>
+                  <span>
+                    Show payment instructions to customers during checkout.
+                  </span>
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    type="checkbox"
+                    id="showInstructions"
+                    checked
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+
+              <div class="form-group" style="margin-top:20px;">
+
+                <label>
+                  Manual Payment Instructions
+                </label>
+
+                <textarea
+                  id="paymentInstructions"
+                  placeholder="Enter payment instructions for customers..."
+                ></textarea>
+
+                <div class="help-text">
+                  Example: Send payment to the merchant number and provide the transaction ID.
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+        <!-- ================= ACTIONS ================= -->
+
+        <div class="payment-actions">
+
+          <button
+            class="btn btn-secondary"
+            id="resetPayments"
+          >
+            Reset
+          </button>
+
+          <button
+            class="btn btn-primary"
+            id="savePayments"
+          >
+            Save Payment Settings
+          </button>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <div
+    class="payment-notification"
+    id="paymentNotification"
+  ></div>
+
+
+  <script src="../script.js"></script>
+
+  <script>
+
+    /* =====================================
+       ALAMIN SHOP PAYMENT SETTINGS
+    ====================================== */
+
+    const PAYMENT_KEY = "shopnest_payment_settings";
+
+
+    const defaultPayments = {
+
+      codEnabled: true,
+      codCharge: 0,
+      codMaximum: 0,
+
+      bkashEnabled: false,
+      bkashNumber: "",
+      bkashMode: "manual",
+
+      nagadEnabled: false,
+      nagadNumber: "",
+      nagadMode: "manual",
+
+      sslEnabled: false,
+      sslStoreId: "",
+      sslStorePassword: "",
+      sslEnvironment: "sandbox",
+
+      cardEnabled: false,
+
+      autoConfirmPayment: true,
+      showInstructions: true,
+
+      paymentInstructions:
+        "For manual payment, complete the payment using the provided merchant number and keep your transaction ID."
+    };
+
+
+    let paymentSettings =
+      loadPaymentSettings();
+
+
+    function loadPaymentSettings() {
+
+      try {
+
+        const saved = JSON.parse(
+          localStorage.getItem(PAYMENT_KEY)
+        );
+
+        return {
+          ...defaultPayments,
+          ...(saved || {})
+        };
+
+      } catch (error) {
+
+        return {
+          ...defaultPayments
+        };
+
+      }
+
+    }
+
+
+    function setField(id, value) {
+
+      const element =
+        document.getElementById(id);
+
+      if (!element) return;
+
+      if (element.type === "checkbox") {
+
+        element.checked =
+          Boolean(value);
+
+      } else {
+
+        element.value =
+          value ?? "";
+
+      }
+
+    }
+
+
+    function getField(id) {
+
+      const element =
+        document.getElementById(id);
+
+      if (!element) return "";
+
+      if (element.type === "checkbox") {
+
+        return element.checked;
+
+      }
+
+      return element.value;
+
+    }
+
+
+    function loadPaymentForm() {
+
+      Object.keys(defaultPayments)
+        .forEach(key => {
+
+          setField(
+            key,
+            paymentSettings[key]
+          );
+
+        });
+
+      updateStatuses();
+
+    }
+
+
+    function collectPaymentForm() {
+
+      Object.keys(defaultPayments)
+        .forEach(key => {
+
+          paymentSettings[key] =
+            getField(key);
+
+        });
+
+      paymentSettings.codCharge =
+        Number(paymentSettings.codCharge) || 0;
+
+      paymentSettings.codMaximum =
+        Number(paymentSettings.codMaximum) || 0;
+
+    }
+
+
+    function savePaymentSettings() {
+
+      localStorage.setItem(
+        PAYMENT_KEY,
+        JSON.stringify(paymentSettings)
+      );
+
+    }
+
+
+    /* ================================
+       STATUS
+    ================================= */
+
+    function updateStatus(id, enabled) {
+
+      const element =
+        document.getElementById(id);
+
+      if (!element) return;
+
+      if (enabled) {
+
+        element.className =
+          "status-badge status-active";
+
+        element.textContent =
+          "● Active";
+
+      } else {
+
+        element.className =
+          "status-badge status-inactive";
+
+        element.textContent =
+          "● Inactive";
+
+      }
+
+    }
+
+
+    function updateStatuses() {
+
+      updateStatus(
+        "codStatus",
+        paymentSettings.codEnabled
+      );
+
+      updateStatus(
+        "bkashStatus",
+        paymentSettings.bkashEnabled
+      );
+
+      updateStatus(
+        "nagadStatus",
+        paymentSettings.nagadEnabled
+      );
+
+      updateStatus(
+        "sslStatus",
+        paymentSettings.sslEnabled
+      );
+
+      updateStatus(
+        "cardStatus",
+        paymentSettings.cardEnabled
+      );
+
+    }
+
+
+    /* ================================
+       STATS
+    ================================= */
+
+    function loadPaymentStats() {
+
+      const activeMethods = [
+
+        paymentSettings.codEnabled,
+        paymentSettings.bkashEnabled,
+        paymentSettings.nagadEnabled,
+        paymentSettings.sslEnabled,
+        paymentSettings.cardEnabled
+
+      ].filter(Boolean).length;
+
+
+      document.getElementById(
+        "totalMethods"
+      ).textContent = "5";
+
+
+      document.getElementById(
+        "activeMethods"
+      ).textContent =
+        activeMethods;
+
+
+      let orders = [];
+
+      try {
+
+        orders = JSON.parse(
+          localStorage.getItem(
+            "shopnest_orders"
+          )
+        ) || [];
+
+      } catch (error) {
+
+        orders = [];
+
+      }
+
+
+      const paidOrders =
+        orders.filter(order => {
+
+          return [
+            "Confirmed",
+            "Processing",
+            "Packed",
+            "Shipped",
+            "Delivered"
+          ].includes(order.status);
+
+        }).length;
+
+
+      const revenue =
+        orders
+          .filter(order => {
+
+            return [
+              "Confirmed",
+              "Processing",
+              "Packed",
+              "Shipped",
+              "Delivered"
+            ].includes(order.status);
+
+          })
+          .reduce(
+            (sum, order) =>
+              sum + Number(order.total || 0),
+            0
+          );
+
+
+      document.getElementById(
+        "paidOrders"
+      ).textContent =
+        paidOrders;
+
+
+      document.getElementById(
+        "paymentRevenue"
+      ).textContent =
+        "৳" +
+        revenue.toLocaleString("en-BD");
+
+    }
+
+
+    /* ================================
+       NOTIFICATION
+    ================================= */
+
+    function showNotification(message) {
+
+      const box =
+        document.getElementById(
+          "paymentNotification"
+        );
+
+      box.textContent =
+        message;
+
+      box.classList.add("show");
+
+      setTimeout(() => {
+
+        box.classList.remove("show");
+
+      }, 2500);
+
+    }
+
+
+    /* ================================
+       SAVE
+    ================================= */
+
+    document
+      .getElementById("savePayments")
+      .addEventListener(
+        "click",
+        () => {
+
+          collectPaymentForm();
+
+          savePaymentSettings();
+
+          updateStatuses();
+
+          loadPaymentStats();
+
+          showNotification(
+            "Payment settings saved successfully."
+          );
+
+        }
+      );
+
+
+    /* ================================
+       RESET
+    ================================= */
+
+    document
+      .getElementById("resetPayments")
+      .addEventListener(
+        "click",
+        () => {
+
+          const confirmed =
+            confirm(
+              "Reset all payment settings to default?"
+            );
+
+          if (!confirmed) return;
+
+          paymentSettings = {
+            ...defaultPayments
+          };
+
+          savePaymentSettings();
+
+          loadPaymentForm();
+
+          loadPaymentStats();
+
+          showNotification(
+            "Payment settings reset successfully."
+          );
+
+        }
+      );
+
+
+    /* ================================
+       LIVE STATUS
+    ================================= */
+
+    [
+      "codEnabled",
+      "bkashEnabled",
+      "nagadEnabled",
+      "sslEnabled",
+      "cardEnabled"
+    ].forEach(id => {
+
+      const checkbox =
+        document.getElementById(id);
+
+      checkbox.addEventListener(
+        "change",
+        () => {
+
+          paymentSettings[id] =
+            checkbox.checked;
+
+          updateStatuses();
+
+        }
+      );
+
+    });
+
+
+    /* ================================
+       INITIAL LOAD
+    ================================= */
+
+    loadPaymentForm();
+
+    loadPaymentStats();
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search - Alamin Shop Admin</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #080a0d;
+      --panel: #101318;
+      --panel-2: #151922;
+      --border: #252b35;
+      --text: #f5f7fa;
+      --muted: #8d96a5;
+      --accent: #7c5cff;
+      --accent-2: #9a84ff;
+      --danger: #ff5c70;
+      --success: #31d49b;
+      --warning: #ffb84d;
+    }
+
+    body {
+      font-family: Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 250px;
+      background: #0d1015;
+      border-right: 1px solid var(--border);
+      padding: 22px 15px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      overflow-y: auto;
+      z-index: 1000;
+      transition: .3s;
+    }
+
+    .brand {
+      padding: 5px 10px 25px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 18px;
+    }
+
+    .brand h2 {
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .brand span {
+      color: var(--accent-2);
+    }
+
+    .brand small {
+      display: block;
+      color: var(--muted);
+      margin-top: 5px;
+      font-size: 12px;
+    }
+
+    .nav-title {
+      color: #626b79;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 0 10px 8px;
+    }
+
+    .nav a {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      color: #aeb6c3;
+      text-decoration: none;
+      padding: 11px 12px;
+      border-radius: 10px;
+      margin-bottom: 4px;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      background: #181d27;
+      color: white;
+    }
+
+    .nav a.active {
+      border-left: 3px solid var(--accent);
+      padding-left: 9px;
+    }
+
+    .nav-icon {
+      width: 20px;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    /* MAIN */
+    .main {
+      margin-left: 250px;
+      width: calc(100% - 250px);
+      min-width: 0;
+    }
+
+    .topbar {
+      height: 72px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      background: rgba(8, 10, 13, .92);
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .mobile-menu {
+      display: none;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 9px;
+    }
+
+    .page-title h1 {
+      font-size: 21px;
+    }
+
+    .page-title p {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .admin-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 37px;
+      height: 37px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #4c3aa8);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .admin-user small {
+      color: var(--muted);
+      display: block;
+      font-size: 11px;
+    }
+
+    /* CONTENT */
+    .content {
+      padding: 28px;
+      max-width: 1300px;
+      margin: auto;
+    }
+
+    .search-box {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 20px;
+      margin-bottom: 22px;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .search-input-wrap {
+      flex: 1;
+      position: relative;
+    }
+
+    .search-input-wrap span {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 52px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: #0b0e13;
+      color: white;
+      outline: none;
+      padding: 0 15px 0 45px;
+      font-size: 15px;
+      transition: .2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(124, 92, 255, .12);
+    }
+
+    .search-btn {
+      border: 0;
+      background: var(--accent);
+      color: white;
+      border-radius: 11px;
+      padding: 0 25px;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .search-btn:hover {
+      background: var(--accent-2);
+      transform: translateY(-1px);
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      margin-top: 13px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      border: 1px solid var(--border);
+      background: #0c0f14;
+      color: #aeb6c3;
+      padding: 8px 13px;
+      border-radius: 9px;
+      font-size: 12px;
+    }
+
+    .filter-btn.active {
+      background: rgba(124, 92, 255, .14);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    /* STATS */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .stat {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .stat-value {
+      font-size: 25px;
+      font-weight: 800;
+      margin-top: 8px;
+    }
+
+    /* RESULTS */
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 13px;
+    }
+
+    .results-header h2 {
+      font-size: 16px;
+    }
+
+    .results-header span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .results {
+      display: grid;
+      gap: 10px;
+    }
+
+    .result-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      transition: .2s;
+    }
+
+    .result-card:hover {
+      border-color: #3a4150;
+      transform: translateY(-1px);
+    }
+
+    .result-left {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      min-width: 0;
+    }
+
+    .result-icon {
+      width: 43px;
+      height: 43px;
+      flex-shrink: 0;
+      border-radius: 11px;
+      background: #191e28;
+      display: grid;
+      place-items: center;
+      font-size: 19px;
+    }
+
+    .result-info {
+      min-width: 0;
+    }
+
+    .result-info h3 {
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .result-info p {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    .result-type {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 3px 7px;
+      border-radius: 5px;
+      background: #191e28;
+      color: #aeb6c3;
+      font-size: 10px;
+    }
+
+    .result-action {
+      border: 1px solid var(--border);
+      background: #0d1015;
+      color: white;
+      padding: 8px 13px;
+      border-radius: 8px;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    .result-action:hover {
+      border-color: var(--accent);
+    }
+
+    .empty {
+      background: var(--panel);
+      border: 1px dashed var(--border);
+      border-radius: 15px;
+      padding: 55px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .empty-icon {
+      font-size: 35px;
+      margin-bottom: 12px;
+      opacity: .7;
+    }
+
+    .empty h3 {
+      color: #dbe0e7;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .empty p {
+      font-size: 12px;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      background: #161b24;
+      border: 1px solid var(--border);
+      color: white;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: .25s;
+      z-index: 5000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1000px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 800px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .mobile-menu {
+        display: block;
+      }
+
+      .topbar {
+        padding: 0 16px;
+      }
+
+      .content {
+        padding: 18px;
+      }
+
+      .admin-user > div:not(.avatar) {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .search-row {
+        flex-direction: column;
+      }
+
+      .search-btn {
+        height: 48px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stat {
+        padding: 14px;
+      }
+
+      .stat-value {
+        font-size: 21px;
+      }
+
+      .result-card {
+        align-items: flex-start;
+      }
+
+      .result-action {
+        padding: 7px 9px;
+      }
+
+      .page-title p {
+        display: none;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .result-action {
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+      <h2>Alamin <span>Shop</span></h2>
+      <small>Admin Panel</small>
+    </div>
+
+    <div class="nav-title">Main</div>
+
+    <nav class="nav">
+      <a href="index.html">
+        <span class="nav-icon">⌂</span>
+        Dashboard
+      </a>
+
+      <a href="orders.html">
+        <span class="nav-icon">▣</span>
+        Orders
+      </a>
+
+      <a href="products.html">
+        <span class="nav-icon">□</span>
+        Products
+      </a>
+
+      <a href="customers.html">
+        <span class="nav-icon">♙</span>
+        Customers
+      </a>
+
+      <a href="inventory.html">
+        <span class="nav-icon">▤</span>
+        Inventory
+      </a>
+
+      <a href="categories.html">
+        <span class="nav-icon">◫</span>
+        Categories
+      </a>
+
+      <a href="search.html" class="active">
+        <span class="nav-icon">⌕</span>
+        Search
+      </a>
+    </nav>
+
+    <div class="nav-title" style="margin-top:20px;">Management</div>
+
+    <nav class="nav">
+      <a href="coupons.html">
+        <span class="nav-icon">%</span>
+        Coupons
+      </a>
+
+      <a href="reviews.html">
+        <span class="nav-icon">★</span>
+        Reviews
+      </a>
+
+      <a href="returns.html">
+        <span class="nav-icon">↩</span>
+        Returns
+      </a>
+
+      <a href="couriers.html">
+        <span class="nav-icon">▰</span>
+        Couriers
+      </a>
+
+      <a href="delivery-zones.html">
+        <span class="nav-icon">⌖</span>
+        Delivery Zones
+      </a>
+
+      <a href="media.html">
+        <span class="nav-icon">▧</span>
+        Media
+      </a>
+
+      <a href="banners.html">
+        <span class="nav-icon">▱</span>
+        Banners
+      </a>
+    </nav>
+
+    <div class="nav-title" style="margin-top:20px;">System</div>
+
+    <nav class="nav">
+      <a href="reports.html">
+        <span class="nav-icon">◒</span>
+        Reports
+      </a>
+
+      <a href="notifications.html">
+        <span class="nav-icon">♢</span>
+        Notifications
+      </a>
+
+      <a href="staff.html">
+        <span class="nav-icon">♟</span>
+        Staff
+      </a>
+
+      <a href="audit-logs.html">
+        <span class="nav-icon">☷</span>
+        Audit Logs
+      </a>
+
+      <a href="seo.html">
+        <span class="nav-icon">⌁</span>
+        SEO
+      </a>
+
+      <a href="security.html">
+        <span class="nav-icon">◆</span>
+        Security
+      </a>
+
+      <a href="settings.html">
+        <span class="nav-icon">⚙</span>
+        Settings
+      </a>
+    </nav>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <header class="topbar">
+
+      <div class="topbar-left">
+
+        <button class="mobile-menu" onclick="toggleSidebar()">☰</button>
+
+        <div class="page-title">
+          <h1>Global Search</h1>
+          <p>Search across your store data</p>
+        </div>
+
+      </div>
+
+      <div class="admin-user">
+        <div>
+          <strong>Admin</strong>
+          <small>Administrator</small>
+        </div>
+
+        <div class="avatar">A</div>
+      </div>
+
+    </header>
+
+    <section class="content">
+
+      <!-- SEARCH -->
+      <div class="search-box">
+
+        <div class="search-row">
+
+          <div class="search-input-wrap">
+            <span>⌕</span>
+            <input
+              type="text"
+              id="searchInput"
+              class="search-input"
+              placeholder="Search products, orders, customers, coupons..."
+              autocomplete="off"
+            />
+          </div>
+
+          <button class="search-btn" onclick="performSearch()">
+            Search
+          </button>
+
+        </div>
+
+        <div class="filters">
+
+          <button class="filter-btn active" data-type="all" onclick="setFilter('all', this)">
+            All
+          </button>
+
+          <button class="filter-btn" data-type="product" onclick="setFilter('product', this)">
+            Products
+          </button>
+
+          <button class="filter-btn" data-type="order" onclick="setFilter('order', this)">
+            Orders
+          </button>
+
+          <button class="filter-btn" data-type="customer" onclick="setFilter('customer', this)">
+            Customers
+          </button>
+
+          <button class="filter-btn" data-type="coupon" onclick="setFilter('coupon', this)">
+            Coupons
+          </button>
+
+          <button class="filter-btn" data-type="category" onclick="setFilter('category', this)">
+            Categories
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- STATS -->
+      <div class="stats">
+
+        <div class="stat">
+          <div class="stat-label">Products</div>
+          <div class="stat-value" id="productCount">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Orders</div>
+          <div class="stat-value" id="orderCount">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Customers</div>
+          <div class="stat-value" id="customerCount">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Total Results</div>
+          <div class="stat-value" id="totalCount">0</div>
+        </div>
+
+      </div>
+
+      <!-- RESULTS -->
+      <div class="results-header">
+        <h2>Search Results</h2>
+        <span id="resultText">Start typing to search</span>
+      </div>
+
+      <div id="results" class="results">
+
+        <div class="empty">
+          <div class="empty-icon">⌕</div>
+          <h3>Search your store</h3>
+          <p>Find products, orders, customers and more.</p>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const searchInput = document.getElementById("searchInput");
+  const results = document.getElementById("results");
+  const resultText = document.getElementById("resultText");
+
+  let activeFilter = "all";
+
+  /* -----------------------------
+     LOCAL STORAGE DATA
+  ----------------------------- */
+
+  function getArray(key) {
+    try {
+      const data = JSON.parse(localStorage.getItem(key));
+      return Array.isArray(data) ? data : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function getStoreData() {
+
+    const products = getArray("shopnest_products");
+
+    const orders = getArray("shopnest_orders");
+
+    const users = getArray("shopnest_users");
+
+    const coupons = getArray("shopnest_coupons");
+
+    const categories = getArray("shopnest_categories");
+
+    return {
+      products,
+      orders,
+      customers: users,
+      coupons,
+      categories
+    };
+  }
+
+  /* -----------------------------
+     NORMALIZE DATA
+  ----------------------------- */
+
+  function makeSearchData() {
+
+    const data = getStoreData();
+
+    const items = [];
+
+    data.products.forEach(product => {
+
+      items.push({
+        type: "product",
+        icon: "□",
+        title:
+          product.name ||
+          product.title ||
+          "Unnamed Product",
+
+        description:
+          [
+            product.sku,
+            product.category,
+            product.status,
+            product.price ? "৳" + product.price : ""
+          ]
+          .filter(Boolean)
+          .join(" • "),
+
+        search:
+          JSON.stringify(product),
+
+        action: "Open",
+        url:
+          "product-edit.html?id=" +
+          encodeURIComponent(
+            product.id ||
+            product._id ||
+            product.sku ||
+            ""
+          )
+      });
+
+    });
+
+    data.orders.forEach(order => {
+
+      const customer =
+        order.customerName ||
+        order.name ||
+        order.customer?.name ||
+        "Guest Customer";
+
+      const phone =
+        order.phone ||
+        order.customerPhone ||
+        order.customer?.phone ||
+        "";
+
+      const orderId =
+        order.id ||
+        order.orderId ||
+        order.orderNumber ||
+        order._id ||
+        "Order";
+
+      items.push({
+        type: "order",
+        icon: "▣",
+        title: "#" + orderId,
+
+        description:
+          [
+            customer,
+            phone,
+            order.status,
+            order.total ? "৳" + order.total : ""
+          ]
+          .filter(Boolean)
+          .join(" • "),
+
+        search:
+          JSON.stringify(order),
+
+        action: "View",
+        url:
+          "order-details.html?id=" +
+          encodeURIComponent(orderId)
+      });
+
+    });
+
+    data.customers.forEach(customer => {
+
+      items.push({
+        type: "customer",
+        icon: "♙",
+
+        title:
+          customer.name ||
+          customer.fullName ||
+          "Customer",
+
+        description:
+          [
+            customer.email,
+            customer.phone,
+            customer.city
+          ]
+          .filter(Boolean)
+          .join(" • "),
+
+        search:
+          JSON.stringify(customer),
+
+        action: "View",
+
+        url:
+          "customer-details.html?id=" +
+          encodeURIComponent(
+            customer.id ||
+            customer._id ||
+            customer.email ||
+            customer.phone ||
+            ""
+          )
+      });
+
+    });
+
+    data.coupons.forEach(coupon => {
+
+      items.push({
+        type: "coupon",
+        icon: "%",
+
+        title:
+          coupon.code ||
+          coupon.name ||
+          "Coupon",
+
+        description:
+          [
+            coupon.discount
+              ? coupon.discount + "%"
+              : "",
+            coupon.status,
+            coupon.type
+          ]
+          .filter(Boolean)
+          .join(" • "),
+
+        search:
+          JSON.stringify(coupon),
+
+        action: "Open",
+        url: "coupons.html"
+      });
+
+    });
+
+    data.categories.forEach(category => {
+
+      items.push({
+        type: "category",
+        icon: "◫",
+
+        title:
+          category.name ||
+          category.title ||
+          "Category",
+
+        description:
+          category.description ||
+          "Store category",
+
+        search:
+          JSON.stringify(category),
+
+        action: "Open",
+        url: "categories.html"
+      });
+
+    });
+
+    return items;
+  }
+
+  /* -----------------------------
+     SEARCH
+  ----------------------------- */
+
+  function performSearch() {
+
+    const query =
+      searchInput.value
+        .trim()
+        .toLowerCase();
+
+    const allItems = makeSearchData();
+
+    let filtered = allItems;
+
+    if (activeFilter !== "all") {
+
+      filtered =
+        filtered.filter(
+          item => item.type === activeFilter
+        );
+
+    }
+
+    if (query) {
+
+      filtered =
+        filtered.filter(item =>
+          item.search
+            .toLowerCase()
+            .includes(query)
+        );
+
+    }
+
+    renderResults(filtered, query);
+
+  }
+
+  /* -----------------------------
+     RENDER
+  ----------------------------- */
+
+  function renderResults(items, query) {
+
+    updateStats(items);
+
+    if (!items.length) {
+
+      results.innerHTML = `
+        <div class="empty">
+          <div class="empty-icon">⌕</div>
+          <h3>No results found</h3>
+          <p>
+            ${
+              query
+                ? `Nothing matched "${escapeHtml(query)}".`
+                : "There are no records in this section yet."
+            }
+          </p>
+        </div>
+      `;
+
+      resultText.textContent = "0 results";
+      return;
+    }
+
+    resultText.textContent =
+      `${items.length} result${items.length === 1 ? "" : "s"}`;
+
+    results.innerHTML =
+      items.map(item => {
+
+        return `
+          <div class="result-card">
+
+            <div class="result-left">
+
+              <div class="result-icon">
+                ${item.icon}
+              </div>
+
+              <div class="result-info">
+
+                <h3>
+                  ${escapeHtml(item.title)}
+                </h3>
+
+                <p>
+                  ${escapeHtml(item.description || "")}
+                </p>
+
+                <span class="result-type">
+                  ${capitalize(item.type)}
+                </span>
+
+              </div>
+
+            </div>
+
+            <button
+              class="result-action"
+              onclick="openResult('${encodeURIComponent(item.url)}')"
+            >
+              ${item.action}
+            </button>
+
+          </div>
+        `;
+
+      }).join("");
+
+  }
+
+  /* -----------------------------
+     FILTER
+  ----------------------------- */
+
+  function setFilter(type, button) {
+
+    activeFilter = type;
+
+    document
+      .querySelectorAll(".filter-btn")
+      .forEach(btn =>
+        btn.classList.remove("active")
+      );
+
+    button.classList.add("active");
+
+    performSearch();
+  }
+
+  /* -----------------------------
+     STATS
+  ----------------------------- */
+
+  function updateStats(currentItems) {
+
+    const data = getStoreData();
+
+    document.getElementById("productCount")
+      .textContent = data.products.length;
+
+    document.getElementById("orderCount")
+      .textContent = data.orders.length;
+
+    document.getElementById("customerCount")
+      .textContent = data.customers.length;
+
+    document.getElementById("totalCount")
+      .textContent = currentItems.length;
+  }
+
+  /* -----------------------------
+     OPEN RESULT
+  ----------------------------- */
+
+  function openResult(encodedUrl) {
+
+    const url = decodeURIComponent(encodedUrl);
+
+    if (!url) {
+      showToast("Page not available");
+      return;
+    }
+
+    window.location.href = url;
+  }
+
+  /* -----------------------------
+     HELPERS
+  ----------------------------- */
+
+  function capitalize(text) {
+
+    return text.charAt(0).toUpperCase() +
+      text.slice(1);
+
+  }
+
+  function escapeHtml(value) {
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+  function showToast(message) {
+
+    const toast =
+      document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 2500);
+
+  }
+
+  /* -----------------------------
+     SIDEBAR
+  ----------------------------- */
+
+  function toggleSidebar() {
+
+    document
+      .getElementById("sidebar")
+      .classList.toggle("open");
+
+  }
+
+  /* -----------------------------
+     LIVE SEARCH
+  ----------------------------- */
+
+  searchInput.addEventListener(
+    "input",
+    performSearch
+  );
+
+  searchInput.addEventListener(
+    "keydown",
+    event => {
+
+      if (event.key === "Enter") {
+        performSearch();
+      }
+
+    }
+  );
+
+  /* -----------------------------
+     INITIAL LOAD
+  ----------------------------- */
+
+  updateStats([]);
+
+</script>
+
+</body>
+</html>

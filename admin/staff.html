@@ -1,0 +1,2803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Management - Alamin Shop Admin</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    :root {
+      --bg: #08090b;
+      --card: #111318;
+      --card2: #161920;
+      --border: #272b33;
+      --text: #f8fafc;
+      --muted: #9299a8;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+      --blue: #3b82f6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .admin-layout {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* SIDEBAR */
+
+    .admin-sidebar {
+      width: 250px;
+      min-height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      background: #0d0f13;
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .admin-logo {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--border);
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .admin-logo span {
+      color: #8b93a3;
+      margin-left: 5px;
+    }
+
+    .admin-nav {
+      padding: 18px 12px;
+    }
+
+    .admin-nav-title {
+      color: #656d7b;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+      margin-top: 8px;
+    }
+
+    .admin-nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 13px;
+      margin-bottom: 4px;
+      border-radius: 10px;
+      color: #aab1bf;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    .admin-nav a:hover,
+    .admin-nav a.active {
+      background: #191c23;
+      color: #fff;
+    }
+
+    .admin-nav-icon {
+      width: 20px;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    /* MAIN */
+
+    .admin-main {
+      width: calc(100% - 250px);
+      margin-left: 250px;
+      min-height: 100vh;
+    }
+
+    .admin-topbar {
+      height: 72px;
+      padding: 0 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8, 9, 11, .95);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+    }
+
+    .admin-topbar-title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .admin-topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .store-link {
+      color: #aab1bf;
+      font-size: 13px;
+    }
+
+    .admin-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #20242c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .admin-content {
+      padding: 30px;
+    }
+
+    /* STATS */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .stat-small {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 7px;
+    }
+
+    /* TOOLBAR */
+
+    .toolbar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 230px;
+    }
+
+    .search-box input,
+    .toolbar select {
+      width: 100%;
+      height: 44px;
+      padding: 0 13px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      outline: none;
+      background: #0c0e12;
+      color: #fff;
+    }
+
+    .search-box input:focus,
+    .toolbar select:focus {
+      border-color: #555d6b;
+    }
+
+    .filter-select {
+      min-width: 160px;
+    }
+
+    .btn {
+      min-height: 44px;
+      padding: 0 17px;
+      border: 0;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .btn-primary {
+      background: #fff;
+      color: #08090b;
+    }
+
+    .btn-primary:hover {
+      opacity: .88;
+    }
+
+    .btn-secondary {
+      background: #20242c;
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      background: #292e38;
+    }
+
+    .btn-danger {
+      background: #3a171b;
+      color: #ff8c94;
+    }
+
+    .btn-danger:hover {
+      background: #4a1b20;
+    }
+
+    .btn-small {
+      min-height: 34px;
+      padding: 0 11px;
+      font-size: 12px;
+    }
+
+    /* TABLE */
+
+    .table-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-title {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .table-muted {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1050px;
+    }
+
+    th,
+    td {
+      padding: 15px 16px;
+      text-align: left;
+      border-bottom: 1px solid #20242b;
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #0d0f13;
+      color: #858d9d;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .staff-info {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .staff-avatar {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #20242c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .staff-name {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .staff-email {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .badge-active {
+      background: rgba(34, 197, 94, .12);
+      color: #62df8b;
+    }
+
+    .badge-inactive {
+      background: rgba(148, 163, 184, .12);
+      color: #aeb6c5;
+    }
+
+    .badge-admin {
+      background: rgba(239, 68, 68, .12);
+      color: #ff7c84;
+    }
+
+    .badge-manager {
+      background: rgba(59, 130, 246, .12);
+      color: #76a9fa;
+    }
+
+    .badge-editor {
+      background: rgba(245, 158, 11, .12);
+      color: #f4bd5d;
+    }
+
+    .badge-support {
+      background: rgba(168, 85, 247, .12);
+      color: #c08af7;
+    }
+
+    .permissions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      max-width: 240px;
+    }
+
+    .permission {
+      padding: 4px 7px;
+      border-radius: 6px;
+      background: #1b1f26;
+      color: #b9c0cc;
+      font-size: 10px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .empty-state {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    /* MODAL */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      padding: 20px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, .72);
+      z-index: 500;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(720px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #111318;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 30px 100px rgba(0,0,0,.5);
+    }
+
+    .modal-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      width: 35px;
+      height: 35px;
+      border: 0;
+      border-radius: 8px;
+      background: #20242c;
+      color: #fff;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      display: block;
+      color: #aeb5c3;
+      font-size: 12px;
+      margin-bottom: 7px;
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      height: 44px;
+      padding: 0 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      outline: none;
+      background: #0c0e12;
+      color: #fff;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #555d6b;
+    }
+
+    .permission-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin-top: 5px;
+    }
+
+    .permission-check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #0c0e12;
+      color: #c4cad4;
+      font-size: 12px;
+    }
+
+    .permission-check input {
+      width: 16px;
+      height: 16px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 4px;
+    }
+
+    .checkbox-row input {
+      width: 17px;
+      height: 17px;
+    }
+
+    .checkbox-row label {
+      margin: 0;
+      color: #c5cad4;
+      font-size: 13px;
+    }
+
+    .modal-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* VIEW MODAL */
+
+    .profile-box {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      background: #0c0e12;
+      border-radius: 12px;
+      margin-bottom: 18px;
+    }
+
+    .profile-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #20242c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .profile-name {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .profile-email {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .detail-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .detail-item {
+      padding: 13px;
+      background: #0c0e12;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .detail-label {
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 5px;
+    }
+
+    .detail-value {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 1100px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .permission-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 800px) {
+
+      .admin-sidebar {
+        width: 70px;
+      }
+
+      .admin-logo {
+        justify-content: center;
+        padding: 0;
+      }
+
+      .admin-logo span,
+      .admin-logo-text,
+      .admin-nav-title,
+      .admin-nav a span:not(.admin-nav-icon) {
+        display: none;
+      }
+
+      .admin-nav a {
+        justify-content: center;
+        padding: 13px 5px;
+      }
+
+      .admin-main {
+        width: calc(100% - 70px);
+        margin-left: 70px;
+      }
+
+      .admin-topbar {
+        padding: 0 18px;
+      }
+
+      .admin-content {
+        padding: 20px 15px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+
+      .detail-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar {
+        flex-direction: column;
+      }
+
+      .search-box,
+      .filter-select {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .toolbar .btn {
+        width: 100%;
+      }
+
+      .permission-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .store-link {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+  <!-- SIDEBAR -->
+
+  <aside class="admin-sidebar">
+
+    <div class="admin-logo">
+      <div class="admin-logo-text">
+        Alamin<span>Shop</span>
+      </div>
+    </div>
+
+    <nav class="admin-nav">
+
+      <div class="admin-nav-title">Main</div>
+
+      <a href="index.html">
+        <span class="admin-nav-icon">⌂</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="orders.html">
+        <span class="admin-nav-icon">▤</span>
+        <span>Orders</span>
+      </a>
+
+      <a href="products.html">
+        <span class="admin-nav-icon">□</span>
+        <span>Products</span>
+      </a>
+
+      <a href="inventory.html">
+        <span class="admin-nav-icon">▥</span>
+        <span>Inventory</span>
+      </a>
+
+      <a href="categories.html">
+        <span class="admin-nav-icon">▦</span>
+        <span>Categories</span>
+      </a>
+
+      <a href="banners.html">
+        <span class="admin-nav-icon">▣</span>
+        <span>Banners</span>
+      </a>
+
+      <div class="admin-nav-title">Sales</div>
+
+      <a href="customers.html">
+        <span class="admin-nav-icon">♙</span>
+        <span>Customers</span>
+      </a>
+
+      <a href="coupons.html">
+        <span class="admin-nav-icon">%</span>
+        <span>Coupons</span>
+      </a>
+
+      <a href="returns.html">
+        <span class="admin-nav-icon">↩</span>
+        <span>Returns</span>
+      </a>
+
+      <a href="reviews.html">
+        <span class="admin-nav-icon">★</span>
+        <span>Reviews</span>
+      </a>
+
+      <div class="admin-nav-title">Management</div>
+
+      <a href="media.html">
+        <span class="admin-nav-icon">▧</span>
+        <span>Media</span>
+      </a>
+
+      <a href="reports.html">
+        <span class="admin-nav-icon">◫</span>
+        <span>Reports</span>
+      </a>
+
+      <a href="notifications.html">
+        <span class="admin-nav-icon">♢</span>
+        <span>Notifications</span>
+      </a>
+
+      <a href="delivery-zones.html">
+        <span class="admin-nav-icon">⌖</span>
+        <span>Delivery Zones</span>
+      </a>
+
+      <a href="payments.html">
+        <span class="admin-nav-icon">৳</span>
+        <span>Payments</span>
+      </a>
+
+      <div class="admin-nav-title">System</div>
+
+      <a href="staff.html" class="active">
+        <span class="admin-nav-icon">♟</span>
+        <span>Staff</span>
+      </a>
+
+      <a href="settings.html">
+        <span class="admin-nav-icon">⚙</span>
+        <span>Settings</span>
+      </a>
+
+      <a href="../index.html">
+        <span class="admin-nav-icon">↗</span>
+        <span>View Store</span>
+      </a>
+
+    </nav>
+
+  </aside>
+
+
+  <!-- MAIN -->
+
+  <main class="admin-main">
+
+    <header class="admin-topbar">
+
+      <div class="admin-topbar-title">
+        Staff Management
+      </div>
+
+      <div class="admin-topbar-right">
+
+        <a href="../index.html" class="store-link">
+          View Store ↗
+        </a>
+
+        <div class="admin-avatar">
+          A
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <section class="admin-content">
+
+      <!-- STATS -->
+
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-label">
+            Total Staff
+          </div>
+
+          <div class="stat-value" id="totalStaff">
+            0
+          </div>
+
+          <div class="stat-small">
+            All admin team members
+          </div>
+        </div>
+
+
+        <div class="stat-card">
+          <div class="stat-label">
+            Active Staff
+          </div>
+
+          <div class="stat-value" id="activeStaff">
+            0
+          </div>
+
+          <div class="stat-small">
+            Currently active
+          </div>
+        </div>
+
+
+        <div class="stat-card">
+          <div class="stat-label">
+            Admins
+          </div>
+
+          <div class="stat-value" id="adminCount">
+            0
+          </div>
+
+          <div class="stat-small">
+            Full access
+          </div>
+        </div>
+
+
+        <div class="stat-card">
+          <div class="stat-label">
+            Managers
+          </div>
+
+          <div class="stat-value" id="managerCount">
+            0
+          </div>
+
+          <div class="stat-small">
+            Management roles
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- TOOLBAR -->
+
+      <div class="toolbar">
+
+        <div class="search-box">
+
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search name, email or phone..."
+          >
+
+        </div>
+
+
+        <div class="filter-select">
+
+          <select id="roleFilter">
+
+            <option value="all">
+              All Roles
+            </option>
+
+            <option value="admin">
+              Admin
+            </option>
+
+            <option value="manager">
+              Manager
+            </option>
+
+            <option value="editor">
+              Editor
+            </option>
+
+            <option value="support">
+              Support
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="filter-select">
+
+          <select id="statusFilter">
+
+            <option value="all">
+              All Status
+            </option>
+
+            <option value="active">
+              Active
+            </option>
+
+            <option value="inactive">
+              Inactive
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <button
+          class="btn btn-secondary"
+          id="resetBtn"
+        >
+          Reset
+        </button>
+
+
+        <button
+          class="btn btn-primary"
+          id="addStaffBtn"
+        >
+          + Add Staff
+        </button>
+
+      </div>
+
+
+      <!-- TABLE -->
+
+      <div class="table-card">
+
+        <div class="table-header">
+
+          <div>
+
+            <div class="table-title">
+              Staff Members
+            </div>
+
+            <div
+              class="table-muted"
+              id="resultText"
+            >
+              0 staff
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Staff
+                </th>
+
+                <th>
+                  Phone
+                </th>
+
+                <th>
+                  Role
+                </th>
+
+                <th>
+                  Permissions
+                </th>
+
+                <th>
+                  Status
+                </th>
+
+                <th>
+                  Last Login
+                </th>
+
+                <th>
+                  Actions
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody id="staffTableBody"></tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<!-- ADD / EDIT MODAL -->
+
+<div
+  class="modal-overlay"
+  id="staffModal"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div
+        class="modal-title"
+        id="modalTitle"
+      >
+        Add Staff
+      </div>
+
+      <button
+        class="modal-close"
+        id="closeModalBtn"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="staffForm">
+
+      <div class="modal-body">
+
+        <input
+          type="hidden"
+          id="staffId"
+        >
+
+
+        <div class="form-grid">
+
+
+          <div class="form-group">
+
+            <label for="staffName">
+              Full Name *
+            </label>
+
+            <input
+              type="text"
+              id="staffName"
+              placeholder="Example: Al Amin"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="staffEmail">
+              Email *
+            </label>
+
+            <input
+              type="email"
+              id="staffEmail"
+              placeholder="staff@example.com"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="staffPhone">
+              Phone
+            </label>
+
+            <input
+              type="text"
+              id="staffPhone"
+              placeholder="017XXXXXXXX"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="staffRole">
+              Role *
+            </label>
+
+            <select
+              id="staffRole"
+              required
+            >
+
+              <option value="admin">
+                Admin
+              </option>
+
+              <option value="manager">
+                Manager
+              </option>
+
+              <option value="editor">
+                Editor
+              </option>
+
+              <option value="support">
+                Support
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label>
+              Permissions
+            </label>
+
+
+            <div class="permission-grid">
+
+              <label class="permission-check">
+
+                <input
+                  type="checkbox"
+                  value="dashboard"
+                  class="permission-input"
+                >
+
+                Dashboard
+
+              </label>
+
+
+              <label class="permission-check">
+
+                <input
+                  type="checkbox"
+                  value="orders"
+                  class="permission-input"
+                >
+
+                Orders
+
+              </label>
+
+
+              <label class="permission-check">
+
+                <input
+                  type="checkbox"
+                  value="products"
+                  class="permission-input"
+                >
+
+                Products
+
+              </label>
+
+
+              <label class="permission-check">
+
+                <input
+                  type="checkbox"
+                  value="inventory"
+                  class="permission-input"
+                >
+
+                Inventory
+
+              </label>
+
+
+              <label class="permission-check">
+
+                <input
+                  type="checkbox"
+                  value="customers"
+                  class="permission-input"
+                >
+
+                Customers
+
+              </label>
+
+
+              <label class="permission-check">
+
+                <input
+                  type="checkbox"
+                  value="coupons"
+                  class="permission-input"
+                >
+
+                Coupons
+
+              </label>
+
+
+              <label class="permission-check">
+
+                <input
+                  type="checkbox"
+                  value="returns"
+                  class="permission-input"
+                >
+
+                Returns
+
+              </label>
+
+
+              <label class="permission-check">
+
+                <input
+                  type="checkbox"
+                  value="reviews"
+                  class="permission-input"
+                >
+
+                Reviews
+
+              </label>
+
+
+              <label class="permission-check">
+
+                <input
+                  type="checkbox"
+                  value="reports"
+                  class="permission-input"
+                >
+
+                Reports
+
+              </label>
+
+
+              <label class="permission-check">
+
+                <input
+                  type="checkbox"
+                  value="media"
+                  class="permission-input"
+                >
+
+                Media
+
+              </label>
+
+
+              <label class="permission-check">
+
+                <input
+                  type="checkbox"
+                  value="settings"
+                  class="permission-input"
+                >
+
+                Settings
+
+              </label>
+
+
+              <label class="permission-check">
+
+                <input
+                  type="checkbox"
+                  value="staff"
+                  class="permission-input"
+                >
+
+                Staff
+
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <div class="checkbox-row">
+
+              <input
+                type="checkbox"
+                id="staffActive"
+                checked
+              >
+
+              <label for="staffActive">
+                Staff account is active
+              </label>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="btn btn-secondary"
+          id="cancelModalBtn"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          Save Staff
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- VIEW MODAL -->
+
+<div
+  class="modal-overlay"
+  id="viewModal"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div class="modal-title">
+        Staff Details
+      </div>
+
+      <button
+        class="modal-close"
+        id="closeViewBtn"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="profile-box">
+
+        <div
+          class="profile-avatar"
+          id="viewAvatar"
+        >
+          A
+        </div>
+
+        <div>
+
+          <div
+            class="profile-name"
+            id="viewName"
+          >
+            Staff
+          </div>
+
+          <div
+            class="profile-email"
+            id="viewEmail"
+          >
+            email@example.com
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="detail-list">
+
+        <div class="detail-item">
+
+          <div class="detail-label">
+            Phone
+          </div>
+
+          <div
+            class="detail-value"
+            id="viewPhone"
+          >
+            -
+          </div>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <div class="detail-label">
+            Role
+          </div>
+
+          <div
+            class="detail-value"
+            id="viewRole"
+          >
+            -
+          </div>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <div class="detail-label">
+            Status
+          </div>
+
+          <div
+            class="detail-value"
+            id="viewStatus"
+          >
+            -
+          </div>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <div class="detail-label">
+            Created
+          </div>
+
+          <div
+            class="detail-value"
+            id="viewCreated"
+          >
+            -
+          </div>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <div class="detail-label">
+            Last Login
+          </div>
+
+          <div
+            class="detail-value"
+            id="viewLastLogin"
+          >
+            -
+          </div>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <div class="detail-label">
+            Permissions
+          </div>
+
+          <div
+            class="detail-value"
+            id="viewPermissions"
+          >
+            -
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script src="../script.js"></script>
+
+<script>
+
+  const STORAGE_KEY = "shopnest_staff";
+
+  let staff = [];
+
+  let editingId = null;
+
+
+  /* =========================
+     DEFAULT STAFF
+  ========================= */
+
+  const defaultStaff = [
+
+    {
+      id: "STF1001",
+
+      name: "Store Administrator",
+
+      email: "admin@alaminshop.com",
+
+      phone: "01700000000",
+
+      role: "admin",
+
+      permissions: [
+        "dashboard",
+        "orders",
+        "products",
+        "inventory",
+        "customers",
+        "coupons",
+        "returns",
+        "reviews",
+        "reports",
+        "media",
+        "settings",
+        "staff"
+      ],
+
+      active: true,
+
+      createdAt: "2026-09-01T10:00:00",
+
+      lastLogin: "2026-09-12T18:30:00"
+
+    },
+
+
+    {
+      id: "STF1002",
+
+      name: "Shop Manager",
+
+      email: "manager@alaminshop.com",
+
+      phone: "01711111111",
+
+      role: "manager",
+
+      permissions: [
+        "dashboard",
+        "orders",
+        "products",
+        "inventory",
+        "customers",
+        "coupons",
+        "returns",
+        "reviews",
+        "reports"
+      ],
+
+      active: true,
+
+      createdAt: "2026-09-03T10:00:00",
+
+      lastLogin: "2026-09-12T16:20:00"
+
+    },
+
+
+    {
+      id: "STF1003",
+
+      name: "Customer Support",
+
+      email: "support@alaminshop.com",
+
+      phone: "01722222222",
+
+      role: "support",
+
+      permissions: [
+        "dashboard",
+        "orders",
+        "customers",
+        "returns",
+        "reviews"
+      ],
+
+      active: true,
+
+      createdAt: "2026-09-05T10:00:00",
+
+      lastLogin: "2026-09-11T14:10:00"
+
+    }
+
+  ];
+
+
+  /* =========================
+     LOAD
+  ========================= */
+
+  function loadStaff() {
+
+    const saved =
+      localStorage.getItem(STORAGE_KEY);
+
+
+    if (saved) {
+
+      try {
+
+        staff = JSON.parse(saved);
+
+      } catch (error) {
+
+        staff = [...defaultStaff];
+
+        saveStaff();
+
+      }
+
+    } else {
+
+      staff = [...defaultStaff];
+
+      saveStaff();
+
+    }
+
+  }
+
+
+  function saveStaff() {
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(staff)
+    );
+
+  }
+
+
+  /* =========================
+     HELPERS
+  ========================= */
+
+  function escapeHTML(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  function getInitials(name) {
+
+    return String(name || "Staff")
+      .split(" ")
+      .filter(Boolean)
+      .slice(0, 2)
+      .map(word => word.charAt(0).toUpperCase())
+      .join("");
+
+  }
+
+
+  function formatDate(date) {
+
+    if (!date) return "-";
+
+    const d = new Date(date);
+
+    if (Number.isNaN(d.getTime())) {
+      return "-";
+    }
+
+    return d.toLocaleDateString("en-BD", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    });
+
+  }
+
+
+  function formatDateTime(date) {
+
+    if (!date) return "-";
+
+    const d = new Date(date);
+
+    if (Number.isNaN(d.getTime())) {
+      return "-";
+    }
+
+    return d.toLocaleString("en-BD", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+  }
+
+
+  function roleName(role) {
+
+    const names = {
+      admin: "Admin",
+      manager: "Manager",
+      editor: "Editor",
+      support: "Support"
+    };
+
+    return names[role] || role;
+
+  }
+
+
+  function roleClass(role) {
+
+    return {
+      admin: "badge-admin",
+      manager: "badge-manager",
+      editor: "badge-editor",
+      support: "badge-support"
+    }[role] || "badge-inactive";
+
+  }
+
+
+  /* =========================
+     STATS
+  ========================= */
+
+  function updateStats() {
+
+    const total = staff.length;
+
+    const active =
+      staff.filter(item => item.active).length;
+
+    const admins =
+      staff.filter(item => item.role === "admin").length;
+
+    const managers =
+      staff.filter(item => item.role === "manager").length;
+
+
+    document.getElementById("totalStaff").textContent =
+      total;
+
+    document.getElementById("activeStaff").textContent =
+      active;
+
+    document.getElementById("adminCount").textContent =
+      admins;
+
+    document.getElementById("managerCount").textContent =
+      managers;
+
+  }
+
+
+  /* =========================
+     FILTER
+  ========================= */
+
+  function getFilteredStaff() {
+
+    const search =
+      document
+        .getElementById("searchInput")
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    const role =
+      document.getElementById("roleFilter").value;
+
+
+    const status =
+      document.getElementById("statusFilter").value;
+
+
+    return staff.filter(member => {
+
+      const matchesSearch =
+        !search ||
+        member.name.toLowerCase().includes(search) ||
+        member.email.toLowerCase().includes(search) ||
+        (member.phone || "").includes(search);
+
+
+      const matchesRole =
+        role === "all" ||
+        member.role === role;
+
+
+      const matchesStatus =
+        status === "all" ||
+        (status === "active" && member.active) ||
+        (status === "inactive" && !member.active);
+
+
+      return (
+        matchesSearch &&
+        matchesRole &&
+        matchesStatus
+      );
+
+    });
+
+  }
+
+
+  /* =========================
+     RENDER
+  ========================= */
+
+  function renderStaff() {
+
+    const tbody =
+      document.getElementById("staffTableBody");
+
+
+    const filtered =
+      getFilteredStaff();
+
+
+    document.getElementById("resultText").textContent =
+      `${filtered.length} staff member${filtered.length !== 1 ? "s" : ""}`;
+
+
+    if (!filtered.length) {
+
+      tbody.innerHTML = `
+
+        <tr>
+
+          <td colspan="7">
+
+            <div class="empty-state">
+
+              No staff members found.
+
+            </div>
+
+          </td>
+
+        </tr>
+
+      `;
+
+      return;
+
+    }
+
+
+    tbody.innerHTML =
+      filtered.map(member => {
+
+
+        const permissions =
+          member.permissions || [];
+
+
+        const permissionHTML =
+          permissions
+            .slice(0, 5)
+            .map(permission => `
+              <span class="permission">
+                ${escapeHTML(permission)}
+              </span>
+            `)
+            .join("");
+
+
+        const more =
+          permissions.length > 5
+            ? `<span class="permission">+${permissions.length - 5} more</span>`
+            : "";
+
+
+        return `
+
+          <tr>
+
+            <td>
+
+              <div class="staff-info">
+
+                <div class="staff-avatar">
+                  ${escapeHTML(getInitials(member.name))}
+                </div>
+
+                <div>
+
+                  <div class="staff-name">
+                    ${escapeHTML(member.name)}
+                  </div>
+
+                  <div class="staff-email">
+                    ${escapeHTML(member.email)}
+                  </div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <td>
+              ${escapeHTML(member.phone || "-")}
+            </td>
+
+
+            <td>
+
+              <span class="badge ${roleClass(member.role)}">
+                ${escapeHTML(roleName(member.role))}
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <div class="permissions">
+
+                ${permissionHTML}
+
+                ${more}
+
+              </div>
+
+            </td>
+
+
+            <td>
+
+              ${
+                member.active
+                  ? `<span class="badge badge-active">Active</span>`
+                  : `<span class="badge badge-inactive">Inactive</span>`
+              }
+
+            </td>
+
+
+            <td>
+              ${formatDateTime(member.lastLogin)}
+            </td>
+
+
+            <td>
+
+              <div class="actions">
+
+                <button
+                  class="btn btn-secondary btn-small"
+                  onclick="viewStaff('${member.id}')"
+                >
+                  View
+                </button>
+
+
+                <button
+                  class="btn btn-secondary btn-small"
+                  onclick="editStaff('${member.id}')"
+                >
+                  Edit
+                </button>
+
+
+                <button
+                  class="btn btn-secondary btn-small"
+                  onclick="toggleStaff('${member.id}')"
+                >
+                  ${member.active ? "Disable" : "Activate"}
+                </button>
+
+
+                <button
+                  class="btn btn-danger btn-small"
+                  onclick="deleteStaff('${member.id}')"
+                >
+                  Delete
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        `;
+
+      }).join("");
+
+  }
+
+
+  /* =========================
+     OPEN ADD
+  ========================= */
+
+  function openAddModal() {
+
+    editingId = null;
+
+
+    document.getElementById("modalTitle").textContent =
+      "Add Staff";
+
+
+    document.getElementById("staffForm").reset();
+
+
+    document.getElementById("staffId").value = "";
+
+
+    document.getElementById("staffRole").value =
+      "support";
+
+
+    document.getElementById("staffActive").checked =
+      true;
+
+
+    clearPermissions();
+
+
+    document
+      .getElementById("staffModal")
+      .classList.add("show");
+
+  }
+
+
+  /* =========================
+     CLOSE
+  ========================= */
+
+  function closeModal() {
+
+    document
+      .getElementById("staffModal")
+      .classList.remove("show");
+
+    editingId = null;
+
+  }
+
+
+  function closeViewModal() {
+
+    document
+      .getElementById("viewModal")
+      .classList.remove("show");
+
+  }
+
+
+  /* =========================
+     PERMISSIONS
+  ========================= */
+
+  function clearPermissions() {
+
+    document
+      .querySelectorAll(".permission-input")
+      .forEach(input => {
+        input.checked = false;
+      });
+
+  }
+
+
+  function setPermissions(permissions) {
+
+    clearPermissions();
+
+
+    document
+      .querySelectorAll(".permission-input")
+      .forEach(input => {
+
+        input.checked =
+          permissions.includes(input.value);
+
+      });
+
+  }
+
+
+  function getPermissions() {
+
+    return Array.from(
+      document.querySelectorAll(
+        ".permission-input:checked"
+      )
+    ).map(input => input.value);
+
+  }
+
+
+  /* =========================
+     EDIT
+  ========================= */
+
+  function editStaff(id) {
+
+    const member =
+      staff.find(item => item.id === id);
+
+
+    if (!member) return;
+
+
+    editingId = id;
+
+
+    document.getElementById("modalTitle").textContent =
+      "Edit Staff";
+
+
+    document.getElementById("staffId").value =
+      member.id;
+
+
+    document.getElementById("staffName").value =
+      member.name || "";
+
+
+    document.getElementById("staffEmail").value =
+      member.email || "";
+
+
+    document.getElementById("staffPhone").value =
+      member.phone || "";
+
+
+    document.getElementById("staffRole").value =
+      member.role || "support";
+
+
+    document.getElementById("staffActive").checked =
+      Boolean(member.active);
+
+
+    setPermissions(
+      member.permissions || []
+    );
+
+
+    document
+      .getElementById("staffModal")
+      .classList.add("show");
+
+  }
+
+
+  /* =========================
+     SAVE
+  ========================= */
+
+  document
+    .getElementById("staffForm")
+    .addEventListener(
+      "submit",
+      function(event) {
+
+        event.preventDefault();
+
+
+        const name =
+          document
+            .getElementById("staffName")
+            .value
+            .trim();
+
+
+        const email =
+          document
+            .getElementById("staffEmail")
+            .value
+            .trim();
+
+
+        const phone =
+          document
+            .getElementById("staffPhone")
+            .value
+            .trim();
+
+
+        const role =
+          document
+            .getElementById("staffRole")
+            .value;
+
+
+        const active =
+          document
+            .getElementById("staffActive")
+            .checked;
+
+
+        const permissions =
+          getPermissions();
+
+
+        if (!name || !email) {
+
+          alert(
+            "Name and email are required."
+          );
+
+          return;
+
+        }
+
+
+        if (editingId) {
+
+          const index =
+            staff.findIndex(
+              item => item.id === editingId
+            );
+
+
+          if (index !== -1) {
+
+            staff[index] = {
+
+              ...staff[index],
+
+              name,
+              email,
+              phone,
+              role,
+              permissions,
+              active
+
+            };
+
+          }
+
+        } else {
+
+          staff.push({
+
+            id:
+              "STF" + Date.now(),
+
+            name,
+
+            email,
+
+            phone,
+
+            role,
+
+            permissions,
+
+            active,
+
+            createdAt:
+              new Date().toISOString(),
+
+            lastLogin: null
+
+          });
+
+        }
+
+
+        saveStaff();
+
+        updateStats();
+
+        renderStaff();
+
+        closeModal();
+
+
+        if (
+          typeof showNotification === "function"
+        ) {
+
+          showNotification(
+            "Staff saved successfully."
+          );
+
+        }
+
+      }
+    );
+
+
+  /* =========================
+     VIEW
+  ========================= */
+
+  function viewStaff(id) {
+
+    const member =
+      staff.find(item => item.id === id);
+
+
+    if (!member) return;
+
+
+    document.getElementById("viewAvatar").textContent =
+      getInitials(member.name);
+
+
+    document.getElementById("viewName").textContent =
+      member.name;
+
+
+    document.getElementById("viewEmail").textContent =
+      member.email;
+
+
+    document.getElementById("viewPhone").textContent =
+      member.phone || "-";
+
+
+    document.getElementById("viewRole").textContent =
+      roleName(member.role);
+
+
+    document.getElementById("viewStatus").innerHTML =
+      member.active
+        ? `<span class="badge badge-active">Active</span>`
+        : `<span class="badge badge-inactive">Inactive</span>`;
+
+
+    document.getElementById("viewCreated").textContent =
+      formatDate(member.createdAt);
+
+
+    document.getElementById("viewLastLogin").textContent =
+      formatDateTime(member.lastLogin);
+
+
+    document.getElementById("viewPermissions").textContent =
+      member.permissions && member.permissions.length
+        ? member.permissions.join(", ")
+        : "No permissions";
+
+
+    document
+      .getElementById("viewModal")
+      .classList.add("show");
+
+  }
+
+
+  /* =========================
+     TOGGLE
+  ========================= */
+
+  function toggleStaff(id) {
+
+    const member =
+      staff.find(item => item.id === id);
+
+
+    if (!member) return;
+
+
+    if (
+      member.role === "admin" &&
+      member.active
+    ) {
+
+      const activeAdmins =
+        staff.filter(
+          item =>
+            item.role === "admin" &&
+            item.active
+        );
+
+
+      if (activeAdmins.length <= 1) {
+
+        alert(
+          "At least one active admin must remain."
+        );
+
+        return;
+
+      }
+
+    }
+
+
+    member.active =
+      !member.active;
+
+
+    saveStaff();
+
+    updateStats();
+
+    renderStaff();
+
+  }
+
+
+  /* =========================
+     DELETE
+  ========================= */
+
+  function deleteStaff(id) {
+
+    const member =
+      staff.find(item => item.id === id);
+
+
+    if (!member) return;
+
+
+    if (member.role === "admin") {
+
+      const adminCount =
+        staff.filter(
+          item => item.role === "admin"
+        ).length;
+
+
+      if (adminCount <= 1) {
+
+        alert(
+          "You cannot delete the last admin account."
+        );
+
+        return;
+
+      }
+
+    }
+
+
+    const confirmed =
+      confirm(
+        `Delete "${member.name}"?`
+      );
+
+
+    if (!confirmed) return;
+
+
+    staff =
+      staff.filter(
+        item => item.id !== id
+      );
+
+
+    saveStaff();
+
+    updateStats();
+
+    renderStaff();
+
+  }
+
+
+  /* =========================
+     EVENTS
+  ========================= */
+
+  document
+    .getElementById("addStaffBtn")
+    .addEventListener(
+      "click",
+      openAddModal
+    );
+
+
+  document
+    .getElementById("closeModalBtn")
+    .addEventListener(
+      "click",
+      closeModal
+    );
+
+
+  document
+    .getElementById("cancelModalBtn")
+    .addEventListener(
+      "click",
+      closeModal
+    );
+
+
+  document
+    .getElementById("closeViewBtn")
+    .addEventListener(
+      "click",
+      closeViewModal
+    );
+
+
+  document
+    .getElementById("searchInput")
+    .addEventListener(
+      "input",
+      renderStaff
+    );
+
+
+  document
+    .getElementById("roleFilter")
+    .addEventListener(
+      "change",
+      renderStaff
+    );
+
+
+  document
+    .getElementById("statusFilter")
+    .addEventListener(
+      "change",
+      renderStaff
+    );
+
+
+  document
+    .getElementById("resetBtn")
+    .addEventListener(
+      "click",
+      function() {
+
+        document.getElementById("searchInput").value =
+          "";
+
+        document.getElementById("roleFilter").value =
+          "all";
+
+        document.getElementById("statusFilter").value =
+          "all";
+
+        renderStaff();
+
+      }
+    );
+
+
+  document
+    .getElementById("staffModal")
+    .addEventListener(
+      "click",
+      function(event) {
+
+        if (event.target === this) {
+          closeModal();
+        }
+
+      }
+    );
+
+
+  document
+    .getElementById("viewModal")
+    .addEventListener(
+      "click",
+      function(event) {
+
+        if (event.target === this) {
+          closeViewModal();
+        }
+
+      }
+    );
+
+
+  /* =========================
+     ROLE AUTO PERMISSIONS
+  ========================= */
+
+  document
+    .getElementById("staffRole")
+    .addEventListener(
+      "change",
+      function() {
+
+        const role =
+          this.value;
+
+
+        const presets = {
+
+          admin: [
+            "dashboard",
+            "orders",
+            "products",
+            "inventory",
+            "customers",
+            "coupons",
+            "returns",
+            "reviews",
+            "reports",
+            "media",
+            "settings",
+            "staff"
+          ],
+
+
+          manager: [
+            "dashboard",
+            "orders",
+            "products",
+            "inventory",
+            "customers",
+            "coupons",
+            "returns",
+            "reviews",
+            "reports"
+          ],
+
+
+          editor: [
+            "dashboard",
+            "products",
+            "categories",
+            "media",
+            "banners",
+            "reviews"
+          ],
+
+
+          support: [
+            "dashboard",
+            "orders",
+            "customers",
+            "returns",
+            "reviews"
+          ]
+
+        };
+
+
+        setPermissions(
+          presets[role] || []
+        );
+
+      }
+    );
+
+
+  /* =========================
+     INIT
+  ========================= */
+
+  loadStaff();
+
+  updateStats();
+
+  renderStaff();
+
+</script>
+
+</body>
+</html>

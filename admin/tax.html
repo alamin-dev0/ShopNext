@@ -1,0 +1,2102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tax Settings - Alamin Shop Admin</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Inter, Arial, sans-serif;
+      background: #0b0d10;
+      color: #f5f7fa;
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ================= SIDEBAR ================= */
+
+    .sidebar {
+      width: 250px;
+      background: #101318;
+      border-right: 1px solid #242932;
+      padding: 22px 14px;
+      position: fixed;
+      inset: 0 auto 0 0;
+      overflow-y: auto;
+      z-index: 1000;
+      transition: transform .3s ease;
+    }
+
+    .brand {
+      padding: 8px 12px 25px;
+      border-bottom: 1px solid #242932;
+      margin-bottom: 18px;
+    }
+
+    .brand h2 {
+      font-size: 21px;
+      letter-spacing: -.4px;
+    }
+
+    .brand span {
+      color: #8b949e;
+      font-size: 12px;
+      display: block;
+      margin-top: 5px;
+    }
+
+    .nav-title {
+      color: #68717d;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 18px 12px 8px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 11px 12px;
+      border-radius: 10px;
+      color: #aeb6c1;
+      margin-bottom: 4px;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    .nav-link:hover {
+      background: #181d24;
+      color: #fff;
+    }
+
+    .nav-link.active {
+      background: #20262e;
+      color: #fff;
+    }
+
+    .nav-icon {
+      width: 21px;
+      text-align: center;
+    }
+
+    /* ================= MAIN ================= */
+
+    .main {
+      margin-left: 250px;
+      width: calc(100% - 250px);
+      min-width: 0;
+    }
+
+    .topbar {
+      height: 70px;
+      border-bottom: 1px solid #242932;
+      background: #0e1115;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      position: sticky;
+      top: 0;
+      z-index: 900;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .menu-btn {
+      display: none;
+      border: 1px solid #303640;
+      background: #171b21;
+      color: #fff;
+      width: 40px;
+      height: 40px;
+      border-radius: 9px;
+    }
+
+    .page-title h1 {
+      font-size: 21px;
+    }
+
+    .page-title p {
+      color: #7f8995;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .admin-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #222831;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .admin-profile strong {
+      font-size: 13px;
+    }
+
+    .admin-profile small {
+      display: block;
+      color: #77818d;
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .content {
+      padding: 28px;
+      max-width: 1500px;
+      margin: auto;
+    }
+
+    /* ================= CARDS ================= */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      background: #11151a;
+      border: 1px solid #272d35;
+      border-radius: 15px;
+      padding: 19px;
+    }
+
+    .stat-label {
+      color: #7f8995;
+      font-size: 12px;
+      margin-bottom: 9px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .stat-note {
+      color: #69737f;
+      font-size: 11px;
+      margin-top: 6px;
+    }
+
+    /* ================= GRID ================= */
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: #11151a;
+      border: 1px solid #272d35;
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .card-header h2 {
+      font-size: 16px;
+    }
+
+    .card-header p {
+      color: #707a86;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    /* ================= FORM ================= */
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      color: #aeb6c1;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    input,
+    select {
+      width: 100%;
+      background: #0c0f13;
+      border: 1px solid #303640;
+      color: #fff;
+      padding: 11px 12px;
+      border-radius: 9px;
+      outline: none;
+      transition: .2s;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #626c79;
+    }
+
+    .hint {
+      color: #69737f;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    /* ================= SWITCH ================= */
+
+    .switch-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 15px 0;
+      border-bottom: 1px solid #222831;
+    }
+
+    .switch-row:last-child {
+      border-bottom: 0;
+    }
+
+    .switch-info strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .switch-info span {
+      display: block;
+      color: #6f7985;
+      font-size: 11px;
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    .switch {
+      position: relative;
+      width: 45px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: #303640;
+      border-radius: 30px;
+      transition: .2s;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: .2s;
+    }
+
+    .switch input:checked + .slider {
+      background: #fff;
+    }
+
+    .switch input:checked + .slider::before {
+      transform: translateX(21px);
+      background: #0b0d10;
+    }
+
+    /* ================= BUTTONS ================= */
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 1px solid #303640;
+      background: #181d23;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 9px;
+      font-size: 13px;
+    }
+
+    .btn:hover {
+      background: #222831;
+    }
+
+    .btn-primary {
+      background: #f3f4f6;
+      color: #0b0d10;
+      border-color: #f3f4f6;
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      background: #fff;
+    }
+
+    /* ================= TAX TABLE ================= */
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 620px;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 13px 10px;
+      border-bottom: 1px solid #222831;
+      font-size: 12px;
+    }
+
+    th {
+      color: #707a86;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    td {
+      color: #dce1e7;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 8px;
+      border-radius: 20px;
+      background: #20262e;
+      color: #cbd2da;
+      font-size: 10px;
+    }
+
+    .badge.off {
+      opacity: .55;
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 7px;
+    }
+
+    .icon-btn {
+      border: 1px solid #303640;
+      background: #171b20;
+      color: #dbe0e6;
+      width: 32px;
+      height: 30px;
+      border-radius: 7px;
+    }
+
+    .icon-btn:hover {
+      background: #252b33;
+    }
+
+    /* ================= INFO ================= */
+
+    .info-box {
+      background: #171b20;
+      border: 1px solid #2a3038;
+      border-radius: 11px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .info-box strong {
+      font-size: 12px;
+    }
+
+    .info-box p {
+      color: #78828e;
+      font-size: 11px;
+      line-height: 1.6;
+      margin-top: 6px;
+    }
+
+    .calculation {
+      border: 1px solid #282e36;
+      border-radius: 11px;
+      padding: 15px;
+    }
+
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 8px 0;
+      color: #929ca8;
+      font-size: 12px;
+    }
+
+    .calc-row.total {
+      border-top: 1px solid #303640;
+      margin-top: 6px;
+      padding-top: 13px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    /* ================= MODAL ================= */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 2000;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: min(560px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #11151a;
+      border: 1px solid #303640;
+      border-radius: 17px;
+      padding: 22px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.5);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-header h3 {
+      font-size: 17px;
+    }
+
+    .close-btn {
+      width: 34px;
+      height: 34px;
+      border: 1px solid #303640;
+      background: #181d23;
+      color: #fff;
+      border-radius: 8px;
+    }
+
+    /* ================= TOAST ================= */
+
+    .toast {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      background: #f3f4f6;
+      color: #0b0d10;
+      padding: 12px 17px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      transform: translateY(100px);
+      opacity: 0;
+      pointer-events: none;
+      transition: .3s;
+      z-index: 3000;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 999;
+    }
+
+    .overlay.show {
+      display: block;
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media (max-width: 1100px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      .topbar {
+        padding: 0 16px;
+      }
+
+      .content {
+        padding: 18px 14px;
+      }
+
+      .admin-profile > div {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      .card-header {
+        align-items: flex-start;
+      }
+
+      .page-title h1 {
+        font-size: 18px;
+      }
+
+      .page-title p {
+        display: none;
+      }
+
+      .actions {
+        justify-content: stretch;
+      }
+
+      .actions .btn {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- ================= SIDEBAR ================= -->
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+      <h2>Alamin Shop</h2>
+      <span>Admin Control Center</span>
+    </div>
+
+    <div class="nav-title">Overview</div>
+
+    <a href="index.html" class="nav-link">
+      <span class="nav-icon">⌂</span>
+      Dashboard
+    </a>
+
+    <div class="nav-title">Store</div>
+
+    <a href="products.html" class="nav-link">
+      <span class="nav-icon">▣</span>
+      Products
+    </a>
+
+    <a href="categories.html" class="nav-link">
+      <span class="nav-icon">◫</span>
+      Categories
+    </a>
+
+    <a href="inventory.html" class="nav-link">
+      <span class="nav-icon">▤</span>
+      Inventory
+    </a>
+
+    <a href="orders.html" class="nav-link">
+      <span class="nav-icon">🛒</span>
+      Orders
+    </a>
+
+    <a href="customers.html" class="nav-link">
+      <span class="nav-icon">♙</span>
+      Customers
+    </a>
+
+    <a href="reviews.html" class="nav-link">
+      <span class="nav-icon">★</span>
+      Reviews
+    </a>
+
+    <div class="nav-title">Marketing</div>
+
+    <a href="coupons.html" class="nav-link">
+      <span class="nav-icon">%</span>
+      Coupons
+    </a>
+
+    <a href="banners.html" class="nav-link">
+      <span class="nav-icon">▱</span>
+      Banners
+    </a>
+
+    <div class="nav-title">Operations</div>
+
+    <a href="shipping.html" class="nav-link">
+      <span class="nav-icon">➜</span>
+      Shipping
+    </a>
+
+    <a href="delivery-zones.html" class="nav-link">
+      <span class="nav-icon">⌖</span>
+      Delivery Zones
+    </a>
+
+    <a href="couriers.html" class="nav-link">
+      <span class="nav-icon">🚚</span>
+      Couriers
+    </a>
+
+    <a href="returns.html" class="nav-link">
+      <span class="nav-icon">↩</span>
+      Returns
+    </a>
+
+    <div class="nav-title">Configuration</div>
+
+    <a href="payments.html" class="nav-link">
+      <span class="nav-icon">৳</span>
+      Payments
+    </a>
+
+    <a href="tax.html" class="nav-link active">
+      <span class="nav-icon">%</span>
+      Tax
+    </a>
+
+    <a href="homepage.html" class="nav-link">
+      <span class="nav-icon">⌂</span>
+      Homepage
+    </a>
+
+    <a href="seo.html" class="nav-link">
+      <span class="nav-icon">⌕</span>
+      SEO
+    </a>
+
+    <a href="search.html" class="nav-link">
+      <span class="nav-icon">⌕</span>
+      Search
+    </a>
+
+    <a href="bulk-actions.html" class="nav-link">
+      <span class="nav-icon">☷</span>
+      Bulk Actions
+    </a>
+
+    <a href="email-templates.html" class="nav-link">
+      <span class="nav-icon">✉</span>
+      Email Templates
+    </a>
+
+    <a href="sms-templates.html" class="nav-link">
+      <span class="nav-icon">▰</span>
+      SMS Templates
+    </a>
+
+    <a href="import-export.html" class="nav-link">
+      <span class="nav-icon">⇅</span>
+      Import / Export
+    </a>
+
+    <a href="security.html" class="nav-link">
+      <span class="nav-icon">⌾</span>
+      Security
+    </a>
+
+    <a href="staff.html" class="nav-link">
+      <span class="nav-icon">♟</span>
+      Staff & Roles
+    </a>
+
+    <a href="settings.html" class="nav-link">
+      <span class="nav-icon">⚙</span>
+      Settings
+    </a>
+
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <!-- ================= MAIN ================= -->
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <div class="topbar-left">
+
+        <button class="menu-btn" id="menuBtn">☰</button>
+
+        <div class="page-title">
+          <h1>Tax Settings</h1>
+          <p>Configure tax rules, rates and checkout tax behavior</p>
+        </div>
+
+      </div>
+
+      <div class="admin-profile">
+        <div class="avatar">AA</div>
+
+        <div>
+          <strong>Admin</strong>
+          <small>Store Manager</small>
+        </div>
+      </div>
+
+    </header>
+
+    <section class="content">
+
+      <!-- ================= STATS ================= -->
+
+      <div class="stats">
+
+        <div class="stat-card">
+          <div class="stat-label">Tax Status</div>
+          <div class="stat-value" id="taxStatus">Off</div>
+          <div class="stat-note">Global tax calculation</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Default Rate</div>
+          <div class="stat-value" id="defaultRate">0%</div>
+          <div class="stat-note">Applied when no rule matches</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Tax Rules</div>
+          <div class="stat-value" id="ruleCount">0</div>
+          <div class="stat-note">Configured tax zones</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Prices Include Tax</div>
+          <div class="stat-value" id="priceTaxStatus">No</div>
+          <div class="stat-note">Product price behavior</div>
+        </div>
+
+      </div>
+
+      <div class="grid">
+
+        <!-- ================= LEFT ================= -->
+
+        <div>
+
+          <div class="card">
+
+            <div class="card-header">
+              <div>
+                <h2>General Tax Settings</h2>
+                <p>Control how tax is calculated throughout your store.</p>
+              </div>
+            </div>
+
+            <div class="switch-row">
+
+              <div class="switch-info">
+                <strong>Enable tax calculation</strong>
+                <span>Automatically calculate tax during checkout.</span>
+              </div>
+
+              <label class="switch">
+                <input type="checkbox" id="taxEnabled">
+                <span class="slider"></span>
+              </label>
+
+            </div>
+
+            <div class="switch-row">
+
+              <div class="switch-info">
+                <strong>Prices include tax</strong>
+                <span>Product prices already contain the applicable tax.</span>
+              </div>
+
+              <label class="switch">
+                <input type="checkbox" id="pricesIncludeTax">
+                <span class="slider"></span>
+              </label>
+
+            </div>
+
+            <div class="switch-row">
+
+              <div class="switch-info">
+                <strong>Apply tax to shipping</strong>
+                <span>Include delivery/shipping charges when calculating tax.</span>
+              </div>
+
+              <label class="switch">
+                <input type="checkbox" id="taxShipping">
+                <span class="slider"></span>
+              </label>
+
+            </div>
+
+            <div class="switch-row">
+
+              <div class="switch-info">
+                <strong>Show tax on product pages</strong>
+                <span>Display tax information near product prices.</span>
+              </div>
+
+              <label class="switch">
+                <input type="checkbox" id="showProductTax">
+                <span class="slider"></span>
+              </label>
+
+            </div>
+
+            <div class="form-grid" style="margin-top:20px;">
+
+              <div class="form-group">
+                <label for="defaultRateInput">Default Tax Rate (%)</label>
+
+                <input
+                  type="number"
+                  id="defaultRateInput"
+                  min="0"
+                  max="100"
+                  step="0.01"
+                  placeholder="0"
+                >
+
+                <span class="hint">
+                  Used when no specific tax rule matches.
+                </span>
+              </div>
+
+              <div class="form-group">
+                <label for="taxLabel">Tax Label</label>
+
+                <input
+                  type="text"
+                  id="taxLabel"
+                  placeholder="VAT / Tax"
+                >
+
+                <span class="hint">
+                  Example: VAT, Sales Tax, GST.
+                </span>
+              </div>
+
+            </div>
+
+            <div class="actions">
+
+              <button class="btn" id="resetBtn">
+                Reset
+              </button>
+
+              <button class="btn btn-primary" id="saveBtn">
+                Save Tax Settings
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <!-- ================= TAX RULES ================= -->
+
+          <div class="card">
+
+            <div class="card-header">
+
+              <div>
+                <h2>Tax Rules</h2>
+                <p>Create different tax rates for different regions.</p>
+              </div>
+
+              <button class="btn btn-primary" id="addRuleBtn">
+                + Add Tax Rule
+              </button>
+
+            </div>
+
+            <div class="table-wrap">
+
+              <table>
+
+                <thead>
+                  <tr>
+                    <th>Rule</th>
+                    <th>Region</th>
+                    <th>Rate</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody id="rulesTable"></tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================= RIGHT ================= -->
+
+        <div>
+
+          <div class="card">
+
+            <div class="card-header">
+              <div>
+                <h2>Tax Preview</h2>
+                <p>See how tax will affect an order.</p>
+              </div>
+            </div>
+
+            <div class="form-group">
+
+              <label for="previewSubtotal">
+                Order Subtotal
+              </label>
+
+              <input
+                type="number"
+                id="previewSubtotal"
+                value="1000"
+                min="0"
+              >
+
+            </div>
+
+            <div class="form-group" style="margin-top:15px;">
+
+              <label for="previewShipping">
+                Shipping Charge
+              </label>
+
+              <input
+                type="number"
+                id="previewShipping"
+                value="80"
+                min="0"
+              >
+
+            </div>
+
+            <div class="calculation" style="margin-top:18px;">
+
+              <div class="calc-row">
+                <span>Subtotal</span>
+                <strong id="previewSub">৳1,000.00</strong>
+              </div>
+
+              <div class="calc-row">
+                <span>Shipping</span>
+                <strong id="previewShip">৳80.00</strong>
+              </div>
+
+              <div class="calc-row">
+                <span id="previewTaxLabel">Tax</span>
+                <strong id="previewTax">৳0.00</strong>
+              </div>
+
+              <div class="calc-row total">
+                <span>Total</span>
+                <strong id="previewTotal">৳1,080.00</strong>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="card">
+
+            <div class="card-header">
+              <div>
+                <h2>Tax Information</h2>
+              </div>
+            </div>
+
+            <div class="info-box">
+
+              <strong>How tax calculation works</strong>
+
+              <p>
+                When tax is enabled, the system checks applicable tax rules
+                before calculating the final checkout amount.
+              </p>
+
+            </div>
+
+            <div class="info-box">
+
+              <strong>Prices include tax</strong>
+
+              <p>
+                Enable this option if the displayed product price already
+                contains the applicable tax.
+              </p>
+
+            </div>
+
+            <div class="info-box">
+
+              <strong>Shipping tax</strong>
+
+              <p>
+                Enable shipping tax if your business needs to calculate tax
+                on delivery charges.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<!-- ================= RULE MODAL ================= -->
+
+<div class="modal" id="ruleModal">
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+
+      <h3 id="modalTitle">Add Tax Rule</h3>
+
+      <button class="close-btn" id="closeModal">
+        ×
+      </button>
+
+    </div>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Rule Name</label>
+
+        <input
+          type="text"
+          id="ruleName"
+          placeholder="Inside Dhaka VAT"
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Region</label>
+
+        <input
+          type="text"
+          id="ruleRegion"
+          placeholder="Dhaka"
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Tax Rate (%)</label>
+
+        <input
+          type="number"
+          id="ruleRate"
+          min="0"
+          max="100"
+          step="0.01"
+          placeholder="5"
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Tax Type</label>
+
+        <select id="ruleType">
+          <option value="VAT">VAT</option>
+          <option value="Sales Tax">Sales Tax</option>
+          <option value="GST">GST</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group full">
+
+        <label class="switch-row" style="padding:12px 0;">
+
+          <span class="switch-info">
+            <strong>Rule Active</strong>
+            <span>Enable this tax rule.</span>
+          </span>
+
+          <span class="switch">
+
+            <input
+              type="checkbox"
+              id="ruleActive"
+              checked
+            >
+
+            <span class="slider"></span>
+
+          </span>
+
+        </label>
+
+      </div>
+
+    </div>
+
+    <div class="actions">
+
+      <button class="btn" id="cancelModal">
+        Cancel
+      </button>
+
+      <button class="btn btn-primary" id="saveRule">
+        Save Rule
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="toast" id="toast">
+  Saved successfully
+</div>
+
+
+<script>
+  /* =========================================
+     STORAGE
+  ========================================= */
+
+  const STORAGE_KEY = "shopnest_tax_settings";
+
+  const DEFAULT_SETTINGS = {
+    enabled: false,
+    pricesIncludeTax: false,
+    taxShipping: false,
+    showProductTax: false,
+    defaultRate: 0,
+    taxLabel: "VAT / Tax",
+    rules: []
+  };
+
+
+  /* =========================================
+     HELPERS
+  ========================================= */
+
+  function loadSettings() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+
+      if (!saved) {
+        return JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
+      }
+
+      const parsed = JSON.parse(saved);
+
+      return {
+        ...DEFAULT_SETTINGS,
+        ...parsed,
+        rules: Array.isArray(parsed.rules) ? parsed.rules : []
+      };
+
+    } catch (error) {
+      console.error(error);
+
+      return JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
+    }
+  }
+
+
+  function saveSettings() {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(settings)
+    );
+  }
+
+
+  function showToast(message) {
+
+    const toast = document.getElementById("toast");
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 2200);
+  }
+
+
+  function money(value) {
+    return "৳" + Number(value || 0).toLocaleString("en-BD", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
+
+  /* =========================================
+     STATE
+  ========================================= */
+
+  let settings = loadSettings();
+
+  let editingRuleId = null;
+
+
+  /* =========================================
+     ELEMENTS
+  ========================================= */
+
+  const taxEnabled =
+    document.getElementById("taxEnabled");
+
+  const pricesIncludeTax =
+    document.getElementById("pricesIncludeTax");
+
+  const taxShipping =
+    document.getElementById("taxShipping");
+
+  const showProductTax =
+    document.getElementById("showProductTax");
+
+  const defaultRateInput =
+    document.getElementById("defaultRateInput");
+
+  const taxLabel =
+    document.getElementById("taxLabel");
+
+  const rulesTable =
+    document.getElementById("rulesTable");
+
+
+  /* =========================================
+     LOAD FORM
+  ========================================= */
+
+  function renderSettings() {
+
+    taxEnabled.checked = settings.enabled;
+
+    pricesIncludeTax.checked =
+      settings.pricesIncludeTax;
+
+    taxShipping.checked =
+      settings.taxShipping;
+
+    showProductTax.checked =
+      settings.showProductTax;
+
+    defaultRateInput.value =
+      settings.defaultRate;
+
+    taxLabel.value =
+      settings.taxLabel;
+
+    renderRules();
+
+    updateStats();
+
+    updatePreview();
+  }
+
+
+  /* =========================================
+     SAVE FORM
+  ========================================= */
+
+  function collectSettings() {
+
+    settings.enabled =
+      taxEnabled.checked;
+
+    settings.pricesIncludeTax =
+      pricesIncludeTax.checked;
+
+    settings.taxShipping =
+      taxShipping.checked;
+
+    settings.showProductTax =
+      showProductTax.checked;
+
+    settings.defaultRate =
+      Math.max(
+        0,
+        Math.min(
+          100,
+          Number(defaultRateInput.value) || 0
+        )
+      );
+
+    settings.taxLabel =
+      taxLabel.value.trim() || "VAT / Tax";
+  }
+
+
+  document
+    .getElementById("saveBtn")
+    .addEventListener("click", () => {
+
+      collectSettings();
+
+      saveSettings();
+
+      renderSettings();
+
+      showToast("Tax settings saved");
+
+    });
+
+
+  /* =========================================
+     RESET
+  ========================================= */
+
+  document
+    .getElementById("resetBtn")
+    .addEventListener("click", () => {
+
+      const confirmed =
+        confirm(
+          "Reset all tax settings to default?"
+        );
+
+      if (!confirmed) return;
+
+      settings =
+        JSON.parse(
+          JSON.stringify(DEFAULT_SETTINGS)
+        );
+
+      saveSettings();
+
+      renderSettings();
+
+      showToast("Tax settings reset");
+
+    });
+
+
+  /* =========================================
+     STATS
+  ========================================= */
+
+  function updateStats() {
+
+    document.getElementById("taxStatus").textContent =
+      settings.enabled ? "On" : "Off";
+
+    document.getElementById("defaultRate").textContent =
+      Number(settings.defaultRate).toFixed(2) + "%";
+
+    document.getElementById("ruleCount").textContent =
+      settings.rules.length;
+
+    document.getElementById("priceTaxStatus").textContent =
+      settings.pricesIncludeTax ? "Yes" : "No";
+  }
+
+
+  /* =========================================
+     RULES
+  ========================================= */
+
+  function renderRules() {
+
+    if (!settings.rules.length) {
+
+      rulesTable.innerHTML = `
+        <tr>
+          <td colspan="6" style="text-align:center;padding:30px;color:#6f7985;">
+            No tax rules added yet.
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+
+    rulesTable.innerHTML =
+      settings.rules.map(rule => {
+
+        return `
+          <tr>
+
+            <td>
+              <strong>${escapeHTML(rule.name)}</strong>
+            </td>
+
+            <td>
+              ${escapeHTML(rule.region)}
+            </td>
+
+            <td>
+              ${Number(rule.rate).toFixed(2)}%
+            </td>
+
+            <td>
+              ${escapeHTML(rule.type)}
+            </td>
+
+            <td>
+
+              <span class="badge ${rule.active ? "" : "off"}">
+                ${rule.active ? "Active" : "Disabled"}
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="row-actions">
+
+                <button
+                  class="icon-btn"
+                  onclick="editRule('${rule.id}')"
+                  title="Edit"
+                >
+                  ✎
+                </button>
+
+                <button
+                  class="icon-btn"
+                  onclick="toggleRule('${rule.id}')"
+                  title="Toggle"
+                >
+                  ${rule.active ? "○" : "●"}
+                </button>
+
+                <button
+                  class="icon-btn"
+                  onclick="deleteRule('${rule.id}')"
+                  title="Delete"
+                >
+                  ×
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+        `;
+
+      }).join("");
+  }
+
+
+  /* =========================================
+     ADD RULE
+  ========================================= */
+
+  document
+    .getElementById("addRuleBtn")
+    .addEventListener("click", () => {
+
+      editingRuleId = null;
+
+      document.getElementById("modalTitle").textContent =
+        "Add Tax Rule";
+
+      document.getElementById("ruleName").value = "";
+
+      document.getElementById("ruleRegion").value = "";
+
+      document.getElementById("ruleRate").value = "";
+
+      document.getElementById("ruleType").value =
+        "VAT";
+
+      document.getElementById("ruleActive").checked =
+        true;
+
+      openModal();
+    });
+
+
+  /* =========================================
+     EDIT RULE
+  ========================================= */
+
+  window.editRule = function(id) {
+
+    const rule =
+      settings.rules.find(item => item.id === id);
+
+    if (!rule) return;
+
+    editingRuleId = id;
+
+    document.getElementById("modalTitle").textContent =
+      "Edit Tax Rule";
+
+    document.getElementById("ruleName").value =
+      rule.name;
+
+    document.getElementById("ruleRegion").value =
+      rule.region;
+
+    document.getElementById("ruleRate").value =
+      rule.rate;
+
+    document.getElementById("ruleType").value =
+      rule.type;
+
+    document.getElementById("ruleActive").checked =
+      rule.active;
+
+    openModal();
+  };
+
+
+  /* =========================================
+     TOGGLE RULE
+  ========================================= */
+
+  window.toggleRule = function(id) {
+
+    const rule =
+      settings.rules.find(item => item.id === id);
+
+    if (!rule) return;
+
+    rule.active = !rule.active;
+
+    saveSettings();
+
+    renderRules();
+
+    updateStats();
+
+    showToast(
+      rule.active
+        ? "Tax rule enabled"
+        : "Tax rule disabled"
+    );
+
+  };
+
+
+  /* =========================================
+     DELETE RULE
+  ========================================= */
+
+  window.deleteRule = function(id) {
+
+    const rule =
+      settings.rules.find(item => item.id === id);
+
+    if (!rule) return;
+
+    const confirmed =
+      confirm(
+        `Delete "${rule.name}" tax rule?`
+      );
+
+    if (!confirmed) return;
+
+    settings.rules =
+      settings.rules.filter(
+        item => item.id !== id
+      );
+
+    saveSettings();
+
+    renderRules();
+
+    updateStats();
+
+    showToast("Tax rule deleted");
+
+  };
+
+
+  /* =========================================
+     SAVE RULE
+  ========================================= */
+
+  document
+    .getElementById("saveRule")
+    .addEventListener("click", () => {
+
+      const name =
+        document
+          .getElementById("ruleName")
+          .value
+          .trim();
+
+      const region =
+        document
+          .getElementById("ruleRegion")
+          .value
+          .trim();
+
+      const rate =
+        Number(
+          document
+            .getElementById("ruleRate")
+            .value
+        );
+
+      const type =
+        document
+          .getElementById("ruleType")
+          .value;
+
+      const active =
+        document
+          .getElementById("ruleActive")
+          .checked;
+
+
+      if (!name) {
+        alert("Please enter rule name.");
+        return;
+      }
+
+      if (!region) {
+        alert("Please enter region.");
+        return;
+      }
+
+      if (
+        Number.isNaN(rate) ||
+        rate < 0 ||
+        rate > 100
+      ) {
+        alert("Tax rate must be between 0 and 100.");
+        return;
+      }
+
+
+      if (editingRuleId) {
+
+        const rule =
+          settings.rules.find(
+            item => item.id === editingRuleId
+          );
+
+        if (rule) {
+
+          rule.name = name;
+          rule.region = region;
+          rule.rate = rate;
+          rule.type = type;
+          rule.active = active;
+
+        }
+
+        showToast("Tax rule updated");
+
+      } else {
+
+        settings.rules.push({
+
+          id:
+            "tax_" +
+            Date.now() +
+            "_" +
+            Math.random()
+              .toString(36)
+              .slice(2, 7),
+
+          name,
+          region,
+          rate,
+          type,
+          active
+
+        });
+
+        showToast("Tax rule added");
+      }
+
+
+      saveSettings();
+
+      renderRules();
+
+      updateStats();
+
+      closeModal();
+
+    });
+
+
+  /* =========================================
+     MODAL
+  ========================================= */
+
+  const ruleModal =
+    document.getElementById("ruleModal");
+
+
+  function openModal() {
+    ruleModal.classList.add("show");
+  }
+
+
+  function closeModal() {
+
+    ruleModal.classList.remove("show");
+
+    editingRuleId = null;
+  }
+
+
+  document
+    .getElementById("closeModal")
+    .addEventListener("click", closeModal);
+
+
+  document
+    .getElementById("cancelModal")
+    .addEventListener("click", closeModal);
+
+
+  ruleModal.addEventListener("click", event => {
+
+    if (event.target === ruleModal) {
+      closeModal();
+    }
+
+  });
+
+
+  /* =========================================
+     PREVIEW
+  ========================================= */
+
+  function updatePreview() {
+
+    const subtotal =
+      Math.max(
+        0,
+        Number(
+          document.getElementById("previewSubtotal").value
+        ) || 0
+      );
+
+    const shipping =
+      Math.max(
+        0,
+        Number(
+          document.getElementById("previewShipping").value
+        ) || 0
+      );
+
+
+    let taxableAmount = subtotal;
+
+    if (settings.taxShipping) {
+      taxableAmount += shipping;
+    }
+
+
+    let tax = 0;
+
+
+    if (settings.enabled) {
+
+      const rate =
+        Number(settings.defaultRate) || 0;
+
+      if (settings.pricesIncludeTax) {
+
+        tax =
+          taxableAmount -
+          taxableAmount /
+            (1 + rate / 100);
+
+      } else {
+
+        tax =
+          taxableAmount *
+          rate /
+          100;
+
+      }
+
+    }
+
+
+    let total;
+
+
+    if (settings.pricesIncludeTax) {
+
+      total =
+        subtotal +
+        shipping;
+
+    } else {
+
+      total =
+        subtotal +
+        shipping +
+        tax;
+
+    }
+
+
+    document.getElementById("previewSub").textContent =
+      money(subtotal);
+
+    document.getElementById("previewShip").textContent =
+      money(shipping);
+
+    document.getElementById("previewTax").textContent =
+      money(tax);
+
+    document.getElementById("previewTotal").textContent =
+      money(total);
+
+    document.getElementById("previewTaxLabel").textContent =
+      settings.taxLabel || "Tax";
+
+  }
+
+
+  document
+    .getElementById("previewSubtotal")
+    .addEventListener("input", updatePreview);
+
+
+  document
+    .getElementById("previewShipping")
+    .addEventListener("input", updatePreview);
+
+
+  taxEnabled.addEventListener(
+    "change",
+    updatePreview
+  );
+
+  taxShipping.addEventListener(
+    "change",
+    updatePreview
+  );
+
+  pricesIncludeTax.addEventListener(
+    "change",
+    updatePreview
+  );
+
+  defaultRateInput.addEventListener(
+    "input",
+    updatePreview
+  );
+
+  taxLabel.addEventListener(
+    "input",
+    updatePreview
+  );
+
+
+  /* =========================================
+     ESCAPE HTML
+  ========================================= */
+
+  function escapeHTML(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+
+  /* =========================================
+     MOBILE SIDEBAR
+  ========================================= */
+
+  const sidebar =
+    document.getElementById("sidebar");
+
+  const menuBtn =
+    document.getElementById("menuBtn");
+
+  const overlay =
+    document.getElementById("overlay");
+
+
+  function toggleSidebar() {
+
+    sidebar.classList.toggle("open");
+
+    overlay.classList.toggle("show");
+  }
+
+
+  menuBtn.addEventListener(
+    "click",
+    toggleSidebar
+  );
+
+
+  overlay.addEventListener(
+    "click",
+    toggleSidebar
+  );
+
+
+  document
+    .querySelectorAll(".nav-link")
+    .forEach(link => {
+
+      link.addEventListener("click", () => {
+
+        if (
+          window.innerWidth <= 800
+        ) {
+          sidebar.classList.remove("open");
+          overlay.classList.remove("show");
+        }
+
+      });
+
+    });
+
+
+  /* =========================================
+     INITIALIZE
+  ========================================= */
+
+  renderSettings();
+
+</script>
+
+</body>
+</html>

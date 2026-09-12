@@ -1,0 +1,2735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Shipping Settings - Alamin Shop Admin</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    :root {
+      --bg: #08090b;
+      --sidebar: #0d0f12;
+      --card: #111317;
+      --card2: #15181d;
+      --border: #272b33;
+      --text: #f5f7fa;
+      --muted: #9299a6;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    /* =========================
+       LAYOUT
+    ========================= */
+
+    .admin-layout {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .admin-sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 260px;
+      background: var(--sidebar);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .admin-brand {
+      padding: 24px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .admin-brand h2 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .admin-brand span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .admin-nav {
+      padding: 18px 12px;
+    }
+
+    .nav-section-title {
+      padding: 10px 10px 7px;
+      color: #626975;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .admin-nav a {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 11px 12px;
+      margin-bottom: 3px;
+      border-radius: 9px;
+      color: #aeb4bf;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    .admin-nav a:hover {
+      background: #171a1f;
+      color: #fff;
+    }
+
+    .admin-nav a.active {
+      background: #fff;
+      color: #08090b;
+      font-weight: 700;
+    }
+
+    .nav-icon {
+      width: 20px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .admin-main {
+      width: calc(100% - 260px);
+      margin-left: 260px;
+      min-height: 100vh;
+    }
+
+    /* =========================
+       TOPBAR
+    ========================= */
+
+    .admin-topbar {
+      height: 72px;
+      padding: 0 28px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8, 9, 11, .94);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar-title h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .topbar-title p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .admin-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .admin-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #fff;
+      color: #08090b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
+
+    .admin-user-info strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .admin-user-info span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    /* =========================
+       CONTENT
+    ========================= */
+
+    .admin-content {
+      max-width: 1450px;
+      margin: auto;
+      padding: 28px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      padding: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .stat-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stat-icon {
+      width: 35px;
+      height: 35px;
+      border-radius: 9px;
+      background: #1b1e24;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stat-value {
+      margin-top: 12px;
+      font-size: 27px;
+      font-weight: 800;
+    }
+
+    .stat-help {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(300px, .8fr);
+      gap: 20px;
+    }
+
+    .card {
+      margin-bottom: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .card-header p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    /* =========================
+       FORM
+    ========================= */
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 11px 12px;
+      background: #0b0d10;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: #fff;
+      outline: none;
+      transition: .2s;
+    }
+
+    .form-control:focus {
+      border-color: #5c6470;
+      box-shadow: 0 0 0 3px rgba(255,255,255,.04);
+    }
+
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .help {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    /* =========================
+       SETTINGS ROW
+    ========================= */
+
+    .setting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 0;
+      border-bottom: 1px solid #202329;
+    }
+
+    .setting-row:first-child {
+      padding-top: 0;
+    }
+
+    .setting-row:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .setting-info strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .setting-info span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    /* =========================
+       SWITCH
+    ========================= */
+
+    .switch {
+      width: 46px;
+      height: 25px;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      border-radius: 50px;
+      background: #2a2e35;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 19px;
+      height: 19px;
+      top: 3px;
+      left: 3px;
+      border-radius: 50%;
+      background: #fff;
+      transition: .2s;
+    }
+
+    .switch input:checked + .slider {
+      background: #fff;
+    }
+
+    .switch input:checked + .slider::before {
+      transform: translateX(21px);
+      background: #08090b;
+    }
+
+    /* =========================
+       ZONE TABLE
+    ========================= */
+
+    .zone-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .zone-table th {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 11px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .zone-table td {
+      padding: 14px 10px;
+      border-bottom: 1px solid #202329;
+      font-size: 12px;
+      vertical-align: top;
+    }
+
+    .zone-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .zone-name {
+      font-weight: 700;
+    }
+
+    .zone-areas {
+      margin-top: 4px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .status {
+      display: inline-flex;
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .status-active {
+      background: #17251c;
+      color: #7ee7a0;
+    }
+
+    .status-inactive {
+      background: #28191a;
+      color: #ff9a9a;
+    }
+
+    /* =========================
+       BUTTONS
+    ========================= */
+
+    .action-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 5px;
+    }
+
+    .btn {
+      padding: 10px 15px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: #171a1f;
+      color: #fff;
+      cursor: pointer;
+      font-size: 13px;
+      transition: .2s;
+    }
+
+    .btn:hover {
+      background: #22262d;
+    }
+
+    .btn-primary {
+      background: #fff;
+      border-color: #fff;
+      color: #08090b;
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      background: #ddd;
+    }
+
+    .btn-small {
+      padding: 7px 10px;
+      font-size: 11px;
+    }
+
+    /* =========================
+       NOTICE
+    ========================= */
+
+    .notice {
+      padding: 13px 15px;
+      margin-bottom: 18px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #171a1f;
+      color: #b8bec8;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .notice strong {
+      color: #fff;
+    }
+
+    /* =========================
+       DELIVERY CARD
+    ========================= */
+
+    .delivery-summary {
+      display: grid;
+      gap: 10px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: #0c0e11;
+      border: 1px solid #202329;
+      border-radius: 9px;
+    }
+
+    .summary-row span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .summary-row strong {
+      font-size: 13px;
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast {
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      z-index: 9999;
+      padding: 13px 18px;
+      border-radius: 10px;
+      background: #fff;
+      color: #08090b;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 15px 50px rgba(0,0,0,.4);
+      transform: translateY(120px);
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 1100px) {
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+    }
+
+    @media (max-width: 800px) {
+
+      .admin-sidebar {
+        width: 72px;
+      }
+
+      .admin-brand {
+        text-align: center;
+        padding: 20px 8px;
+      }
+
+      .admin-brand h2 {
+        font-size: 0;
+      }
+
+      .admin-brand h2::after {
+        content: "AS";
+        font-size: 18px;
+      }
+
+      .admin-brand span {
+        display: none;
+      }
+
+      .admin-nav a {
+        justify-content: center;
+        padding: 12px;
+      }
+
+      .admin-nav a span:not(.nav-icon) {
+        display: none;
+      }
+
+      .nav-section-title {
+        display: none;
+      }
+
+      .admin-main {
+        width: calc(100% - 72px);
+        margin-left: 72px;
+      }
+
+      .admin-content {
+        padding: 18px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-user-info {
+        display: none;
+      }
+
+      .admin-topbar {
+        padding: 0 15px;
+      }
+
+      .zone-table-wrapper {
+        overflow-x: auto;
+      }
+
+      .zone-table {
+        min-width: 650px;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+  <!-- ================= SIDEBAR ================= -->
+
+  <aside class="admin-sidebar">
+
+    <div class="admin-brand">
+      <h2>Alamin Shop</h2>
+      <span>Admin Dashboard</span>
+    </div>
+
+    <nav class="admin-nav">
+
+      <div class="nav-section-title">Overview</div>
+
+      <a href="index.html">
+        <span class="nav-icon">⌂</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="orders.html">
+        <span class="nav-icon">▣</span>
+        <span>Orders</span>
+      </a>
+
+      <a href="products.html">
+        <span class="nav-icon">◫</span>
+        <span>Products</span>
+      </a>
+
+      <div class="nav-section-title">Store</div>
+
+      <a href="categories.html">
+        <span class="nav-icon">◈</span>
+        <span>Categories</span>
+      </a>
+
+      <a href="inventory.html">
+        <span class="nav-icon">▤</span>
+        <span>Inventory</span>
+      </a>
+
+      <a href="coupons.html">
+        <span class="nav-icon">%</span>
+        <span>Coupons</span>
+      </a>
+
+      <a href="banners.html">
+        <span class="nav-icon">▧</span>
+        <span>Banners</span>
+      </a>
+
+      <a href="media.html">
+        <span class="nav-icon">▦</span>
+        <span>Media</span>
+      </a>
+
+      <div class="nav-section-title">Customers</div>
+
+      <a href="customers.html">
+        <span class="nav-icon">♙</span>
+        <span>Customers</span>
+      </a>
+
+      <a href="reviews.html">
+        <span class="nav-icon">★</span>
+        <span>Reviews</span>
+      </a>
+
+      <a href="returns.html">
+        <span class="nav-icon">↩</span>
+        <span>Returns</span>
+      </a>
+
+      <div class="nav-section-title">Reports</div>
+
+      <a href="reports.html">
+        <span class="nav-icon">▥</span>
+        <span>Reports</span>
+      </a>
+
+      <a href="notifications.html">
+        <span class="nav-icon">♢</span>
+        <span>Notifications</span>
+      </a>
+
+      <a href="audit-logs.html">
+        <span class="nav-icon">◉</span>
+        <span>Audit Logs</span>
+      </a>
+
+      <div class="nav-section-title">Configuration</div>
+
+      <a href="payments.html">
+        <span class="nav-icon">৳</span>
+        <span>Payments</span>
+      </a>
+
+      <a href="delivery-zones.html">
+        <span class="nav-icon">⌁</span>
+        <span>Delivery Zones</span>
+      </a>
+
+      <a href="shipping.html" class="active">
+        <span class="nav-icon">🚚</span>
+        <span>Shipping</span>
+      </a>
+
+      <a href="seo.html">
+        <span class="nav-icon">⌕</span>
+        <span>SEO</span>
+      </a>
+
+      <a href="settings.html">
+        <span class="nav-icon">⚙</span>
+        <span>Settings</span>
+      </a>
+
+      <a href="staff.html">
+        <span class="nav-icon">♟</span>
+        <span>Staff</span>
+      </a>
+
+      <div class="nav-section-title">Storefront</div>
+
+      <a href="../index.html">
+        <span class="nav-icon">↗</span>
+        <span>View Store</span>
+      </a>
+
+    </nav>
+
+  </aside>
+
+
+  <!-- ================= MAIN ================= -->
+
+  <main class="admin-main">
+
+    <header class="admin-topbar">
+
+      <div class="topbar-title">
+        <h1>Shipping Settings</h1>
+        <p>Manage delivery rules and shipping preferences</p>
+      </div>
+
+      <div class="admin-user">
+
+        <div class="admin-avatar">
+          A
+        </div>
+
+        <div class="admin-user-info">
+          <strong>Store Administrator</strong>
+          <span>Administrator</span>
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <div class="admin-content">
+
+      <!-- ================= STATS ================= -->
+
+      <section class="stats-grid">
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+            <span class="stat-label">
+              Delivery Zones
+            </span>
+
+            <div class="stat-icon">
+              ◉
+            </div>
+          </div>
+
+          <div
+            class="stat-value"
+            id="zoneCount"
+          >
+            2
+          </div>
+
+          <div class="stat-help">
+            Active shipping zones
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+            <span class="stat-label">
+              Inside Dhaka
+            </span>
+
+            <div class="stat-icon">
+              ৳
+            </div>
+          </div>
+
+          <div
+            class="stat-value"
+            id="dhakaCharge"
+          >
+            ৳80
+          </div>
+
+          <div class="stat-help">
+            Standard delivery charge
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+            <span class="stat-label">
+              Outside Dhaka
+            </span>
+
+            <div class="stat-icon">
+              ৳
+            </div>
+          </div>
+
+          <div
+            class="stat-value"
+            id="outsideCharge"
+          >
+            ৳130
+          </div>
+
+          <div class="stat-help">
+            Standard delivery charge
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+            <span class="stat-label">
+              Free Delivery
+            </span>
+
+            <div class="stat-icon">
+              ✓
+            </div>
+          </div>
+
+          <div
+            class="stat-value"
+            id="freeMinimum"
+          >
+            ৳5,000
+          </div>
+
+          <div class="stat-help">
+            Minimum order amount
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <div class="content-grid">
+
+        <!-- ================= LEFT ================= -->
+
+        <div>
+
+          <!-- GENERAL SHIPPING -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <h2>
+                General Shipping Settings
+              </h2>
+
+              <p>
+                Configure the basic delivery behavior of your store.
+              </p>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="form-row">
+
+                <div class="form-group">
+
+                  <label for="currency">
+                    Shipping Currency
+                  </label>
+
+                  <select
+                    id="currency"
+                    class="form-control"
+                  >
+                    <option value="BDT">
+                      BDT - Bangladeshi Taka
+                    </option>
+
+                    <option value="USD">
+                      USD - US Dollar
+                    </option>
+
+                    <option value="EUR">
+                      EUR - Euro
+                    </option>
+                  </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label for="unit">
+                    Weight Unit
+                  </label>
+
+                  <select
+                    id="unit"
+                    class="form-control"
+                  >
+                    <option value="kg">
+                      Kilogram (kg)
+                    </option>
+
+                    <option value="g">
+                      Gram (g)
+                    </option>
+                  </select>
+
+                </div>
+
+              </div>
+
+
+              <div class="form-row">
+
+                <div class="form-group">
+
+                  <label for="processingTime">
+                    Processing Time
+                  </label>
+
+                  <select
+                    id="processingTime"
+                    class="form-control"
+                  >
+
+                    <option value="same-day">
+                      Same day
+                    </option>
+
+                    <option value="1-2">
+                      1–2 business days
+                    </option>
+
+                    <option value="2-3" selected>
+                      2–3 business days
+                    </option>
+
+                    <option value="3-5">
+                      3–5 business days
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label for="defaultDelivery">
+                    Default Delivery Time
+                  </label>
+
+                  <select
+                    id="defaultDelivery"
+                    class="form-control"
+                  >
+
+                    <option value="1-3">
+                      1–3 business days
+                    </option>
+
+                    <option value="2-5" selected>
+                      2–5 business days
+                    </option>
+
+                    <option value="3-7">
+                      3–7 business days
+                    </option>
+
+                    <option value="5-10">
+                      5–10 business days
+                    </option>
+
+                  </select>
+
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="shippingNote">
+                  Customer Shipping Note
+                </label>
+
+                <textarea
+                  id="shippingNote"
+                  class="form-control"
+                  placeholder="Delivery may take longer during holidays or unexpected situations."
+                ></textarea>
+
+                <div class="help">
+                  This message can later be shown on checkout and shipping pages.
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- DELIVERY RULES -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <h2>
+                Delivery Rules
+              </h2>
+
+              <p>
+                Set charges, free delivery threshold and order restrictions.
+              </p>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="form-row">
+
+                <div class="form-group">
+
+                  <label for="insideDhaka">
+                    Inside Dhaka Charge
+                  </label>
+
+                  <input
+                    type="number"
+                    id="insideDhaka"
+                    class="form-control"
+                    min="0"
+                    step="1"
+                    value="80"
+                  >
+
+                  <div class="help">
+                    Standard charge for Dhaka delivery.
+                  </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label for="outsideDhaka">
+                    Outside Dhaka Charge
+                  </label>
+
+                  <input
+                    type="number"
+                    id="outsideDhaka"
+                    class="form-control"
+                    min="0"
+                    step="1"
+                    value="130"
+                  >
+
+                  <div class="help">
+                    Standard charge for other districts.
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="form-row">
+
+                <div class="form-group">
+
+                  <label for="freeDeliveryMinimum">
+                    Free Delivery Minimum
+                  </label>
+
+                  <input
+                    type="number"
+                    id="freeDeliveryMinimum"
+                    class="form-control"
+                    min="0"
+                    step="1"
+                    value="5000"
+                  >
+
+                  <div class="help">
+                    Orders at or above this amount get free delivery.
+                  </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label for="maxOrderWeight">
+                    Maximum Order Weight
+                  </label>
+
+                  <input
+                    type="number"
+                    id="maxOrderWeight"
+                    class="form-control"
+                    min="0"
+                    step=".1"
+                    value="20"
+                  >
+
+                  <div class="help">
+                    Maximum allowed order weight.
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="form-row">
+
+                <div class="form-group">
+
+                  <label for="minimumOrder">
+                    Minimum Order Amount
+                  </label>
+
+                  <input
+                    type="number"
+                    id="minimumOrder"
+                    class="form-control"
+                    min="0"
+                    value="0"
+                  >
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label for="codMaximum">
+                    Maximum COD Order
+                  </label>
+
+                  <input
+                    type="number"
+                    id="codMaximum"
+                    class="form-control"
+                    min="0"
+                    value="20000"
+                  >
+
+                  <div class="help">
+                    Set 0 to remove the COD limit.
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- DELIVERY OPTIONS -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <h2>
+                Delivery Options
+              </h2>
+
+              <p>
+                Control which delivery options customers can use.
+              </p>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+
+                  <strong>
+                    Enable shipping
+                  </strong>
+
+                  <span>
+                    Allow customers to receive orders through delivery.
+                  </span>
+
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    type="checkbox"
+                    id="shippingEnabled"
+                    checked
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+
+                  <strong>
+                    Cash on Delivery
+                  </strong>
+
+                  <span>
+                    Allow customers to pay when the order is delivered.
+                  </span>
+
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    type="checkbox"
+                    id="codEnabled"
+                    checked
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+
+                  <strong>
+                    Free delivery
+                  </strong>
+
+                  <span>
+                    Automatically apply free delivery when minimum amount is reached.
+                  </span>
+
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    type="checkbox"
+                    id="freeDeliveryEnabled"
+                    checked
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+
+                  <strong>
+                    Show estimated delivery date
+                  </strong>
+
+                  <span>
+                    Show customers an estimated delivery time during checkout.
+                  </span>
+
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    type="checkbox"
+                    id="showEstimatedDate"
+                    checked
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+
+                  <strong>
+                    Require shipping address
+                  </strong>
+
+                  <span>
+                    Customers must provide a complete delivery address.
+                  </span>
+
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    type="checkbox"
+                    id="requireAddress"
+                    checked
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+
+                  <strong>
+                    Allow delivery instructions
+                  </strong>
+
+                  <span>
+                    Customers can add notes for the delivery person.
+                  </span>
+
+                </div>
+
+                <label class="switch">
+
+                  <input
+                    type="checkbox"
+                    id="deliveryInstructions"
+                    checked
+                  >
+
+                  <span class="slider"></span>
+
+                </label>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- ACTIONS -->
+
+          <div class="action-bar">
+
+            <button
+              type="button"
+              class="btn"
+              id="resetBtn"
+            >
+              Reset
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="saveBtn"
+            >
+              Save Shipping Settings
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================= RIGHT ================= -->
+
+        <div>
+
+          <!-- QUICK SUMMARY -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <h2>
+                Shipping Summary
+              </h2>
+
+              <p>
+                Current delivery configuration.
+              </p>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="delivery-summary">
+
+                <div class="summary-row">
+
+                  <span>
+                    Inside Dhaka
+                  </span>
+
+                  <strong id="summaryDhaka">
+                    ৳80
+                  </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                  <span>
+                    Outside Dhaka
+                  </span>
+
+                  <strong id="summaryOutside">
+                    ৳130
+                  </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                  <span>
+                    Free Delivery
+                  </span>
+
+                  <strong id="summaryFree">
+                    ৳5,000+
+                  </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                  <span>
+                    Processing
+                  </span>
+
+                  <strong id="summaryProcessing">
+                    2–3 days
+                  </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                  <span>
+                    Delivery
+                  </span>
+
+                  <strong id="summaryDelivery">
+                    2–5 days
+                  </strong>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- CUSTOMER EXPERIENCE -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <h2>
+                Customer Experience
+              </h2>
+
+              <p>
+                Settings that affect the checkout experience.
+              </p>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+
+                  <strong>
+                    Delivery address validation
+                  </strong>
+
+                  <span>
+                    Validate required address fields before order submission.
+                  </span>
+
+                </div>
+
+                <span
+                  class="status status-active"
+                >
+                  ENABLED
+                </span>
+
+              </div>
+
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+
+                  <strong>
+                    Delivery estimate
+                  </strong>
+
+                  <span>
+                    Show estimated delivery time to customers.
+                  </span>
+
+                </div>
+
+                <span
+                  class="status status-active"
+                  id="estimateBadge"
+                >
+                  ENABLED
+                </span>
+
+              </div>
+
+
+              <div class="setting-row">
+
+                <div class="setting-info">
+
+                  <strong>
+                    COD
+                  </strong>
+
+                  <span>
+                    Cash on Delivery availability.
+                  </span>
+
+                </div>
+
+                <span
+                  class="status status-active"
+                  id="codBadge"
+                >
+                  ENABLED
+                </span>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- IMPORTANT -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <h2>
+                Important
+              </h2>
+
+            </div>
+
+            <div class="card-body">
+
+              <div class="notice">
+
+                <strong>
+                  Frontend demo:
+                </strong>
+
+                These settings are currently saved in browser
+                LocalStorage. In the production version, shipping
+                rules will be stored in MySQL and controlled through
+                the PHP backend.
+
+              </div>
+
+
+              <div class="notice">
+
+                <strong>
+                  Courier API:
+                </strong>
+
+                Steadfast, Pathao, RedX, Paperfly and Sundarban
+                integrations will be connected later from the backend.
+                
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- ZONES -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <h2>
+                Active Delivery Zones
+              </h2>
+
+              <p>
+                Zones currently configured in Delivery Zones.
+              </p>
+
+            </div>
+
+            <div class="card-body">
+
+              <div
+                class="zone-table-wrapper"
+              >
+
+                <table class="zone-table">
+
+                  <thead>
+
+                    <tr>
+                      <th>Zone</th>
+                      <th>Charge</th>
+                      <th>Free From</th>
+                      <th>Status</th>
+                    </tr>
+
+                  </thead>
+
+                  <tbody id="zoneTableBody">
+                  </tbody>
+
+                </table>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <a
+            href="delivery-zones.html"
+            class="btn"
+            style="
+              display:block;
+              text-align:center;
+              margin-bottom:20px;
+            "
+          >
+            Manage Delivery Zones →
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+  class="toast"
+  id="toast"
+>
+  Shipping settings saved successfully
+</div>
+
+
+<script>
+
+  /* =========================================================
+     ALAMIN SHOP
+     SHIPPING SETTINGS
+  ========================================================= */
+
+  const STORAGE_KEY =
+    "shopnest_shipping_settings";
+
+
+  const defaultSettings = {
+
+    currency: "BDT",
+
+    unit: "kg",
+
+    processingTime: "2-3",
+
+    defaultDelivery: "2-5",
+
+    shippingNote:
+      "Delivery may take longer during holidays or unexpected situations.",
+
+    insideDhaka: 80,
+
+    outsideDhaka: 130,
+
+    freeDeliveryMinimum: 5000,
+
+    maxOrderWeight: 20,
+
+    minimumOrder: 0,
+
+    codMaximum: 20000,
+
+    shippingEnabled: true,
+
+    codEnabled: true,
+
+    freeDeliveryEnabled: true,
+
+    showEstimatedDate: true,
+
+    requireAddress: true,
+
+    deliveryInstructions: true
+
+  };
+
+
+  let settings = {
+    ...defaultSettings
+  };
+
+
+  /* =========================================================
+     DOM
+  ========================================================= */
+
+  const currency =
+    document.getElementById("currency");
+
+  const unit =
+    document.getElementById("unit");
+
+  const processingTime =
+    document.getElementById("processingTime");
+
+  const defaultDelivery =
+    document.getElementById("defaultDelivery");
+
+  const shippingNote =
+    document.getElementById("shippingNote");
+
+  const insideDhaka =
+    document.getElementById("insideDhaka");
+
+  const outsideDhaka =
+    document.getElementById("outsideDhaka");
+
+  const freeDeliveryMinimum =
+    document.getElementById("freeDeliveryMinimum");
+
+  const maxOrderWeight =
+    document.getElementById("maxOrderWeight");
+
+  const minimumOrder =
+    document.getElementById("minimumOrder");
+
+  const codMaximum =
+    document.getElementById("codMaximum");
+
+  const shippingEnabled =
+    document.getElementById("shippingEnabled");
+
+  const codEnabled =
+    document.getElementById("codEnabled");
+
+  const freeDeliveryEnabled =
+    document.getElementById("freeDeliveryEnabled");
+
+  const showEstimatedDate =
+    document.getElementById("showEstimatedDate");
+
+  const requireAddress =
+    document.getElementById("requireAddress");
+
+  const deliveryInstructions =
+    document.getElementById("deliveryInstructions");
+
+
+  /* =========================================================
+     LOAD
+  ========================================================= */
+
+  function loadSettings() {
+
+    try {
+
+      const saved =
+        localStorage.getItem(STORAGE_KEY);
+
+      if (saved) {
+
+        const parsed =
+          JSON.parse(saved);
+
+        settings = {
+          ...defaultSettings,
+          ...parsed
+        };
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Shipping settings load error:",
+        error
+      );
+
+      settings = {
+        ...defaultSettings
+      };
+
+    }
+
+    populateForm();
+
+  }
+
+
+  /* =========================================================
+     POPULATE
+  ========================================================= */
+
+  function populateForm() {
+
+    currency.value =
+      settings.currency;
+
+    unit.value =
+      settings.unit;
+
+    processingTime.value =
+      settings.processingTime;
+
+    defaultDelivery.value =
+      settings.defaultDelivery;
+
+    shippingNote.value =
+      settings.shippingNote;
+
+    insideDhaka.value =
+      settings.insideDhaka;
+
+    outsideDhaka.value =
+      settings.outsideDhaka;
+
+    freeDeliveryMinimum.value =
+      settings.freeDeliveryMinimum;
+
+    maxOrderWeight.value =
+      settings.maxOrderWeight;
+
+    minimumOrder.value =
+      settings.minimumOrder;
+
+    codMaximum.value =
+      settings.codMaximum;
+
+    shippingEnabled.checked =
+      settings.shippingEnabled;
+
+    codEnabled.checked =
+      settings.codEnabled;
+
+    freeDeliveryEnabled.checked =
+      settings.freeDeliveryEnabled;
+
+    showEstimatedDate.checked =
+      settings.showEstimatedDate;
+
+    requireAddress.checked =
+      settings.requireAddress;
+
+    deliveryInstructions.checked =
+      settings.deliveryInstructions;
+
+    updateUI();
+
+  }
+
+
+  /* =========================================================
+     COLLECT
+  ========================================================= */
+
+  function collectSettings() {
+
+    settings = {
+
+      currency:
+        currency.value,
+
+      unit:
+        unit.value,
+
+      processingTime:
+        processingTime.value,
+
+      defaultDelivery:
+        defaultDelivery.value,
+
+      shippingNote:
+        shippingNote.value.trim(),
+
+      insideDhaka:
+        Number(insideDhaka.value) || 0,
+
+      outsideDhaka:
+        Number(outsideDhaka.value) || 0,
+
+      freeDeliveryMinimum:
+        Number(freeDeliveryMinimum.value) || 0,
+
+      maxOrderWeight:
+        Number(maxOrderWeight.value) || 0,
+
+      minimumOrder:
+        Number(minimumOrder.value) || 0,
+
+      codMaximum:
+        Number(codMaximum.value) || 0,
+
+      shippingEnabled:
+        shippingEnabled.checked,
+
+      codEnabled:
+        codEnabled.checked,
+
+      freeDeliveryEnabled:
+        freeDeliveryEnabled.checked,
+
+      showEstimatedDate:
+        showEstimatedDate.checked,
+
+      requireAddress:
+        requireAddress.checked,
+
+      deliveryInstructions:
+        deliveryInstructions.checked
+
+    };
+
+  }
+
+
+  /* =========================================================
+     LIVE UPDATE
+  ========================================================= */
+
+  const fields =
+    document.querySelectorAll(
+      "input, select, textarea"
+    );
+
+
+  fields.forEach(field => {
+
+    field.addEventListener(
+      "input",
+      updateUI
+    );
+
+    field.addEventListener(
+      "change",
+      updateUI
+    );
+
+  });
+
+
+  function updateUI() {
+
+    collectSettings();
+
+    updateSummary();
+
+    updateStats();
+
+    updateBadges();
+
+  }
+
+
+  /* =========================================================
+     SUMMARY
+  ========================================================= */
+
+  function updateSummary() {
+
+    document.getElementById(
+      "summaryDhaka"
+    ).textContent =
+      formatMoney(settings.insideDhaka);
+
+
+    document.getElementById(
+      "summaryOutside"
+    ).textContent =
+      formatMoney(settings.outsideDhaka);
+
+
+    document.getElementById(
+      "summaryFree"
+    ).textContent =
+      settings.freeDeliveryEnabled
+        ? `${formatMoney(settings.freeDeliveryMinimum)}+`
+        : "Disabled";
+
+
+    document.getElementById(
+      "summaryProcessing"
+    ).textContent =
+      getProcessingLabel(
+        settings.processingTime
+      );
+
+
+    document.getElementById(
+      "summaryDelivery"
+    ).textContent =
+      getDeliveryLabel(
+        settings.defaultDelivery
+      );
+
+  }
+
+
+  /* =========================================================
+     STATS
+  ========================================================= */
+
+  function updateStats() {
+
+    document.getElementById(
+      "dhakaCharge"
+    ).textContent =
+      formatMoney(settings.insideDhaka);
+
+
+    document.getElementById(
+      "outsideCharge"
+    ).textContent =
+      formatMoney(settings.outsideDhaka);
+
+
+    document.getElementById(
+      "freeMinimum"
+    ).textContent =
+      settings.freeDeliveryEnabled
+        ? formatMoney(settings.freeDeliveryMinimum)
+        : "Off";
+
+  }
+
+
+  /* =========================================================
+     BADGES
+  ========================================================= */
+
+  function updateBadges() {
+
+    const codBadge =
+      document.getElementById(
+        "codBadge"
+      );
+
+    const estimateBadge =
+      document.getElementById(
+        "estimateBadge"
+      );
+
+
+    setBadge(
+      codBadge,
+      settings.codEnabled
+    );
+
+
+    setBadge(
+      estimateBadge,
+      settings.showEstimatedDate
+    );
+
+  }
+
+
+  function setBadge(
+    element,
+    enabled
+  ) {
+
+    if (enabled) {
+
+      element.textContent =
+        "ENABLED";
+
+      element.className =
+        "status status-active";
+
+    } else {
+
+      element.textContent =
+        "DISABLED";
+
+      element.className =
+        "status status-inactive";
+
+    }
+
+  }
+
+
+  /* =========================================================
+     DELIVERY ZONES
+  ========================================================= */
+
+  function loadZones() {
+
+    const defaultZones = [
+
+      {
+        name: "Inside Dhaka",
+        areas:
+          "Dhaka City, Mohammadpur, Mirpur, Uttara, Dhanmondi, Gulshan, Banani",
+        charge: 80,
+        freeMinimum: 5000,
+        status: "active"
+      },
+
+      {
+        name: "Outside Dhaka",
+        areas:
+          "All districts outside Dhaka",
+        charge: 130,
+        freeMinimum: 5000,
+        status: "active"
+      }
+
+    ];
+
+
+    let zones = [];
+
+
+    try {
+
+      const saved =
+        localStorage.getItem(
+          "shopnest_delivery_zones"
+        );
+
+
+      if (saved) {
+
+        zones =
+          JSON.parse(saved);
+
+      }
+
+    } catch (error) {
+
+      zones = [];
+
+    }
+
+
+    if (
+      !Array.isArray(zones) ||
+      zones.length === 0
+    ) {
+
+      zones =
+        defaultZones;
+
+    }
+
+
+    const activeZones =
+      zones.filter(
+        zone =>
+          zone.status !== "inactive" &&
+          zone.active !== false
+      );
+
+
+    document.getElementById(
+      "zoneCount"
+    ).textContent =
+      activeZones.length;
+
+
+    const tbody =
+      document.getElementById(
+        "zoneTableBody"
+      );
+
+
+    tbody.innerHTML =
+      activeZones
+        .map(zone => {
+
+          const charge =
+            Number(
+              zone.charge ??
+              zone.deliveryCharge ??
+              0
+            );
+
+
+          const free =
+            Number(
+              zone.freeMinimum ??
+              zone.freeDeliveryMinimum ??
+              0
+            );
+
+
+          return `
+
+            <tr>
+
+              <td>
+
+                <div class="zone-name">
+                  ${escapeHtml(
+                    zone.name ||
+                    "Unnamed Zone"
+                  )}
+                </div>
+
+                <div class="zone-areas">
+                  ${escapeHtml(
+                    zone.areas ||
+                    "No areas specified"
+                  )}
+                </div>
+
+              </td>
+
+              <td>
+                ${formatMoney(charge)}
+              </td>
+
+              <td>
+                ${formatMoney(free)}+
+              </td>
+
+              <td>
+
+                <span class="status status-active">
+                  ACTIVE
+                </span>
+
+              </td>
+
+            </tr>
+
+          `;
+
+        })
+        .join("");
+
+  }
+
+
+  /* =========================================================
+     SAVE
+  ========================================================= */
+
+  document.getElementById(
+    "saveBtn"
+  ).addEventListener(
+    "click",
+    function() {
+
+      collectSettings();
+
+
+      if (
+        settings.insideDhaka < 0 ||
+        settings.outsideDhaka < 0
+      ) {
+
+        showToast(
+          "Delivery charge cannot be negative"
+        );
+
+        return;
+
+      }
+
+
+      if (
+        settings.freeDeliveryMinimum < 0
+      ) {
+
+        showToast(
+          "Free delivery amount is invalid"
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify(settings)
+        );
+
+
+        /*
+          Also sync the shared store settings
+          so checkout can later use these values.
+        */
+
+        syncWithStoreSettings();
+
+
+        showToast(
+          "Shipping settings saved successfully"
+        );
+
+      } catch (error) {
+
+        console.error(error);
+
+        showToast(
+          "Could not save shipping settings"
+        );
+
+      }
+
+    }
+  );
+
+
+  /* =========================================================
+     SYNC STORE SETTINGS
+  ========================================================= */
+
+  function syncWithStoreSettings() {
+
+    const STORE_KEY =
+      "shopnest_settings";
+
+
+    let storeSettings = {};
+
+
+    try {
+
+      const saved =
+        localStorage.getItem(
+          STORE_KEY
+        );
+
+
+      if (saved) {
+
+        storeSettings =
+          JSON.parse(saved);
+
+      }
+
+    } catch (error) {
+
+      storeSettings = {};
+
+    }
+
+
+    storeSettings.insideDhaka =
+      settings.insideDhaka;
+
+    storeSettings.outsideDhaka =
+      settings.outsideDhaka;
+
+    storeSettings.freeDeliveryMinimum =
+      settings.freeDeliveryMinimum;
+
+    storeSettings.minimumOrder =
+      settings.minimumOrder;
+
+
+    localStorage.setItem(
+      STORE_KEY,
+      JSON.stringify(storeSettings)
+    );
+
+  }
+
+
+  /* =========================================================
+     RESET
+  ========================================================= */
+
+  document.getElementById(
+    "resetBtn"
+  ).addEventListener(
+    "click",
+    function() {
+
+      const confirmed =
+        confirm(
+          "Reset shipping settings to default?"
+        );
+
+
+      if (!confirmed) return;
+
+
+      settings = {
+        ...defaultSettings
+      };
+
+
+      localStorage.removeItem(
+        STORAGE_KEY
+      );
+
+
+      populateForm();
+
+
+      showToast(
+        "Shipping settings reset"
+      );
+
+    }
+  );
+
+
+  /* =========================================================
+     HELPERS
+  ========================================================= */
+
+  function formatMoney(value) {
+
+    const amount =
+      Number(value) || 0;
+
+
+    if (
+      settings.currency === "USD"
+    ) {
+
+      return `$${amount.toLocaleString()}`;
+
+    }
+
+
+    if (
+      settings.currency === "EUR"
+    ) {
+
+      return `€${amount.toLocaleString()}`;
+
+    }
+
+
+    return `৳${amount.toLocaleString()}`;
+
+  }
+
+
+  function getProcessingLabel(value) {
+
+    const labels = {
+
+      "same-day":
+        "Same day",
+
+      "1-2":
+        "1–2 days",
+
+      "2-3":
+        "2–3 days",
+
+      "3-5":
+        "3–5 days"
+
+    };
+
+
+    return (
+      labels[value] ||
+      value
+    );
+
+  }
+
+
+  function getDeliveryLabel(value) {
+
+    const labels = {
+
+      "1-3":
+        "1–3 days",
+
+      "2-5":
+        "2–5 days",
+
+      "3-7":
+        "3–7 days",
+
+      "5-10":
+        "5–10 days"
+
+    };
+
+
+    return (
+      labels[value] ||
+      value
+    );
+
+  }
+
+
+  function escapeHtml(value) {
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  function showToast(message) {
+
+    const toast =
+      document.getElementById(
+        "toast"
+      );
+
+
+    toast.textContent =
+      message;
+
+
+    toast.classList.add(
+      "show"
+    );
+
+
+    setTimeout(
+      function() {
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
+      2500
+    );
+
+  }
+
+
+  /* =========================================================
+     INIT
+  ========================================================= */
+
+  loadSettings();
+
+  loadZones();
+
+</script>
+
+</body>
+</html>

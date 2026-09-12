@@ -1,0 +1,3673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout - Alamin Shop</title>
+
+    <meta
+        name="description"
+        content="Complete your order securely at Alamin Shop."
+    >
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* =========================================================
+           CHECKOUT PAGE
+        ========================================================= */
+
+        .checkout-page {
+            min-height: 100vh;
+            background: #070809;
+            color: #f8fafc;
+        }
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        .checkout-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            background: rgba(7, 8, 9, 0.96);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+
+            border-bottom: 1px solid #25282e;
+        }
+
+        .checkout-header-inner {
+            width: min(1400px, calc(100% - 40px));
+            margin: 0 auto;
+
+            min-height: 78px;
+
+            display: grid;
+            grid-template-columns: auto minmax(260px, 1fr) auto;
+            align-items: center;
+            gap: 28px;
+        }
+
+        /* =========================================================
+           LOGO
+        ========================================================= */
+
+        .checkout-logo {
+            text-decoration: none;
+            color: #ffffff;
+
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+
+            white-space: nowrap;
+        }
+
+        .checkout-logo span {
+            color: #7c3aed;
+        }
+
+        /* =========================================================
+           SEARCH
+        ========================================================= */
+
+        .checkout-search {
+            width: 100%;
+            max-width: 650px;
+            justify-self: center;
+        }
+
+        .checkout-search-box {
+            position: relative;
+
+            width: 100%;
+            height: 48px;
+
+            display: flex;
+            align-items: center;
+
+            background: #111317;
+            border: 1px solid #2b2f37;
+
+            border-radius: 14px;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                background 0.25s ease;
+        }
+
+        .checkout-search-box:focus-within {
+            background: #15171c;
+            border-color: #7c3aed;
+
+            box-shadow:
+                0 0 0 3px rgba(124, 58, 237, 0.12);
+        }
+
+        .checkout-search-icon {
+            width: 48px;
+            min-width: 48px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #8f96a3;
+
+            pointer-events: none;
+        }
+
+        .checkout-search-icon svg {
+            width: 19px;
+            height: 19px;
+        }
+
+        .checkout-search-box input {
+            width: 100%;
+            height: 100%;
+
+            border: 0;
+            outline: 0;
+
+            background: transparent;
+            color: #ffffff;
+
+            font-size: 14px;
+            font-weight: 500;
+
+            padding: 0 48px 0 0;
+        }
+
+        .checkout-search-box input::placeholder {
+            color: #777e8b;
+        }
+
+        .checkout-search-clear {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+
+            width: 30px;
+            height: 30px;
+
+            border: 0;
+            border-radius: 9px;
+
+            background: transparent;
+            color: #7f8794;
+
+            cursor: pointer;
+
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+        }
+
+        .checkout-search-clear:hover {
+            background: #242831;
+            color: #ffffff;
+        }
+
+        /* =========================================================
+           HEADER ACTIONS
+        ========================================================= */
+
+        .checkout-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkout-action {
+            position: relative;
+
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid #2a2e36;
+            border-radius: 12px;
+
+            background: #111317;
+            color: #dce1e8;
+
+            text-decoration: none;
+
+            transition:
+                background 0.25s ease,
+                border-color 0.25s ease,
+                transform 0.25s ease;
+        }
+
+        .checkout-action:hover {
+            background: #1a1d23;
+            border-color: #7c3aed;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .checkout-action svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .checkout-count {
+            position: absolute;
+
+            top: -5px;
+            right: -5px;
+
+            min-width: 18px;
+            height: 18px;
+
+            padding: 0 5px;
+
+            border-radius: 999px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #7c3aed;
+            color: #ffffff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            border: 2px solid #070809;
+        }
+
+        /* =========================================================
+           MAIN
+        ========================================================= */
+
+        .checkout-main {
+            width: min(1200px, calc(100% - 40px));
+            margin: 0 auto;
+
+            padding: 50px 0 80px;
+        }
+
+        .checkout-heading {
+            margin-bottom: 32px;
+        }
+
+        .checkout-heading small {
+            display: inline-block;
+
+            margin-bottom: 9px;
+
+            color: #8f96a3;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
+        }
+
+        .checkout-heading h1 {
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: clamp(30px, 4vw, 46px);
+            line-height: 1.05;
+
+            letter-spacing: -1.5px;
+        }
+
+        .checkout-heading p {
+            margin: 12px 0 0;
+
+            max-width: 650px;
+
+            color: #9299a5;
+
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* =========================================================
+           CART ID
+        ========================================================= */
+
+        .cart-id-card {
+            margin-bottom: 28px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 17px 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(124, 58, 237, 0.11),
+                    rgba(124, 58, 237, 0.035)
+                );
+
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 16px;
+        }
+
+        .cart-id-left {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .cart-id-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: rgba(124, 58, 237, 0.14);
+            color: #a78bfa;
+        }
+
+        .cart-id-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .cart-id-label {
+            display: block;
+
+            margin-bottom: 3px;
+
+            color: #818895;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .cart-id-value {
+            color: #ffffff;
+
+            font-size: 15px;
+            font-weight: 800;
+
+            letter-spacing: 0.5px;
+        }
+
+        .cart-id-status {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            color: #a7f3d0;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .cart-id-status-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #22c55e;
+
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.6);
+        }
+
+        /* =========================================================
+           CHECKOUT GRID
+        ========================================================= */
+
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.55fr) minmax(330px, 0.85fr);
+            gap: 28px;
+            align-items: start;
+        }
+
+        /* =========================================================
+           CARD
+        ========================================================= */
+
+        .checkout-card {
+            background: #101216;
+
+            border: 1px solid #272b33;
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .checkout-card + .checkout-card {
+            margin-top: 20px;
+        }
+
+        .checkout-card-header {
+            padding: 22px 24px;
+
+            border-bottom: 1px solid #252932;
+        }
+
+        .checkout-card-header h2 {
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .checkout-card-header p {
+            margin: 6px 0 0;
+
+            color: #858c98;
+
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .checkout-card-body {
+            padding: 24px;
+        }
+
+        /* =========================================================
+           FORM
+        ========================================================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            color: #cdd2da;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .form-group label span {
+            color: #ef4444;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+
+            border: 1px solid #2b2f37;
+            outline: 0;
+
+            border-radius: 12px;
+
+            background: #0b0d10;
+            color: #f8fafc;
+
+            padding: 13px 14px;
+
+            font-family: inherit;
+            font-size: 14px;
+
+            transition:
+                border-color 0.25s ease,
+                background 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        .form-group input,
+        .form-group select {
+            min-height: 48px;
+        }
+
+        .form-group textarea {
+            min-height: 115px;
+            resize: vertical;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #666d79;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            background: #101318;
+            border-color: #7c3aed;
+
+            box-shadow:
+                0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+
+        .field-help {
+            margin: 0;
+
+            color: #686f7b;
+
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        /* =========================================================
+           PAYMENT METHODS
+        ========================================================= */
+
+        .payment-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .payment-option {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            padding: 15px;
+
+            border: 1px solid #2b2f37;
+            border-radius: 14px;
+
+            background: #0b0d10;
+
+            cursor: pointer;
+
+            transition:
+                border-color 0.25s ease,
+                background 0.25s ease;
+        }
+
+        .payment-option:hover {
+            background: #111419;
+            border-color: #424751;
+        }
+
+        .payment-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .payment-radio {
+            width: 19px;
+            height: 19px;
+
+            min-width: 19px;
+
+            border: 2px solid #555b66;
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-radio::after {
+            content: "";
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #ffffff;
+
+            transform: scale(0);
+            transition: transform 0.2s ease;
+        }
+
+        .payment-option:has(input:checked) {
+            border-color: #7c3aed;
+            background: rgba(124, 58, 237, 0.08);
+        }
+
+        .payment-option:has(input:checked) .payment-radio {
+            border-color: #8b5cf6;
+            background: #7c3aed;
+        }
+
+        .payment-option:has(input:checked) .payment-radio::after {
+            transform: scale(1);
+        }
+
+        .payment-info {
+            min-width: 0;
+        }
+
+        .payment-title {
+            display: block;
+
+            color: #ffffff;
+
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .payment-description {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #747b87;
+
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        /* =========================================================
+           ORDER ITEMS
+        ========================================================= */
+
+        .checkout-items {
+            display: grid;
+            gap: 14px;
+        }
+
+        .checkout-item {
+            display: grid;
+            grid-template-columns: 64px minmax(0, 1fr) auto;
+            gap: 13px;
+            align-items: center;
+
+            padding-bottom: 14px;
+
+            border-bottom: 1px solid #252932;
+        }
+
+        .checkout-item:last-child {
+            padding-bottom: 0;
+            border-bottom: 0;
+        }
+
+        .checkout-item-image {
+            width: 64px;
+            height: 64px;
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            background: #191c22;
+            border: 1px solid #2a2e36;
+        }
+
+        .checkout-item-image img {
+            width: 100%;
+            height: 100%;
+
+            display: block;
+
+            object-fit: cover;
+        }
+
+        .checkout-item-info {
+            min-width: 0;
+        }
+
+        .checkout-item-name {
+            margin: 0 0 4px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+            font-weight: 800;
+
+            line-height: 1.4;
+
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+
+            overflow: hidden;
+        }
+
+        .checkout-item-meta {
+            color: #747b87;
+
+            font-size: 11px;
+        }
+
+        .checkout-item-price {
+            color: #ffffff;
+
+            font-size: 14px;
+            font-weight: 800;
+
+            white-space: nowrap;
+        }
+
+        /* =========================================================
+           SUMMARY
+        ========================================================= */
+
+        .summary-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .summary-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            color: #9299a5;
+
+            font-size: 13px;
+        }
+
+        .summary-row strong {
+            color: #e7eaf0;
+            font-weight: 700;
+        }
+
+        .summary-row.discount strong {
+            color: #4ade80;
+        }
+
+        .summary-divider {
+            height: 1px;
+
+            margin: 4px 0;
+
+            background: #292d35;
+        }
+
+        .summary-total {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+        .summary-total span:first-child {
+            color: #ffffff;
+
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .summary-total span:last-child {
+            color: #ffffff;
+
+            font-size: 23px;
+            font-weight: 900;
+        }
+
+        /* =========================================================
+           PLACE ORDER
+        ========================================================= */
+
+        .place-order-btn {
+            width: 100%;
+
+            min-height: 54px;
+
+            margin-top: 22px;
+
+            border: 0;
+            border-radius: 13px;
+
+            background: linear-gradient(
+                135deg,
+                #7c3aed,
+                #6d28d9
+            );
+
+            color: #ffffff;
+
+            font-family: inherit;
+
+            font-size: 14px;
+            font-weight: 800;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 12px 28px rgba(124, 58, 237, 0.22);
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                opacity 0.25s ease;
+        }
+
+        .place-order-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 16px 34px rgba(124, 58, 237, 0.3);
+        }
+
+        .place-order-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .secure-note {
+            margin: 14px 0 0;
+
+            color: #696f7a;
+
+            font-size: 11px;
+            line-height: 1.6;
+
+            text-align: center;
+        }
+
+        /* =========================================================
+           EMPTY STATE
+        ========================================================= */
+
+        .checkout-empty {
+            display: none;
+
+            text-align: center;
+
+            padding: 70px 25px;
+        }
+
+        .checkout-empty-icon {
+            width: 70px;
+            height: 70px;
+
+            margin: 0 auto 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 20px;
+
+            background: #171a20;
+            color: #858c98;
+        }
+
+        .checkout-empty-icon svg {
+            width: 30px;
+            height: 30px;
+        }
+
+        .checkout-empty h2 {
+            margin: 0 0 8px;
+
+            color: #ffffff;
+
+            font-size: 24px;
+        }
+
+        .checkout-empty p {
+            margin: 0 auto 22px;
+
+            max-width: 450px;
+
+            color: #808792;
+
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .back-shop-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 46px;
+
+            padding: 0 20px;
+
+            border-radius: 11px;
+
+            background: #7c3aed;
+            color: #ffffff;
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        /* =========================================================
+           SUCCESS
+        ========================================================= */
+
+        .order-success {
+            display: none;
+
+            max-width: 700px;
+
+            margin: 30px auto 0;
+
+            padding: 50px 30px;
+
+            text-align: center;
+
+            background: #101216;
+
+            border: 1px solid #272b33;
+            border-radius: 22px;
+        }
+
+        .success-icon {
+            width: 76px;
+            height: 76px;
+
+            margin: 0 auto 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: rgba(34, 197, 94, 0.12);
+            color: #4ade80;
+
+            border: 1px solid rgba(34, 197, 94, 0.25);
+        }
+
+        .success-icon svg {
+            width: 36px;
+            height: 36px;
+        }
+
+        .order-success h2 {
+            margin: 0 0 10px;
+
+            color: #ffffff;
+
+            font-size: 28px;
+        }
+
+        .order-success > p {
+            margin: 0 auto 22px;
+
+            max-width: 500px;
+
+            color: #858c98;
+
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .success-order-id {
+            display: inline-block;
+
+            padding: 11px 15px;
+
+            margin-bottom: 25px;
+
+            border-radius: 10px;
+
+            background: #181b21;
+            border: 1px solid #2b2f37;
+
+            color: #ffffff;
+
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .success-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .success-btn {
+            min-height: 46px;
+
+            padding: 0 18px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 11px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .success-btn.primary {
+            background: #7c3aed;
+            color: #ffffff;
+        }
+
+        .success-btn.secondary {
+            background: #181b21;
+            color: #dce1e8;
+
+            border: 1px solid #2b2f37;
+        }
+
+        /* =========================================================
+           ERROR
+        ========================================================= */
+
+        .form-error {
+            display: none;
+
+            margin-bottom: 20px;
+
+            padding: 13px 15px;
+
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            border-radius: 12px;
+
+            background: rgba(239, 68, 68, 0.08);
+
+            color: #fca5a5;
+
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        .checkout-footer {
+            border-top: 1px solid #22252c;
+
+            padding: 25px 20px;
+
+            text-align: center;
+
+            color: #656c77;
+
+            font-size: 12px;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 1050px) {
+
+            .checkout-header-inner {
+                grid-template-columns: auto minmax(220px, 1fr) auto;
+                gap: 18px;
+            }
+
+            .checkout-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .checkout-sidebar {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 20px;
+            }
+
+            .checkout-sidebar .checkout-card + .checkout-card {
+                margin-top: 0;
+            }
+        }
+
+        @media (max-width: 800px) {
+
+            .checkout-header-inner {
+                width: min(100% - 28px, 700px);
+
+                grid-template-columns: auto auto;
+                grid-template-areas:
+                    "logo actions"
+                    "search search";
+
+                gap: 14px;
+
+                padding: 12px 0 14px;
+            }
+
+            .checkout-logo {
+                grid-area: logo;
+            }
+
+            .checkout-actions {
+                grid-area: actions;
+                justify-self: end;
+            }
+
+            .checkout-search {
+                grid-area: search;
+
+                max-width: none;
+            }
+
+            .checkout-main {
+                width: min(100% - 28px, 700px);
+
+                padding-top: 35px;
+            }
+
+            .cart-id-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .cart-id-status {
+                margin-left: 55px;
+            }
+
+            .checkout-sidebar {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .checkout-header-inner {
+                width: calc(100% - 20px);
+            }
+
+            .checkout-main {
+                width: calc(100% - 20px);
+
+                padding-bottom: 55px;
+            }
+
+            .checkout-heading h1 {
+                font-size: 32px;
+            }
+
+            .checkout-heading p {
+                font-size: 13px;
+            }
+
+            .checkout-card-header {
+                padding: 19px;
+            }
+
+            .checkout-card-body {
+                padding: 18px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .checkout-item {
+                grid-template-columns: 55px minmax(0, 1fr);
+            }
+
+            .checkout-item-image {
+                width: 55px;
+                height: 55px;
+            }
+
+            .checkout-item-price {
+                grid-column: 2;
+                margin-top: -4px;
+            }
+
+            .cart-id-card {
+                padding: 15px;
+            }
+
+            .cart-id-left {
+                width: 100%;
+            }
+
+            .cart-id-status {
+                margin-left: 0;
+            }
+
+            .success-actions {
+                flex-direction: column;
+            }
+
+            .success-btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 430px) {
+
+            .checkout-logo {
+                font-size: 19px;
+            }
+
+            .checkout-actions {
+                gap: 6px;
+            }
+
+            .checkout-action {
+                width: 40px;
+                height: 40px;
+            }
+
+            .checkout-search-box {
+                height: 46px;
+            }
+
+            .checkout-heading {
+                margin-bottom: 24px;
+            }
+
+            .checkout-heading h1 {
+                font-size: 29px;
+            }
+
+            .summary-total span:last-child {
+                font-size: 20px;
+            }
+        }
+
+        /* =========================================================
+           ACCESSIBILITY
+        ========================================================= */
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="checkout-page">
+
+    <!-- =========================================================
+         HEADER
+    ========================================================= -->
+
+    <header class="checkout-header">
+
+        <div class="checkout-header-inner">
+
+            <a href="index.html" class="checkout-logo">
+                ALAMIN <span>SHOP</span>
+            </a>
+
+            <!-- SEARCH -->
+
+            <div class="checkout-search">
+
+                <form
+                    class="checkout-search-box"
+                    id="checkoutSearchForm"
+                >
+
+                    <div class="checkout-search-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <circle cx="11" cy="11" r="7"></circle>
+                            <path d="m20 20-3.5-3.5"></path>
+                        </svg>
+
+                    </div>
+
+                    <input
+                        type="search"
+                        id="checkoutSearch"
+                        placeholder="Search products..."
+                        autocomplete="off"
+                    >
+
+                    <button
+                        type="button"
+                        class="checkout-search-clear"
+                        id="checkoutSearchClear"
+                        aria-label="Clear search"
+                    >
+                        ×
+                    </button>
+
+                </form>
+
+            </div>
+
+            <!-- ACTIONS -->
+
+            <div class="checkout-actions">
+
+                <a
+                    href="wishlist.html"
+                    class="checkout-action"
+                    aria-label="Wishlist"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path
+                            d="M20.8 8.6c0 5.5-8.8 10.2-8.8 10.2S3.2 14.1 3.2 8.6A4.6 4.6 0 0 1 12 6.3a4.6 4.6 0 0 1 8.8 2.3Z"
+                        ></path>
+                    </svg>
+
+                    <span
+                        class="checkout-count"
+                        id="wishlistCount"
+                    >
+                        0
+                    </span>
+
+                </a>
+
+                <a
+                    href="cart.html"
+                    class="checkout-action"
+                    aria-label="Cart"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="M6 7h12l1 13H5L6 7Z"></path>
+                        <path d="M9 7a3 3 0 0 1 6 0"></path>
+                    </svg>
+
+                    <span
+                        class="checkout-count"
+                        id="cartCount"
+                    >
+                        0
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         MAIN
+    ========================================================= -->
+
+    <main class="checkout-main">
+
+        <div class="checkout-heading">
+
+            <small>Secure checkout</small>
+
+            <h1>Complete Your Order</h1>
+
+            <p>
+                Review your cart, enter your delivery information,
+                choose a payment method and place your order.
+            </p>
+
+        </div>
+
+
+        <!-- =====================================================
+             CART ID
+        ====================================================== -->
+
+        <div class="cart-id-card">
+
+            <div class="cart-id-left">
+
+                <div class="cart-id-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <rect
+                            x="3"
+                            y="5"
+                            width="18"
+                            height="14"
+                            rx="2"
+                        ></rect>
+
+                        <path d="M7 9h10"></path>
+                        <path d="M7 13h6"></path>
+                    </svg>
+
+                </div>
+
+                <div>
+
+                    <span class="cart-id-label">
+                        Cart ID
+                    </span>
+
+                    <span
+                        class="cart-id-value"
+                        id="cartIdDisplay"
+                    >
+                        Generating...
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="cart-id-status">
+
+                <span class="cart-id-status-dot"></span>
+
+                Cart secured for checkout
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             EMPTY STATE
+        ====================================================== -->
+
+        <section
+            class="checkout-empty"
+            id="checkoutEmpty"
+        >
+
+            <div class="checkout-empty-icon">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M6 8h12l1 12H5L6 8Z"></path>
+                    <path d="M9 8a3 3 0 0 1 6 0"></path>
+                </svg>
+
+            </div>
+
+            <h2>Your cart is empty</h2>
+
+            <p>
+                There are no products in your cart.
+                Add some products before going to checkout.
+            </p>
+
+            <a
+                href="products.html"
+                class="back-shop-btn"
+            >
+                Continue Shopping
+            </a>
+
+        </section>
+
+
+        <!-- =====================================================
+             CHECKOUT CONTENT
+        ====================================================== -->
+
+        <div id="checkoutContent">
+
+            <div
+                class="form-error"
+                id="checkoutError"
+            ></div>
+
+
+            <div class="checkout-grid">
+
+                <!-- =================================================
+                     LEFT SIDE
+                ================================================== -->
+
+                <div class="checkout-left">
+
+                    <!-- CUSTOMER INFORMATION -->
+
+                    <section class="checkout-card">
+
+                        <div class="checkout-card-header">
+
+                            <h2>Customer Information</h2>
+
+                            <p>
+                                Enter the information we need to deliver
+                                your order.
+                            </p>
+
+                        </div>
+
+                        <div class="checkout-card-body">
+
+                            <form id="checkoutForm">
+
+                                <div class="form-grid">
+
+                                    <!-- NAME -->
+
+                                    <div class="form-group">
+
+                                        <label for="customerName">
+                                            Full Name
+                                            <span>*</span>
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="customerName"
+                                            name="customerName"
+                                            placeholder="Enter your full name"
+                                            autocomplete="name"
+                                            required
+                                        >
+
+                                    </div>
+
+
+                                    <!-- PHONE -->
+
+                                    <div class="form-group">
+
+                                        <label for="customerPhone">
+                                            Phone Number
+                                            <span>*</span>
+                                        </label>
+
+                                        <input
+                                            type="tel"
+                                            id="customerPhone"
+                                            name="customerPhone"
+                                            placeholder="01XXXXXXXXX"
+                                            inputmode="numeric"
+                                            maxlength="11"
+                                            autocomplete="tel"
+                                            required
+                                        >
+
+                                        <p class="field-help">
+                                            Example: 01712345678
+                                        </p>
+
+                                    </div>
+
+
+                                    <!-- EMAIL -->
+
+                                    <div class="form-group full">
+
+                                        <label for="customerEmail">
+                                            Email Address
+                                            <span>*</span>
+                                        </label>
+
+                                        <input
+                                            type="email"
+                                            id="customerEmail"
+                                            name="customerEmail"
+                                            placeholder="you@example.com"
+                                            autocomplete="email"
+                                            required
+                                        >
+
+                                    </div>
+
+
+                                    <!-- CITY -->
+
+                                    <div class="form-group">
+
+                                        <label for="customerCity">
+                                            City / District
+                                            <span>*</span>
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="customerCity"
+                                            name="customerCity"
+                                            placeholder="Dhaka"
+                                            autocomplete="address-level2"
+                                            required
+                                        >
+
+                                    </div>
+
+
+                                    <!-- AREA -->
+
+                                    <div class="form-group">
+
+                                        <label for="customerArea">
+                                            Area
+                                            <span>*</span>
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="customerArea"
+                                            name="customerArea"
+                                            placeholder="Mohammadpur"
+                                            required
+                                        >
+
+                                    </div>
+
+
+                                    <!-- DELIVERY ZONE -->
+
+                                    <div class="form-group">
+
+                                        <label for="deliveryZone">
+                                            Delivery Zone
+                                            <span>*</span>
+                                        </label>
+
+                                        <select
+                                            id="deliveryZone"
+                                            name="deliveryZone"
+                                            required
+                                        >
+
+                                            <option value="inside-dhaka">
+                                                Inside Dhaka
+                                            </option>
+
+                                            <option value="outside-dhaka">
+                                                Outside Dhaka
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- ADDRESS -->
+
+                                    <div class="form-group full">
+
+                                        <label for="customerAddress">
+                                            Full Delivery Address
+                                            <span>*</span>
+                                        </label>
+
+                                        <textarea
+                                            id="customerAddress"
+                                            name="customerAddress"
+                                            placeholder="House / Road / Block / Area / District..."
+                                            autocomplete="street-address"
+                                            required
+                                        ></textarea>
+
+                                    </div>
+
+
+                                    <!-- NOTE -->
+
+                                    <div class="form-group full">
+
+                                        <label for="orderNote">
+                                            Order Note
+                                        </label>
+
+                                        <textarea
+                                            id="orderNote"
+                                            name="orderNote"
+                                            placeholder="Any special instruction for your order? (Optional)"
+                                        ></textarea>
+
+                                    </div>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- PAYMENT -->
+
+                    <section class="checkout-card">
+
+                        <div class="checkout-card-header">
+
+                            <h2>Payment Method</h2>
+
+                            <p>
+                                Choose how you want to pay.
+                            </p>
+
+                        </div>
+
+                        <div class="checkout-card-body">
+
+                            <div class="payment-list">
+
+                                <!-- COD -->
+
+                                <label class="payment-option">
+
+                                    <input
+                                        type="radio"
+                                        name="paymentMethod"
+                                        value="Cash on Delivery"
+                                        checked
+                                    >
+
+                                    <span class="payment-radio"></span>
+
+                                    <span class="payment-info">
+
+                                        <span class="payment-title">
+                                            Cash on Delivery
+                                        </span>
+
+                                        <span class="payment-description">
+                                            Pay when your order arrives.
+                                        </span>
+
+                                    </span>
+
+                                </label>
+
+
+                                <!-- BKASH -->
+
+                                <label class="payment-option">
+
+                                    <input
+                                        type="radio"
+                                        name="paymentMethod"
+                                        value="bKash"
+                                    >
+
+                                    <span class="payment-radio"></span>
+
+                                    <span class="payment-info">
+
+                                        <span class="payment-title">
+                                            bKash
+                                        </span>
+
+                                        <span class="payment-description">
+                                            Pay using bKash mobile payment.
+                                        </span>
+
+                                    </span>
+
+                                </label>
+
+
+                                <!-- NAGAD -->
+
+                                <label class="payment-option">
+
+                                    <input
+                                        type="radio"
+                                        name="paymentMethod"
+                                        value="Nagad"
+                                    >
+
+                                    <span class="payment-radio"></span>
+
+                                    <span class="payment-info">
+
+                                        <span class="payment-title">
+                                            Nagad
+                                        </span>
+
+                                        <span class="payment-description">
+                                            Pay using Nagad mobile payment.
+                                        </span>
+
+                                    </span>
+
+                                </label>
+
+
+                                <!-- ONLINE -->
+
+                                <label class="payment-option">
+
+                                    <input
+                                        type="radio"
+                                        name="paymentMethod"
+                                        value="Online Payment"
+                                    >
+
+                                    <span class="payment-radio"></span>
+
+                                    <span class="payment-info">
+
+                                        <span class="payment-title">
+                                            Online Payment
+                                        </span>
+
+                                        <span class="payment-description">
+                                            SSLCommerz / Card / Mobile Banking.
+                                        </span>
+
+                                    </span>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+
+                <!-- =================================================
+                     RIGHT SIDE
+                ================================================== -->
+
+                <aside class="checkout-sidebar">
+
+                    <!-- CART ITEMS -->
+
+                    <section class="checkout-card">
+
+                        <div class="checkout-card-header">
+
+                            <h2>Your Cart</h2>
+
+                            <p id="checkoutItemCount">
+                                0 items
+                            </p>
+
+                        </div>
+
+                        <div class="checkout-card-body">
+
+                            <div
+                                class="checkout-items"
+                                id="checkoutItems"
+                            ></div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- ORDER SUMMARY -->
+
+                    <section class="checkout-card">
+
+                        <div class="checkout-card-header">
+
+                            <h2>Order Summary</h2>
+
+                            <p>
+                                Final amount for your order.
+                            </p>
+
+                        </div>
+
+                        <div class="checkout-card-body">
+
+                            <div class="summary-list">
+
+                                <div class="summary-row">
+
+                                    <span>Subtotal</span>
+
+                                    <strong id="checkoutSubtotal">
+                                        ৳0
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="summary-row discount">
+
+                                    <span>Discount</span>
+
+                                    <strong id="checkoutDiscount">
+                                        - ৳0
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="summary-row">
+
+                                    <span>Delivery</span>
+
+                                    <strong id="checkoutDelivery">
+                                        ৳80
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="summary-divider"></div>
+
+
+                                <div class="summary-total">
+
+                                    <span>Total</span>
+
+                                    <span id="checkoutTotal">
+                                        ৳0
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                type="submit"
+                                form="checkoutForm"
+                                class="place-order-btn"
+                                id="placeOrderBtn"
+                            >
+                                Place Order
+                            </button>
+
+
+                            <p class="secure-note">
+                                🔒 Your order information is securely
+                                stored for this demo checkout.
+                            </p>
+
+                        </div>
+
+                    </section>
+
+                </aside>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             SUCCESS STATE
+        ====================================================== -->
+
+        <section
+            class="order-success"
+            id="orderSuccess"
+        >
+
+            <div class="success-icon">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="m5 12 4 4L19 6"></path>
+                </svg>
+
+            </div>
+
+            <h2>
+                Order Placed Successfully!
+            </h2>
+
+            <p>
+                Thank you for shopping with Alamin Shop.
+                Your order has been successfully created.
+            </p>
+
+            <div
+                class="success-order-id"
+                id="successOrderId"
+            >
+                Order ID: —
+            </div>
+
+            <div class="success-actions">
+
+                <a
+                    href="order-details.html"
+                    class="success-btn primary"
+                    id="successOrderDetails"
+                >
+                    View Order
+                </a>
+
+                <a
+                    href="index.html"
+                    class="success-btn secondary"
+                >
+                    Continue Shopping
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================= -->
+
+    <footer class="checkout-footer">
+
+        © 2026 Alamin Shop. All rights reserved.
+
+    </footer>
+
+</div>
+
+
+<!-- =============================================================
+     GLOBAL SCRIPT
+============================================================= -->
+
+<script src="script.js"></script>
+
+
+<script>
+    /* =========================================================
+       ALAMIN SHOP CHECKOUT
+    ========================================================= */
+
+    (function () {
+
+        "use strict";
+
+
+        /* =======================================================
+           LOCAL STORAGE KEYS
+        ======================================================= */
+
+        const CART_KEY = "shopnest_cart";
+        const CART_ID_KEY = "shopnest_cart_id";
+        const ORDERS_KEY = "shopnest_orders";
+        const USER_KEY = "shopnest_logged_in_user";
+
+
+        /* =======================================================
+           ELEMENTS
+        ======================================================= */
+
+        const checkoutContent =
+            document.getElementById("checkoutContent");
+
+        const checkoutEmpty =
+            document.getElementById("checkoutEmpty");
+
+        const checkoutError =
+            document.getElementById("checkoutError");
+
+        const checkoutForm =
+            document.getElementById("checkoutForm");
+
+        const checkoutItems =
+            document.getElementById("checkoutItems");
+
+        const checkoutItemCount =
+            document.getElementById("checkoutItemCount");
+
+        const checkoutSubtotal =
+            document.getElementById("checkoutSubtotal");
+
+        const checkoutDiscount =
+            document.getElementById("checkoutDiscount");
+
+        const checkoutDelivery =
+            document.getElementById("checkoutDelivery");
+
+        const checkoutTotal =
+            document.getElementById("checkoutTotal");
+
+        const deliveryZone =
+            document.getElementById("deliveryZone");
+
+        const cartIdDisplay =
+            document.getElementById("cartIdDisplay");
+
+        const placeOrderBtn =
+            document.getElementById("placeOrderBtn");
+
+        const orderSuccess =
+            document.getElementById("orderSuccess");
+
+        const successOrderId =
+            document.getElementById("successOrderId");
+
+        const successOrderDetails =
+            document.getElementById("successOrderDetails");
+
+
+        /* =======================================================
+           SAFE LOCAL STORAGE
+        ======================================================= */
+
+        function getStorageArray(key) {
+
+            try {
+
+                const data =
+                    JSON.parse(
+                        localStorage.getItem(key) || "[]"
+                    );
+
+                return Array.isArray(data) ? data : [];
+
+            } catch (error) {
+
+                console.error(
+                    "Storage read error:",
+                    error
+                );
+
+                return [];
+
+            }
+        }
+
+
+        function saveStorageArray(key, data) {
+
+            try {
+
+                localStorage.setItem(
+                    key,
+                    JSON.stringify(data)
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Storage save error:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* =======================================================
+           PRICE FORMAT
+        ======================================================= */
+
+        function price(value) {
+
+            const number =
+                Number(value) || 0;
+
+            if (
+                typeof window.formatPrice === "function"
+            ) {
+                return window.formatPrice(number);
+            }
+
+            return "৳" +
+                number.toLocaleString(
+                    "en-BD"
+                );
+
+        }
+
+
+        /* =======================================================
+           CART
+        ======================================================= */
+
+        function getCart() {
+
+            return getStorageArray(
+                CART_KEY
+            );
+
+        }
+
+
+        let cart = getCart();
+
+
+        /* =======================================================
+           CART ID GENERATOR
+        ======================================================= */
+
+        function generateCartId() {
+
+            const characters =
+                "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+            let randomPart = "";
+
+            for (let i = 0; i < 8; i++) {
+
+                randomPart +=
+                    characters[
+                        Math.floor(
+                            Math.random() *
+                            characters.length
+                        )
+                    ];
+
+            }
+
+            return "CART-" + randomPart;
+
+        }
+
+
+        function getCartId() {
+
+            let cartId =
+                localStorage.getItem(
+                    CART_ID_KEY
+                );
+
+
+            /*
+             * IMPORTANT:
+             *
+             * If cart ID does not exist,
+             * create it here.
+             *
+             * This fixes the problem where
+             * checkout page was showing an
+             * empty Cart ID.
+             */
+
+            if (!cartId) {
+
+                cartId =
+                    generateCartId();
+
+                localStorage.setItem(
+                    CART_ID_KEY,
+                    cartId
+                );
+
+            }
+
+
+            return cartId;
+
+        }
+
+
+        /* =======================================================
+           CLEAN CART
+        ======================================================= */
+
+        function cleanCart() {
+
+            cart = cart.filter(item => {
+
+                if (!item) {
+                    return false;
+                }
+
+                const quantity =
+                    Number(
+                        item.quantity
+                    ) || 0;
+
+                return quantity > 0;
+
+            });
+
+
+            saveStorageArray(
+                CART_KEY,
+                cart
+            );
+
+        }
+
+
+        /* =======================================================
+           PRODUCTS
+        ======================================================= */
+
+        function findProduct(item) {
+
+            /*
+             * Existing script.js contains
+             * the global "products" array.
+             */
+
+            if (
+                typeof products !== "undefined" &&
+                Array.isArray(products)
+            ) {
+
+                return products.find(
+                    product =>
+                        String(product.id) ===
+                        String(item.id)
+                );
+
+            }
+
+            return null;
+
+        }
+
+
+        /* =======================================================
+           GET ITEM DATA
+        ======================================================= */
+
+        function getItemData(item) {
+
+            const product =
+                findProduct(item);
+
+
+            /*
+             * Cart may already contain complete
+             * product information.
+             *
+             * So we support both:
+             *
+             * 1. id + quantity
+             * 2. full product object + quantity
+             */
+
+            if (product) {
+
+                return {
+
+                    id: product.id,
+
+                    name:
+                        product.name ||
+                        item.name ||
+                        "Product",
+
+                    category:
+                        product.category ||
+                        item.category ||
+                        "",
+
+                    price:
+                        Number(
+                            product.price ??
+                            item.price ??
+                            0
+                        ),
+
+                    image:
+                        product.image ||
+                        item.image ||
+                        "",
+
+                    stock:
+                        Number(
+                            product.stock ??
+                            item.stock ??
+                            0
+                        )
+
+                };
+
+            }
+
+
+            return {
+
+                id:
+                    item.id,
+
+                name:
+                    item.name ||
+                    "Product",
+
+                category:
+                    item.category ||
+                    "",
+
+                price:
+                    Number(
+                        item.price
+                    ) || 0,
+
+                image:
+                    item.image ||
+                    "",
+
+                stock:
+                    Number(
+                        item.stock
+                    ) || 0
+
+            };
+
+        }
+
+
+        /* =======================================================
+           CALCULATE SUBTOTAL
+        ======================================================= */
+
+        function calculateSubtotal() {
+
+            return cart.reduce(
+                (
+                    total,
+                    item
+                ) => {
+
+                    const data =
+                        getItemData(item);
+
+                    const quantity =
+                        Number(
+                            item.quantity
+                        ) || 0;
+
+                    return total +
+                        (
+                            data.price *
+                            quantity
+                        );
+
+                },
+                0
+            );
+
+        }
+
+
+        /* =======================================================
+           DELIVERY CHARGE
+        ======================================================= */
+
+        function calculateDelivery(
+            subtotal
+        ) {
+
+            /*
+             * Existing project rule:
+             *
+             * >= ৳5000 = Free
+             *
+             * Inside Dhaka = ৳80
+             *
+             * Outside Dhaka = ৳130
+             */
+
+            if (subtotal >= 5000) {
+
+                return 0;
+
+            }
+
+
+            const zone =
+                deliveryZone
+                    ? deliveryZone.value
+                    : "inside-dhaka";
+
+
+            if (
+                zone ===
+                "outside-dhaka"
+            ) {
+
+                return 130;
+
+            }
+
+
+            return 80;
+
+        }
+
+
+        /* =======================================================
+           RENDER CART ITEMS
+        ======================================================= */
+
+        function renderItems() {
+
+            checkoutItems.innerHTML = "";
+
+
+            if (!cart.length) {
+
+                checkoutEmpty.style.display =
+                    "block";
+
+                checkoutContent.style.display =
+                    "none";
+
+                return;
+
+            }
+
+
+            checkoutEmpty.style.display =
+                "none";
+
+            checkoutContent.style.display =
+                "block";
+
+
+            let totalQuantity = 0;
+
+
+            cart.forEach(item => {
+
+                const data =
+                    getItemData(item);
+
+                const quantity =
+                    Number(
+                        item.quantity
+                    ) || 1;
+
+
+                totalQuantity +=
+                    quantity;
+
+
+                const row =
+                    document.createElement(
+                        "div"
+                    );
+
+                row.className =
+                    "checkout-item";
+
+
+                const image =
+                    data.image ||
+                    "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=200&q=80";
+
+
+                row.innerHTML = `
+
+                    <div class="checkout-item-image">
+
+                        <img
+                            src="${escapeHtml(image)}"
+                            alt="${escapeHtml(data.name)}"
+                        >
+
+                    </div>
+
+
+                    <div class="checkout-item-info">
+
+                        <h3 class="checkout-item-name">
+                            ${escapeHtml(data.name)}
+                        </h3>
+
+                        <div class="checkout-item-meta">
+
+                            Qty: ${quantity}
+
+                            ${
+                                data.category
+                                    ? " • " +
+                                      escapeHtml(
+                                          data.category
+                                      )
+                                    : ""
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="checkout-item-price">
+
+                        ${price(
+                            data.price *
+                            quantity
+                        )}
+
+                    </div>
+
+                `;
+
+
+                checkoutItems.appendChild(
+                    row
+                );
+
+            });
+
+
+            checkoutItemCount.textContent =
+                totalQuantity === 1
+                    ? "1 item"
+                    : `${totalQuantity} items`;
+
+        }
+
+
+        /* =======================================================
+           ESCAPE HTML
+        ======================================================= */
+
+        function escapeHtml(value) {
+
+            return String(value ?? "")
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+        /* =======================================================
+           UPDATE SUMMARY
+        ======================================================= */
+
+        function updateSummary() {
+
+            const subtotal =
+                calculateSubtotal();
+
+            const discount = 0;
+
+            const delivery =
+                calculateDelivery(
+                    subtotal
+                );
+
+            const total =
+                subtotal -
+                discount +
+                delivery;
+
+
+            checkoutSubtotal.textContent =
+                price(subtotal);
+
+
+            checkoutDiscount.textContent =
+                "- " +
+                price(discount);
+
+
+            checkoutDelivery.textContent =
+                delivery === 0
+                    ? "FREE"
+                    : price(delivery);
+
+
+            checkoutTotal.textContent =
+                price(total);
+
+
+            /*
+             * Free delivery message
+             */
+
+            if (
+                delivery === 0 &&
+                subtotal >= 5000
+            ) {
+
+                checkoutDelivery.title =
+                    "Free delivery for orders of ৳5,000 or more.";
+
+            }
+
+
+            return {
+
+                subtotal,
+                discount,
+                delivery,
+                total
+
+            };
+
+        }
+
+
+        /* =======================================================
+           UPDATE CART COUNT
+        ======================================================= */
+
+        function updateCounts() {
+
+            const totalQuantity =
+                cart.reduce(
+                    (
+                        total,
+                        item
+                    ) =>
+                        total +
+                        (
+                            Number(
+                                item.quantity
+                            ) || 0
+                        ),
+                    0
+                );
+
+
+            const cartCount =
+                document.getElementById(
+                    "cartCount"
+                );
+
+
+            if (cartCount) {
+
+                cartCount.textContent =
+                    totalQuantity;
+
+            }
+
+
+            const wishlistCount =
+                document.getElementById(
+                    "wishlistCount"
+                );
+
+
+            if (wishlistCount) {
+
+                let wishlist = [];
+
+                try {
+
+                    wishlist =
+                        JSON.parse(
+                            localStorage.getItem(
+                                "shopnest_wishlist"
+                            ) || "[]"
+                        );
+
+                } catch (error) {
+
+                    wishlist = [];
+
+                }
+
+
+                wishlistCount.textContent =
+                    Array.isArray(wishlist)
+                        ? wishlist.length
+                        : 0;
+
+            }
+
+
+            /*
+             * Also use existing global function
+             * if available.
+             */
+
+            if (
+                typeof window.updateCartCount ===
+                "function"
+            ) {
+
+                window.updateCartCount();
+
+            }
+
+        }
+
+
+        /* =======================================================
+           SHOW ERROR
+        ======================================================= */
+
+        function showError(message) {
+
+            checkoutError.textContent =
+                message;
+
+            checkoutError.style.display =
+                "block";
+
+
+            window.scrollTo({
+
+                top: 0,
+
+                behavior: "smooth"
+
+            });
+
+        }
+
+
+        /* =======================================================
+           HIDE ERROR
+        ======================================================= */
+
+        function hideError() {
+
+            checkoutError.textContent =
+                "";
+
+            checkoutError.style.display =
+                "none";
+
+        }
+
+
+        /* =======================================================
+           LOAD LOGGED-IN USER
+        ======================================================= */
+
+        function loadUserData() {
+
+            let user = null;
+
+
+            try {
+
+                user =
+                    JSON.parse(
+                        localStorage.getItem(
+                            USER_KEY
+                        ) || "null"
+                    );
+
+            } catch (error) {
+
+                user = null;
+
+            }
+
+
+            if (!user) {
+                return;
+            }
+
+
+            const name =
+                document.getElementById(
+                    "customerName"
+                );
+
+            const email =
+                document.getElementById(
+                    "customerEmail"
+                );
+
+            const phone =
+                document.getElementById(
+                    "customerPhone"
+                );
+
+
+            if (
+                name &&
+                user.name &&
+                !name.value
+            ) {
+
+                name.value =
+                    user.name;
+
+            }
+
+
+            if (
+                email &&
+                user.email &&
+                !email.value
+            ) {
+
+                email.value =
+                    user.email;
+
+            }
+
+
+            if (
+                phone &&
+                user.phone &&
+                !phone.value
+            ) {
+
+                phone.value =
+                    user.phone;
+
+            }
+
+        }
+
+
+        /* =======================================================
+           PHONE INPUT
+        ======================================================= */
+
+        const phoneInput =
+            document.getElementById(
+                "customerPhone"
+            );
+
+
+        if (phoneInput) {
+
+            phoneInput.addEventListener(
+                "input",
+                function () {
+
+                    this.value =
+                        this.value
+                            .replace(
+                                /\D/g,
+                                ""
+                            )
+                            .slice(
+                                0,
+                                11
+                            );
+
+                }
+            );
+
+        }
+
+
+        /* =======================================================
+           DELIVERY CHANGE
+        ======================================================= */
+
+        if (deliveryZone) {
+
+            deliveryZone.addEventListener(
+                "change",
+                function () {
+
+                    updateSummary();
+
+                }
+            );
+
+        }
+
+
+        /* =======================================================
+           FORM SUBMIT
+        ======================================================= */
+
+        checkoutForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+                hideError();
+
+
+                /*
+                 * Refresh cart before creating
+                 * the order.
+                 */
+
+                cart =
+                    getCart();
+
+                cleanCart();
+
+
+                if (!cart.length) {
+
+                    showError(
+                        "Your cart is empty. Please add products before placing an order."
+                    );
+
+                    return;
+
+                }
+
+
+                /* =================================================
+                   FORM VALUES
+                ================================================== */
+
+                const name =
+                    document
+                        .getElementById(
+                            "customerName"
+                        )
+                        .value
+                        .trim();
+
+
+                const phone =
+                    document
+                        .getElementById(
+                            "customerPhone"
+                        )
+                        .value
+                        .trim();
+
+
+                const email =
+                    document
+                        .getElementById(
+                            "customerEmail"
+                        )
+                        .value
+                        .trim();
+
+
+                const city =
+                    document
+                        .getElementById(
+                            "customerCity"
+                        )
+                        .value
+                        .trim();
+
+
+                const area =
+                    document
+                        .getElementById(
+                            "customerArea"
+                        )
+                        .value
+                        .trim();
+
+
+                const address =
+                    document
+                        .getElementById(
+                            "customerAddress"
+                        )
+                        .value
+                        .trim();
+
+
+                const note =
+                    document
+                        .getElementById(
+                            "orderNote"
+                        )
+                        .value
+                        .trim();
+
+
+                const zone =
+                    deliveryZone.value;
+
+
+                /* =================================================
+                   VALIDATION
+                ================================================== */
+
+                if (!name) {
+
+                    showError(
+                        "Please enter your full name."
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                 * Bangladesh phone format
+                 */
+
+                const bdPhonePattern =
+                    /^01[3-9]\d{8}$/;
+
+
+                if (
+                    !bdPhonePattern.test(
+                        phone
+                    )
+                ) {
+
+                    showError(
+                        "Please enter a valid Bangladesh phone number, for example 01712345678."
+                    );
+
+                    return;
+
+                }
+
+
+                if (!email) {
+
+                    showError(
+                        "Please enter your email address."
+                    );
+
+                    return;
+
+                }
+
+
+                const emailPattern =
+                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+                if (
+                    !emailPattern.test(
+                        email
+                    )
+                ) {
+
+                    showError(
+                        "Please enter a valid email address."
+                    );
+
+                    return;
+
+                }
+
+
+                if (!city) {
+
+                    showError(
+                        "Please enter your city or district."
+                    );
+
+                    return;
+
+                }
+
+
+                if (!area) {
+
+                    showError(
+                        "Please enter your area."
+                    );
+
+                    return;
+
+                }
+
+
+                if (!address) {
+
+                    showError(
+                        "Please enter your full delivery address."
+                    );
+
+                    return;
+
+                }
+
+
+                /* =================================================
+                   PAYMENT
+                ================================================== */
+
+                const paymentElement =
+                    document.querySelector(
+                        'input[name="paymentMethod"]:checked'
+                    );
+
+
+                const paymentMethod =
+                    paymentElement
+                        ? paymentElement.value
+                        : "Cash on Delivery";
+
+
+                /* =================================================
+                   SUMMARY
+                ================================================== */
+
+                const summary =
+                    updateSummary();
+
+
+                /* =================================================
+                   CART ID
+                ================================================== */
+
+                const cartId =
+                    getCartId();
+
+
+                /* =================================================
+                   ORDER ID
+                ================================================== */
+
+                const orderId =
+                    "SN" +
+                    Date.now();
+
+
+                /* =================================================
+                   ORDER ITEMS
+                ================================================== */
+
+                const orderItems =
+                    cart.map(item => {
+
+                        const data =
+                            getItemData(item);
+
+                        return {
+
+                            id:
+                                data.id,
+
+                            name:
+                                data.name,
+
+                            category:
+                                data.category,
+
+                            price:
+                                data.price,
+
+                            quantity:
+                                Number(
+                                    item.quantity
+                                ) || 1,
+
+                            image:
+                                data.image
+
+                        };
+
+                    });
+
+
+                /* =================================================
+                   ORDER OBJECT
+                ================================================== */
+
+                const order = {
+
+                    id:
+                        orderId,
+
+                    cartId:
+                        cartId,
+
+                    customer: {
+
+                        name:
+                            name,
+
+                        phone:
+                            phone,
+
+                        email:
+                            email
+
+                    },
+
+                    shipping: {
+
+                        city:
+                            city,
+
+                        area:
+                            area,
+
+                        zone:
+                            zone,
+
+                        address:
+                            address
+
+                    },
+
+                    items:
+                        orderItems,
+
+                    subtotal:
+                        summary.subtotal,
+
+                    discount:
+                        summary.discount,
+
+                    delivery:
+                        summary.delivery,
+
+                    total:
+                        summary.total,
+
+                    paymentMethod:
+                        paymentMethod,
+
+                    note:
+                        note,
+
+                    status:
+                        "New",
+
+                    paymentStatus:
+                        paymentMethod ===
+                        "Cash on Delivery"
+                            ? "Pending"
+                            : "Pending",
+
+                    shipmentStatus:
+                        "Pending",
+
+                    createdAt:
+                        new Date().toISOString()
+
+                };
+
+
+                /* =================================================
+                   SAVE ORDER
+                ================================================== */
+
+                const orders =
+                    getStorageArray(
+                        ORDERS_KEY
+                    );
+
+
+                orders.unshift(
+                    order
+                );
+
+
+                saveStorageArray(
+                    ORDERS_KEY,
+                    orders
+                );
+
+
+                /* =================================================
+                   CLEAR CART
+                ================================================== */
+
+                localStorage.removeItem(
+                    CART_KEY
+                );
+
+
+                /*
+                 * Remove the old Cart ID after
+                 * the order has been created.
+                 *
+                 * The order itself already contains
+                 * the Cart ID.
+                 *
+                 * The next cart will receive a
+                 * brand-new Cart ID.
+                 */
+
+                localStorage.removeItem(
+                    CART_ID_KEY
+                );
+
+
+                cart = [];
+
+
+                updateCounts();
+
+
+                /* =================================================
+                   SUCCESS UI
+                ================================================== */
+
+                checkoutContent.style.display =
+                    "none";
+
+                checkoutEmpty.style.display =
+                    "none";
+
+                document
+                    .querySelector(
+                        ".cart-id-card"
+                    )
+                    .style.display =
+                    "none";
+
+
+                orderSuccess.style.display =
+                    "block";
+
+
+                successOrderId.textContent =
+                    "Order ID: " +
+                    orderId;
+
+
+                /*
+                 * Very important:
+                 *
+                 * Customer order details page
+                 * expects ?id=ORDER_ID
+                 */
+
+                successOrderDetails.href =
+                    "order-details.html?id=" +
+                    encodeURIComponent(
+                        orderId
+                    );
+
+
+                window.scrollTo({
+
+                    top: 0,
+
+                    behavior: "smooth"
+
+                });
+
+
+                /*
+                 * Optional existing notification
+                 */
+
+                if (
+                    typeof window.showNotification ===
+                    "function"
+                ) {
+
+                    window.showNotification(
+                        "Order placed successfully!"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =======================================================
+           SEARCH
+        ======================================================= */
+
+        const searchForm =
+            document.getElementById(
+                "checkoutSearchForm"
+            );
+
+        const searchInput =
+            document.getElementById(
+                "checkoutSearch"
+            );
+
+        const searchClear =
+            document.getElementById(
+                "checkoutSearchClear"
+            );
+
+
+        if (searchForm && searchInput) {
+
+            searchForm.addEventListener(
+                "submit",
+                function (event) {
+
+                    event.preventDefault();
+
+
+                    const query =
+                        searchInput.value.trim();
+
+
+                    if (!query) {
+
+                        searchInput.focus();
+
+                        return;
+
+                    }
+
+
+                    window.location.href =
+                        "products.html?search=" +
+                        encodeURIComponent(
+                            query
+                        );
+
+                }
+            );
+
+
+            searchInput.addEventListener(
+                "input",
+                function () {
+
+                    if (
+                        searchClear
+                    ) {
+
+                        searchClear.style.display =
+                            this.value
+                                ? "flex"
+                                : "none";
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =======================================================
+           SEARCH CLEAR
+        ======================================================= */
+
+        if (searchClear) {
+
+            searchClear.addEventListener(
+                "click",
+                function () {
+
+                    searchInput.value = "";
+
+                    searchClear.style.display =
+                        "none";
+
+                    searchInput.focus();
+
+                }
+            );
+
+        }
+
+
+        /* =======================================================
+           INITIALIZE
+        ======================================================= */
+
+        function initializeCheckout() {
+
+            cart =
+                getCart();
+
+
+            cleanCart();
+
+
+            /*
+             * IMPORTANT:
+             *
+             * Only generate a Cart ID when
+             * there are actually cart items.
+             */
+
+            if (cart.length) {
+
+                const cartId =
+                    getCartId();
+
+
+                cartIdDisplay.textContent =
+                    cartId;
+
+            } else {
+
+                cartIdDisplay.textContent =
+                    "No active cart";
+
+            }
+
+
+            renderItems();
+
+            updateSummary();
+
+            updateCounts();
+
+            loadUserData();
+
+        }
+
+
+        initializeCheckout();
+
+
+    })();
+</script>
+
+</body>
+</html>
