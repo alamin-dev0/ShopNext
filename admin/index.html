@@ -1407,6 +1407,18 @@
                 Delivery Zones
             </a>
 
+
+            <a
+                href="claim.html"
+                class="nav-item"
+            >
+                <span class="nav-icon">
+                    ⚑
+                </span>
+
+                Claims
+            </a>
+
         </nav>
 
 
@@ -1671,6 +1683,8 @@
 
     </aside>
 
+    <script src="nav.js"></script>
+
 
     <!-- =========================
          MAIN
@@ -1710,15 +1724,20 @@
 
             <div class="topbar-right">
 
-                <button
+                <a
+                    href="notifications.html"
                     class="icon-btn"
                     title="Notifications"
+                    style="display:flex;align-items:center;justify-content:center;"
                 >
                     ♧
-                </button>
+                </a>
 
 
-                <div class="admin-profile">
+                <a
+                    href="admin-profile.html"
+                    class="admin-profile"
+                >
 
                     <div class="admin-avatar">
                         A
@@ -1736,7 +1755,7 @@
 
                     </div>
 
-                </div>
+                </a>
 
             </div>
 
@@ -1770,7 +1789,7 @@
 
                 <!-- SALES -->
 
-                <div class="stat-card">
+                <a href="reports.html" class="stat-card">
 
                     <div class="stat-top">
 
@@ -1795,12 +1814,12 @@
                         From all completed orders
                     </div>
 
-                </div>
+                </a>
 
 
                 <!-- ORDERS -->
 
-                <div class="stat-card">
+                <a href="orders.html" class="stat-card">
 
                     <div class="stat-top">
 
@@ -1825,12 +1844,12 @@
                         All customer orders
                     </div>
 
-                </div>
+                </a>
 
 
                 <!-- PRODUCTS -->
 
-                <div class="stat-card">
+                <a href="products.html" class="stat-card">
 
                     <div class="stat-top">
 
@@ -1860,12 +1879,12 @@
                         </span>
                     </div>
 
-                </div>
+                </a>
 
 
                 <!-- CUSTOMERS -->
 
-                <div class="stat-card">
+                <a href="customers.html" class="stat-card">
 
                     <div class="stat-top">
 
@@ -1890,7 +1909,7 @@
                         Registered customers
                     </div>
 
-                </div>
+                </a>
 
             </div>
 
@@ -2150,7 +2169,7 @@
 
 
                 <a
-                    href="products.html"
+                    href="product-edit.html"
                     class="quick-action"
                 >
 
@@ -2743,6 +2762,23 @@
                 row.className =
                     "order-row";
 
+                row.style.cursor =
+                    "pointer";
+
+                row.addEventListener(
+                    "click",
+                    () => {
+
+                        window.location.href =
+                            "order-details.html?id=" +
+                            encodeURIComponent(
+                                order.id ||
+                                ""
+                            );
+
+                    }
+                );
+
 
                 const customer =
                     order.customer?.name ||
@@ -2893,6 +2929,23 @@
 
                 item.className =
                     "stock-item";
+
+                item.style.cursor =
+                    "pointer";
+
+                item.addEventListener(
+                    "click",
+                    () => {
+
+                        window.location.href =
+                            "product-edit.html?id=" +
+                            encodeURIComponent(
+                                product.id ||
+                                ""
+                            );
+
+                    }
+                );
 
 
                 const stock =
