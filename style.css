@@ -80,6 +80,23 @@ button {
     cursor: pointer;
 }
 
+/* =========================================================
+   SCROLL REVEAL
+========================================================= */
+
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+        opacity 680ms ease,
+        transform 680ms ease;
+}
+
+.scroll-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 
 /* =========================================================
    CONTAINER

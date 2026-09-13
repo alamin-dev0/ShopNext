@@ -496,6 +496,68 @@ if (newsletterForm) {
 
 
 /* =========================================================
+   SCROLL REVEAL
+========================================================= */
+
+function initScrollReveal() {
+
+    const revealTargets = Array.from(
+        document.querySelectorAll(
+            "section, article, .product-card, .feature-card, .category-card, .collection-card, .testimonial-card, .cart-item, .order-card, .newsletter, .contact-card, .info-card, .service-card"
+        )
+    );
+
+    if (!revealTargets.length) {
+        return;
+    }
+
+    revealTargets.forEach(function (element, index) {
+
+        element.classList.add("scroll-reveal");
+
+        element.style.transitionDelay =
+            `${Math.min(index * 30, 420)}ms`;
+
+    });
+
+    if (!window.IntersectionObserver) {
+
+        revealTargets.forEach(function (element) {
+            element.classList.add("is-visible");
+        });
+
+        return;
+    }
+
+    const observer = new IntersectionObserver(
+        function (entries) {
+
+            entries.forEach(function (entry) {
+
+                if (!entry.isIntersecting) {
+                    return;
+                }
+
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+
+            });
+
+        },
+        {
+            threshold: 0.18,
+            rootMargin: "0px 0px -40px 0px"
+        }
+    );
+
+    revealTargets.forEach(function (element) {
+        observer.observe(element);
+    });
+
+}
+
+
+/* =========================================================
    SIMPLE NOTIFICATION
 ========================================================= */
 
@@ -564,6 +626,8 @@ document.addEventListener(
         renderFeaturedProducts();
 
         updateCartCount();
+
+        initScrollReveal();
 
     }
 );
