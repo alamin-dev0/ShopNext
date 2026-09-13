@@ -14,1264 +14,1372 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
-        /* =========================================================
-           CHECKOUT PAGE
-        ========================================================= */
-
-        .checkout-page {
-            min-height: 100vh;
-            background: #070809;
-            color: #f8fafc;
+        :root{
+            --bg:#070809;
+            --card:#101216;
+            --card2:#111419;
+            --input:#0b0d10;
+            --border:#272b33;
+            --border2:#2b2f37;
+            --text:#f8fafc;
+            --muted:#858c98;
+            --muted2:#686f7b;
+            --primary:#7c3aed;
+            --primary-dark:#6d28d9;
+            --success:#22c55e;
+            --danger:#ef4444;
+            --warning:#f59e0b;
         }
 
-        /* =========================================================
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        html{
+            scroll-behavior:smooth;
+        }
+
+        body{
+            margin:0;
+            background:var(--bg);
+            color:var(--text);
+            font-family:Arial,Helvetica,sans-serif;
+        }
+
+        button,
+        input,
+        select,
+        textarea{
+            font:inherit;
+        }
+
+        a{
+            color:inherit;
+        }
+
+        .checkout-page{
+            min-height:100vh;
+            background:var(--bg);
+        }
+
+        /* =====================================================
            HEADER
-        ========================================================= */
+        ===================================================== */
 
-        .checkout-header {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+        .checkout-header{
+            position:sticky;
+            top:0;
+            z-index:1000;
 
-            background: rgba(7, 8, 9, 0.96);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background:rgba(7,8,9,.96);
+            backdrop-filter:blur(16px);
+            -webkit-backdrop-filter:blur(16px);
 
-            border-bottom: 1px solid #25282e;
+            border-bottom:1px solid #25282e;
         }
 
-        .checkout-header-inner {
-            width: min(1400px, calc(100% - 40px));
-            margin: 0 auto;
+        .checkout-header-inner{
+            width:min(1400px,calc(100% - 40px));
+            min-height:78px;
+            margin:0 auto;
 
-            min-height: 78px;
-
-            display: grid;
-            grid-template-columns: auto minmax(260px, 1fr) auto;
-            align-items: center;
-            gap: 28px;
+            display:grid;
+            grid-template-columns:auto minmax(260px,1fr) auto;
+            align-items:center;
+            gap:28px;
         }
 
-        /* =========================================================
-           LOGO
-        ========================================================= */
+        .checkout-logo{
+            color:#fff;
+            text-decoration:none;
+            white-space:nowrap;
 
-        .checkout-logo {
-            text-decoration: none;
-            color: #ffffff;
-
-            font-size: 22px;
-            font-weight: 900;
-            letter-spacing: -0.5px;
-
-            white-space: nowrap;
+            font-size:22px;
+            font-weight:900;
+            letter-spacing:-.5px;
         }
 
-        .checkout-logo span {
-            color: #7c3aed;
+        .checkout-logo span{
+            color:#7c3aed;
         }
 
-        /* =========================================================
+        /* =====================================================
            SEARCH
-        ========================================================= */
+        ===================================================== */
 
-        .checkout-search {
-            width: 100%;
-            max-width: 650px;
-            justify-self: center;
+        .checkout-search{
+            width:100%;
+            max-width:650px;
+            justify-self:center;
         }
 
-        .checkout-search-box {
-            position: relative;
+        .checkout-search-box{
+            position:relative;
 
-            width: 100%;
-            height: 48px;
+            width:100%;
+            height:48px;
 
-            display: flex;
-            align-items: center;
+            display:flex;
+            align-items:center;
 
-            background: #111317;
-            border: 1px solid #2b2f37;
+            background:#111317;
+            border:1px solid #2b2f37;
+            border-radius:14px;
 
-            border-radius: 14px;
-
-            transition:
-                border-color 0.25s ease,
-                box-shadow 0.25s ease,
-                background 0.25s ease;
+            transition:.25s ease;
         }
 
-        .checkout-search-box:focus-within {
-            background: #15171c;
-            border-color: #7c3aed;
+        .checkout-search-box:focus-within{
+            background:#15171c;
+            border-color:var(--primary);
 
             box-shadow:
-                0 0 0 3px rgba(124, 58, 237, 0.12);
+                0 0 0 3px rgba(124,58,237,.12);
         }
 
-        .checkout-search-icon {
-            width: 48px;
-            min-width: 48px;
+        .checkout-search-icon{
+            width:48px;
+            min-width:48px;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display:flex;
+            align-items:center;
+            justify-content:center;
 
-            color: #8f96a3;
-
-            pointer-events: none;
+            color:#8f96a3;
         }
 
-        .checkout-search-icon svg {
-            width: 19px;
-            height: 19px;
+        .checkout-search-icon svg{
+            width:19px;
+            height:19px;
         }
 
-        .checkout-search-box input {
-            width: 100%;
-            height: 100%;
+        .checkout-search-box input{
+            width:100%;
+            height:100%;
 
-            border: 0;
-            outline: 0;
+            border:0;
+            outline:0;
 
-            background: transparent;
-            color: #ffffff;
+            background:transparent;
+            color:#fff;
 
-            font-size: 14px;
-            font-weight: 500;
-
-            padding: 0 48px 0 0;
+            padding:0 48px 0 0;
         }
 
-        .checkout-search-box input::placeholder {
-            color: #777e8b;
+        .checkout-search-box input::placeholder{
+            color:#777e8b;
         }
 
-        .checkout-search-clear {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
+        .checkout-search-clear{
+            position:absolute;
+            right:10px;
+            top:50%;
+            transform:translateY(-50%);
 
-            width: 30px;
-            height: 30px;
+            width:30px;
+            height:30px;
 
-            border: 0;
-            border-radius: 9px;
+            border:0;
+            border-radius:9px;
 
-            background: transparent;
-            color: #7f8794;
+            background:transparent;
+            color:#7f8794;
 
-            cursor: pointer;
+            display:none;
+            align-items:center;
+            justify-content:center;
 
-            display: none;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 18px;
+            cursor:pointer;
+            font-size:18px;
         }
 
-        .checkout-search-clear:hover {
-            background: #242831;
-            color: #ffffff;
+        .checkout-search-clear:hover{
+            background:#242831;
+            color:#fff;
         }
 
-        /* =========================================================
-           HEADER ACTIONS
-        ========================================================= */
+        /* =====================================================
+           ACTIONS
+        ===================================================== */
 
-        .checkout-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .checkout-actions{
+            display:flex;
+            align-items:center;
+            gap:10px;
         }
 
-        .checkout-action {
-            position: relative;
+        .checkout-action{
+            position:relative;
 
-            width: 44px;
-            height: 44px;
+            width:44px;
+            height:44px;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display:flex;
+            align-items:center;
+            justify-content:center;
 
-            border: 1px solid #2a2e36;
-            border-radius: 12px;
+            border:1px solid #2a2e36;
+            border-radius:12px;
 
-            background: #111317;
-            color: #dce1e8;
+            background:#111317;
+            color:#dce1e8;
 
-            text-decoration: none;
+            text-decoration:none;
 
-            transition:
-                background 0.25s ease,
-                border-color 0.25s ease,
-                transform 0.25s ease;
+            transition:.25s ease;
         }
 
-        .checkout-action:hover {
-            background: #1a1d23;
-            border-color: #7c3aed;
-            color: #ffffff;
-            transform: translateY(-1px);
+        .checkout-action:hover{
+            background:#1a1d23;
+            border-color:var(--primary);
+            transform:translateY(-1px);
         }
 
-        .checkout-action svg {
-            width: 20px;
-            height: 20px;
+        .checkout-action svg{
+            width:20px;
+            height:20px;
         }
 
-        .checkout-count {
-            position: absolute;
+        .checkout-count{
+            position:absolute;
+            top:-5px;
+            right:-5px;
 
-            top: -5px;
-            right: -5px;
+            min-width:18px;
+            height:18px;
 
-            min-width: 18px;
-            height: 18px;
+            padding:0 5px;
 
-            padding: 0 5px;
+            border-radius:999px;
 
-            border-radius: 999px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background:var(--primary);
+            color:#fff;
 
-            background: #7c3aed;
-            color: #ffffff;
+            font-size:10px;
+            font-weight:800;
 
-            font-size: 10px;
-            font-weight: 800;
-
-            border: 2px solid #070809;
+            border:2px solid var(--bg);
         }
 
-        /* =========================================================
+        /* =====================================================
            MAIN
-        ========================================================= */
+        ===================================================== */
 
-        .checkout-main {
-            width: min(1200px, calc(100% - 40px));
-            margin: 0 auto;
-
-            padding: 50px 0 80px;
+        .checkout-main{
+            width:min(1200px,calc(100% - 40px));
+            margin:0 auto;
+            padding:50px 0 80px;
         }
 
-        .checkout-heading {
-            margin-bottom: 32px;
+        .checkout-heading{
+            margin-bottom:32px;
         }
 
-        .checkout-heading small {
-            display: inline-block;
+        .checkout-heading small{
+            display:inline-block;
+            margin-bottom:9px;
 
-            margin-bottom: 9px;
+            color:#8f96a3;
 
-            color: #8f96a3;
+            font-size:12px;
+            font-weight:800;
 
-            font-size: 12px;
-            font-weight: 800;
-
-            letter-spacing: 1.6px;
-            text-transform: uppercase;
+            letter-spacing:1.6px;
+            text-transform:uppercase;
         }
 
-        .checkout-heading h1 {
-            margin: 0;
-
-            color: #ffffff;
-
-            font-size: clamp(30px, 4vw, 46px);
-            line-height: 1.05;
-
-            letter-spacing: -1.5px;
+        .checkout-heading h1{
+            color:#fff;
+            font-size:clamp(30px,4vw,46px);
+            line-height:1.05;
+            letter-spacing:-1.5px;
         }
 
-        .checkout-heading p {
-            margin: 12px 0 0;
+        .checkout-heading p{
+            max-width:650px;
+            margin:12px 0 0;
 
-            max-width: 650px;
+            color:#9299a5;
 
-            color: #9299a5;
-
-            font-size: 15px;
-            line-height: 1.7;
+            font-size:15px;
+            line-height:1.7;
         }
 
-        /* =========================================================
+        /* =====================================================
            CART ID
-        ========================================================= */
+        ===================================================== */
 
-        .cart-id-card {
-            margin-bottom: 28px;
+        .cart-id-card{
+            margin-bottom:28px;
 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:20px;
 
-            gap: 20px;
-
-            padding: 17px 20px;
+            padding:17px 20px;
 
             background:
                 linear-gradient(
                     135deg,
-                    rgba(124, 58, 237, 0.11),
-                    rgba(124, 58, 237, 0.035)
+                    rgba(124,58,237,.11),
+                    rgba(124,58,237,.035)
                 );
 
-            border: 1px solid rgba(124, 58, 237, 0.3);
-            border-radius: 16px;
+            border:1px solid rgba(124,58,237,.3);
+            border-radius:16px;
         }
 
-        .cart-id-left {
-            display: flex;
-            align-items: center;
-            gap: 13px;
+        .cart-id-left{
+            display:flex;
+            align-items:center;
+            gap:13px;
         }
 
-        .cart-id-icon {
-            width: 42px;
-            height: 42px;
+        .cart-id-icon{
+            width:42px;
+            height:42px;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display:flex;
+            align-items:center;
+            justify-content:center;
 
-            border-radius: 12px;
+            border-radius:12px;
 
-            background: rgba(124, 58, 237, 0.14);
-            color: #a78bfa;
+            background:rgba(124,58,237,.14);
+            color:#a78bfa;
         }
 
-        .cart-id-icon svg {
-            width: 20px;
-            height: 20px;
+        .cart-id-icon svg{
+            width:20px;
+            height:20px;
         }
 
-        .cart-id-label {
-            display: block;
+        .cart-id-label{
+            display:block;
+            margin-bottom:3px;
 
-            margin-bottom: 3px;
+            color:#818895;
 
-            color: #818895;
+            font-size:11px;
+            font-weight:700;
 
-            font-size: 11px;
-            font-weight: 700;
-
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
+            text-transform:uppercase;
+            letter-spacing:.8px;
         }
 
-        .cart-id-value {
-            color: #ffffff;
-
-            font-size: 15px;
-            font-weight: 800;
-
-            letter-spacing: 0.5px;
+        .cart-id-value{
+            color:#fff;
+            font-size:15px;
+            font-weight:800;
+            letter-spacing:.5px;
         }
 
-        .cart-id-status {
-            display: flex;
-            align-items: center;
-            gap: 7px;
+        .cart-id-status{
+            display:flex;
+            align-items:center;
+            gap:7px;
 
-            color: #a7f3d0;
+            color:#a7f3d0;
 
-            font-size: 12px;
-            font-weight: 700;
+            font-size:12px;
+            font-weight:700;
         }
 
-        .cart-id-status-dot {
-            width: 7px;
-            height: 7px;
+        .cart-id-status-dot{
+            width:7px;
+            height:7px;
+            border-radius:50%;
 
-            border-radius: 50%;
+            background:var(--success);
 
-            background: #22c55e;
-
-            box-shadow: 0 0 10px rgba(34, 197, 94, 0.6);
+            box-shadow:
+                0 0 10px rgba(34,197,94,.6);
         }
 
-        /* =========================================================
-           CHECKOUT GRID
-        ========================================================= */
+        /* =====================================================
+           GRID
+        ===================================================== */
 
-        .checkout-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1.55fr) minmax(330px, 0.85fr);
-            gap: 28px;
-            align-items: start;
+        .checkout-grid{
+            display:grid;
+            grid-template-columns:minmax(0,1.55fr) minmax(330px,.85fr);
+            gap:28px;
+            align-items:start;
         }
 
-        /* =========================================================
+        /* =====================================================
            CARD
-        ========================================================= */
+        ===================================================== */
 
-        .checkout-card {
-            background: #101216;
+        .checkout-card{
+            background:var(--card);
 
-            border: 1px solid #272b33;
-            border-radius: 20px;
+            border:1px solid var(--border);
+            border-radius:20px;
 
-            overflow: hidden;
+            overflow:hidden;
         }
 
-        .checkout-card + .checkout-card {
-            margin-top: 20px;
+        .checkout-card + .checkout-card{
+            margin-top:20px;
         }
 
-        .checkout-card-header {
-            padding: 22px 24px;
-
-            border-bottom: 1px solid #252932;
+        .checkout-card-header{
+            padding:22px 24px;
+            border-bottom:1px solid #252932;
         }
 
-        .checkout-card-header h2 {
-            margin: 0;
-
-            color: #ffffff;
-
-            font-size: 18px;
-            font-weight: 800;
+        .checkout-card-header h2{
+            color:#fff;
+            font-size:18px;
+            font-weight:800;
         }
 
-        .checkout-card-header p {
-            margin: 6px 0 0;
+        .checkout-card-header p{
+            margin-top:6px;
 
-            color: #858c98;
+            color:#858c98;
 
-            font-size: 13px;
-            line-height: 1.5;
+            font-size:13px;
+            line-height:1.5;
         }
 
-        .checkout-card-body {
-            padding: 24px;
+        .checkout-card-body{
+            padding:24px;
         }
 
-        /* =========================================================
+        /* =====================================================
            FORM
-        ========================================================= */
+        ===================================================== */
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 18px;
+        .form-grid{
+            display:grid;
+            grid-template-columns:repeat(2,minmax(0,1fr));
+            gap:18px;
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+        .form-group{
+            display:flex;
+            flex-direction:column;
+            gap:8px;
         }
 
-        .form-group.full {
-            grid-column: 1 / -1;
+        .form-group.full{
+            grid-column:1/-1;
         }
 
-        .form-group label {
-            color: #cdd2da;
-
-            font-size: 13px;
-            font-weight: 700;
+        .form-group label{
+            color:#cdd2da;
+            font-size:13px;
+            font-weight:700;
         }
 
-        .form-group label span {
-            color: #ef4444;
+        .required{
+            color:#ef4444;
         }
 
         .form-group input,
         .form-group select,
-        .form-group textarea {
-            width: 100%;
+        .form-group textarea{
+            width:100%;
 
-            border: 1px solid #2b2f37;
-            outline: 0;
+            min-height:48px;
 
-            border-radius: 12px;
+            border:1px solid var(--border2);
+            border-radius:12px;
 
-            background: #0b0d10;
-            color: #f8fafc;
+            outline:none;
 
-            padding: 13px 14px;
+            background:var(--input);
+            color:var(--text);
 
-            font-family: inherit;
-            font-size: 14px;
+            padding:13px 14px;
 
-            transition:
-                border-color 0.25s ease,
-                background 0.25s ease,
-                box-shadow 0.25s ease;
+            transition:.25s ease;
         }
 
-        .form-group input,
-        .form-group select {
-            min-height: 48px;
-        }
-
-        .form-group textarea {
-            min-height: 115px;
-            resize: vertical;
+        .form-group textarea{
+            min-height:115px;
+            resize:vertical;
         }
 
         .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: #666d79;
+        .form-group textarea::placeholder{
+            color:#666d79;
         }
 
         .form-group input:focus,
         .form-group select:focus,
-        .form-group textarea:focus {
-            background: #101318;
-            border-color: #7c3aed;
+        .form-group textarea:focus{
+            background:#101318;
+            border-color:var(--primary);
 
             box-shadow:
-                0 0 0 3px rgba(124, 58, 237, 0.1);
+                0 0 0 3px rgba(124,58,237,.1);
         }
 
-        .field-help {
-            margin: 0;
-
-            color: #686f7b;
-
-            font-size: 11px;
-            line-height: 1.5;
+        .field-help{
+            color:#686f7b;
+            font-size:11px;
+            line-height:1.5;
         }
 
-        /* =========================================================
-           PAYMENT METHODS
-        ========================================================= */
+        /* =====================================================
+           PAYMENT
+        ===================================================== */
 
-        .payment-list {
-            display: grid;
-            gap: 12px;
+        .payment-list{
+            display:grid;
+            gap:12px;
         }
 
-        .payment-option {
-            position: relative;
+        .payment-option{
+            position:relative;
 
-            display: flex;
-            align-items: center;
+            display:flex;
+            align-items:center;
+            gap:13px;
 
-            gap: 13px;
+            padding:15px;
 
-            padding: 15px;
+            border:1px solid var(--border2);
+            border-radius:14px;
 
-            border: 1px solid #2b2f37;
-            border-radius: 14px;
+            background:var(--input);
 
-            background: #0b0d10;
+            cursor:pointer;
 
-            cursor: pointer;
-
-            transition:
-                border-color 0.25s ease,
-                background 0.25s ease;
+            transition:.25s ease;
         }
 
-        .payment-option:hover {
-            background: #111419;
-            border-color: #424751;
+        .payment-option:hover{
+            background:#111419;
+            border-color:#424751;
         }
 
-        .payment-option input {
-            position: absolute;
-            opacity: 0;
-            pointer-events: none;
+        .payment-option input{
+            position:absolute;
+            opacity:0;
+            pointer-events:none;
         }
 
-        .payment-radio {
-            width: 19px;
-            height: 19px;
+        .payment-radio{
+            width:19px;
+            height:19px;
+            min-width:19px;
 
-            min-width: 19px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
 
-            border: 2px solid #555b66;
-            border-radius: 50%;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border:2px solid #555b66;
+            border-radius:50%;
         }
 
-        .payment-radio::after {
-            content: "";
+        .payment-radio::after{
+            content:"";
 
-            width: 8px;
-            height: 8px;
+            width:8px;
+            height:8px;
 
-            border-radius: 50%;
+            border-radius:50%;
+            background:#fff;
 
-            background: #ffffff;
-
-            transform: scale(0);
-            transition: transform 0.2s ease;
+            transform:scale(0);
+            transition:.2s ease;
         }
 
-        .payment-option:has(input:checked) {
-            border-color: #7c3aed;
-            background: rgba(124, 58, 237, 0.08);
+        .payment-option.selected{
+            border-color:var(--primary);
+            background:rgba(124,58,237,.08);
         }
 
-        .payment-option:has(input:checked) .payment-radio {
-            border-color: #8b5cf6;
-            background: #7c3aed;
+        .payment-option.selected .payment-radio{
+            border-color:#8b5cf6;
+            background:var(--primary);
         }
 
-        .payment-option:has(input:checked) .payment-radio::after {
-            transform: scale(1);
+        .payment-option.selected .payment-radio::after{
+            transform:scale(1);
         }
 
-        .payment-info {
-            min-width: 0;
+        .payment-info{
+            min-width:0;
         }
 
-        .payment-title {
-            display: block;
+        .payment-title{
+            display:block;
 
-            color: #ffffff;
-
-            font-size: 14px;
-            font-weight: 800;
+            color:#fff;
+            font-size:14px;
+            font-weight:800;
         }
 
-        .payment-description {
-            display: block;
+        .payment-description{
+            display:block;
+            margin-top:3px;
 
-            margin-top: 3px;
+            color:#747b87;
 
-            color: #747b87;
-
-            font-size: 11px;
-            line-height: 1.4;
+            font-size:11px;
+            line-height:1.4;
         }
 
-        /* =========================================================
-           ORDER ITEMS
-        ========================================================= */
+        /* =====================================================
+           PAYMENT NOTICE
+        ===================================================== */
 
-        .checkout-items {
-            display: grid;
-            gap: 14px;
+        .payment-notice{
+            display:none;
+
+            margin-top:16px;
+            padding:14px;
+
+            border:1px solid rgba(245,158,11,.22);
+            border-radius:12px;
+
+            background:rgba(245,158,11,.07);
+
+            color:#fcd34d;
+
+            font-size:12px;
+            line-height:1.6;
         }
 
-        .checkout-item {
-            display: grid;
-            grid-template-columns: 64px minmax(0, 1fr) auto;
-            gap: 13px;
-            align-items: center;
-
-            padding-bottom: 14px;
-
-            border-bottom: 1px solid #252932;
+        .payment-notice.show{
+            display:block;
         }
 
-        .checkout-item:last-child {
-            padding-bottom: 0;
-            border-bottom: 0;
+        /* =====================================================
+           ITEMS
+        ===================================================== */
+
+        .checkout-items{
+            display:grid;
+            gap:14px;
         }
 
-        .checkout-item-image {
-            width: 64px;
-            height: 64px;
+        .checkout-item{
+            display:grid;
+            grid-template-columns:64px minmax(0,1fr) auto;
+            gap:13px;
+            align-items:center;
 
-            border-radius: 12px;
+            padding-bottom:14px;
 
-            overflow: hidden;
-
-            background: #191c22;
-            border: 1px solid #2a2e36;
+            border-bottom:1px solid #252932;
         }
 
-        .checkout-item-image img {
-            width: 100%;
-            height: 100%;
-
-            display: block;
-
-            object-fit: cover;
+        .checkout-item:last-child{
+            padding-bottom:0;
+            border-bottom:0;
         }
 
-        .checkout-item-info {
-            min-width: 0;
+        .checkout-item-image{
+            width:64px;
+            height:64px;
+
+            overflow:hidden;
+
+            border-radius:12px;
+
+            background:#191c22;
+            border:1px solid #2a2e36;
         }
 
-        .checkout-item-name {
-            margin: 0 0 4px;
-
-            color: #ffffff;
-
-            font-size: 13px;
-            font-weight: 800;
-
-            line-height: 1.4;
-
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-
-            overflow: hidden;
+        .checkout-item-image img{
+            width:100%;
+            height:100%;
+            display:block;
+            object-fit:cover;
         }
 
-        .checkout-item-meta {
-            color: #747b87;
-
-            font-size: 11px;
+        .checkout-item-info{
+            min-width:0;
         }
 
-        .checkout-item-price {
-            color: #ffffff;
+        .checkout-item-name{
+            margin:0 0 4px;
 
-            font-size: 14px;
-            font-weight: 800;
+            color:#fff;
+            font-size:13px;
+            font-weight:800;
+            line-height:1.4;
 
-            white-space: nowrap;
+            display:-webkit-box;
+            -webkit-line-clamp:2;
+            -webkit-box-orient:vertical;
+            overflow:hidden;
         }
 
-        /* =========================================================
+        .checkout-item-meta{
+            color:#747b87;
+            font-size:11px;
+        }
+
+        .checkout-item-price{
+            color:#fff;
+            font-size:14px;
+            font-weight:800;
+            white-space:nowrap;
+        }
+
+        /* =====================================================
            SUMMARY
-        ========================================================= */
+        ===================================================== */
 
-        .summary-list {
-            display: grid;
-            gap: 14px;
+        .summary-list{
+            display:grid;
+            gap:14px;
         }
 
-        .summary-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .summary-row{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:20px;
 
-            gap: 20px;
-
-            color: #9299a5;
-
-            font-size: 13px;
+            color:#9299a5;
+            font-size:13px;
         }
 
-        .summary-row strong {
-            color: #e7eaf0;
-            font-weight: 700;
+        .summary-row strong{
+            color:#e7eaf0;
         }
 
-        .summary-row.discount strong {
-            color: #4ade80;
+        .summary-row.discount strong{
+            color:#4ade80;
         }
 
-        .summary-divider {
-            height: 1px;
-
-            margin: 4px 0;
-
-            background: #292d35;
+        .summary-divider{
+            height:1px;
+            background:#292d35;
         }
 
-        .summary-total {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            gap: 20px;
+        .summary-total{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:20px;
         }
 
-        .summary-total span:first-child {
-            color: #ffffff;
-
-            font-size: 16px;
-            font-weight: 800;
+        .summary-total span:first-child{
+            color:#fff;
+            font-size:16px;
+            font-weight:800;
         }
 
-        .summary-total span:last-child {
-            color: #ffffff;
-
-            font-size: 23px;
-            font-weight: 900;
+        .summary-total span:last-child{
+            color:#fff;
+            font-size:23px;
+            font-weight:900;
         }
 
-        /* =========================================================
-           PLACE ORDER
-        ========================================================= */
+        /* =====================================================
+           BUTTON
+        ===================================================== */
 
-        .place-order-btn {
-            width: 100%;
+        .place-order-btn{
+            width:100%;
+            min-height:54px;
 
-            min-height: 54px;
+            margin-top:22px;
 
-            margin-top: 22px;
+            border:0;
+            border-radius:13px;
 
-            border: 0;
-            border-radius: 13px;
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--primary-dark)
+                );
 
-            background: linear-gradient(
+            color:#fff;
+
+            font-size:14px;
+            font-weight:800;
+
+            cursor:pointer;
+
+            box-shadow:
+                0 12px 28px rgba(124,58,237,.22);
+
+            transition:.25s ease;
+        }
+
+        .place-order-btn:hover{
+            transform:translateY(-2px);
+
+            box-shadow:
+                0 16px 34px rgba(124,58,237,.30);
+        }
+
+        .place-order-btn:disabled{
+            opacity:.55;
+            cursor:not-allowed;
+            transform:none;
+            box-shadow:none;
+        }
+
+        .secure-note{
+            margin-top:14px;
+
+            color:#696f7a;
+
+            font-size:11px;
+            line-height:1.6;
+            text-align:center;
+        }
+
+        /* =====================================================
+           ERROR
+        ===================================================== */
+
+        .form-error{
+            display:none;
+
+            margin-bottom:20px;
+            padding:13px 15px;
+
+            border:1px solid rgba(239,68,68,.25);
+            border-radius:12px;
+
+            background:rgba(239,68,68,.08);
+
+            color:#fca5a5;
+
+            font-size:13px;
+            line-height:1.5;
+        }
+
+        /* =====================================================
+           EMPTY
+        ===================================================== */
+
+        .checkout-empty{
+            display:none;
+            text-align:center;
+            padding:70px 25px;
+        }
+
+        .checkout-empty-icon{
+            width:70px;
+            height:70px;
+
+            margin:0 auto 20px;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            border-radius:20px;
+
+            background:#171a20;
+            color:#858c98;
+        }
+
+        .checkout-empty-icon svg{
+            width:30px;
+            height:30px;
+        }
+
+        .checkout-empty h2{
+            margin-bottom:8px;
+
+            color:#fff;
+            font-size:24px;
+        }
+
+        .checkout-empty p{
+            max-width:450px;
+            margin:0 auto 22px;
+
+            color:#808792;
+
+            font-size:14px;
+            line-height:1.6;
+        }
+
+        .back-shop-btn{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+
+            min-height:46px;
+
+            padding:0 20px;
+
+            border-radius:11px;
+
+            background:var(--primary);
+            color:#fff;
+
+            text-decoration:none;
+
+            font-size:13px;
+            font-weight:800;
+        }
+
+        /* =====================================================
+           SUCCESS
+        ===================================================== */
+
+        .order-success{
+            display:none;
+
+            max-width:700px;
+            margin:30px auto 0;
+
+            padding:50px 30px;
+
+            text-align:center;
+
+            background:var(--card);
+
+            border:1px solid var(--border);
+            border-radius:22px;
+        }
+
+        .success-icon{
+            width:76px;
+            height:76px;
+
+            margin:0 auto 20px;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            border-radius:50%;
+
+            background:rgba(34,197,94,.12);
+            color:#4ade80;
+
+            border:1px solid rgba(34,197,94,.25);
+        }
+
+        .success-icon svg{
+            width:36px;
+            height:36px;
+        }
+
+        .order-success h2{
+            margin-bottom:10px;
+
+            color:#fff;
+            font-size:28px;
+        }
+
+        .order-success > p{
+            max-width:500px;
+            margin:0 auto 22px;
+
+            color:#858c98;
+
+            font-size:14px;
+            line-height:1.7;
+        }
+
+        .success-order-id{
+            display:inline-block;
+
+            margin-bottom:25px;
+            padding:11px 15px;
+
+            border-radius:10px;
+
+            background:#181b21;
+            border:1px solid #2b2f37;
+
+            color:#fff;
+
+            font-size:14px;
+            font-weight:800;
+        }
+
+        .success-actions{
+            display:flex;
+            justify-content:center;
+            gap:12px;
+            flex-wrap:wrap;
+        }
+
+        .success-btn{
+            min-height:46px;
+            padding:0 18px;
+
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+
+            border-radius:11px;
+
+            text-decoration:none;
+
+            font-size:13px;
+            font-weight:800;
+        }
+
+        .success-btn.primary{
+            background:var(--primary);
+            color:#fff;
+        }
+
+        .success-btn.secondary{
+            background:#181b21;
+            color:#dce1e8;
+            border:1px solid #2b2f37;
+        }
+
+        /* =====================================================
+           PAYMENT MODAL
+        ===================================================== */
+
+        .payment-modal{
+            position:fixed;
+            inset:0;
+            z-index:5000;
+
+            display:none;
+            align-items:center;
+            justify-content:center;
+
+            padding:20px;
+
+            background:rgba(0,0,0,.76);
+
+            backdrop-filter:blur(8px);
+        }
+
+        .payment-modal.show{
+            display:flex;
+        }
+
+        .payment-modal-card{
+            width:min(520px,100%);
+            max-height:90vh;
+            overflow:auto;
+
+            background:#101216;
+            border:1px solid #2b3038;
+            border-radius:20px;
+
+            box-shadow:
+                0 30px 100px rgba(0,0,0,.55);
+        }
+
+        .payment-modal-header{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:15px;
+
+            padding:20px 22px;
+
+            border-bottom:1px solid #272c34;
+        }
+
+        .payment-modal-header h3{
+            font-size:18px;
+            color:#fff;
+        }
+
+        .payment-modal-close{
+            width:36px;
+            height:36px;
+
+            border:0;
+            border-radius:9px;
+
+            background:#181c22;
+            color:#9aa1ac;
+
+            cursor:pointer;
+            font-size:20px;
+        }
+
+        .payment-modal-close:hover{
+            color:#fff;
+            background:#22272f;
+        }
+
+        .payment-modal-body{
+            padding:22px;
+        }
+
+        .gateway-box{
+            margin-bottom:18px;
+            padding:16px;
+
+            border:1px solid rgba(124,58,237,.25);
+            border-radius:13px;
+
+            background:rgba(124,58,237,.07);
+        }
+
+        .gateway-box strong{
+            color:#fff;
+        }
+
+        .gateway-box p{
+            margin-top:6px;
+
+            color:#969daa;
+
+            font-size:12px;
+            line-height:1.7;
+        }
+
+        .payment-modal-grid{
+            display:grid;
+            gap:16px;
+        }
+
+        .payment-field{
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+        }
+
+        .payment-field label{
+            color:#d5dae1;
+            font-size:13px;
+            font-weight:700;
+        }
+
+        .payment-field input{
+            width:100%;
+            height:48px;
+
+            border:1px solid #30353e;
+            border-radius:11px;
+
+            outline:none;
+
+            background:#0b0d10;
+            color:#fff;
+
+            padding:0 13px;
+        }
+
+        .payment-field input:focus{
+            border-color:var(--primary);
+
+            box-shadow:
+                0 0 0 3px rgba(124,58,237,.10);
+        }
+
+        .payment-modal-actions{
+            display:flex;
+            gap:10px;
+
+            margin-top:20px;
+        }
+
+        .modal-btn{
+            flex:1;
+            min-height:48px;
+
+            border-radius:11px;
+
+            border:1px solid #30353e;
+
+            cursor:pointer;
+
+            font-weight:800;
+        }
+
+        .modal-btn.cancel{
+            background:#181c22;
+            color:#dce1e8;
+        }
+
+        .modal-btn.confirm{
+            border:0;
+
+            background:linear-gradient(
                 135deg,
-                #7c3aed,
-                #6d28d9
+                var(--primary),
+                var(--primary-dark)
             );
 
-            color: #ffffff;
-
-            font-family: inherit;
-
-            font-size: 14px;
-            font-weight: 800;
-
-            cursor: pointer;
-
-            box-shadow:
-                0 12px 28px rgba(124, 58, 237, 0.22);
-
-            transition:
-                transform 0.25s ease,
-                box-shadow 0.25s ease,
-                opacity 0.25s ease;
+            color:#fff;
         }
 
-        .place-order-btn:hover {
-            transform: translateY(-2px);
-
-            box-shadow:
-                0 16px 34px rgba(124, 58, 237, 0.3);
+        .modal-btn:disabled{
+            opacity:.55;
+            cursor:not-allowed;
         }
 
-        .place-order-btn:disabled {
-            opacity: 0.55;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .secure-note {
-            margin: 14px 0 0;
-
-            color: #696f7a;
-
-            font-size: 11px;
-            line-height: 1.6;
-
-            text-align: center;
-        }
-
-        /* =========================================================
-           EMPTY STATE
-        ========================================================= */
-
-        .checkout-empty {
-            display: none;
-
-            text-align: center;
-
-            padding: 70px 25px;
-        }
-
-        .checkout-empty-icon {
-            width: 70px;
-            height: 70px;
-
-            margin: 0 auto 20px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 20px;
-
-            background: #171a20;
-            color: #858c98;
-        }
-
-        .checkout-empty-icon svg {
-            width: 30px;
-            height: 30px;
-        }
-
-        .checkout-empty h2 {
-            margin: 0 0 8px;
-
-            color: #ffffff;
-
-            font-size: 24px;
-        }
-
-        .checkout-empty p {
-            margin: 0 auto 22px;
-
-            max-width: 450px;
-
-            color: #808792;
-
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .back-shop-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-
-            min-height: 46px;
-
-            padding: 0 20px;
-
-            border-radius: 11px;
-
-            background: #7c3aed;
-            color: #ffffff;
-
-            text-decoration: none;
-
-            font-size: 13px;
-            font-weight: 800;
-        }
-
-        /* =========================================================
-           SUCCESS
-        ========================================================= */
-
-        .order-success {
-            display: none;
-
-            max-width: 700px;
-
-            margin: 30px auto 0;
-
-            padding: 50px 30px;
-
-            text-align: center;
-
-            background: #101216;
-
-            border: 1px solid #272b33;
-            border-radius: 22px;
-        }
-
-        .success-icon {
-            width: 76px;
-            height: 76px;
-
-            margin: 0 auto 20px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 50%;
-
-            background: rgba(34, 197, 94, 0.12);
-            color: #4ade80;
-
-            border: 1px solid rgba(34, 197, 94, 0.25);
-        }
-
-        .success-icon svg {
-            width: 36px;
-            height: 36px;
-        }
-
-        .order-success h2 {
-            margin: 0 0 10px;
-
-            color: #ffffff;
-
-            font-size: 28px;
-        }
-
-        .order-success > p {
-            margin: 0 auto 22px;
-
-            max-width: 500px;
-
-            color: #858c98;
-
-            font-size: 14px;
-            line-height: 1.7;
-        }
-
-        .success-order-id {
-            display: inline-block;
-
-            padding: 11px 15px;
-
-            margin-bottom: 25px;
-
-            border-radius: 10px;
-
-            background: #181b21;
-            border: 1px solid #2b2f37;
-
-            color: #ffffff;
-
-            font-size: 14px;
-            font-weight: 800;
-        }
-
-        .success-actions {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .success-btn {
-            min-height: 46px;
-
-            padding: 0 18px;
-
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 11px;
-
-            text-decoration: none;
-
-            font-size: 13px;
-            font-weight: 800;
-        }
-
-        .success-btn.primary {
-            background: #7c3aed;
-            color: #ffffff;
-        }
-
-        .success-btn.secondary {
-            background: #181b21;
-            color: #dce1e8;
-
-            border: 1px solid #2b2f37;
-        }
-
-        /* =========================================================
-           ERROR
-        ========================================================= */
-
-        .form-error {
-            display: none;
-
-            margin-bottom: 20px;
-
-            padding: 13px 15px;
-
-            border: 1px solid rgba(239, 68, 68, 0.25);
-            border-radius: 12px;
-
-            background: rgba(239, 68, 68, 0.08);
-
-            color: #fca5a5;
-
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        /* =========================================================
+        /* =====================================================
            FOOTER
-        ========================================================= */
+        ===================================================== */
 
-        .checkout-footer {
-            border-top: 1px solid #22252c;
+        .checkout-footer{
+            border-top:1px solid #22252c;
 
-            padding: 25px 20px;
+            padding:25px 20px;
 
-            text-align: center;
+            text-align:center;
 
-            color: #656c77;
+            color:#656c77;
 
-            font-size: 12px;
+            font-size:12px;
         }
 
-        /* =========================================================
+        /* =====================================================
            RESPONSIVE
-        ========================================================= */
+        ===================================================== */
 
-        @media (max-width: 1050px) {
+        @media(max-width:1050px){
 
-            .checkout-header-inner {
-                grid-template-columns: auto minmax(220px, 1fr) auto;
-                gap: 18px;
+            .checkout-grid{
+                grid-template-columns:1fr;
             }
 
-            .checkout-grid {
-                grid-template-columns: minmax(0, 1fr);
-            }
-
-            .checkout-sidebar {
-                display: grid;
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 20px;
-            }
-
-            .checkout-sidebar .checkout-card + .checkout-card {
-                margin-top: 0;
-            }
         }
 
-        @media (max-width: 800px) {
+        @media(max-width:800px){
 
-            .checkout-header-inner {
-                width: min(100% - 28px, 700px);
+            .checkout-header-inner{
+                width:min(100% - 28px,700px);
 
-                grid-template-columns: auto auto;
+                grid-template-columns:auto auto;
+
                 grid-template-areas:
                     "logo actions"
                     "search search";
 
-                gap: 14px;
+                gap:14px;
 
-                padding: 12px 0 14px;
+                padding:12px 0 14px;
             }
 
-            .checkout-logo {
-                grid-area: logo;
+            .checkout-logo{
+                grid-area:logo;
             }
 
-            .checkout-actions {
-                grid-area: actions;
-                justify-self: end;
+            .checkout-actions{
+                grid-area:actions;
+                justify-self:end;
             }
 
-            .checkout-search {
-                grid-area: search;
-
-                max-width: none;
+            .checkout-search{
+                grid-area:search;
+                max-width:none;
             }
 
-            .checkout-main {
-                width: min(100% - 28px, 700px);
-
-                padding-top: 35px;
+            .checkout-main{
+                width:min(100% - 28px,700px);
+                padding-top:35px;
             }
 
-            .cart-id-card {
-                align-items: flex-start;
-                flex-direction: column;
+            .cart-id-card{
+                align-items:flex-start;
+                flex-direction:column;
             }
 
-            .cart-id-status {
-                margin-left: 55px;
-            }
-
-            .checkout-sidebar {
-                grid-template-columns: 1fr;
-            }
         }
 
-        @media (max-width: 600px) {
+        @media(max-width:600px){
 
-            .checkout-header-inner {
-                width: calc(100% - 20px);
+            .checkout-header-inner{
+                width:calc(100% - 20px);
             }
 
-            .checkout-main {
-                width: calc(100% - 20px);
-
-                padding-bottom: 55px;
+            .checkout-main{
+                width:calc(100% - 20px);
+                padding-bottom:55px;
             }
 
-            .checkout-heading h1 {
-                font-size: 32px;
+            .checkout-heading h1{
+                font-size:32px;
             }
 
-            .checkout-heading p {
-                font-size: 13px;
+            .checkout-card-header{
+                padding:19px;
             }
 
-            .checkout-card-header {
-                padding: 19px;
+            .checkout-card-body{
+                padding:18px;
             }
 
-            .checkout-card-body {
-                padding: 18px;
+            .form-grid{
+                grid-template-columns:1fr;
+                gap:15px;
             }
 
-            .form-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
+            .form-group.full{
+                grid-column:auto;
             }
 
-            .form-group.full {
-                grid-column: auto;
+            .checkout-item{
+                grid-template-columns:55px minmax(0,1fr);
             }
 
-            .checkout-item {
-                grid-template-columns: 55px minmax(0, 1fr);
+            .checkout-item-image{
+                width:55px;
+                height:55px;
             }
 
-            .checkout-item-image {
-                width: 55px;
-                height: 55px;
+            .checkout-item-price{
+                grid-column:2;
+                margin-top:-4px;
             }
 
-            .checkout-item-price {
-                grid-column: 2;
-                margin-top: -4px;
+            .summary-total span:last-child{
+                font-size:20px;
             }
 
-            .cart-id-card {
-                padding: 15px;
+            .payment-modal{
+                padding:12px;
             }
 
-            .cart-id-left {
-                width: 100%;
+            .payment-modal-actions{
+                flex-direction:column;
             }
 
-            .cart-id-status {
-                margin-left: 0;
-            }
-
-            .success-actions {
-                flex-direction: column;
-            }
-
-            .success-btn {
-                width: 100%;
-            }
         }
 
-        @media (max-width: 430px) {
+        @media(max-width:430px){
 
-            .checkout-logo {
-                font-size: 19px;
+            .checkout-logo{
+                font-size:19px;
             }
 
-            .checkout-actions {
-                gap: 6px;
+            .checkout-actions{
+                gap:6px;
             }
 
-            .checkout-action {
-                width: 40px;
-                height: 40px;
+            .checkout-action{
+                width:40px;
+                height:40px;
             }
 
-            .checkout-search-box {
-                height: 46px;
+            .checkout-heading h1{
+                font-size:29px;
             }
 
-            .checkout-heading {
-                margin-bottom: 24px;
-            }
-
-            .checkout-heading h1 {
-                font-size: 29px;
-            }
-
-            .summary-total span:last-child {
-                font-size: 20px;
-            }
         }
 
-        /* =========================================================
-           ACCESSIBILITY
-        ========================================================= */
+        @media(prefers-reduced-motion:reduce){
 
-        @media (prefers-reduced-motion: reduce) {
             *,
             *::before,
-            *::after {
-                scroll-behavior: auto !important;
-                transition: none !important;
-                animation: none !important;
+            *::after{
+                scroll-behavior:auto!important;
+                transition:none!important;
+                animation:none!important;
             }
+
         }
     </style>
 </head>
@@ -1280,19 +1388,17 @@
 
 <div class="checkout-page">
 
-    <!-- =========================================================
+    <!-- =====================================================
          HEADER
-    ========================================================= -->
+    ===================================================== -->
 
     <header class="checkout-header">
 
         <div class="checkout-header-inner">
 
             <a href="index.html" class="checkout-logo">
-                ALAMIN <span>SHOP</span>
+                Shop<span>Next</span>
             </a>
-
-            <!-- SEARCH -->
 
             <div class="checkout-search">
 
@@ -1311,7 +1417,12 @@
                             stroke-linecap="round"
                             stroke-linejoin="round"
                         >
-                            <circle cx="11" cy="11" r="7"></circle>
+                            <circle
+                                cx="11"
+                                cy="11"
+                                r="7"
+                            ></circle>
+
                             <path d="m20 20-3.5-3.5"></path>
                         </svg>
 
@@ -1337,8 +1448,6 @@
 
             </div>
 
-            <!-- ACTIONS -->
-
             <div class="checkout-actions">
 
                 <a
@@ -1355,9 +1464,7 @@
                         stroke-linecap="round"
                         stroke-linejoin="round"
                     >
-                        <path
-                            d="M20.8 8.6c0 5.5-8.8 10.2-8.8 10.2S3.2 14.1 3.2 8.6A4.6 4.6 0 0 1 12 6.3a4.6 4.6 0 0 1 8.8 2.3Z"
-                        ></path>
+                        <path d="M20.8 8.6c0 5.5-8.8 10.2-8.8 10.2S3.2 14.1 3.2 8.6A4.6 4.6 0 0 1 12 6.3a4.6 4.6 0 0 1 8.8 2.3Z"></path>
                     </svg>
 
                     <span
@@ -1403,9 +1510,9 @@
     </header>
 
 
-    <!-- =========================================================
+    <!-- =====================================================
          MAIN
-    ========================================================= -->
+    ===================================================== -->
 
     <main class="checkout-main">
 
@@ -1423,11 +1530,12 @@
         </div>
 
 
-        <!-- =====================================================
-             CART ID
-        ====================================================== -->
+        <!-- CART ID -->
 
-        <div class="cart-id-card">
+        <div
+            class="cart-id-card"
+            id="cartIdCard"
+        >
 
             <div class="cart-id-left">
 
@@ -1465,7 +1573,7 @@
                         class="cart-id-value"
                         id="cartIdDisplay"
                     >
-                        Generating...
+                        Loading...
                     </span>
 
                 </div>
@@ -1483,9 +1591,7 @@
         </div>
 
 
-        <!-- =====================================================
-             EMPTY STATE
-        ====================================================== -->
+        <!-- EMPTY -->
 
         <section
             class="checkout-empty"
@@ -1525,9 +1631,7 @@
         </section>
 
 
-        <!-- =====================================================
-             CHECKOUT CONTENT
-        ====================================================== -->
+        <!-- CONTENT -->
 
         <div id="checkoutContent">
 
@@ -1539,13 +1643,11 @@
 
             <div class="checkout-grid">
 
-                <!-- =================================================
-                     LEFT SIDE
-                ================================================== -->
+                <!-- LEFT -->
 
                 <div class="checkout-left">
 
-                    <!-- CUSTOMER INFORMATION -->
+                    <!-- CUSTOMER -->
 
                     <section class="checkout-card">
 
@@ -1566,19 +1668,16 @@
 
                                 <div class="form-grid">
 
-                                    <!-- NAME -->
-
                                     <div class="form-group">
 
                                         <label for="customerName">
                                             Full Name
-                                            <span>*</span>
+                                            <span class="required">*</span>
                                         </label>
 
                                         <input
                                             type="text"
                                             id="customerName"
-                                            name="customerName"
                                             placeholder="Enter your full name"
                                             autocomplete="name"
                                             required
@@ -1587,19 +1686,16 @@
                                     </div>
 
 
-                                    <!-- PHONE -->
-
                                     <div class="form-group">
 
                                         <label for="customerPhone">
                                             Phone Number
-                                            <span>*</span>
+                                            <span class="required">*</span>
                                         </label>
 
                                         <input
                                             type="tel"
                                             id="customerPhone"
-                                            name="customerPhone"
                                             placeholder="01XXXXXXXXX"
                                             inputmode="numeric"
                                             maxlength="11"
@@ -1614,19 +1710,16 @@
                                     </div>
 
 
-                                    <!-- EMAIL -->
-
                                     <div class="form-group full">
 
                                         <label for="customerEmail">
                                             Email Address
-                                            <span>*</span>
+                                            <span class="required">*</span>
                                         </label>
 
                                         <input
                                             type="email"
                                             id="customerEmail"
-                                            name="customerEmail"
                                             placeholder="you@example.com"
                                             autocomplete="email"
                                             required
@@ -1635,40 +1728,33 @@
                                     </div>
 
 
-                                    <!-- CITY -->
-
                                     <div class="form-group">
 
                                         <label for="customerCity">
                                             City / District
-                                            <span>*</span>
+                                            <span class="required">*</span>
                                         </label>
 
                                         <input
                                             type="text"
                                             id="customerCity"
-                                            name="customerCity"
                                             placeholder="Dhaka"
-                                            autocomplete="address-level2"
                                             required
                                         >
 
                                     </div>
 
 
-                                    <!-- AREA -->
-
                                     <div class="form-group">
 
                                         <label for="customerArea">
                                             Area
-                                            <span>*</span>
+                                            <span class="required">*</span>
                                         </label>
 
                                         <input
                                             type="text"
                                             id="customerArea"
-                                            name="customerArea"
                                             placeholder="Mohammadpur"
                                             required
                                         >
@@ -1676,18 +1762,15 @@
                                     </div>
 
 
-                                    <!-- DELIVERY ZONE -->
-
                                     <div class="form-group">
 
                                         <label for="deliveryZone">
                                             Delivery Zone
-                                            <span>*</span>
+                                            <span class="required">*</span>
                                         </label>
 
                                         <select
                                             id="deliveryZone"
-                                            name="deliveryZone"
                                             required
                                         >
 
@@ -1704,27 +1787,21 @@
                                     </div>
 
 
-                                    <!-- ADDRESS -->
-
                                     <div class="form-group full">
 
                                         <label for="customerAddress">
                                             Full Delivery Address
-                                            <span>*</span>
+                                            <span class="required">*</span>
                                         </label>
 
                                         <textarea
                                             id="customerAddress"
-                                            name="customerAddress"
                                             placeholder="House / Road / Block / Area / District..."
-                                            autocomplete="street-address"
                                             required
                                         ></textarea>
 
                                     </div>
 
-
-                                    <!-- NOTE -->
 
                                     <div class="form-group full">
 
@@ -1734,7 +1811,6 @@
 
                                         <textarea
                                             id="orderNote"
-                                            name="orderNote"
                                             placeholder="Any special instruction for your order? (Optional)"
                                         ></textarea>
 
@@ -1769,7 +1845,7 @@
 
                                 <!-- COD -->
 
-                                <label class="payment-option">
+                                <label class="payment-option selected">
 
                                     <input
                                         type="radio"
@@ -1814,7 +1890,7 @@
                                         </span>
 
                                         <span class="payment-description">
-                                            Pay using bKash mobile payment.
+                                            Complete bKash payment before submitting the order.
                                         </span>
 
                                     </span>
@@ -1841,7 +1917,7 @@
                                         </span>
 
                                         <span class="payment-description">
-                                            Pay using Nagad mobile payment.
+                                            Complete Nagad payment before submitting the order.
                                         </span>
 
                                     </span>
@@ -1868,13 +1944,22 @@
                                         </span>
 
                                         <span class="payment-description">
-                                            SSLCommerz / Card / Mobile Banking.
+                                            Card / SSLCommerz / supported online gateway.
                                         </span>
 
                                     </span>
 
                                 </label>
 
+                            </div>
+
+
+                            <div
+                                class="payment-notice"
+                                id="paymentNotice"
+                            >
+                                For online payment methods, payment information
+                                must be submitted before the order is created.
                             </div>
 
                         </div>
@@ -1884,13 +1969,11 @@
                 </div>
 
 
-                <!-- =================================================
-                     RIGHT SIDE
-                ================================================== -->
+                <!-- RIGHT -->
 
                 <aside class="checkout-sidebar">
 
-                    <!-- CART ITEMS -->
+                    <!-- CART -->
 
                     <section class="checkout-card">
 
@@ -1916,7 +1999,7 @@
                     </section>
 
 
-                    <!-- ORDER SUMMARY -->
+                    <!-- SUMMARY -->
 
                     <section class="checkout-card">
 
@@ -1994,8 +2077,8 @@
 
 
                             <p class="secure-note">
-                                🔒 Your order information is securely
-                                stored for this demo checkout.
+                                🔒 Your information is securely
+                                handled in this checkout.
                             </p>
 
                         </div>
@@ -2009,9 +2092,7 @@
         </div>
 
 
-        <!-- =====================================================
-             SUCCESS STATE
-        ====================================================== -->
+        <!-- SUCCESS -->
 
         <section
             class="order-success"
@@ -2037,7 +2118,7 @@
                 Order Placed Successfully!
             </h2>
 
-            <p>
+            <p id="successDescription">
                 Thank you for shopping with ShopNext.
                 Your order has been successfully created.
             </p>
@@ -2073,515 +2154,682 @@
     </main>
 
 
-    <!-- =========================================================
-         FOOTER
-    ========================================================= -->
-
     <footer class="checkout-footer">
-
         © 2026 ShopNext. All rights reserved.
-
     </footer>
 
 </div>
 
 
-<!-- =============================================================
-     GLOBAL SCRIPT
-============================================================= -->
+<!-- =========================================================
+     PAYMENT MODAL
+========================================================= -->
+
+<div
+    class="payment-modal"
+    id="paymentModal"
+    aria-hidden="true"
+>
+
+    <div class="payment-modal-card">
+
+        <div class="payment-modal-header">
+
+            <h3 id="paymentModalTitle">
+                Complete Payment
+            </h3>
+
+            <button
+                type="button"
+                class="payment-modal-close"
+                id="paymentModalClose"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="payment-modal-body">
+
+            <div class="gateway-box">
+
+                <strong id="gatewayMethod">
+                    Payment
+                </strong>
+
+                <p id="gatewayMessage">
+                    Complete your payment and enter the payment reference
+                    below before creating your order.
+                </p>
+
+            </div>
+
+
+            <div class="payment-modal-grid">
+
+                <div class="payment-field">
+
+                    <label for="paymentPhone">
+                        Payment Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="paymentPhone"
+                        placeholder="01XXXXXXXXX"
+                        inputmode="numeric"
+                        maxlength="11"
+                    >
+
+                </div>
+
+
+                <div class="payment-field">
+
+                    <label for="transactionId">
+                        Transaction ID / Payment Reference
+                    </label>
+
+                    <input
+                        type="text"
+                        id="transactionId"
+                        placeholder="Enter transaction ID"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="payment-modal-actions">
+
+                <button
+                    type="button"
+                    class="modal-btn cancel"
+                    id="paymentCancelBtn"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="button"
+                    class="modal-btn confirm"
+                    id="paymentConfirmBtn"
+                >
+                    Payment Completed
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 
 <script src="script.js"></script>
 
 
 <script>
+(function(){
+
+    "use strict";
+
+
     /* =========================================================
-       ShopNext CHECKOUT
+       STORAGE
     ========================================================= */
 
-    (function () {
-
-        "use strict";
-
-
-        /* =======================================================
-           LOCAL STORAGE KEYS
-        ======================================================= */
-
-        const CART_KEY = "shopnest_cart";
-        const CART_ID_KEY = "shopnest_cart_id";
-        const ORDERS_KEY = "shopnest_orders";
-        const USER_KEY = "shopnest_logged_in_user";
+    const CART_KEY = "shopnest_cart";
+    const CART_ID_KEY = "shopnest_cart_id";
+    const ORDERS_KEY = "shopnest_orders";
+    const USER_KEY = "shopnest_logged_in_user";
 
 
-        /* =======================================================
-           ELEMENTS
-        ======================================================= */
+    /* =========================================================
+       ELEMENTS
+    ========================================================= */
 
-        const checkoutContent =
-            document.getElementById("checkoutContent");
+    const checkoutContent =
+        document.getElementById("checkoutContent");
 
-        const checkoutEmpty =
-            document.getElementById("checkoutEmpty");
+    const checkoutEmpty =
+        document.getElementById("checkoutEmpty");
 
-        const checkoutError =
-            document.getElementById("checkoutError");
+    const checkoutError =
+        document.getElementById("checkoutError");
 
-        const checkoutForm =
-            document.getElementById("checkoutForm");
+    const checkoutForm =
+        document.getElementById("checkoutForm");
 
-        const checkoutItems =
-            document.getElementById("checkoutItems");
+    const checkoutItems =
+        document.getElementById("checkoutItems");
 
-        const checkoutItemCount =
-            document.getElementById("checkoutItemCount");
+    const checkoutItemCount =
+        document.getElementById("checkoutItemCount");
 
-        const checkoutSubtotal =
-            document.getElementById("checkoutSubtotal");
+    const checkoutSubtotal =
+        document.getElementById("checkoutSubtotal");
 
-        const checkoutDiscount =
-            document.getElementById("checkoutDiscount");
+    const checkoutDiscount =
+        document.getElementById("checkoutDiscount");
 
-        const checkoutDelivery =
-            document.getElementById("checkoutDelivery");
+    const checkoutDelivery =
+        document.getElementById("checkoutDelivery");
 
-        const checkoutTotal =
-            document.getElementById("checkoutTotal");
+    const checkoutTotal =
+        document.getElementById("checkoutTotal");
 
-        const deliveryZone =
-            document.getElementById("deliveryZone");
+    const deliveryZone =
+        document.getElementById("deliveryZone");
 
-        const cartIdDisplay =
-            document.getElementById("cartIdDisplay");
+    const cartIdDisplay =
+        document.getElementById("cartIdDisplay");
 
-        const placeOrderBtn =
-            document.getElementById("placeOrderBtn");
+    const cartIdCard =
+        document.getElementById("cartIdCard");
 
-        const orderSuccess =
-            document.getElementById("orderSuccess");
+    const placeOrderBtn =
+        document.getElementById("placeOrderBtn");
 
-        const successOrderId =
-            document.getElementById("successOrderId");
+    const orderSuccess =
+        document.getElementById("orderSuccess");
 
-        const successOrderDetails =
-            document.getElementById("successOrderDetails");
+    const successOrderId =
+        document.getElementById("successOrderId");
+
+    const successOrderDetails =
+        document.getElementById("successOrderDetails");
+
+    const successDescription =
+        document.getElementById("successDescription");
+
+    const paymentNotice =
+        document.getElementById("paymentNotice");
+
+    const paymentModal =
+        document.getElementById("paymentModal");
+
+    const paymentModalTitle =
+        document.getElementById("paymentModalTitle");
+
+    const paymentModalClose =
+        document.getElementById("paymentModalClose");
+
+    const paymentCancelBtn =
+        document.getElementById("paymentCancelBtn");
+
+    const paymentConfirmBtn =
+        document.getElementById("paymentConfirmBtn");
+
+    const gatewayMethod =
+        document.getElementById("gatewayMethod");
+
+    const gatewayMessage =
+        document.getElementById("gatewayMessage");
+
+    const paymentPhone =
+        document.getElementById("paymentPhone");
+
+    const transactionId =
+        document.getElementById("transactionId");
 
 
-        /* =======================================================
-           SAFE LOCAL STORAGE
-        ======================================================= */
+    /* =========================================================
+       SAFE STORAGE
+    ========================================================= */
 
-        function getStorageArray(key) {
+    function readJSON(key, fallback){
 
-            try {
+        try{
 
-                const data =
-                    JSON.parse(
-                        localStorage.getItem(key) || "[]"
-                    );
+            const value =
+                localStorage.getItem(key);
 
-                return Array.isArray(data) ? data : [];
-
-            } catch (error) {
-
-                console.error(
-                    "Storage read error:",
-                    error
-                );
-
-                return [];
-
-            }
-        }
-
-
-        function saveStorageArray(key, data) {
-
-            try {
-
-                localStorage.setItem(
-                    key,
-                    JSON.stringify(data)
-                );
-
-            } catch (error) {
-
-                console.error(
-                    "Storage save error:",
-                    error
-                );
-
+            if(!value){
+                return fallback;
             }
 
-        }
+            const parsed =
+                JSON.parse(value);
 
+            return parsed;
 
-        /* =======================================================
-           PRICE FORMAT
-        ======================================================= */
+        }catch(error){
 
-        function price(value) {
-
-            const number =
-                Number(value) || 0;
-
-            if (
-                typeof window.formatPrice === "function"
-            ) {
-                return window.formatPrice(number);
-            }
-
-            return "৳" +
-                number.toLocaleString(
-                    "en-BD"
-                );
-
-        }
-
-
-        /* =======================================================
-           CART
-        ======================================================= */
-
-        function getCart() {
-
-            return getStorageArray(
-                CART_KEY
+            console.error(
+                "Storage read error:",
+                error
             );
 
+            return fallback;
         }
+    }
 
 
-        let cart = getCart();
+    function saveJSON(key, value){
 
+        try{
 
-        /* =======================================================
-           CART ID GENERATOR
-        ======================================================= */
+            localStorage.setItem(
+                key,
+                JSON.stringify(value)
+            );
 
-        function generateCartId() {
+            return true;
 
-            const characters =
-                "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        }catch(error){
 
-            let randomPart = "";
+            console.error(
+                "Storage save error:",
+                error
+            );
 
-            for (let i = 0; i < 8; i++) {
-
-                randomPart +=
-                    characters[
-                        Math.floor(
-                            Math.random() *
-                            characters.length
-                        )
-                    ];
-
-            }
-
-            return "CART-" + randomPart;
-
+            return false;
         }
+    }
 
 
-        function getCartId() {
+    /* =========================================================
+       CART
+    ========================================================= */
 
-            let cartId =
-                localStorage.getItem(
-                    CART_ID_KEY
-                );
-
-
-            /*
-             * IMPORTANT:
-             *
-             * If cart ID does not exist,
-             * create it here.
-             *
-             * This fixes the problem where
-             * checkout page was showing an
-             * empty Cart ID.
-             */
-
-            if (!cartId) {
-
-                cartId =
-                    generateCartId();
-
-                localStorage.setItem(
-                    CART_ID_KEY,
-                    cartId
-                );
-
-            }
+    let cart =
+        Array.isArray(
+            readJSON(CART_KEY, [])
+        )
+            ? readJSON(CART_KEY, [])
+            : [];
 
 
-            return cartId;
+    function refreshCart(){
 
-        }
-
-
-        /* =======================================================
-           CLEAN CART
-        ======================================================= */
-
-        function cleanCart() {
-
-            cart = cart.filter(item => {
-
-                if (!item) {
-                    return false;
-                }
-
-                const quantity =
-                    Number(
-                        item.quantity
-                    ) || 0;
-
-                return quantity > 0;
-
-            });
-
-
-            saveStorageArray(
+        const data =
+            readJSON(
                 CART_KEY,
-                cart
+                []
             );
 
-        }
+        cart =
+            Array.isArray(data)
+                ? data
+                : [];
+
+        cart =
+            cart.filter(
+                item =>
+                    item &&
+                    Number(item.quantity) > 0
+            );
+
+        saveJSON(
+            CART_KEY,
+            cart
+        );
+
+        return cart;
+    }
 
 
-        /* =======================================================
-           PRODUCTS
-        ======================================================= */
+    /* =========================================================
+       PRICE
+    ========================================================= */
 
-        function findProduct(item) {
+    function money(value){
 
-            /*
-             * Existing script.js contains
-             * the global "products" array.
-             */
+        const number =
+            Number(value) || 0;
 
-            if (
-                typeof products !== "undefined" &&
-                Array.isArray(products)
-            ) {
+        return "৳" +
+            number.toLocaleString(
+                "en-BD"
+            );
+    }
 
-                return products.find(
-                    product =>
-                        String(product.id) ===
-                        String(item.id)
-                );
 
+    /* =========================================================
+       HTML ESCAPE
+    ========================================================= */
+
+    function escapeHtml(value){
+
+        return String(
+            value ?? ""
+        )
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+    }
+
+
+    /* =========================================================
+       PRODUCT DATA
+       Supports:
+       - shopnest_products
+       - shopnext_products
+       - products
+       ========================================================= */
+
+    function getStoredProducts(){
+
+        const keys = [
+            "shopnest_products",
+            "shopnext_products",
+            "products"
+        ];
+
+        for(const key of keys){
+
+            const raw =
+                readJSON(key, null);
+
+            if(Array.isArray(raw)){
+                return raw;
             }
 
-            return null;
-
-        }
-
-
-        /* =======================================================
-           GET ITEM DATA
-        ======================================================= */
-
-        function getItemData(item) {
-
-            const product =
-                findProduct(item);
-
-
-            /*
-             * Cart may already contain complete
-             * product information.
-             *
-             * So we support both:
-             *
-             * 1. id + quantity
-             * 2. full product object + quantity
-             */
-
-            if (product) {
-
-                return {
-
-                    id: product.id,
-
-                    name:
-                        product.name ||
-                        item.name ||
-                        "Product",
-
-                    category:
-                        product.category ||
-                        item.category ||
-                        "",
-
-                    price:
-                        Number(
-                            product.price ??
-                            item.price ??
-                            0
-                        ),
-
-                    image:
-                        product.image ||
-                        item.image ||
-                        "",
-
-                    stock:
-                        Number(
-                            product.stock ??
-                            item.stock ??
-                            0
-                        )
-
-                };
-
+            if(
+                raw &&
+                Array.isArray(raw.products)
+            ){
+                return raw.products;
             }
 
+            if(
+                raw &&
+                Array.isArray(raw.data)
+            ){
+                return raw.data;
+            }
+        }
+
+        return [];
+    }
+
+
+    function findProduct(item){
+
+        const products =
+            getStoredProducts();
+
+        return products.find(
+            product =>
+                String(
+                    product.id ??
+                    product.productId ??
+                    ""
+                ) ===
+                String(
+                    item.id ??
+                    item.productId ??
+                    ""
+                )
+        ) || null;
+    }
+
+
+    /* =========================================================
+       NORMALIZE CART ITEM
+    ========================================================= */
+
+    function getItemData(item){
+
+        const product =
+            findProduct(item);
+
+
+        if(product){
 
             return {
 
                 id:
+                    product.id ??
                     item.id,
 
                 name:
-                    item.name ||
+                    product.name ??
+                    product.title ??
+                    item.name ??
+                    item.title ??
                     "Product",
 
                 category:
-                    item.category ||
+                    product.category ??
+                    item.category ??
                     "",
 
                 price:
                     Number(
-                        item.price
-                    ) || 0,
+                        product.price ??
+                        product.salePrice ??
+                        item.price ??
+                        0
+                    ),
 
                 image:
-                    item.image ||
+                    product.image ??
+                    product.imageUrl ??
+                    item.image ??
+                    item.imageUrl ??
                     "",
 
-                stock:
-                    Number(
-                        item.stock
-                    ) || 0
+                sku:
+                    product.sku ??
+                    item.sku ??
+                    ""
 
             };
-
         }
 
 
-        /* =======================================================
-           CALCULATE SUBTOTAL
-        ======================================================= */
+        return {
 
-        function calculateSubtotal() {
+            id:
+                item.id,
 
-            return cart.reduce(
-                (
-                    total,
-                    item
-                ) => {
+            name:
+                item.name ??
+                item.title ??
+                "Product",
 
-                    const data =
-                        getItemData(item);
+            category:
+                item.category ??
+                "",
 
-                    const quantity =
-                        Number(
-                            item.quantity
-                        ) || 0;
+            price:
+                Number(
+                    item.price ??
+                    item.salePrice ??
+                    0
+                ),
 
-                    return total +
-                        (
-                            data.price *
-                            quantity
-                        );
+            image:
+                item.image ??
+                item.imageUrl ??
+                "",
 
-                },
-                0
+            sku:
+                item.sku ??
+                ""
+
+        };
+    }
+
+
+    /* =========================================================
+       CART TOTALS
+    ========================================================= */
+
+    function calculateSubtotal(){
+
+        return cart.reduce(
+            (
+                total,
+                item
+            ) => {
+
+                const product =
+                    getItemData(item);
+
+                const quantity =
+                    Number(
+                        item.quantity
+                    ) || 1;
+
+                return total +
+                    product.price *
+                    quantity;
+
+            },
+            0
+        );
+    }
+
+
+    function calculateDelivery(){
+
+        const subtotal =
+            calculateSubtotal();
+
+        if(subtotal >= 5000){
+            return 0;
+        }
+
+        if(
+            deliveryZone &&
+            deliveryZone.value ===
+            "outside-dhaka"
+        ){
+            return 130;
+        }
+
+        return 80;
+    }
+
+
+    function calculateSummary(){
+
+        const subtotal =
+            calculateSubtotal();
+
+        const discount = 0;
+
+        const delivery =
+            calculateDelivery();
+
+        const total =
+            Math.max(
+                0,
+                subtotal -
+                discount +
+                delivery
             );
 
+        return {
+            subtotal,
+            discount,
+            delivery,
+            total
+        };
+    }
+
+
+    /* =========================================================
+       CART ID
+    ========================================================= */
+
+    function createCartId(){
+
+        const chars =
+            "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+        let result = "";
+
+        for(
+            let i = 0;
+            i < 8;
+            i++
+        ){
+
+            result +=
+                chars[
+                    Math.floor(
+                        Math.random() *
+                        chars.length
+                    )
+                ];
         }
 
-
-        /* =======================================================
-           DELIVERY CHARGE
-        ======================================================= */
-
-        function calculateDelivery(
-            subtotal
-        ) {
-
-            /*
-             * Existing project rule:
-             *
-             * >= ৳5000 = Free
-             *
-             * Inside Dhaka = ৳80
-             *
-             * Outside Dhaka = ৳130
-             */
-
-            if (subtotal >= 5000) {
-
-                return 0;
-
-            }
+        return "CART-" + result;
+    }
 
 
-            const zone =
-                deliveryZone
-                    ? deliveryZone.value
-                    : "inside-dhaka";
+    function getCartId(){
 
+        let id =
+            localStorage.getItem(
+                CART_ID_KEY
+            );
 
-            if (
-                zone ===
-                "outside-dhaka"
-            ) {
+        if(!id){
 
-                return 130;
+            id =
+                createCartId();
 
-            }
-
-
-            return 80;
-
+            localStorage.setItem(
+                CART_ID_KEY,
+                id
+            );
         }
 
-
-        /* =======================================================
-           RENDER CART ITEMS
-        ======================================================= */
-
-        function renderItems() {
-
-            checkoutItems.innerHTML = "";
+        return id;
+    }
 
 
-            if (!cart.length) {
+    /* =========================================================
+       RENDER ITEMS
+    ========================================================= */
 
-                checkoutEmpty.style.display =
-                    "block";
+    function renderItems(){
 
-                checkoutContent.style.display =
-                    "none";
+        checkoutItems.innerHTML = "";
 
-                return;
 
-            }
-
+        if(!cart.length){
 
             checkoutEmpty.style.display =
-                "none";
-
-            checkoutContent.style.display =
                 "block";
 
+            checkoutContent.style.display =
+                "none";
 
-            let totalQuantity = 0;
+            cartIdCard.style.display =
+                "none";
+
+            return;
+        }
 
 
-            cart.forEach(item => {
+        checkoutEmpty.style.display =
+            "none";
+
+        checkoutContent.style.display =
+            "block";
+
+        cartIdCard.style.display =
+            "flex";
+
+
+        let totalQty = 0;
+
+
+        cart.forEach(
+            item => {
 
                 const data =
                     getItemData(item);
@@ -2591,9 +2839,7 @@
                         item.quantity
                     ) || 1;
 
-
-                totalQuantity +=
-                    quantity;
+                totalQty += quantity;
 
 
                 const row =
@@ -2607,7 +2853,7 @@
 
                 const image =
                     data.image ||
-                    "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=200&q=80";
+                    "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=300&q=80";
 
 
                 row.innerHTML = `
@@ -2617,6 +2863,7 @@
                         <img
                             src="${escapeHtml(image)}"
                             alt="${escapeHtml(data.name)}"
+                            onerror="this.style.display='none'"
                         >
 
                     </div>
@@ -2648,7 +2895,7 @@
 
                     <div class="checkout-item-price">
 
-                        ${price(
+                        ${money(
                             data.price *
                             quantity
                         )}
@@ -2661,1012 +2908,1222 @@
                 checkoutItems.appendChild(
                     row
                 );
-
-            });
-
-
-            checkoutItemCount.textContent =
-                totalQuantity === 1
-                    ? "1 item"
-                    : `${totalQuantity} items`;
-
-        }
-
-
-        /* =======================================================
-           ESCAPE HTML
-        ======================================================= */
-
-        function escapeHtml(value) {
-
-            return String(value ?? "")
-                .replace(
-                    /&/g,
-                    "&amp;"
-                )
-                .replace(
-                    /</g,
-                    "&lt;"
-                )
-                .replace(
-                    />/g,
-                    "&gt;"
-                )
-                .replace(
-                    /"/g,
-                    "&quot;"
-                )
-                .replace(
-                    /'/g,
-                    "&#039;"
-                );
-
-        }
-
-
-        /* =======================================================
-           UPDATE SUMMARY
-        ======================================================= */
-
-        function updateSummary() {
-
-            const subtotal =
-                calculateSubtotal();
-
-            const discount = 0;
-
-            const delivery =
-                calculateDelivery(
-                    subtotal
-                );
-
-            const total =
-                subtotal -
-                discount +
-                delivery;
-
-
-            checkoutSubtotal.textContent =
-                price(subtotal);
-
-
-            checkoutDiscount.textContent =
-                "- " +
-                price(discount);
-
-
-            checkoutDelivery.textContent =
-                delivery === 0
-                    ? "FREE"
-                    : price(delivery);
-
-
-            checkoutTotal.textContent =
-                price(total);
-
-
-            /*
-             * Free delivery message
-             */
-
-            if (
-                delivery === 0 &&
-                subtotal >= 5000
-            ) {
-
-                checkoutDelivery.title =
-                    "Free delivery for orders of ৳5,000 or more.";
-
             }
+        );
 
 
-            return {
-
-                subtotal,
-                discount,
-                delivery,
-                total
-
-            };
-
-        }
+        checkoutItemCount.textContent =
+            totalQty === 1
+                ? "1 item"
+                : `${totalQty} items`;
+    }
 
 
-        /* =======================================================
-           UPDATE CART COUNT
-        ======================================================= */
+    /* =========================================================
+       SUMMARY
+    ========================================================= */
 
-        function updateCounts() {
+    function updateSummary(){
 
-            const totalQuantity =
-                cart.reduce(
+        const summary =
+            calculateSummary();
+
+
+        checkoutSubtotal.textContent =
+            money(
+                summary.subtotal
+            );
+
+
+        checkoutDiscount.textContent =
+            "- " +
+            money(
+                summary.discount
+            );
+
+
+        checkoutDelivery.textContent =
+            summary.delivery === 0
+                ? "FREE"
+                : money(
+                    summary.delivery
+                );
+
+
+        checkoutTotal.textContent =
+            money(
+                summary.total
+            );
+
+
+        return summary;
+    }
+
+
+    /* =========================================================
+       COUNTS
+    ========================================================= */
+
+    function updateCounts(){
+
+        const quantity =
+            cart.reduce(
+                (
+                    total,
+                    item
+                ) =>
+                    total +
                     (
-                        total,
-                        item
-                    ) =>
-                        total +
-                        (
-                            Number(
-                                item.quantity
-                            ) || 0
-                        ),
-                    0
-                );
+                        Number(
+                            item.quantity
+                        ) || 0
+                    ),
+                0
+            );
 
 
-            const cartCount =
-                document.getElementById(
-                    "cartCount"
-                );
+        const cartCount =
+            document.getElementById(
+                "cartCount"
+            );
 
-
-            if (cartCount) {
-
-                cartCount.textContent =
-                    totalQuantity;
-
-            }
-
-
-            const wishlistCount =
-                document.getElementById(
-                    "wishlistCount"
-                );
-
-
-            if (wishlistCount) {
-
-                let wishlist = [];
-
-                try {
-
-                    wishlist =
-                        JSON.parse(
-                            localStorage.getItem(
-                                "shopnest_wishlist"
-                            ) || "[]"
-                        );
-
-                } catch (error) {
-
-                    wishlist = [];
-
-                }
-
-
-                wishlistCount.textContent =
-                    Array.isArray(wishlist)
-                        ? wishlist.length
-                        : 0;
-
-            }
-
-
-            /*
-             * Also use existing global function
-             * if available.
-             */
-
-            if (
-                typeof window.updateCartCount ===
-                "function"
-            ) {
-
-                window.updateCartCount();
-
-            }
-
+        if(cartCount){
+            cartCount.textContent =
+                quantity;
         }
 
 
-        /* =======================================================
-           SHOW ERROR
-        ======================================================= */
-
-        function showError(message) {
-
-            checkoutError.textContent =
-                message;
-
-            checkoutError.style.display =
-                "block";
+        const wishlistCount =
+            document.getElementById(
+                "wishlistCount"
+            );
 
 
-            window.scrollTo({
+        if(wishlistCount){
 
-                top: 0,
+            const wishlist =
+                readJSON(
+                    "shopnest_wishlist",
+                    []
+                );
 
-                behavior: "smooth"
+            wishlistCount.textContent =
+                Array.isArray(wishlist)
+                    ? wishlist.length
+                    : 0;
+        }
+    }
 
-            });
 
+    /* =========================================================
+       USER
+    ========================================================= */
+
+    function loadUser(){
+
+        const user =
+            readJSON(
+                USER_KEY,
+                null
+            );
+
+        if(!user || typeof user !== "object"){
+            return;
         }
 
 
-        /* =======================================================
-           HIDE ERROR
-        ======================================================= */
+        const name =
+            document.getElementById(
+                "customerName"
+            );
 
-        function hideError() {
+        const email =
+            document.getElementById(
+                "customerEmail"
+            );
 
-            checkoutError.textContent =
-                "";
-
-            checkoutError.style.display =
-                "none";
-
-        }
-
-
-        /* =======================================================
-           LOAD LOGGED-IN USER
-        ======================================================= */
-
-        function loadUserData() {
-
-            let user = null;
-
-
-            try {
-
-                user =
-                    JSON.parse(
-                        localStorage.getItem(
-                            USER_KEY
-                        ) || "null"
-                    );
-
-            } catch (error) {
-
-                user = null;
-
-            }
-
-
-            if (!user) {
-                return;
-            }
-
-
-            const name =
-                document.getElementById(
-                    "customerName"
-                );
-
-            const email =
-                document.getElementById(
-                    "customerEmail"
-                );
-
-            const phone =
-                document.getElementById(
-                    "customerPhone"
-                );
-
-
-            if (
-                name &&
-                user.name &&
-                !name.value
-            ) {
-
-                name.value =
-                    user.name;
-
-            }
-
-
-            if (
-                email &&
-                user.email &&
-                !email.value
-            ) {
-
-                email.value =
-                    user.email;
-
-            }
-
-
-            if (
-                phone &&
-                user.phone &&
-                !phone.value
-            ) {
-
-                phone.value =
-                    user.phone;
-
-            }
-
-        }
-
-
-        /* =======================================================
-           PHONE INPUT
-        ======================================================= */
-
-        const phoneInput =
+        const phone =
             document.getElementById(
                 "customerPhone"
             );
 
 
-        if (phoneInput) {
-
-            phoneInput.addEventListener(
-                "input",
-                function () {
-
-                    this.value =
-                        this.value
-                            .replace(
-                                /\D/g,
-                                ""
-                            )
-                            .slice(
-                                0,
-                                11
-                            );
-
-                }
-            );
-
+        if(
+            name &&
+            !name.value &&
+            user.name
+        ){
+            name.value =
+                user.name;
         }
 
 
-        /* =======================================================
-           DELIVERY CHANGE
-        ======================================================= */
-
-        if (deliveryZone) {
-
-            deliveryZone.addEventListener(
-                "change",
-                function () {
-
-                    updateSummary();
-
-                }
-            );
-
+        if(
+            email &&
+            !email.value &&
+            user.email
+        ){
+            email.value =
+                user.email;
         }
 
 
-        /* =======================================================
-           FORM SUBMIT
-        ======================================================= */
-
-        checkoutForm.addEventListener(
-            "submit",
-            function (event) {
-
-                event.preventDefault();
-
-                hideError();
+        if(
+            phone &&
+            !phone.value &&
+            user.phone
+        ){
+            phone.value =
+                user.phone;
+        }
+    }
 
 
-                /*
-                 * Refresh cart before creating
-                 * the order.
-                 */
+    /* =========================================================
+       ERROR
+    ========================================================= */
 
-                cart =
-                    getCart();
+    function showError(text){
 
-                cleanCart();
+        checkoutError.textContent =
+            text;
 
+        checkoutError.style.display =
+            "block";
 
-                if (!cart.length) {
-
-                    showError(
-                        "Your cart is empty. Please add products before placing an order."
-                    );
-
-                    return;
-
-                }
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+    }
 
 
-                /* =================================================
-                   FORM VALUES
-                ================================================== */
+    function hideError(){
 
-                const name =
-                    document
-                        .getElementById(
-                            "customerName"
+        checkoutError.textContent =
+            "";
+
+        checkoutError.style.display =
+            "none";
+    }
+
+
+    /* =========================================================
+       PAYMENT METHOD
+    ========================================================= */
+
+    function getPaymentMethod(){
+
+        const selected =
+            document.querySelector(
+                'input[name="paymentMethod"]:checked'
+            );
+
+        return selected
+            ? selected.value
+            : "";
+    }
+
+
+    function isOnlinePayment(method){
+
+        return [
+            "bKash",
+            "Nagad",
+            "Online Payment"
+        ].includes(
+            method
+        );
+    }
+
+
+    function updatePaymentUI(){
+
+        const method =
+            getPaymentMethod();
+
+
+        document
+            .querySelectorAll(
+                ".payment-option"
+            )
+            .forEach(
+                option => {
+
+                    const radio =
+                        option.querySelector(
+                            "input"
+                        );
+
+                    option.classList.toggle(
+                        "selected",
+                        Boolean(
+                            radio &&
+                            radio.checked
                         )
-                        .value
-                        .trim();
-
-
-                const phone =
-                    document
-                        .getElementById(
-                            "customerPhone"
-                        )
-                        .value
-                        .trim();
-
-
-                const email =
-                    document
-                        .getElementById(
-                            "customerEmail"
-                        )
-                        .value
-                        .trim();
-
-
-                const city =
-                    document
-                        .getElementById(
-                            "customerCity"
-                        )
-                        .value
-                        .trim();
-
-
-                const area =
-                    document
-                        .getElementById(
-                            "customerArea"
-                        )
-                        .value
-                        .trim();
-
-
-                const address =
-                    document
-                        .getElementById(
-                            "customerAddress"
-                        )
-                        .value
-                        .trim();
-
-
-                const note =
-                    document
-                        .getElementById(
-                            "orderNote"
-                        )
-                        .value
-                        .trim();
-
-
-                const zone =
-                    deliveryZone.value;
-
-
-                /* =================================================
-                   VALIDATION
-                ================================================== */
-
-                if (!name) {
-
-                    showError(
-                        "Please enter your full name."
                     );
-
-                    return;
-
                 }
+            );
 
 
-                /*
-                 * Bangladesh phone format
-                 */
+        if(
+            isOnlinePayment(
+                method
+            )
+        ){
 
-                const bdPhonePattern =
-                    /^01[3-9]\d{8}$/;
+            paymentNotice.classList.add(
+                "show"
+            );
 
+            placeOrderBtn.textContent =
+                "Continue to Payment";
 
-                if (
-                    !bdPhonePattern.test(
-                        phone
-                    )
-                ) {
+        }else{
 
-                    showError(
-                        "Please enter a valid Bangladesh phone number, for example 01712345678."
-                    );
+            paymentNotice.classList.remove(
+                "show"
+            );
 
-                    return;
+            placeOrderBtn.textContent =
+                "Place Order";
+        }
+    }
 
-                }
 
+    /* =========================================================
+       OPEN PAYMENT MODAL
+    ========================================================= */
 
-                if (!email) {
+    function openPaymentModal(method){
 
-                    showError(
-                        "Please enter your email address."
-                    );
+        gatewayMethod.textContent =
+            method;
 
-                    return;
 
-                }
+        if(method === "bKash"){
 
+            paymentModalTitle.textContent =
+                "Complete bKash Payment";
 
-                const emailPattern =
-                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            gatewayMessage.textContent =
+                "Complete your bKash payment first, then enter the number and transaction ID below.";
+        }
 
 
-                if (
-                    !emailPattern.test(
-                        email
-                    )
-                ) {
+        if(method === "Nagad"){
 
-                    showError(
-                        "Please enter a valid email address."
-                    );
+            paymentModalTitle.textContent =
+                "Complete Nagad Payment";
 
-                    return;
+            gatewayMessage.textContent =
+                "Complete your Nagad payment first, then enter the number and transaction ID below.";
+        }
 
-                }
 
+        if(method === "Online Payment"){
 
-                if (!city) {
+            paymentModalTitle.textContent =
+                "Complete Online Payment";
 
-                    showError(
-                        "Please enter your city or district."
-                    );
+            gatewayMessage.textContent =
+                "Complete your online payment using your configured payment gateway, then enter the payment reference below.";
+        }
 
-                    return;
 
-                }
+        paymentPhone.value =
+            document.getElementById(
+                "customerPhone"
+            ).value.trim();
 
 
-                if (!area) {
+        transactionId.value =
+            "";
 
-                    showError(
-                        "Please enter your area."
-                    );
 
-                    return;
+        paymentModal.classList.add(
+            "show"
+        );
 
-                }
+        paymentModal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
 
 
-                if (!address) {
+        setTimeout(
+            () =>
+                transactionId.focus(),
+            100
+        );
+    }
 
-                    showError(
-                        "Please enter your full delivery address."
-                    );
 
-                    return;
+    /* =========================================================
+       CLOSE PAYMENT MODAL
+    ========================================================= */
 
-                }
+    function closePaymentModal(){
 
+        paymentModal.classList.remove(
+            "show"
+        );
 
-                /* =================================================
-                   PAYMENT
-                ================================================== */
+        paymentModal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+    }
 
-                const paymentElement =
-                    document.querySelector(
-                        'input[name="paymentMethod"]:checked'
-                    );
 
+    /* =========================================================
+       CREATE ORDER
+    ========================================================= */
 
-                const paymentMethod =
-                    paymentElement
-                        ? paymentElement.value
-                        : "Cash on Delivery";
+    function createOrder(
+        paymentInfo = null
+    ){
 
+        hideError();
 
-                /* =================================================
-                   SUMMARY
-                ================================================== */
 
-                const summary =
-                    updateSummary();
+        cart =
+            refreshCart();
 
 
-                /* =================================================
-                   CART ID
-                ================================================== */
+        if(!cart.length){
 
-                const cartId =
-                    getCartId();
+            showError(
+                "Your cart is empty. Please add products before placing an order."
+            );
 
+            return;
+        }
 
-                /* =================================================
-                   ORDER ID
-                ================================================== */
 
-                const orderId =
-                    "SN" +
-                    Date.now();
+        const name =
+            document
+                .getElementById(
+                    "customerName"
+                )
+                .value
+                .trim();
 
 
-                /* =================================================
-                   ORDER ITEMS
-                ================================================== */
+        const phone =
+            document
+                .getElementById(
+                    "customerPhone"
+                )
+                .value
+                .trim();
 
-                const orderItems =
-                    cart.map(item => {
 
-                        const data =
-                            getItemData(item);
+        const email =
+            document
+                .getElementById(
+                    "customerEmail"
+                )
+                .value
+                .trim();
 
-                        return {
 
-                            id:
-                                data.id,
+        const city =
+            document
+                .getElementById(
+                    "customerCity"
+                )
+                .value
+                .trim();
 
-                            name:
-                                data.name,
 
-                            category:
-                                data.category,
+        const area =
+            document
+                .getElementById(
+                    "customerArea"
+                )
+                .value
+                .trim();
 
-                            price:
-                                data.price,
 
-                            quantity:
-                                Number(
-                                    item.quantity
-                                ) || 1,
+        const address =
+            document
+                .getElementById(
+                    "customerAddress"
+                )
+                .value
+                .trim();
 
-                            image:
-                                data.image
 
-                        };
+        const note =
+            document
+                .getElementById(
+                    "orderNote"
+                )
+                .value
+                .trim();
 
-                    });
 
+        const zone =
+            deliveryZone.value;
 
-                /* =================================================
-                   ORDER OBJECT
-                ================================================== */
 
-                const order = {
+        const paymentMethod =
+            getPaymentMethod();
 
-                    id:
-                        orderId,
 
-                    cartId:
-                        cartId,
+        /* =====================================================
+           BASIC VALIDATION
+        ===================================================== */
 
-                    customer: {
+        if(!name){
+
+            showError(
+                "Please enter your full name."
+            );
+
+            return;
+        }
+
+
+        if(!/^01[3-9]\d{8}$/.test(phone)){
+
+            showError(
+                "Please enter a valid Bangladesh phone number, for example 01712345678."
+            );
+
+            return;
+        }
+
+
+        if(
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+                email
+            )
+        ){
+
+            showError(
+                "Please enter a valid email address."
+            );
+
+            return;
+        }
+
+
+        if(!city){
+
+            showError(
+                "Please enter your city or district."
+            );
+
+            return;
+        }
+
+
+        if(!area){
+
+            showError(
+                "Please enter your area."
+            );
+
+            return;
+        }
+
+
+        if(!address){
+
+            showError(
+                "Please enter your full delivery address."
+            );
+
+            return;
+        }
+
+
+        if(!paymentMethod){
+
+            showError(
+                "Please select a payment method."
+            );
+
+            return;
+        }
+
+
+        /* =====================================================
+           PAYMENT GATE
+        ===================================================== */
+
+        if(
+            isOnlinePayment(
+                paymentMethod
+            ) &&
+            !paymentInfo
+        ){
+
+            openPaymentModal(
+                paymentMethod
+            );
+
+            return;
+        }
+
+
+        /* =====================================================
+           PAYMENT INFO VALIDATION
+        ===================================================== */
+
+        if(
+            isOnlinePayment(
+                paymentMethod
+            )
+        ){
+
+            if(
+                !paymentInfo ||
+                !paymentInfo.phone ||
+                !paymentInfo.transactionId
+            ){
+
+                showError(
+                    "Payment verification information is required before creating this order."
+                );
+
+                return;
+            }
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ===================================================== */
+
+        const summary =
+            updateSummary();
+
+
+        const cartId =
+            getCartId();
+
+
+        const orderId =
+            "SN" +
+            Date.now();
+
+
+        /* =====================================================
+           ITEMS
+        ===================================================== */
+
+        const orderItems =
+            cart.map(
+                item => {
+
+                    const data =
+                        getItemData(
+                            item
+                        );
+
+                    return {
+
+                        id:
+                            data.id,
 
                         name:
-                            name,
+                            data.name,
 
-                        phone:
-                            phone,
+                        category:
+                            data.category,
 
-                        email:
-                            email
+                        sku:
+                            data.sku,
 
-                    },
+                        price:
+                            data.price,
 
-                    shipping: {
+                        quantity:
+                            Number(
+                                item.quantity
+                            ) || 1,
 
-                        city:
-                            city,
+                        image:
+                            data.image
 
-                        area:
-                            area,
-
-                        zone:
-                            zone,
-
-                        address:
-                            address
-
-                    },
-
-                    items:
-                        orderItems,
-
-                    subtotal:
-                        summary.subtotal,
-
-                    discount:
-                        summary.discount,
-
-                    delivery:
-                        summary.delivery,
-
-                    total:
-                        summary.total,
-
-                    paymentMethod:
-                        paymentMethod,
-
-                    note:
-                        note,
-
-                    status:
-                        "New",
-
-                    paymentStatus:
-                        paymentMethod ===
-                        "Cash on Delivery"
-                            ? "Pending"
-                            : "Pending",
-
-                    shipmentStatus:
-                        "Pending",
-
-                    createdAt:
-                        new Date().toISOString()
-
-                };
-
-
-                /* =================================================
-                   SAVE ORDER
-                ================================================== */
-
-                const orders =
-                    getStorageArray(
-                        ORDERS_KEY
-                    );
-
-
-                orders.unshift(
-                    order
-                );
-
-
-                saveStorageArray(
-                    ORDERS_KEY,
-                    orders
-                );
-
-
-                /* =================================================
-                   CLEAR CART
-                ================================================== */
-
-                localStorage.removeItem(
-                    CART_KEY
-                );
-
-
-                /*
-                 * Remove the old Cart ID after
-                 * the order has been created.
-                 *
-                 * The order itself already contains
-                 * the Cart ID.
-                 *
-                 * The next cart will receive a
-                 * brand-new Cart ID.
-                 */
-
-                localStorage.removeItem(
-                    CART_ID_KEY
-                );
-
-
-                cart = [];
-
-
-                updateCounts();
-
-
-                /* =================================================
-                   SUCCESS UI
-                ================================================== */
-
-                checkoutContent.style.display =
-                    "none";
-
-                checkoutEmpty.style.display =
-                    "none";
-
-                document
-                    .querySelector(
-                        ".cart-id-card"
-                    )
-                    .style.display =
-                    "none";
-
-
-                orderSuccess.style.display =
-                    "block";
-
-
-                successOrderId.textContent =
-                    "Order ID: " +
-                    orderId;
-
-
-                /*
-                 * Very important:
-                 *
-                 * Customer order details page
-                 * expects ?id=ORDER_ID
-                 */
-
-                successOrderDetails.href =
-                    "order-details.html?id=" +
-                    encodeURIComponent(
-                        orderId
-                    );
-
-
-                window.scrollTo({
-
-                    top: 0,
-
-                    behavior: "smooth"
-
-                });
-
-
-                /*
-                 * Optional existing notification
-                 */
-
-                if (
-                    typeof window.showNotification ===
-                    "function"
-                ) {
-
-                    window.showNotification(
-                        "Order placed successfully!"
-                    );
-
+                    };
                 }
+            );
 
+
+        /* =====================================================
+           PAYMENT STATUS
+        ===================================================== */
+
+        const paymentStatus =
+            paymentMethod ===
+            "Cash on Delivery"
+
+                ? "Pending"
+
+                : "Verification Pending";
+
+
+        /* =====================================================
+           ORDER
+        ===================================================== */
+
+        const order = {
+
+            id:
+                orderId,
+
+            orderNumber:
+                orderId,
+
+            cartId:
+                cartId,
+
+            source:
+                "Online Store",
+
+            customer: {
+
+                name:
+                    name,
+
+                phone:
+                    phone,
+
+                email:
+                    email
+
+            },
+
+            shipping: {
+
+                city:
+                    city,
+
+                area:
+                    area,
+
+                zone:
+                    zone,
+
+                address:
+                    address
+
+            },
+
+            items:
+                orderItems,
+
+            subtotal:
+                summary.subtotal,
+
+            discount:
+                summary.discount,
+
+            delivery:
+                summary.delivery,
+
+            total:
+                summary.total,
+
+            paymentMethod:
+                paymentMethod,
+
+            paymentStatus:
+                paymentStatus,
+
+            payment: {
+
+                method:
+                    paymentMethod,
+
+                status:
+                    paymentStatus,
+
+                payerPhone:
+                    paymentInfo
+                        ? paymentInfo.phone
+                        : "",
+
+                transactionId:
+                    paymentInfo
+                        ? paymentInfo.transactionId
+                        : "",
+
+                submittedAt:
+                    paymentInfo
+                        ? new Date().toISOString()
+                        : null
+
+            },
+
+            status:
+                "New",
+
+            shipmentStatus:
+                "Pending",
+
+            note:
+                note,
+
+            createdAt:
+                new Date().toISOString()
+
+        };
+
+
+        /* =====================================================
+           SAVE
+        ===================================================== */
+
+        const orders =
+            readJSON(
+                ORDERS_KEY,
+                []
+            );
+
+
+        const safeOrders =
+            Array.isArray(
+                orders
+            )
+                ? orders
+                : [];
+
+
+        safeOrders.unshift(
+            order
+        );
+
+
+        const saved =
+            saveJSON(
+                ORDERS_KEY,
+                safeOrders
+            );
+
+
+        if(!saved){
+
+            showError(
+                "The order could not be saved. Please check your browser storage and try again."
+            );
+
+            return;
+        }
+
+
+        /* =====================================================
+           CLEAR CART
+        ===================================================== */
+
+        localStorage.removeItem(
+            CART_KEY
+        );
+
+        localStorage.removeItem(
+            CART_ID_KEY
+        );
+
+
+        cart = [];
+
+
+        updateCounts();
+
+
+        /* =====================================================
+           SUCCESS
+        ===================================================== */
+
+        checkoutContent.style.display =
+            "none";
+
+        checkoutEmpty.style.display =
+            "none";
+
+        cartIdCard.style.display =
+            "none";
+
+
+        orderSuccess.style.display =
+            "block";
+
+
+        successOrderId.textContent =
+            "Order ID: " +
+            orderId;
+
+
+        if(
+            paymentMethod ===
+            "Cash on Delivery"
+        ){
+
+            successDescription.textContent =
+                "Your order has been created successfully. Payment will be collected when your order arrives.";
+
+        }else{
+
+            successDescription.textContent =
+                "Your order has been submitted and your payment is awaiting verification.";
+
+        }
+
+
+        successOrderDetails.href =
+            "order-details.html?id=" +
+            encodeURIComponent(
+                orderId
+            );
+
+
+        closePaymentModal();
+
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+    }
+
+
+    /* =========================================================
+       FORM SUBMIT
+    ========================================================= */
+
+    checkoutForm.addEventListener(
+        "submit",
+        function(event){
+
+            event.preventDefault();
+
+            createOrder();
+        }
+    );
+
+
+    /* =========================================================
+       PAYMENT METHODS
+    ========================================================= */
+
+    document
+        .querySelectorAll(
+            'input[name="paymentMethod"]'
+        )
+        .forEach(
+            input => {
+
+                input.addEventListener(
+                    "change",
+                    updatePaymentUI
+                );
             }
         );
 
 
-        /* =======================================================
-           SEARCH
-        ======================================================= */
+    /* =========================================================
+       DELIVERY
+    ========================================================= */
 
-        const searchForm =
-            document.getElementById(
-                "checkoutSearchForm"
-            );
+    deliveryZone.addEventListener(
+        "change",
+        function(){
 
-        const searchInput =
-            document.getElementById(
-                "checkoutSearch"
-            );
-
-        const searchClear =
-            document.getElementById(
-                "checkoutSearchClear"
-            );
-
-
-        if (searchForm && searchInput) {
-
-            searchForm.addEventListener(
-                "submit",
-                function (event) {
-
-                    event.preventDefault();
-
-
-                    const query =
-                        searchInput.value.trim();
-
-
-                    if (!query) {
-
-                        searchInput.focus();
-
-                        return;
-
-                    }
-
-
-                    window.location.href =
-                        "products.html?search=" +
-                        encodeURIComponent(
-                            query
-                        );
-
-                }
-            );
-
-
-            searchInput.addEventListener(
-                "input",
-                function () {
-
-                    if (
-                        searchClear
-                    ) {
-
-                        searchClear.style.display =
-                            this.value
-                                ? "flex"
-                                : "none";
-
-                    }
-
-                }
-            );
-
+            updateSummary();
         }
+    );
 
 
-        /* =======================================================
-           SEARCH CLEAR
-        ======================================================= */
+    /* =========================================================
+       PHONE
+    ========================================================= */
 
-        if (searchClear) {
+    const customerPhone =
+        document.getElementById(
+            "customerPhone"
+        );
 
-            searchClear.addEventListener(
-                "click",
-                function () {
 
-                    searchInput.value = "";
+    customerPhone.addEventListener(
+        "input",
+        function(){
 
-                    searchClear.style.display =
-                        "none";
-
-                    searchInput.focus();
-
-                }
-            );
-
+            this.value =
+                this.value
+                    .replace(
+                        /\D/g,
+                        ""
+                    )
+                    .slice(
+                        0,
+                        11
+                    );
         }
+    );
 
 
-        /* =======================================================
-           INITIALIZE
-        ======================================================= */
+    paymentPhone.addEventListener(
+        "input",
+        function(){
 
-        function initializeCheckout() {
-
-            cart =
-                getCart();
-
-
-            cleanCart();
-
-
-            /*
-             * IMPORTANT:
-             *
-             * Only generate a Cart ID when
-             * there are actually cart items.
-             */
-
-            if (cart.length) {
-
-                const cartId =
-                    getCartId();
+            this.value =
+                this.value
+                    .replace(
+                        /\D/g,
+                        ""
+                    )
+                    .slice(
+                        0,
+                        11
+                    );
+        }
+    );
 
 
-                cartIdDisplay.textContent =
-                    cartId;
+    /* =========================================================
+       PAYMENT CONFIRM
+    ========================================================= */
 
-            } else {
+    paymentConfirmBtn.addEventListener(
+        "click",
+        function(){
 
-                cartIdDisplay.textContent =
-                    "No active cart";
+            const method =
+                getPaymentMethod();
 
+
+            const payer =
+                paymentPhone.value.trim();
+
+
+            const trx =
+                transactionId.value.trim();
+
+
+            if(
+                !/^01[3-9]\d{8}$/.test(
+                    payer
+                )
+            ){
+
+                showError(
+                    "Enter a valid payment number."
+                );
+
+                closePaymentModal();
+
+                setTimeout(
+                    () => openPaymentModal(method),
+                    50
+                );
+
+                return;
             }
 
 
-            renderItems();
+            if(
+                trx.length < 4
+            ){
 
-            updateSummary();
+                showError(
+                    "Enter a valid Transaction ID / Payment Reference."
+                );
 
-            updateCounts();
+                closePaymentModal();
 
-            loadUserData();
+                setTimeout(
+                    () => openPaymentModal(method),
+                    50
+                );
 
+                return;
+            }
+
+
+            /*
+             * Important:
+             *
+             * This does NOT claim the gateway
+             * has verified the payment.
+             *
+             * It stores the transaction as
+             * Verification Pending.
+             */
+
+            createOrder({
+
+                phone:
+                    payer,
+
+                transactionId:
+                    trx
+
+            });
+        }
+    );
+
+
+    /* =========================================================
+       MODAL CLOSE
+    ========================================================= */
+
+    paymentModalClose.addEventListener(
+        "click",
+        closePaymentModal
+    );
+
+
+    paymentCancelBtn.addEventListener(
+        "click",
+        closePaymentModal
+    );
+
+
+    paymentModal.addEventListener(
+        "click",
+        function(event){
+
+            if(
+                event.target ===
+                paymentModal
+            ){
+
+                closePaymentModal();
+            }
+        }
+    );
+
+
+    document.addEventListener(
+        "keydown",
+        function(event){
+
+            if(
+                event.key ===
+                "Escape"
+            ){
+
+                closePaymentModal();
+            }
+        }
+    );
+
+
+    /* =========================================================
+       SEARCH
+    ========================================================= */
+
+    const searchForm =
+        document.getElementById(
+            "checkoutSearchForm"
+        );
+
+    const searchInput =
+        document.getElementById(
+            "checkoutSearch"
+        );
+
+    const searchClear =
+        document.getElementById(
+            "checkoutSearchClear"
+        );
+
+
+    searchForm.addEventListener(
+        "submit",
+        function(event){
+
+            event.preventDefault();
+
+
+            const query =
+                searchInput.value.trim();
+
+
+            if(!query){
+
+                searchInput.focus();
+
+                return;
+            }
+
+
+            window.location.href =
+                "products.html?search=" +
+                encodeURIComponent(
+                    query
+                );
+        }
+    );
+
+
+    searchInput.addEventListener(
+        "input",
+        function(){
+
+            searchClear.style.display =
+                this.value
+                    ? "flex"
+                    : "none";
+        }
+    );
+
+
+    searchClear.addEventListener(
+        "click",
+        function(){
+
+            searchInput.value =
+                "";
+
+            searchClear.style.display =
+                "none";
+
+            searchInput.focus();
+        }
+    );
+
+
+    /* =========================================================
+       INITIALIZE
+    ========================================================= */
+
+    function initialize(){
+
+        refreshCart();
+
+
+        if(cart.length){
+
+            cartIdDisplay.textContent =
+                getCartId();
+
+        }else{
+
+            cartIdDisplay.textContent =
+                "No active cart";
         }
 
 
-        initializeCheckout();
+        renderItems();
+
+        updateSummary();
+
+        updateCounts();
+
+        loadUser();
+
+        updatePaymentUI();
+    }
 
 
-    })();
+    initialize();
+
+})();
 </script>
 
 </body>
